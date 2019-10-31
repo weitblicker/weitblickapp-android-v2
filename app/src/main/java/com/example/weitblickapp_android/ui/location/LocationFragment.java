@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.send;
+package com.example.weitblickapp_android.ui.location;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +12,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.example.weitblickapp_android.R;
 
-public class SendFragment extends Fragment {
+public class LocationFragment extends Fragment {
 
-    private SendViewModel sendViewModel;
+    private LocationViewModel locationViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        sendViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
-        final TextView textView = root.findViewById(R.id.text_send);
-        sendViewModel.getText().observe(this, new Observer<String>() {
+        locationViewModel =
+                ViewModelProviders.of(this).get(LocationViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_share, container, false);
+        final TextView textView = root.findViewById(R.id.text_share);
+        locationViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

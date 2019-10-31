@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.slideshow;
+package com.example.weitblickapp_android.ui.event;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +12,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.example.weitblickapp_android.R;
 
-public class SlideshowFragment extends Fragment {
+public class EventFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private EventViewModel eventViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
+        eventViewModel =
+                ViewModelProviders.of(this).get(EventViewModel.class);
         View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
         final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(this, new Observer<String>() {
+        eventViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.share;
+package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +12,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.example.weitblickapp_android.R;
 
-public class ShareFragment extends Fragment {
+public class BlogEntryFragment extends Fragment {
 
-    private ShareViewModel shareViewModel;
+    private BlogEntryViewModel blogEntryViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        shareViewModel =
-                ViewModelProviders.of(this).get(ShareViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_share, container, false);
-        final TextView textView = root.findViewById(R.id.text_share);
-        shareViewModel.getText().observe(this, new Observer<String>() {
+        blogEntryViewModel =
+                ViewModelProviders.of(this).get(BlogEntryViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_send, container, false);
+        final TextView textView = root.findViewById(R.id.text_send);
+        blogEntryViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.gallery;
+package com.example.weitblickapp_android.ui.project;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +12,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.example.weitblickapp_android.R;
 
-public class GalleryFragment extends Fragment {
+public class ProjectFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private ProjectViewModel projectViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
+        projectViewModel =
+                ViewModelProviders.of(this).get(ProjectViewModel.class);
         View root = inflater.inflate(R.layout.fragment_gallery, container, false);
         final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(this, new Observer<String>() {
+        projectViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
