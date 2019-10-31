@@ -1,16 +1,17 @@
 <resources>
-    <string name="app_name">weitblickapp-android</string>
+    <string name="app_name">Weitblick</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Profil</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_home">News/Events</string>
+    <string name="menu_gallery">Projekte</string>
+    <string name="menu_slideshow">Fahrrad fahren</string>
+    <string name="menu_tools">Statistik</string>
+    <string name="menu_share">FAQ</string>
+    <string name="menu_send">Impressum</string>
+    <string name="logo_text">Bildungschangen weltweit!</string>
 </resources>
