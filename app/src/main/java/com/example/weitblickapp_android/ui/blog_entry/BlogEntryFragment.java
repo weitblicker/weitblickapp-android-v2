@@ -20,7 +20,7 @@ public class BlogEntryFragment extends Fragment {
             ViewGroup container, Bundle savedInstanceState) {
         blogEntryViewModel =
                 ViewModelProviders.of(this).get(BlogEntryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
+        View root = inflater.inflate(R.layout.fragment_blog, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
         blogEntryViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -30,4 +30,7 @@ public class BlogEntryFragment extends Fragment {
         });
         return root;
     }
+
+
+
 }

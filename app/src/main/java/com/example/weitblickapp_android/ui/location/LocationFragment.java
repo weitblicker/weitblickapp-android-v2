@@ -20,7 +20,7 @@ public class LocationFragment extends Fragment {
             ViewGroup container, Bundle savedInstanceState) {
         locationViewModel =
                 ViewModelProviders.of(this).get(LocationViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_share, container, false);
+        View root = inflater.inflate(R.layout.fragment_location, container, false);
         final TextView textView = root.findViewById(R.id.text_share);
         locationViewModel.getText().observe(this, new Observer<String>() {
             @Override
