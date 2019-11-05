@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.weitblickapp_android.ui.news.NewsFragment"
+        android:name="com.example.weitblickapp_android.ui.tabs.TabsFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_news" />
+        tools:layout="@layout/fragment_tabs" />
 
     <fragment
         android:id="@+id/nav_gallery"
