@@ -1,7 +1,5 @@
 package com.example.weitblickapp_android.ui.project;
 
-import com.example.weitblickapp_android.ui.location.LocationViewModel;
-
 import java.util.ArrayList;
 
 import androidx.lifecycle.LiveData;
@@ -16,13 +14,20 @@ public class ProjectViewModel extends ViewModel {
     String name;
     ArrayList<String> hosts;
     String description;
-    LocationViewModel location;
+    int locationId;
     ArrayList <Integer> partner_ids;
 
 
     public ProjectViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is project fragment");
+    }
+
+    public ProjectViewModel(Integer projectId, String projectName, String projectDescription, Integer locationId) {
+        this.id = projectId;
+        this.name = projectName;
+        this.description = projectDescription;
+        this.locationId = locationId;
     }
 
     public int getId() {
@@ -57,13 +62,11 @@ public class ProjectViewModel extends ViewModel {
         this.description = description;
     }
 
-    public LocationViewModel getLocation() {
-        return location;
+    public int getLocation() {
+        return locationId;
     }
 
-    public void setLocation(LocationViewModel location) {
-        this.location = location;
-    }
+    public void setLocation(int locationId) { this.locationId = locationId; }
 
     public ArrayList<Integer> getPartner_ids() {
         return partner_ids;
@@ -75,5 +78,17 @@ public class ProjectViewModel extends ViewModel {
 
     public LiveData<String> getText() {
         return mText;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectViewModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hosts=" + hosts +
+                ", description='" + description + '\'' +
+                ", locationId=" + locationId +
+                ", partner_ids=" + partner_ids +
+                '}';
     }
 }

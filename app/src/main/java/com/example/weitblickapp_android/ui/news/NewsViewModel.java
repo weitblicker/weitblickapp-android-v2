@@ -25,6 +25,13 @@ public class NewsViewModel extends ViewModel {
         mText.setValue("This is fragment_news fragment");
     }
 
+    public NewsViewModel(int id, String title, String text, int image_id) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.image_id = image_id;
+    }
+
     public int getId() {
         return id;
     }
@@ -77,7 +84,20 @@ public class NewsViewModel extends ViewModel {
         this.location = location;
     }
 
+    @Override
+    public String toString() {
+        return "NewsViewModel{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", image_id=" + image_id +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                '}';
+    }
+
     public LiveData<String> getText() {
         return mText;
     }
+
 }

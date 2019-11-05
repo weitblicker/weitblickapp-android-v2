@@ -1,6 +1,5 @@
-package com.example.weitblickapp_android.ui.news;
+package com.example.weitblickapp_android.ui.project;
 
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -21,24 +20,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewsListFragment extends ListFragment {
-    ArrayList<NewsViewModel> news = new ArrayList<NewsViewModel>();
+import androidx.fragment.app.ListFragment;
+
+public class ProjectListFragment extends ListFragment {
+    ArrayList<ProjectViewModel> projects = new ArrayList<ProjectViewModel>();
 
 
     @Override
     public void onActivityCreated(Bundle saveInstanceState) {
         super.onActivityCreated(saveInstanceState);
-        loadNews();
+        loadProjects();
     }
 
-    private void loadNews(){
+    private void loadProjects(){
 
         // Talk to Rest API
-
-        String URL = "https://new.weitblicker.org/rest/news/?limit=3&search=Benin";
+        String URL = "https://new.weitblicker.org/rest/projects/?limit=3&search=Benin";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -50,33 +49,23 @@ public class NewsListFragment extends ListFragment {
                     JSONObject responseObject = null;
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer newsId = responseObject.getInt("id");
-                        String title = responseObject.getString("title");
+                        Integer projectId = responseObject.getInt("id");
+                        String projectName = responseObject.getString("name");
+                        String projectDescription = responseObject.getString("description");
+                        projectDescription.trim();
+                        Integer locationId = responseObject.getInt("location");
 
-                        String text = responseObject.getString("text");
-                        text.trim();
-
-                        Integer image_id = responseObject.getInt("image");
-                        String added = responseObject.getString("added");
-                        String updated = responseObject.getString("updated");
-                        String published = responseObject.getString("published");
-                        String range = responseObject.getString("range");
-                        String teaser = responseObject.getString("teaser");
-
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, image_id);
-                        news.add(temp);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, projectName, projectDescription, locationId);
+                        projects.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
-
-                for(NewsViewModel newsArticle:news){
-                    Log.e("NewsArticle",newsArticle.toString());
+                for(ProjectViewModel project:projects){
+                    Log.e("NewsArticle",project.toString());
                 }
-
             }
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -84,7 +73,7 @@ public class NewsListFragment extends ListFragment {
                 Log.e("Rest Response", error.toString());
             }
         }){
-            //Override getHeaders() to set Credentials for REST-Authentication
+            //Override header-Information to set Credentials
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
