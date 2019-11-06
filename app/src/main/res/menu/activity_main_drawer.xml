@@ -29,9 +29,9 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_event"
+                android:id="@+id/nav_faq"
                 android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_event" />
+                android:title="@string/menu_faq" />
            /* <item
                 android:id="@+id/nav_impressum"
                 android:icon="@drawable/ic_menu_send"

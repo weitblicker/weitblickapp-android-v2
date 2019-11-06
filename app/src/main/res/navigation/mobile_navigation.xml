@@ -24,10 +24,10 @@
         tools:layout="@layout/fragment_project" />
 
     <fragment
-        android:id="@+id/nav_event"
-        android:name="com.example.weitblickapp_android.ui.event.EventFragment"
-        android:label="@string/menu_event"
-        tools:layout="@layout/fragment_event" />
+        android:id="@+id/nav_faq"
+        android:name="com.example.weitblickapp_android.ui.faq.FaqFragment"
+        android:label="@string/menu_faq"
+        tools:layout="@layout/fragment_faq" />
 
     <fragment
         android:id="@+id/nav_stats"
