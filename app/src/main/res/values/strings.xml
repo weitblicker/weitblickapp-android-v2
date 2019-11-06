@@ -7,11 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Profil</string>
 
-    <string name="menu_home">News/Events</string>
-    <string name="menu_gallery">Projekte</string>
-    <string name="menu_slideshow">Fahrrad fahren</string>
-    <string name="menu_tools">Statistik</string>
-    <string name="menu_share">FAQ</string>
-    <string name="menu_send">Impressum</string>
+    <string name="menu_tabs">News/Events</string>
+    <string name="menu_project">Projekte</string>
+    <string name="menu_location">Fahrrad fahren</string>
+    <string name="menu_stats">Statistik</string>
+    <string name="menu_event">FAQ</string>
+    <string name="menu_blog">Blog</string>
     <string name="logo_text">Bildungschangen weltweit!</string>
 </resources>
