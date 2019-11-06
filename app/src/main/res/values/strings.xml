@@ -13,5 +13,6 @@
     <string name="menu_stats">Statistik</string>
     <string name="menu_faq">FAQ</string>
     <string name="menu_blog">Blog</string>
+    <string name="menu_imprint">Impressum</string>
     <string name="logo_text">Bildungschangen weltweit!</string>
 </resources>

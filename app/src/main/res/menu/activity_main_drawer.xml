@@ -33,9 +33,9 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/menu_faq" />
            /* <item
-                android:id="@+id/nav_impressum"
+                android:id="@+id/nav_imprint"
                 android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_blog" />*/
+                android:title="@string/menu_imprint" />*/
         </menu>
     </item>
 

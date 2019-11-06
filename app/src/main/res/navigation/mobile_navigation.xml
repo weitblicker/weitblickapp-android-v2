@@ -46,4 +46,10 @@
         android:name="com.example.weitblickapp_android.ui.blog_entry.BlogEntryFragment"
         android:label="@string/menu_blog"
         tools:layout="@layout/fragment_blog" />
+
+    <fragment
+        android:id="@+id/nav_imprint"
+        android:name="com.example.weitblickapp_android.ui.imprint.ImprintFragment"
+        android:label="@string/menu_imprint"
+        tools:layout="@layout/fragment_imprint" />
 </navigation>
