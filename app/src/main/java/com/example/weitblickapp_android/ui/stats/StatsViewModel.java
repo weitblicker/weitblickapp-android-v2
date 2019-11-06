@@ -1,16 +1,16 @@
-package com.example.weitblickapp_android.ui.tools;
+package com.example.weitblickapp_android.ui.stats;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ToolsViewModel extends ViewModel {
+public class StatsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public ToolsViewModel() {
+    public StatsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is tools fragment");
+        mText.setValue("Das sind die Statistiken");
     }
 
     public LiveData<String> getText() {
