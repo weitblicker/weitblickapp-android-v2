@@ -1,9 +1,11 @@
 package com.example.weitblickapp_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_maps,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
@@ -54,8 +56,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        doRestCallTest();
 
-        // Talk to Rest API
+        }
+        // Menu-Navigation-Item onclick- Function
+        public void startMapsActivity(MenuItem item){
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            startActivity(intent);
+        }
+
+
+//Function to test static restApiCalls
+    public void doRestCallTest() {
 
         String URL = "https://new.weitblicker.org/rest/projects/";
 
@@ -64,59 +76,55 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<ProjectViewModel> projects = new ArrayList<ProjectViewModel>();
 
 
-            JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
 
-                @Override
-                public void onResponse(JSONArray response) {
-                    //Save Data into Model
-                    String jsonData = response.toString();
-                    //Parse the JSON response array by iterating over it
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject responseObject = null;
-                        try {
-                            responseObject = response.getJSONObject(i);
-                            Integer projectId = responseObject.getInt("id");
-                            String projectName = responseObject.getString("name");
-                            String projectDescription = responseObject.getString("description");
-                            projectDescription.trim();
-                            Integer locationId = responseObject.getInt("location");
+            @Override
+            public void onResponse(JSONArray response) {
+                //Save Data into Model
+                String jsonData = response.toString();
+                //Parse the JSON response array by iterating over it
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject responseObject = null;
+                    try {
+                        responseObject = response.getJSONObject(i);
+                        Integer projectId = responseObject.getInt("id");
+                        String projectName = responseObject.getString("name");
+                        String projectDescription = responseObject.getString("description");
+                        projectDescription.trim();
+                        Integer locationId = responseObject.getInt("location");
 
-                            ProjectViewModel temp = new ProjectViewModel(projectId, projectName, projectDescription, locationId);
-                            projects.add(temp);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        ProjectViewModel temp = new ProjectViewModel(projectId, projectName, projectDescription, locationId);
+                        projects.add(temp);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    for (ProjectViewModel project : projects) {
-                        Log.e("NewsArticle", project.toString());
-                    }
+
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //Display Error Message
-                    Log.e("Rest Response", error.toString());
+                for (ProjectViewModel project : projects) {
+                    Log.e("NewsArticle", project.toString());
                 }
-            }) {
-                //Override header-Information to set Credentials
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
-                    return headers;
-                }
-            };
-            requestQueue.add(objectRequest);
-        }
-
-
-
-
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Display Error Message
+                Log.e("Rest Response", error.toString());
+            }
+        }) {
+            //Override header-Information to set Credentials
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = "surfer:hangloose";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+        };
+        requestQueue.add(objectRequest);
+    }
 
 
     @Override
@@ -125,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -10,12 +10,12 @@ public class ProjectViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    int id;
-    String name;
-    ArrayList<String> hosts;
-    String description;
-    int locationId;
-    ArrayList <Integer> partner_ids;
+    private int id;
+    private String name;
+    private ArrayList<String> hosts;
+    private String description;
+    private int locationId;
+    private ArrayList <Integer> partner_ids;
 
 
     public ProjectViewModel() {

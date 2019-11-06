@@ -12,13 +12,13 @@ public class NewsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    int id;
-    String title;
-    String text;
-    int image_id;
-    Date created_at;
-    Date updated_at;
-    LocationViewModel location;
+    private int id;
+    private String title;
+    private String text;
+    private int image_id;
+    private Date created_at;
+    private Date updated_at;
+    private LocationViewModel location;
 
     public NewsViewModel() {
         mText = new MutableLiveData<>();

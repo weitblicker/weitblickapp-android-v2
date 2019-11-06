@@ -13,9 +13,10 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_gallery" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_maps"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_slideshow"
+            android:onClick="startMapsActivity"/>
         <item
             android:id="@+id/nav_tools"
             android:icon="@drawable/ic_menu_manage"
