@@ -21,7 +21,7 @@ public class StatsFragment extends Fragment {
         toolsViewModel =
                 ViewModelProviders.of(this).get(StatsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_stats, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
+        final TextView textView = root.findViewById(R.id.text_stats);
         toolsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
