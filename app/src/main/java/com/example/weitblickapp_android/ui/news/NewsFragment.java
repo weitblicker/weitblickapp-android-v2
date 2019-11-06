@@ -57,7 +57,7 @@ public class NewsFragment extends Fragment {
         @Override
         public View getView(int position, View view, ViewGroup parent) {
 
-            view = getLayoutInflater().inflate(R.layout.fragment_blog_list,null);
+            view = getLayoutInflater().inflate(R.layout.fragment_news_list,null);
 
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
             TextView textView_title = (TextView)view.findViewById(R.id.title);
