@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.event;
+package com.example.weitblickapp_android.ui.maps;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,17 +8,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import androidx.annotation.Nullable;
+
+import com.example.weitblickapp_android.R;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+<<<<<<< HEAD:app/src/main/java/com/example/weitblickapp_android/ui/event/EventFragment.java
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.project.ProjectFragment;
+=======
+>>>>>>> REST:app/src/main/java/com/example/weitblickapp_android/ui/maps/MapsFragment.java
 
-public class EventFragment extends Fragment {
+public class MapsFragment extends Fragment {
 
-    private EventViewModel eventViewModel;
+    private MapsViewModel mapsViewModel;
 
     String[] title = {"Wöchentliche Veranstaltung", "Spendensammel Aktion", "Kleidertausch"};
     String[] location = {"Osnabrück", "Münster", "Osnabrück"};
@@ -27,14 +33,24 @@ public class EventFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        eventViewModel =
-                ViewModelProviders.of(this).get(EventViewModel.class);
+        mapsViewModel =
+                ViewModelProviders.of(this).get(MapsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_event, container, false);
+<<<<<<< HEAD:app/src/main/java/com/example/weitblickapp_android/ui/event/EventFragment.java
         ListView listview = (ListView)root.findViewById(R.id.listView);
 
         EventFragment.CustomAdapter customaAdapter = new EventFragment.CustomAdapter();
         listview.setAdapter(customaAdapter);
 
+=======
+        final TextView textView = root.findViewById(R.id.text_slideshow);
+        mapsViewModel.getText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
+            }
+        });
+>>>>>>> REST:app/src/main/java/com/example/weitblickapp_android/ui/maps/MapsFragment.java
         return root;
     }
 

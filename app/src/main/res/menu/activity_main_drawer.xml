@@ -17,9 +17,17 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_project" />
         <item
+
             android:id="@+id/nav_location"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_location" />
+            
+        <item
+            android:id="@+id/nav_maps"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/title_activity_maps"
+            android:onClick="startMapsActivity"/>
+
         <item
             android:id="@+id/nav_stats"
             android:icon="@drawable/ic_menu_manage"

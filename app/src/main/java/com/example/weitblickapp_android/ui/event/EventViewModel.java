@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.event;
+package com.example.weitblickapp_android.ui.maps;
 
 import com.example.weitblickapp_android.ui.location.LocationViewModel;
 
@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class EventViewModel extends ViewModel {
+public class MapsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
@@ -19,9 +19,9 @@ public class EventViewModel extends ViewModel {
 
 
 
-    public EventViewModel() {
+    public MapsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is event fragment");
+        mText.setValue("This is maps fragment");
     }
 
     public int getId() {

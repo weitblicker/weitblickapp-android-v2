@@ -12,17 +12,24 @@ public class NewsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    int id;
-    String title;
-    String text;
-    int image_id;
-    Date created_at;
-    Date updated_at;
-    LocationViewModel location;
+    private int id;
+    private String title;
+    private String text;
+    private int image_id;
+    private Date created_at;
+    private Date updated_at;
+    private LocationViewModel location;
 
     public NewsViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is fragment_news fragment");
+    }
+
+    public NewsViewModel(int id, String title, String text, int image_id) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.image_id = image_id;
     }
 
     public int getId() {
@@ -77,7 +84,20 @@ public class NewsViewModel extends ViewModel {
         this.location = location;
     }
 
+    @Override
+    public String toString() {
+        return "NewsViewModel{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", image_id=" + image_id +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                '}';
+    }
+
     public LiveData<String> getText() {
         return mText;
     }
+
 }
