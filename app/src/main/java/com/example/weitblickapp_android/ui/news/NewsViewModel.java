@@ -1,6 +1,6 @@
 package com.example.weitblickapp_android.ui.news;
 
-import com.example.weitblickapp_android.ui.location.LocationViewModel;
+import android.location.Location;
 
 import java.util.Date;
 
@@ -18,7 +18,7 @@ public class NewsViewModel extends ViewModel {
     private int image_id;
     private Date created_at;
     private Date updated_at;
-    private LocationViewModel location;
+    private Location location;
 
     public NewsViewModel() {
         mText = new MutableLiveData<>();
@@ -76,11 +76,11 @@ public class NewsViewModel extends ViewModel {
         this.updated_at = updated_at;
     }
 
-    public LocationViewModel getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(LocationViewModel location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
