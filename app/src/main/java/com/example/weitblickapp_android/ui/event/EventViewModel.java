@@ -1,9 +1,7 @@
 package com.example.weitblickapp_android.ui.event;
 
-import com.example.weitblickapp_android.ui.location.LocationViewModel;
-
+import android.location.Location;
 import java.util.Date;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,10 +12,8 @@ public class EventViewModel extends ViewModel {
 
     int id;
     String name;
-    LocationViewModel location;
+    Location location;
     Date eventDate;
-
-
 
     public EventViewModel() {
         mText = new MutableLiveData<>();
@@ -40,11 +36,11 @@ public class EventViewModel extends ViewModel {
         this.name = name;
     }
 
-    public LocationViewModel getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(LocationViewModel location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
