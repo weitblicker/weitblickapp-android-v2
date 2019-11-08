@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.tools;
+package com.example.weitblickapp_android.ui.stats;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,16 +12,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.example.weitblickapp_android.R;
 
-public class ToolsFragment extends Fragment {
+public class StatsFragment extends Fragment {
 
-    private ToolsViewModel toolsViewModel;
+    private StatsViewModel toolsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         toolsViewModel =
-                ViewModelProviders.of(this).get(ToolsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_tools, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
+                ViewModelProviders.of(this).get(StatsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_stats, container, false);
+        final TextView textView = root.findViewById(R.id.text_stats);
         toolsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

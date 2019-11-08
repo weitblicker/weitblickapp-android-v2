@@ -33,7 +33,6 @@ public class ProjectFragment extends Fragment {
 
         ListView listview = (ListView)root.findViewById(R.id.listView);
 
-
         CustomAdapter customaAdapter = new CustomAdapter();
         listview.setAdapter(customaAdapter);
 
