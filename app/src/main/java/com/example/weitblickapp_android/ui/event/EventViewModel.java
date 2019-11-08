@@ -24,6 +24,38 @@ public class EventViewModel extends ViewModel {
         mText.setValue("This is event fragment");
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocationViewModel getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationViewModel location) {
+        this.location = location;
+    }
+
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
+    }
+
     public LiveData<String> getText() {
         return mText;
     }
