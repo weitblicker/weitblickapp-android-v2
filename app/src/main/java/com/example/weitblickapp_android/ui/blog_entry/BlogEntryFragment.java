@@ -33,8 +33,8 @@ public class BlogEntryFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_blog, container, false);
         ListView listview = (ListView)root.findViewById(R.id.listView);
 
-        CustomAdapter customaAdapter = new CustomAdapter();
-        listview.setAdapter(customaAdapter);
+        CustomAdapter customAdapter = new CustomAdapter();
+        listview.setAdapter(customAdapter);
         return root;
     }
 

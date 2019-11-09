@@ -31,8 +31,8 @@ public class EventFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_event, container, false);
         ListView listview = (ListView)root.findViewById(R.id.listView);
 
-        EventFragment.CustomAdapter customaAdapter = new EventFragment.CustomAdapter();
-        listview.setAdapter(customaAdapter);
+        EventFragment.CustomAdapter customAdapter = new EventFragment.CustomAdapter();
+        listview.setAdapter(customAdapter);
 
         return root;
     }

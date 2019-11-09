@@ -11,7 +11,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.blog_entry.BlogDetailFragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -34,8 +33,8 @@ public class NewsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_news, container, false);
         ListView listview = (ListView)root.findViewById(R.id.listView);
 
-        NewsFragment.CustomAdapter customaAdapter = new NewsFragment.CustomAdapter();
-        listview.setAdapter(customaAdapter);
+        NewsFragment.CustomAdapter customAdapter = new NewsFragment.CustomAdapter();
+        listview.setAdapter(customAdapter);
         return root;
     }
 
