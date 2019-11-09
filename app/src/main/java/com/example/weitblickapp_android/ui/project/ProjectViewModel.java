@@ -20,7 +20,6 @@ public class ProjectViewModel extends ViewModel {
 
     public ProjectViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is project fragment");
     }
 
     public ProjectViewModel(Integer projectId, String projectName, String projectDescription, Integer locationId) {
