@@ -71,7 +71,7 @@ public class ProjectFragment extends Fragment {
 
             }
 
-            Button detail = (Button) view.findViewById(R.id.detail_btn);
+            Button detail = (Button) view.findViewById(R.id.project_more_btn);
             detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -5,17 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+
 import com.example.weitblickapp_android.R;
 
-import java.util.Date;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 public class BlogEntryFragment extends Fragment {
 
@@ -56,21 +56,33 @@ public class BlogEntryFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent) {
+        public View getView(final int position, View view, ViewGroup parent) {
 
-            view = getLayoutInflater().inflate(R.layout.fragment_blog_list,null);
+            if(view == null) {
+                view = getLayoutInflater().inflate(R.layout.fragment_blog_list, null);
 
-            ImageView imageView = (ImageView)view.findViewById(R.id.image);
-            TextView textView_title = (TextView)view.findViewById(R.id.title);
-            TextView textView_location = (TextView)view.findViewById(R.id.location);
-            TextView textView_shorttext = (TextView)view.findViewById(R.id.shorttext);
-            TextView textView_date = (TextView)view.findViewById(R.id.date);
+                ImageView imageView = (ImageView) view.findViewById(R.id.image);
+                TextView textView_title = (TextView) view.findViewById(R.id.title);
+                TextView textView_location = (TextView) view.findViewById(R.id.location);
+                TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
+                TextView textView_date = (TextView) view.findViewById(R.id.date);
 
-            imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
-            textView_title.setText(title[position]);
-            textView_location.setText(location[position]);
-            textView_shorttext.setText(shorttext[position]);
-            textView_date.setText(date[position]);
+                imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
+                textView_title.setText(title[position]);
+                textView_location.setText(location[position]);
+                textView_shorttext.setText(shorttext[position]);
+                textView_date.setText(date[position]);
+            }
+
+            Button detail = (Button) view.findViewById(R.id.blog_more_btn);
+            detail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, new BlogDetailFragment(location[position], title[position], shorttext[position], date[position]));
+                    ft.commit();
+                }
+            });
 
             return view;
         }
