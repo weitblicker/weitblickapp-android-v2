@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container">
+
     <com.google.android.material.tabs.TabLayout
         android:layout_width="409dp"
         android:layout_height="wrap_content"
@@ -26,4 +31,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/pager"/>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
