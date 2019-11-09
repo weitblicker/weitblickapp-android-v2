@@ -7,13 +7,17 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Profil</string>
 
-    <string name="menu_home">News/Events</string>
-    <string name="menu_gallery">Projekte</string>
-    <string name="menu_slideshow">Fahrrad fahren</string>
-    <string name="menu_tools">Statistik</string>
-    <string name="menu_share">FAQ</string>
-    <string name="menu_send">Impressum</string>
+    <string name="menu_tabs">News/Events</string>
+    <string name="menu_project">Projekte</string>
+    <string name="menu_location">Fahrrad fahren</string>
+    <string name="menu_stats">Statistik</string>
+    <string name="menu_faq">FAQ</string>
+    <string name="menu_blog">Blog</string>
+    <string name="menu_imprint">Impressum</string>
     <string name="logo_text">Bildungschangen weltweit!</string>
+
+    <string name="title_activity_maps">Map</string>
+
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -24,4 +28,5 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
 </resources>

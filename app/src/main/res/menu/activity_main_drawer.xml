@@ -5,33 +5,40 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_tabs"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="@string/menu_tabs" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/menu_blog" />
+        <item
+            android:id="@+id/nav_project"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="@string/menu_project" />
+            
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_maps"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="Fahrrad fahren"
+            android:onClick="startMapsActivity"/>
+
         <item
-            android:id="@+id/nav_tools"
+            android:id="@+id/nav_stats"
             android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
+            android:title="@string/menu_stats" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_faq"
                 android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
+                android:title="@string/menu_faq" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_imprint"
                 android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+                android:title="@string/menu_imprint" />
         </menu>
     </item>
 
