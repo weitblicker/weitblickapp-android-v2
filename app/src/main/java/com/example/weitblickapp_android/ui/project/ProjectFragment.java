@@ -43,11 +43,20 @@ public class ProjectFragment extends Fragment {
     String[] location = {"Sydney", "Namibia", "Deutschland"};
     String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuv", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
 
-    @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadProjects();
     }
+
+
+/*
+    public void onActivityCreated(Bundle saveInstanceState) {
+        super.onActivityCreated(saveInstanceState);
+        loadProjects();
+    }
+    */
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +73,7 @@ public class ProjectFragment extends Fragment {
 
     private void loadProjects(){
         // Talk to Rest API
-        String URL = "https://new.weitblicker.org/rest/projects/?limit=3&search=Benin";
+        String URL = "https://new.weitblicker.org/rest/projects/?limit=3";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {

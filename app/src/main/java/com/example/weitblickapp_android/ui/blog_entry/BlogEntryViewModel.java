@@ -18,6 +18,12 @@ public class BlogEntryViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
+    public BlogEntryViewModel(int id, String title, String text) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+    }
+
     public BlogEntryViewModel(int id, String title, String text, int image_id, Date created_at, Date updated_at, int location_id) {
         this.id = id;
         this.title = title;
@@ -89,4 +95,16 @@ public class BlogEntryViewModel extends ViewModel {
         this.location_id = location_id;
     }
 
+    @Override
+    public String toString() {
+        return "BlogEntryViewModel{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", image_id=" + image_id +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                ", location_id=" + location_id +
+                '}';
+    }
 }

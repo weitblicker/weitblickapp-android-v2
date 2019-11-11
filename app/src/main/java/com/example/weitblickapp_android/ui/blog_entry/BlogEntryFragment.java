@@ -1,6 +1,8 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,11 +38,18 @@ import androidx.lifecycle.ViewModelProviders;
 public class BlogEntryFragment extends Fragment {
 
     private BlogEntryViewModel blogEntryViewModel;
+    private ArrayList<BlogEntryViewModel> blogEntries = new ArrayList<BlogEntryViewModel>();
 
     String[] title = {"Save the turtles", "Kinder in Not", "Baue eine Schule"};
     String[] location = {"Sydney", "Namibia", "Deutschland"};
     String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuv", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
     String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
+
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadBlogEntries();
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +61,64 @@ public class BlogEntryFragment extends Fragment {
         CustomAdapter customAdapter = new CustomAdapter();
         listview.setAdapter(customAdapter);
         return root;
+    }
+
+    public void loadBlogEntries(){
+        String URL = "https://new.weitblicker.org/rest/blog/?limit=3";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                //Save Data into Model
+                String jsonData = response.toString();
+                //Parse the JSON response array by iterating over it
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject responseObject = null;
+                    try {
+                        responseObject = response.getJSONObject(i);
+                        Integer blogId = responseObject.getInt("id");
+                        String title = responseObject.getString("title");
+
+                        String text = responseObject.getString("text");
+                        text.trim();
+
+                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text);
+                        blogEntries.add(temp);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                for(BlogEntryViewModel blogEntry:blogEntries){
+                    Log.e("NewsArticle",blogEntry.toString());
+                }
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Display Error Message
+                Log.e("Rest Response", error.toString());
+            }
+        }){
+            //Override getHeaders() to set Credentials for REST-Authentication
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = "surfer:hangloose";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+        };
+        requestQueue.add(objectRequest);
     }
 
     class CustomAdapter extends BaseAdapter {

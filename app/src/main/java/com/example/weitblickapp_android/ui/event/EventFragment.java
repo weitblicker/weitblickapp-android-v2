@@ -19,7 +19,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -47,11 +45,19 @@ public class EventFragment extends Fragment {
     String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
 
 
-    @Override
+   /* @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadEvents();
     }
+    */
+
+
+    public void onActivityCreated(Bundle saveInstanceState) {
+        super.onActivityCreated(saveInstanceState);
+        loadEvents();
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         eventViewModel =
