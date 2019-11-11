@@ -20,17 +20,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.fragment.app.ListFragment;
+import androidx.fragment.app.Fragment;
 
-public class ProjectListFragment extends ListFragment {
-    ArrayList<ProjectViewModel> projects = new ArrayList<ProjectViewModel>();
+//extended listFragment
+public class ProjectListFragment extends Fragment {
+    private ArrayList<ProjectViewModel> projects = new ArrayList<ProjectViewModel>();
 
+   /* public ProjectListFragment() {
+        this.loadProjects();
+    }
+*/
 
     @Override
     public void onActivityCreated(Bundle saveInstanceState) {
         super.onActivityCreated(saveInstanceState);
         loadProjects();
     }
+
+
 
     private void loadProjects(){
 
@@ -86,6 +93,14 @@ public class ProjectListFragment extends ListFragment {
             }
         };
         requestQueue.add(objectRequest);
+    }
+
+    public ArrayList<ProjectViewModel> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(ArrayList<ProjectViewModel> projects) {
+        this.projects = projects;
     }
 }
 

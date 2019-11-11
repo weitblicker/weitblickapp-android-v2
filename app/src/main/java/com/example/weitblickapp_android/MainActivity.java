@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-        doRestCallTest();
+       // doRestCallTest();
 
         }
         // Menu-Navigation-Item onclick- Function
