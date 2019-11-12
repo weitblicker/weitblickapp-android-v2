@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,7 +70,7 @@ public class ProjectFragment extends Fragment {
 
             }
 
-            Button detail = (Button) view.findViewById(R.id.project_more_btn);
+            ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
             detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
