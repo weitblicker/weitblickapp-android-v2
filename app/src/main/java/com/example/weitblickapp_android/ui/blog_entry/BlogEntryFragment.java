@@ -94,7 +94,7 @@ public class BlogEntryFragment extends Fragment {
                 }
 
                 for(BlogEntryViewModel blogEntry:blogEntries){
-                    Log.e("NewsArticle",blogEntry.toString());
+                    Log.e("BlogEntry",blogEntry.toString());
                 }
 
             }

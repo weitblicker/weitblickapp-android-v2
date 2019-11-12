@@ -49,7 +49,6 @@ public class ProjectFragment extends Fragment {
         loadProjects();
     }
 
-
 /*
     public void onActivityCreated(Bundle saveInstanceState) {
         super.onActivityCreated(saveInstanceState);

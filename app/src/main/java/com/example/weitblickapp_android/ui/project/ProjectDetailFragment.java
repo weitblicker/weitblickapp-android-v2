@@ -18,6 +18,9 @@ public class ProjectDetailFragment extends Fragment {
     String title;
     String text;
 
+    public ProjectDetailFragment() {
+    }
+
     ProjectDetailFragment(String location, String title, String text){
         this.location=location;
         this.title=title;

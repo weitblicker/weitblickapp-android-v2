@@ -31,14 +31,15 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
 import androidx.lifecycle.ViewModelProviders;
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends ListFragment {
 
     private NewsViewModel newsViewModel;
     ArrayList<NewsViewModel> news = new ArrayList<NewsViewModel>();
+    private NewsListAdapter newsAdapter;
 
     String[] title = {"Das habt ihr erreicht", "Helft den Kindern", "Neue Schule gebaut"};
     String[] location = {"Sydney", "Namibia", "Deutschland"};
@@ -50,6 +51,16 @@ public class NewsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         loadNews();
     }
+
+    @Override
+    public void onActivityCreated(Bundle saveInstanceState){
+        super.onActivityCreated(saveInstanceState);
+        newsAdapter = new NewsListAdapter(getActivity(), news);
+        loadNews();
+
+        setListAdapter(newsAdapter);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         newsViewModel =
@@ -57,8 +68,11 @@ public class NewsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_news, container, false);
         ListView listview = (ListView)root.findViewById(R.id.listView);
 
+       /*newsAdapter = new NewsListAdapter(getActivity(), news);
         NewsFragment.CustomAdapter customAdapter = new NewsFragment.CustomAdapter();
         listview.setAdapter(customAdapter);
+        */
+
         return root;
     }
 
@@ -66,7 +80,7 @@ public class NewsFragment extends Fragment {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/news/?limit=3&search=Benin";
+        String URL = "https://new.weitblicker.org/rest/news/?limit=3";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -94,8 +108,9 @@ public class NewsFragment extends Fragment {
                         String range = responseObject.getString("range");
                         String teaser = responseObject.getString("teaser");
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, image_id);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text);
                         news.add(temp);
+                        newsAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

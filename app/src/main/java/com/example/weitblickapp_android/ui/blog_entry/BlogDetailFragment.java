@@ -19,6 +19,9 @@ public class BlogDetailFragment extends Fragment {
     String text;
     String date;
 
+    public BlogDetailFragment() {
+    }
+
     BlogDetailFragment(String location, String title, String text, String date){
         this.location=location;
         this.title=title;

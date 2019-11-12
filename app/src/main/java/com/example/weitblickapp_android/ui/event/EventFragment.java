@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -45,12 +46,11 @@ public class EventFragment extends Fragment {
     String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
 
 
-   /* @Override
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadEvents();
     }
-    */
 
 
     public void onActivityCreated(Bundle saveInstanceState) {
