@@ -22,7 +22,7 @@ public class ProjectFragment extends Fragment {
 
     String[] title = {"Save the turtles", "Kinder in Not", "Baue eine Schule"};
     String[] location = {"Sydney", "Namibia", "Deutschland"};
-    String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuv", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
+    String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvn bugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnwvodwsvb dpivb ofjwvsjowfovipofbvj fvworfbvpnfdn vl", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class ProjectFragment extends Fragment {
         listview.setAdapter(customAdapter);
         return root;
     }
-
 
     class CustomAdapter extends BaseAdapter{
 
