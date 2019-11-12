@@ -23,7 +23,7 @@ public class BlogEntryFragment extends Fragment {
 
     String[] title = {"Save the turtles", "Kinder in Not", "Baue eine Schule"};
     String[] location = {"Sydney", "Namibia", "Deutschland"};
-    String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuv", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
+    String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuv", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
     String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
 
     public View onCreateView(@NonNull LayoutInflater inflater,
