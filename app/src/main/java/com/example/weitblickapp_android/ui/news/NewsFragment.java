@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -64,17 +65,17 @@ public class NewsFragment extends Fragment {
                 ImageView imageView = (ImageView) view.findViewById(R.id.image);
                 TextView textView_title = (TextView) view.findViewById(R.id.title);
                 TextView textView_location = (TextView) view.findViewById(R.id.location);
-                TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
+                //TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
                 TextView textView_date = (TextView) view.findViewById(R.id.date);
 
                 imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
                 textView_title.setText(title[position]);
                 textView_location.setText(location[position]);
-                textView_shorttext.setText(shorttext[position]);
+               // textView_shorttext.setText(shorttext[position]);
                 textView_date.setText(date[position]);
             }
 
-            Button detail = (Button) view.findViewById(R.id.news_more_btn);
+            ImageButton detail = (ImageButton) view.findViewById(R.id.news_more_btn);
             detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
