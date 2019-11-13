@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_project"
-        android:name="com.example.weitblickapp_android.ui.project.ProjectFragment"
+        android:name="com.example.weitblickapp_android.ui.project.ProjectListFragment"
         android:label="@string/menu_project"
         tools:layout="@layout/fragment_project" />
 

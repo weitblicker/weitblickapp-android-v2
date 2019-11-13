@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.weitblickapp_android.R;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
 public class ProjectDetailFragment extends Fragment {
 
@@ -24,6 +24,11 @@ public class ProjectDetailFragment extends Fragment {
     View root;
 
     public ProjectDetailFragment() {
+    }
+
+    public ProjectDetailFragment(ProjectViewModel project){
+        this.title = project.getName();
+        this.text = project.getDescription();
     }
 
     ProjectDetailFragment(String location, String title, String text){

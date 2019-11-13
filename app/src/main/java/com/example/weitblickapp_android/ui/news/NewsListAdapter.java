@@ -43,12 +43,12 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
     public View getView(final int position, View view, ViewGroup parent) {
 
         if(view == null) {
-            view = mInflater.inflate(R.layout.fragment_news_list, null,true);
+            view = mInflater.inflate(R.layout.fragment_news_list, null);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_location = (TextView) view.findViewById(R.id.location);
-            TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
+            // TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 
             imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
@@ -57,7 +57,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
             textView_title.setText(article.getTitle());
          //   textView_location.setText(article.get);
-            textView_shorttext.setText(article.getTeaser());
+          //  textView_shorttext.setText(article.getTeaser());
             textView_date.setText(article.getDate());
         }
 

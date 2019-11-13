@@ -4,24 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
 import java.util.ArrayList;
 
-public class ProjectListAdapter extends BaseAdapter {
+public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<ProjectViewModel> projects;
-    private FragmentManager fragManager;
 
     public ProjectListAdapter(Context mContext, ArrayList<ProjectViewModel> mDataSource) {
+        super(mContext, R.layout.fragment_project_list, mDataSource);
         this.mContext = mContext;
         this.projects = mDataSource;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -29,12 +26,12 @@ public class ProjectListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 1;
+        return projects.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public ProjectViewModel getItem(int position) {
+        return projects.get(position);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class ProjectListAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup parent) {
 
         if(view == null) {
-            // view = getLayoutInflater().inflate(R.layout.fragment_news_list, null);
+             view = mInflater.inflate(R.layout.fragment_project_list, null);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
@@ -55,22 +52,14 @@ public class ProjectListAdapter extends BaseAdapter {
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 
             imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
-            textView_title.setText("");
-            textView_location.setText("");
-            textView_shorttext.setText("");
-            textView_date.setText("");
+
+            final ProjectViewModel project = (ProjectViewModel) getItem(position);
+
+            textView_title.setText(project.getName());
+           // textView_location.setText(project.getDescription());
+            textView_shorttext.setText(project.getDescription());
+           // textView_date.setText();
         }
-
-       // Button detail = (Button) view.findViewById(R.id.news_more_btn);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new ProjectDetailFragment());
-                ft.commit();
-            }
-        });
-
         return view;
     }
 }

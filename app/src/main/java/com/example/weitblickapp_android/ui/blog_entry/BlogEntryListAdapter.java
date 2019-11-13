@@ -43,12 +43,12 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
     public View getView(final int position, View view, ViewGroup parent) {
 
         if(view == null) {
-            view = mInflater.inflate(R.layout.fragment_blog_list, null,true);
+            view = mInflater.inflate(R.layout.fragment_blog_list, null);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_location = (TextView) view.findViewById(R.id.location);
-            TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
+           // TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 
             imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
@@ -57,8 +57,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
             textView_title.setText(blog.getTitle());
             //   textView_location.setText(article.get);
-            textView_shorttext.setText(blog.getText());
-
+           // textView_shorttext.setText(blog.getText());
         }
         return view;
     }

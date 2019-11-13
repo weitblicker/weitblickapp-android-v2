@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.news;
+package com.example.weitblickapp_android.ui.project;
 
 import android.os.Bundle;
 import android.util.Base64;
@@ -30,23 +30,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewsListFragment extends ListFragment{
+public class ProjectListFragment extends ListFragment {
+    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
+    private ProjectListAdapter adapter;
 
-    ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
-    private NewsListAdapter adapter;
 
-
-      public void onCreate(Bundle savedInstanceState) {
-          super.onCreate(savedInstanceState);
-          loadNews();
-      }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadProjects();
+    }
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
-        adapter = new NewsListAdapter(getActivity(), newsList);
+        adapter = new ProjectListAdapter(getActivity(), projectList);
         this.setListAdapter(adapter);
 
         return view;
@@ -64,16 +63,16 @@ public class NewsListFragment extends ListFragment{
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, new NewsDetailFragment(newsList.get(position)));
+                FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
                 ft.commit();
             }
         });
     }
-    public void loadNews(){
+    public void loadProjects(){
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/news/?limit=5";
+        String URL = "https://new.weitblicker.org/rest/projects/?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -88,16 +87,16 @@ public class NewsListFragment extends ListFragment{
                     JSONObject responseObject = null;
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer newsId = responseObject.getInt("id");
-                        String title = responseObject.getString("title");
+                        Integer projectId = responseObject.getInt("id");
+                        String title = responseObject.getString("name");
 
-                        String text = responseObject.getString("text");
-                        String teaser = responseObject.getString("teaser");
+                        String text = responseObject.getString("description");
+                        //String teaser = responseObject.getString("teaser");
 
                         text.trim();
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser);
-                        newsList.add(temp);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text);
+                        projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -105,7 +104,7 @@ public class NewsListFragment extends ListFragment{
 
                 }
 
-                for(NewsViewModel newsArticle:newsList){
+                for(ProjectViewModel newsArticle:projectList){
                     Log.e("NewsArticle",newsArticle.toString());
                 }
 
