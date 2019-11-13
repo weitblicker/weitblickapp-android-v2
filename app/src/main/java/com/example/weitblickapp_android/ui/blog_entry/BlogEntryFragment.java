@@ -12,6 +12,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,12 +34,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
 
 public class BlogEntryFragment extends Fragment {
 
@@ -83,9 +83,10 @@ public class BlogEntryFragment extends Fragment {
                         String title = responseObject.getString("title");
 
                         String text = responseObject.getString("text");
+                        String date = responseObject.getString("published");
                         text.trim();
 
-                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text);
+                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, date);
                         blogEntries.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();

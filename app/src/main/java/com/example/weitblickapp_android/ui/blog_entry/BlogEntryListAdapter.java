@@ -4,32 +4,34 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
 import java.util.ArrayList;
 
-public class BlogEntryListAdapter extends BaseAdapter {
+public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private ArrayList<BlogEntryFragment> mDataSource;
-    private FragmentManager fragManager;
+    private ArrayList<BlogEntryViewModel> blogEntries;
 
+    public BlogEntryListAdapter(Context mContext, ArrayList<BlogEntryViewModel> mDataSource) {
+        super(mContext, R.layout.fragment_blog_list, mDataSource);
+        this.mContext = mContext;
+        this.blogEntries = mDataSource;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
     @Override
     public int getCount() {
         return 1;
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public BlogEntryViewModel getItem(int position) {
+        return blogEntries.get(position);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class BlogEntryListAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup parent) {
 
         if(view == null) {
-           // view = getLayoutInflater().inflate(R.layout.fragment_news_list, null);
+            view = mInflater.inflate(R.layout.fragment_blog_list, null,true);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
@@ -50,22 +52,14 @@ public class BlogEntryListAdapter extends BaseAdapter {
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 
             imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
-            textView_title.setText("");
-            textView_location.setText("");
-            textView_shorttext.setText("");
-            textView_date.setText("");
+
+            final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
+
+            textView_title.setText(blog.getTitle());
+            //   textView_location.setText(article.get);
+            textView_shorttext.setText(blog.getText());
+
         }
-
-      //  Button detail = (Button) view.findViewById(R.id.news_more_btn);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new BlogDetailFragment());
-                ft.commit();
-            }
-        });
-
         return view;
     }
 }
