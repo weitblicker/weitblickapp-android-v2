@@ -42,7 +42,7 @@ public class BlogEntryListFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_blog, container, false);
 
         adapter = new BlogEntryListAdapter(getActivity(), blogEntries);
         this.setListAdapter(adapter);
@@ -71,7 +71,7 @@ public class BlogEntryListFragment extends ListFragment {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/blog/?limit=3";
+        String URL = "https://new.weitblicker.org/rest/blog/?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 

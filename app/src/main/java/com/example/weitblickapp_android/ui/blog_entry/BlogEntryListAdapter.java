@@ -26,7 +26,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
     }
     @Override
     public int getCount() {
-        return 1;
+        return blogEntries.size();
     }
 
     @Override

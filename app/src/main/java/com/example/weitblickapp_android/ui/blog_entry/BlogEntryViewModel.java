@@ -2,9 +2,7 @@ package com.example.weitblickapp_android.ui.blog_entry;
 
 import androidx.lifecycle.ViewModel;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class BlogEntryViewModel extends ViewModel {
 
@@ -14,8 +12,8 @@ public class BlogEntryViewModel extends ViewModel {
     private String title;
     private String text;
     private  int image_id;
-    private  Date published;
-    private  Date updated_at;
+    String  published;
+    String  updated_at;
     private int location_id;
 
 
@@ -23,19 +21,16 @@ public class BlogEntryViewModel extends ViewModel {
         this.id = id;
         this.title = title;
         this.text = text;
-        try {
-            this.published = formatterRead.parse(published);
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
+        this.published = published;
+
     }
 
-    public BlogEntryViewModel(int id, String title, String text, int image_id, Date created_at, Date updated_at, int location_id) {
+    public BlogEntryViewModel(int id, String title, String text, int image_id, String created_at, String updated_at, int location_id) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.image_id = image_id;
-        this.published = published;
+        this.published = created_at;
         this.updated_at = updated_at;
         this.location_id = location_id;
     }
@@ -75,24 +70,21 @@ public class BlogEntryViewModel extends ViewModel {
     }
 
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return published;
     }
 
     public void setCreated_at(String datetime) {
-        try {
-            published = formatterRead.parse(datetime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            // TODO
-        }
+
+            this.published = datetime;
+
     }
 
-    public Date getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 

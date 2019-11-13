@@ -72,7 +72,7 @@ public class NewsListFragment extends ListFragment {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/news/?limit=3";
+        String URL = "https://new.weitblicker.org/rest/news/?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
