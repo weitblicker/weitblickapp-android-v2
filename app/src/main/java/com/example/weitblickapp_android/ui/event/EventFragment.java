@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,7 +47,7 @@ public class EventFragment extends Fragment {
     String[] title = {"Wöchentliche Veranstaltung", "Spendensammel Aktion", "Kleidertausch"};
     String[] location = {"Osnabrück", "Münster", "Osnabrück"};
     String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
-
+    String[] text = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuvbugeiodslkvjbdrs ghelbiusfldkvn dbiuv", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,21 +154,25 @@ public class EventFragment extends Fragment {
             if(view == null){
                 view = getLayoutInflater().inflate(R.layout.fragment_event_list,null);
 
+                ImageView imageView = (ImageView) view.findViewById(R.id.image);
                 TextView textView_title = (TextView)view.findViewById(R.id.title);
                 TextView textView_location = (TextView)view.findViewById(R.id.location);
                 TextView textView_date = (TextView)view.findViewById(R.id.date);
 
+                imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
                 textView_title.setText(title[position]);
                 textView_location.setText(location[position]);
                 textView_date.setText(date[position]);
             }
 
-           // Button detail = (Button) view.findViewById(R.id.event_more_btn);
-            view.setOnClickListener(new View.OnClickListener() {
+
+            ImageButton detail = (ImageButton) view.findViewById(R.id.event_more_btn);
+            detail.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container, new EventDetailFragment(location[position], title[position], date[position]));
+                    ft.replace(R.id.fragment_container, new EventDetailFragment(location[position], title[position], date[position], text[position]));
                     ft.commit();
                 }
             });

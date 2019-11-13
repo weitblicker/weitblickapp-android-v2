@@ -7,10 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,11 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 public class ProjectFragment extends Fragment {
 
     //private ProjectViewModel projectViewModel;
@@ -41,7 +41,7 @@ public class ProjectFragment extends Fragment {
 
     String[] title = {"Save the turtles", "Kinder in Not", "Baue eine Schule"};
     String[] location = {"Sydney", "Namibia", "Deutschland"};
-    String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuv", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
+    String[] shorttext = {"bugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvn bugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnbugeiodslkvjbdrs ghelbiusfldkvn dbiuvoojvhbdfovnj sv vubdjvslkvnbosj vwjbvoshvdlkn bsoa sdvobuhipankld fvsuoidnv  owvidnbowipjvnwvodwsvb dpivb ofjwvsjowfovipofbvj fvworfbvpnfdn vl", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
 
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +68,6 @@ public class ProjectFragment extends Fragment {
         listview.setAdapter(customAdapter);
         return root;
     }
-
 
     private void loadProjects(){
         // Talk to Rest API
@@ -125,9 +124,7 @@ public class ProjectFragment extends Fragment {
         };
         requestQueue.add(objectRequest);
     }
-
-
-
+    
     class CustomAdapter extends BaseAdapter{
 
         @Override
@@ -163,7 +160,7 @@ public class ProjectFragment extends Fragment {
 
             }
 
-            Button detail = (Button) view.findViewById(R.id.project_more_btn);
+            ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
             detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

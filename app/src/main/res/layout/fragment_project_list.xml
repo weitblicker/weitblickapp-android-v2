@@ -8,91 +8,88 @@
 
     <TextView
         android:id="@+id/location"
-        android:layout_width="126dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="264dp"
-        android:layout_marginLeft="264dp"
-        android:layout_marginTop="54dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:text="@+id/location"
-        app:layout_constraintBottom_toTopOf="@+id/image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="368dp"
-        android:layout_height="165dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:background="@color/colorPrimaryDark"
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
         app:layout_constraintBottom_toTopOf="@+id/title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="288dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="41dp"
-
-        android:layout_marginLeft="41dp"
-        android:layout_marginEnd="82dp"
-        android:layout_marginRight="82dp"
-        android:text="@+id/title"
-        app:layout_constraintBottom_toTopOf="@+id/shorttext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image" />
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="344dp"
+        android:layout_height="182dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginRight="27dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/shorttext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location" />
+
+    <ImageButton
+        android:id="@+id/project_maps_btn"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#ffffff"
+        android:focusable="false"
+        android:src="@drawable/icon_bike"
+        app:layout_constraintEnd_toStartOf="@+id/project_more_btn"
+        app:layout_constraintStart_toEndOf="@+id/shorttext"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <ImageButton
+        android:id="@+id/project_more_btn"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
+        android:background="#ffffff"
+        android:focusable="false"
+        android:src="@drawable/icon_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/project_maps_btn"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
     <TextView
         android:id="@+id/shorttext"
-        android:layout_width="228dp"
-        android:layout_height="145dp"
-        android:layout_marginStart="41dp"
-        android:layout_marginLeft="41dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:text="@+id/shorttext"
+        android:layout_width="211dp"
+        android:layout_height="102dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         app:layout_constraintEnd_toStartOf="@+id/project_maps_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <Button
-        android:id="@+id/project_maps_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:focusable="false"
-        android:text="Fahrrad fahren"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/shorttext"
-        app:layout_constraintTop_toBottomOf="@+id/project_more_btn" />
-
-    <Button
-        android:id="@+id/project_more_btn"
-        android:focusable="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="17dp"
-        android:text="Mehr"
-        app:layout_constraintBottom_toTopOf="@+id/project_maps_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/shorttext"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
