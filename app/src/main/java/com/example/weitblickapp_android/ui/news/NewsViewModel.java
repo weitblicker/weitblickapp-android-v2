@@ -2,15 +2,19 @@ package com.example.weitblickapp_android.ui.news;
 
 import android.location.Location;
 
-import java.util.Date;
-
 import androidx.lifecycle.ViewModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class NewsViewModel extends ViewModel {
+
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private int id;
     private String title;
     private String text;
+    private String teaser;
     private int image_id;
     private String date;
     private Date updated_at;
@@ -20,11 +24,11 @@ public class NewsViewModel extends ViewModel {
 
     }
 
-    public NewsViewModel(int id, String title, String text, int image_id) {
+    public NewsViewModel(int id, String title, String text, String teaser) {
         this.id = id;
         this.title = title;
         this.text = text;
-        this.image_id = image_id;
+        this.teaser = teaser;
     }
 
     public NewsViewModel(int id, String title, String text) {
@@ -83,6 +87,14 @@ public class NewsViewModel extends ViewModel {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getTeaser() {
+        return teaser;
+    }
+
+    public void setTeaser(String teaser) {
+        this.teaser = teaser;
     }
 
     @Override

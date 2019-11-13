@@ -7,9 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,12 +32,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
 
 
 public class EventFragment extends Fragment {
@@ -160,8 +159,8 @@ public class EventFragment extends Fragment {
                 textView_date.setText(date[position]);
             }
 
-            Button detail = (Button) view.findViewById(R.id.event_more_btn);
-            detail.setOnClickListener(new View.OnClickListener() {
+           // Button detail = (Button) view.findViewById(R.id.event_more_btn);
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();

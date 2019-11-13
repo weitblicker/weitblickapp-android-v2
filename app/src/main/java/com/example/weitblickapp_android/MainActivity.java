@@ -2,28 +2,8 @@ package com.example.weitblickapp_android;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -32,6 +12,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,76 +41,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-       // doRestCallTest();
-
         }
+
         // Menu-Navigation-Item onclick- Function
         public void startMapsActivity(MenuItem item){
             Intent intent = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(intent);
         }
-
-
-//Function to test static restApiCalls
-    public void doRestCallTest() {
-
-        String URL = "https://new.weitblicker.org/rest/projects/";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        final ArrayList<ProjectViewModel> projects = new ArrayList<ProjectViewModel>();
-
-
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
-
-            @Override
-            public void onResponse(JSONArray response) {
-                //Save Data into Model
-                String jsonData = response.toString();
-                //Parse the JSON response array by iterating over it
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject responseObject = null;
-                    try {
-                        responseObject = response.getJSONObject(i);
-                        Integer projectId = responseObject.getInt("id");
-                        String projectName = responseObject.getString("name");
-                        String projectDescription = responseObject.getString("description");
-                        projectDescription.trim();
-                        Integer locationId = responseObject.getInt("location");
-
-                        ProjectViewModel temp = new ProjectViewModel(projectId, projectName, projectDescription, locationId);
-                        projects.add(temp);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                for (ProjectViewModel project : projects) {
-                    Log.e("NewsArticle", project.toString());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Display Error Message
-                Log.e("Rest Response", error.toString());
-            }
-        }) {
-            //Override header-Information to set Credentials
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
-        requestQueue.add(objectRequest);
-    }
 
 
     @Override

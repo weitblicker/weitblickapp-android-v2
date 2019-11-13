@@ -5,16 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class ProjectListAdapter extends BaseAdapter {
     private Context mContext;
@@ -62,8 +61,8 @@ public class ProjectListAdapter extends BaseAdapter {
             textView_date.setText("");
         }
 
-        Button detail = (Button) view.findViewById(R.id.news_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
+       // Button detail = (Button) view.findViewById(R.id.news_more_btn);
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = fragManager.beginTransaction();

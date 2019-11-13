@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.weitblickapp_android.R;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.weitblickapp_android.R;
 
 public class NewsDetailFragment extends Fragment {
 
@@ -20,6 +20,10 @@ public class NewsDetailFragment extends Fragment {
     String date;
 
     public NewsDetailFragment() {
+    }
+    public NewsDetailFragment(NewsViewModel article){
+        this.title = article.getTitle();
+        this.text = article.getText();
     }
 
     NewsDetailFragment(String location, String title, String text, String date){

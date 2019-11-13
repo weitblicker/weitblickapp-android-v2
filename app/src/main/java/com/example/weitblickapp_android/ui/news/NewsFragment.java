@@ -7,10 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,13 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.ListFragment;
-import androidx.lifecycle.ViewModelProviders;
-
-public class NewsFragment extends ListFragment {
+public class NewsFragment extends Fragment {
 
     private NewsViewModel newsViewModel;
     ArrayList<NewsViewModel> news = new ArrayList<NewsViewModel>();
@@ -55,25 +54,27 @@ public class NewsFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle saveInstanceState){
         super.onActivityCreated(saveInstanceState);
-        newsAdapter = new NewsListAdapter(getActivity(), news);
-        loadNews();
+        //newsAdapter = new NewsListAdapter(getActivity(), news);
+        //loadNews();
 
-        setListAdapter(newsAdapter);
+       // setListAdapter(newsAdapter);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         newsViewModel =
                 ViewModelProviders.of(this).get(NewsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_news, container, false);
+        View root = inflater.inflate(R.layout.fragment_news_list, container, false);
         ListView listview = (ListView)root.findViewById(R.id.listView);
+
+        NewsFragment.CustomAdapter customAdapter = new NewsFragment.CustomAdapter();
+        listview.setAdapter(customAdapter);
+        return root;
 
        /*newsAdapter = new NewsListAdapter(getActivity(), news);
         NewsFragment.CustomAdapter customAdapter = new NewsFragment.CustomAdapter();
         listview.setAdapter(customAdapter);
         */
-
-        return root;
     }
 
     public void loadNews(){
@@ -110,7 +111,7 @@ public class NewsFragment extends ListFragment {
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text);
                         news.add(temp);
-                        newsAdapter.notifyDataSetChanged();
+                       // newsAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -181,8 +182,8 @@ public class NewsFragment extends ListFragment {
                 textView_date.setText(date[position]);
             }
 
-            Button detail = (Button) view.findViewById(R.id.news_more_btn);
-            detail.setOnClickListener(new View.OnClickListener() {
+           // Button detail = (Button) view.findViewById(R.id.news_more_btn);
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();

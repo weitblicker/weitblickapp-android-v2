@@ -4,8 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,29 +12,25 @@ import com.example.weitblickapp_android.R;
 
 import java.util.ArrayList;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-public class NewsListAdapter extends BaseAdapter {
+public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<NewsViewModel> news;
-    private FragmentManager fragManager;
 
     public NewsListAdapter(Context mContext, ArrayList<NewsViewModel> mDataSource) {
+        super(mContext, R.layout.fragment_news_list, mDataSource);
         this.mContext = mContext;
         this.news = mDataSource;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
     @Override
     public int getCount() {
-        return 1;
+        return news.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public NewsViewModel getItem(int position) {
       return news.get(position);
     }
 
@@ -48,7 +43,7 @@ public class NewsListAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup parent) {
 
         if(view == null) {
-             view = mInflater.inflate(R.layout.fragment_news_list, null);
+            view = mInflater.inflate(R.layout.fragment_news_list, null,true);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
@@ -62,19 +57,9 @@ public class NewsListAdapter extends BaseAdapter {
 
             textView_title.setText(article.getTitle());
          //   textView_location.setText(article.get);
-            textView_shorttext.setText(article.getText());
+            textView_shorttext.setText(article.getTeaser());
             textView_date.setText(article.getDate());
         }
-
-        Button detail = (Button) view.findViewById(R.id.news_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new NewsDetailFragment());
-                ft.commit();
-            }
-        });
 
         return view;
     }
