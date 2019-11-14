@@ -7,10 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.weitblickapp_android.R;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.weitblickapp_android.R;
+import com.squareup.picasso.Picasso;
 
 public class NewsDetailFragment extends Fragment {
 
@@ -18,6 +19,15 @@ public class NewsDetailFragment extends Fragment {
     String title;
     String text;
     String date;
+    String imageUrl;
+
+    public NewsDetailFragment() {
+    }
+    public NewsDetailFragment(NewsViewModel article){
+        this.title = article.getTitle();
+        this.text = article.getText();
+        this.imageUrl = article.getImageUrl();
+    }
 
     NewsDetailFragment(String location, String title, String text, String date){
         this.location=location;
@@ -29,10 +39,18 @@ public class NewsDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        String weitblickUrl = "https://new.weitblicker.org";
+
         View root = inflater.inflate(R.layout.fragment_news_detail, container, false);
 
         final ImageView imageView = root.findViewById(R.id.detail_image);
-        imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
+
+        weitblickUrl = weitblickUrl.concat(imageUrl);
+
+        Picasso.with(getContext()).load(weitblickUrl).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);

@@ -3,6 +3,15 @@ package com.example.weitblickapp_android.ui.project;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weitblickapp_android.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,24 +30,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.fragment.app.ListFragment;
-
 public class ProjectListFragment extends ListFragment {
-    ArrayList<ProjectViewModel> projects = new ArrayList<ProjectViewModel>();
+    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
+    private ProjectListAdapter adapter;
 
 
-    @Override
-    public void onActivityCreated(Bundle saveInstanceState) {
-        super.onActivityCreated(saveInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         loadProjects();
     }
 
-    private void loadProjects(){
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_project, container, false);
+
+        adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+        this.setListAdapter(adapter);
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, final int position, long id) {
+        ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
+        detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
+                ft.commit();
+            }
+        });
+    }
+    public void loadProjects(){
 
         // Talk to Rest API
-        String URL = "https://new.weitblicker.org/rest/projects/?limit=3&search=Benin";
+
+        String URL = "https://new.weitblicker.org/rest/projects/?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -47,25 +85,37 @@ public class ProjectListFragment extends ListFragment {
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
+                    JSONObject galleryObject = null;
+                    JSONArray imageObject = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer projectId = responseObject.getInt("id");
-                        String projectName = responseObject.getString("name");
-                        String projectDescription = responseObject.getString("description");
-                        projectDescription.trim();
-                        Integer locationId = responseObject.getInt("location");
+                        String title = responseObject.getString("name");
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, projectName, projectDescription, locationId);
-                        projects.add(temp);
+                        String text = responseObject.getString("description");
+                        //String teaser = responseObject.getString("teaser");
+
+                        galleryObject = responseObject.getJSONObject("gallery");
+                        imageObject = galleryObject.getJSONArray("images");
+                        String imageUrl = imageObject.getJSONObject(0).getString("url");
+
+                        text.trim();
+
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text,1, imageUrl);
+                        projectList.add(temp);
+                        adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
-                for(ProjectViewModel project:projects){
-                    Log.e("NewsArticle",project.toString());
+
+                for(ProjectViewModel newsArticle:projectList){
+                    Log.e("NewsArticle",newsArticle.toString());
                 }
+
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -73,7 +123,7 @@ public class ProjectListFragment extends ListFragment {
                 Log.e("Rest Response", error.toString());
             }
         }){
-            //Override header-Information to set Credentials
+            //Override getHeaders() to set Credentials for REST-Authentication
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -88,4 +138,3 @@ public class ProjectListFragment extends ListFragment {
         requestQueue.add(objectRequest);
     }
 }
-

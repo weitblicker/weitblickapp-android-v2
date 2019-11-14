@@ -1,32 +1,31 @@
 package com.example.weitblickapp_android.ui.project;
 
-import java.util.ArrayList;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ProjectViewModel extends ViewModel {
+import java.util.ArrayList;
 
-    private MutableLiveData<String> mText;
+public class ProjectViewModel extends ViewModel {
 
     private int id;
     private String name;
     private ArrayList<String> hosts;
     private String description;
     private int locationId;
+    private String imageUrl;
     private ArrayList <Integer> partner_ids;
 
-
-    public ProjectViewModel() {
-        mText = new MutableLiveData<>();
-    }
-
-    public ProjectViewModel(Integer projectId, String projectName, String projectDescription, Integer locationId) {
+    public ProjectViewModel(Integer projectId, String projectName, String projectDescription, Integer locationId, String imageUrl) {
         this.id = projectId;
         this.name = projectName;
         this.description = projectDescription;
         this.locationId = locationId;
+        this.imageUrl = imageUrl;
+    }
+
+    public ProjectViewModel(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
     }
 
     public int getId() {
@@ -71,13 +70,18 @@ public class ProjectViewModel extends ViewModel {
         return partner_ids;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public void setPartner_ids(ArrayList<Integer> partner_ids) {
         this.partner_ids = partner_ids;
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
 
     @Override
     public String toString() {

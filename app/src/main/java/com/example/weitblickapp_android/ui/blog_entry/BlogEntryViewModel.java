@@ -1,41 +1,44 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
-import java.util.Date;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.text.SimpleDateFormat;
 
 public class BlogEntryViewModel extends ViewModel {
 
-    int id;
-    String title;
-    String text;
-    int image_id;
-    Date created_at;
-    Date updated_at;
-    int location_id;
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    private MutableLiveData<String> mText;
+    private int id;
+    private String title;
+    private String text;
+    private  int image_id;
+    private String imageUrl;
+    String  published;
+    String  updated_at;
+    private int location_id;
 
-    public BlogEntryViewModel(int id, String title, String text, int image_id, Date created_at, Date updated_at, int location_id) {
+
+    public BlogEntryViewModel(int id, String title, String text, String published, String imageUrl) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.published = published;
+        this.imageUrl = imageUrl;
+    }
+
+    public BlogEntryViewModel(int id, String title, String text, int image_id, String created_at, String updated_at, int location_id) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.image_id = image_id;
-        this.created_at = created_at;
+        this.published = created_at;
         this.updated_at = updated_at;
         this.location_id = location_id;
     }
 
     public BlogEntryViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is blog_entry fragment");
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
 
     public int getId() {
         return id;
@@ -57,6 +60,8 @@ public class BlogEntryViewModel extends ViewModel {
         this.text = text;
     }
 
+    public String getText(){return this.text;}
+
     public int getImage_id() {
         return image_id;
     }
@@ -65,19 +70,22 @@ public class BlogEntryViewModel extends ViewModel {
         this.image_id = image_id;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+
+    public String getCreated_at() {
+        return published;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
-    }
+    public void setCreated_at(String datetime) { this.published = datetime; }
 
-    public Date getUpdated_at() {
+    public String getImageUrl() { return imageUrl; }
+
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 
@@ -89,4 +97,16 @@ public class BlogEntryViewModel extends ViewModel {
         this.location_id = location_id;
     }
 
+    @Override
+    public String toString() {
+        return "BlogEntryViewModel{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", image_id=" + image_id +
+                ", created_at=" + published +
+                ", updated_at=" + updated_at +
+                ", location_id=" + location_id +
+                '}';
+    }
 }
