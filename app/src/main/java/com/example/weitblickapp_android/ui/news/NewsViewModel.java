@@ -19,16 +19,18 @@ public class NewsViewModel extends ViewModel {
     private String date;
     private Date updated_at;
     private Location location;
+    private String imageUrl;
 
     public NewsViewModel() {
 
     }
 
-    public NewsViewModel(int id, String title, String text, String teaser) {
+    public NewsViewModel(int id, String title, String text, String teaser, String imageUrl) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.teaser = teaser;
+        this.imageUrl = imageUrl;
     }
 
     public NewsViewModel(int id, String title, String text) {
@@ -96,6 +98,10 @@ public class NewsViewModel extends ViewModel {
     public void setTeaser(String teaser) {
         this.teaser = teaser;
     }
+
+    public String getImageUrl() { return imageUrl; }
+
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     @Override
     public String toString() {
