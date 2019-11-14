@@ -10,27 +10,10 @@
     android:background="#ffffff"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff">
-
-        <TextView
-            android:id="@+id/detail_location"
-            android:layout_width="344dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:layout_marginLeft="34dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="33dp"
-            android:layout_marginRight="33dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/detail_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_image" />
 
         <ImageView
             android:id="@+id/detail_image"
@@ -54,13 +37,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginLeft="34dp"
-            android:layout_marginTop="6dp"
             android:layout_marginEnd="33dp"
             android:layout_marginRight="33dp"
-            app:layout_constraintBottom_toTopOf="@+id/detail_text"
+            android:fontFamily="@font/opensansbold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_location" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_date" />
 
         <TextView
             android:id="@+id/detail_text"
@@ -68,9 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginLeft="34dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="33dp"
             android:layout_marginRight="33dp"
+            android:fontFamily="@font/open_sans"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_title" />
@@ -81,10 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginLeft="34dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="33dp"
             android:layout_marginRight="33dp"
-            android:layout_marginBottom="13dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

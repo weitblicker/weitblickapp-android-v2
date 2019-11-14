@@ -55,8 +55,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
-            TextView textView_location = (TextView) view.findViewById(R.id.location);
-            // TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
+            TextView textView_teaser = (TextView) view.findViewById(R.id.teaser);
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 
 
@@ -70,8 +69,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
 
             textView_title.setText(article.getTitle());
-          //   textView_location.setText(article.get);
-          //  textView_shorttext.setText(article.getTeaser());
+            textView_teaser.setText(article.getTeaser());
             textView_date.setText(article.getDate());
 
             //Set View-Listener and redirect to Details-Page onClick

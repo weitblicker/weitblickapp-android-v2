@@ -55,7 +55,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_location = (TextView) view.findViewById(R.id.location);
-            TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 
 
@@ -69,7 +68,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             textView_title.setText(project.getName());
            // textView_location.setText(project.getDescription());
-            textView_shorttext.setText(project.getDescription());
            // textView_date.setText();
 
             //Set Button-Listener and redirect to Details-Page
