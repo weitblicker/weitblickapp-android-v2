@@ -12,13 +12,12 @@
     tools:context=".ui.login.LoginActivity">
 
 
-
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="252dp"
         android:layout_marginEnd="24dp"
 
         android:hint="@string/prompt_email"
@@ -33,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="24dp"
 
         android:hint="@string/prompt_password"
@@ -47,13 +46,14 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="204dp"
+        android:layout_height="27dp"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
+        android:background="@menu/btn_round"
         android:enabled="false"
         android:text="@string/action_sign_in"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -80,14 +80,39 @@
 
     <Button
         android:id="@+id/sign_up"
-        android:orientation="vertical"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
+        android:layout_width="199dp"
+        android:layout_height="30dp"
+        android:background="@menu/btn_round"
 
+        android:orientation="vertical"
         android:text="@string/action_sign_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.118" />
+
+    <ImageView
+        android:id="@+id/loginPicture"
+        android:layout_width="300dp"
+        android:layout_height="144dp"
+        android:layout_marginBottom="72dp"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:srcCompat="@tools:sample/backgrounds/scenic[3]" />
+
+    <TextView
+        android:id="@+id/text_forgot_password"
+        android:layout_width="121dp"
+        android:layout_height="20dp"
+        android:text="Forgot Password?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

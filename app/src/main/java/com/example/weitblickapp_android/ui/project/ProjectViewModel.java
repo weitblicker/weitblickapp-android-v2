@@ -11,13 +11,15 @@ public class ProjectViewModel extends ViewModel {
     private ArrayList<String> hosts;
     private String description;
     private int locationId;
+    private String imageUrl;
     private ArrayList <Integer> partner_ids;
 
-    public ProjectViewModel(Integer projectId, String projectName, String projectDescription, Integer locationId) {
+    public ProjectViewModel(Integer projectId, String projectName, String projectDescription, Integer locationId, String imageUrl) {
         this.id = projectId;
         this.name = projectName;
         this.description = projectDescription;
         this.locationId = locationId;
+        this.imageUrl = imageUrl;
     }
 
     public ProjectViewModel(int id, String name, String description) {
@@ -66,6 +68,14 @@ public class ProjectViewModel extends ViewModel {
 
     public ArrayList<Integer> getPartner_ids() {
         return partner_ids;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void setPartner_ids(ArrayList<Integer> partner_ids) {

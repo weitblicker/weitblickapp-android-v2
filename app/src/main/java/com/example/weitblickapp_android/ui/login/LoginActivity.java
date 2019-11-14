@@ -19,15 +19,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.login.LoginViewModel;
-import com.example.weitblickapp_android.ui.login.LoginViewModelFactory;
-
+import com.example.weitblickapp_android.ui.register.RegisterActivity;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -46,6 +45,9 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.login);
         final Button registerButton = findViewById(R.id.sign_up);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        final ImageView loginImage = findViewById(R.id.loginPicture);
+
+        loginImage.setImageResource(R.drawable.login_logo);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -132,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
@@ -147,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void switchToRegister(){
-        Intent intent  =new Intent( this,RegisterActivity.class);
+        Intent intent  =new Intent( this, RegisterActivity.class);
         startActivity(intent);
     }
 }

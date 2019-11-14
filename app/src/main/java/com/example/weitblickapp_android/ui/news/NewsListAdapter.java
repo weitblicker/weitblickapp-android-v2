@@ -51,7 +51,6 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
         String weitblickUrl = "https://new.weitblicker.org";
 
-        if(view == null) {
             view = mInflater.inflate(R.layout.fragment_news_list, null);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
@@ -71,7 +70,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
 
             textView_title.setText(article.getTitle());
-         //   textView_location.setText(article.get);
+          //   textView_location.setText(article.get);
           //  textView_shorttext.setText(article.getTeaser());
             textView_date.setText(article.getDate());
 
@@ -97,7 +96,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
                     ft.commit();
                 }
             });
-        }
+
         return view;
     }
 }

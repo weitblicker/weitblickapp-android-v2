@@ -85,6 +85,8 @@ public class ProjectListFragment extends ListFragment {
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
+                    JSONObject galleryObject = null;
+                    JSONArray imageObject = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer projectId = responseObject.getInt("id");
@@ -93,9 +95,13 @@ public class ProjectListFragment extends ListFragment {
                         String text = responseObject.getString("description");
                         //String teaser = responseObject.getString("teaser");
 
+                        galleryObject = responseObject.getJSONObject("gallery");
+                        imageObject = galleryObject.getJSONArray("images");
+                        String imageUrl = imageObject.getJSONObject(0).getString("url");
+
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text,1, imageUrl);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
