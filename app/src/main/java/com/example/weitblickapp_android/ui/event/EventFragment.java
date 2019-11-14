@@ -176,8 +176,6 @@ public class EventFragment extends Fragment {
                     ft.commit();
                 }
             });
-
-
             return view;
         }
     }

@@ -44,7 +44,7 @@ public class BlogEntryListFragment extends ListFragment {
 
         View view = inflater.inflate(R.layout.fragment_blog, container, false);
 
-        adapter = new BlogEntryListAdapter(getActivity(), blogEntries);
+        adapter = new BlogEntryListAdapter(getActivity(), blogEntries, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;

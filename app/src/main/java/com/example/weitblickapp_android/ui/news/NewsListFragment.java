@@ -6,11 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ListView;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
@@ -46,7 +43,7 @@ public class NewsListFragment extends ListFragment{
 
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
-        adapter = new NewsListAdapter(getActivity(), newsList);
+        adapter = new NewsListAdapter(getActivity(), newsList, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;
@@ -57,18 +54,7 @@ public class NewsListFragment extends ListFragment{
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, final int position, long id) {
-        ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, new NewsDetailFragment(newsList.get(position)));
-                ft.commit();
-            }
-        });
-    }
+
     public void loadNews(){
 
         // Talk to Rest API

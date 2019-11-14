@@ -5,8 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
@@ -17,12 +21,14 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<NewsViewModel> news;
+    private FragmentManager fragManager;
 
-    public NewsListAdapter(Context mContext, ArrayList<NewsViewModel> mDataSource) {
+    public NewsListAdapter(Context mContext, ArrayList<NewsViewModel> mDataSource, FragmentManager fragManager) {
         super(mContext, R.layout.fragment_news_list, mDataSource);
         this.mContext = mContext;
         this.news = mDataSource;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.fragManager = fragManager;
     }
     @Override
     public int getCount() {
@@ -59,8 +65,30 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
          //   textView_location.setText(article.get);
           //  textView_shorttext.setText(article.getTeaser());
             textView_date.setText(article.getDate());
-        }
 
+            //Set View-Listener and redirect to Details-Page onClick
+
+            view.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
+                    ft.commit();
+                }
+            });
+
+            ImageButton detail = (ImageButton) view.findViewById(R.id.news_more_btn);
+            detail.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
+                    ft.commit();
+                }
+            });
+        }
         return view;
     }
 }

@@ -5,8 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
@@ -16,14 +20,15 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<ProjectViewModel> projects;
+    private FragmentManager fragManager;
 
-    public ProjectListAdapter(Context mContext, ArrayList<ProjectViewModel> mDataSource) {
+    public ProjectListAdapter(Context mContext, ArrayList<ProjectViewModel> mDataSource, FragmentManager fragManager) {
         super(mContext, R.layout.fragment_project_list, mDataSource);
         this.mContext = mContext;
         this.projects = mDataSource;
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.fragManager = fragManager;
     }
-
     @Override
     public int getCount() {
         return projects.size();
@@ -59,6 +64,27 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
            // textView_location.setText(project.getDescription());
             textView_shorttext.setText(project.getDescription());
            // textView_date.setText();
+
+            //Set Button-Listener and redirect to Details-Page
+            ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
+            view.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
+                    ft.commit();
+                }
+            });
+            detail.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
+                    ft.commit();
+                }
+            });
         }
         return view;
     }

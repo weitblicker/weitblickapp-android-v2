@@ -43,9 +43,9 @@ public class ProjectListFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_project, container, false);
 
-        adapter = new ProjectListAdapter(getActivity(), projectList);
+        adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;
