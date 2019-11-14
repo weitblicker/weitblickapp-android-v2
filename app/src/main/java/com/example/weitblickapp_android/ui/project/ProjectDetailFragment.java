@@ -15,12 +15,14 @@ import com.example.weitblickapp_android.R;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
+import com.squareup.picasso.Picasso;
 
 public class ProjectDetailFragment extends Fragment {
 
     String location;
     String title;
     String text;
+    String imageUrl;
     View root;
 
     public ProjectDetailFragment() {
@@ -29,6 +31,7 @@ public class ProjectDetailFragment extends Fragment {
     public ProjectDetailFragment(ProjectViewModel project){
         this.title = project.getName();
         this.text = project.getDescription();
+        this.imageUrl = project.getImageUrl();
     }
 
     ProjectDetailFragment(String location, String title, String text){
@@ -40,10 +43,19 @@ public class ProjectDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        String weitblickUrl = "https://new.weitblicker.org";
+
         root = inflater.inflate(R.layout.fragment_project_detail, container, false);
 
         final ImageView imageView = root.findViewById(R.id.detail_image);
-        imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
+
+        weitblickUrl = weitblickUrl.concat(imageUrl);
+
+        Picasso.with(getContext()).load(weitblickUrl).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+
+
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);

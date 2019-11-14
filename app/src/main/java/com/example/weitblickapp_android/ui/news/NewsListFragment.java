@@ -72,13 +72,14 @@ public class NewsListFragment extends ListFragment{
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
+                    JSONObject imageObject = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
 
-                        JSONObject imageObject = responseObject.getJSONObject("image");
+                        imageObject = responseObject.getJSONObject("image");
                         String imageUrl = imageObject.getString("url");
 
                         String teaser = responseObject.getString("teaser");

@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,8 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        if(view == null) {
+            String weitblickUrl = "https://new.weitblicker.org";
+
              view = mInflater.inflate(R.layout.fragment_project_list, null);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
@@ -56,9 +58,14 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 
-            imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
 
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
+
+            weitblickUrl = weitblickUrl.concat(project.getImageUrl());
+
+            Picasso.with(mContext).load(weitblickUrl).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
             textView_title.setText(project.getName());
            // textView_location.setText(project.getDescription());
@@ -85,7 +92,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     ft.commit();
                 }
             });
-        }
+
         return view;
     }
 }
