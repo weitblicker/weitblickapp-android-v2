@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.weitblickapp_android.R;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.weitblickapp_android.R;
 
 public class BlogDetailFragment extends Fragment {
 
@@ -19,12 +19,19 @@ public class BlogDetailFragment extends Fragment {
     String text;
     String date;
 
+    public BlogDetailFragment(BlogEntryViewModel blogEntry) {
+        this.title = blogEntry.getTitle();
+        this.text = blogEntry.getText();
+
+    }
+
     BlogDetailFragment(String location, String title, String text, String date){
         this.location=location;
         this.title=title;
         this.text=text;
         this.date=date;
     }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
