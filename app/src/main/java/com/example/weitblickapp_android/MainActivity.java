@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.navigation.NavigationView;
 
@@ -28,6 +29,7 @@ import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -136,6 +138,22 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.profil) {
+            ProfilFragment fragment = new ProfilFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.commit();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void setActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
