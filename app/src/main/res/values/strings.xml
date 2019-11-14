@@ -7,14 +7,14 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Profil</string>
 
-    <string name="menu_tabs">News/Events</string>
+    <string name="menu_tabs">Aktuelles</string>
     <string name="menu_project">Projekte</string>
     <string name="menu_location">Fahrrad fahren</string>
     <string name="menu_stats">Statistik</string>
     <string name="menu_faq">FAQ</string>
     <string name="menu_blog">Blog</string>
     <string name="menu_imprint">Impressum</string>
-    <string name="logo_text">Bildungschangen weltweit!</string>
+    <string name="logo_text">Bildungschancen weltweit!</string>
 
     <string name="title_activity_maps">Map</string>
 
