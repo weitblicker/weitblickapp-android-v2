@@ -20,6 +20,11 @@ public class EventViewModel extends ViewModel {
         mText.setValue("This is maps fragment");
     }
 
+    public EventViewModel(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

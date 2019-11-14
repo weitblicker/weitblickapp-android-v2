@@ -1,9 +1,14 @@
 package com.example.weitblickapp_android.ui.news;
 
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -12,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weitblickapp_android.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,21 +27,39 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewsListFragment extends ListFragment {
-    ArrayList<NewsViewModel> news = new ArrayList<NewsViewModel>();
+public class NewsListFragment extends ListFragment{
+
+    ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
+    private NewsListAdapter adapter;
 
 
-    @Override
-    public void onActivityCreated(Bundle saveInstanceState) {
-        super.onActivityCreated(saveInstanceState);
-        loadNews();
+      public void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+          loadNews();
+      }
+
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
+
+        adapter = new NewsListAdapter(getActivity(), newsList, getFragmentManager());
+        this.setListAdapter(adapter);
+
+        return view;
     }
 
-    private void loadNews(){
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+
+    public void loadNews(){
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/news/?limit=3&search=Benin";
+        String URL = "https://new.weitblicker.org/rest/news/?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -52,26 +76,25 @@ public class NewsListFragment extends ListFragment {
                         responseObject = response.getJSONObject(i);
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
-
                         String text = responseObject.getString("text");
-                        text.trim();
 
-                        Integer image_id = responseObject.getInt("image");
-                        String added = responseObject.getString("added");
-                        String updated = responseObject.getString("updated");
-                        String published = responseObject.getString("published");
-                        String range = responseObject.getString("range");
+                        JSONObject imageObject = responseObject.getJSONObject("image");
+                        String imageUrl = imageObject.getString("url");
+
                         String teaser = responseObject.getString("teaser");
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, image_id);
-                        news.add(temp);
+                        text.trim();
+
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser, imageUrl);
+                        newsList.add(temp);
+                        adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
 
-                for(NewsViewModel newsArticle:news){
+                for(NewsViewModel newsArticle:newsList){
                     Log.e("NewsArticle",newsArticle.toString());
                 }
 
@@ -97,6 +120,10 @@ public class NewsListFragment extends ListFragment {
             }
         };
         requestQueue.add(objectRequest);
+    }
+    public class Image{
+        String url;
+        String crop_from;
     }
 }
 

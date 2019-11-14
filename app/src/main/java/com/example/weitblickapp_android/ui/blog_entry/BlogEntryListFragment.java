@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.project;
+package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.os.Bundle;
 import android.util.Base64;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -30,22 +29,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProjectListFragment extends ListFragment {
-    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
-    private ProjectListAdapter adapter;
+public class BlogEntryListFragment extends ListFragment {
+    ArrayList<BlogEntryViewModel> blogEntries = new ArrayList<BlogEntryViewModel>();
+    private BlogEntryListAdapter adapter;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadProjects();
+        loadBlogs();
     }
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_blog, container, false);
 
-        adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+        adapter = new BlogEntryListAdapter(getActivity(), blogEntries, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;
@@ -58,21 +57,21 @@ public class ProjectListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, final int position, long id) {
-        ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
+        // Button detail = (Button) v.findViewById(R.id.news_more_btn);
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
+                FragmentTransaction replace = ft.replace(R.id.fragment_container, new BlogDetailFragment(blogEntries.get(position)));
                 ft.commit();
             }
         });
     }
-    public void loadProjects(){
+    public void loadBlogs(){
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/projects/?limit=5";
+        String URL = "https://new.weitblicker.org/rest/blog/?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -87,16 +86,15 @@ public class ProjectListFragment extends ListFragment {
                     JSONObject responseObject = null;
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer projectId = responseObject.getInt("id");
-                        String title = responseObject.getString("name");
-
-                        String text = responseObject.getString("description");
-                        //String teaser = responseObject.getString("teaser");
+                        Integer blogId = responseObject.getInt("id");
+                        String title = responseObject.getString("title");
+                        String text = responseObject.getString("text");
+                        String published = responseObject.getString("published");
 
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text);
-                        projectList.add(temp);
+                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, published);
+                        blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -104,8 +102,8 @@ public class ProjectListFragment extends ListFragment {
 
                 }
 
-                for(ProjectViewModel newsArticle:projectList){
-                    Log.e("NewsArticle",newsArticle.toString());
+                for(BlogEntryViewModel entry:blogEntries){
+                    Log.e("BlogEntry",entry.toString());
                 }
 
             }

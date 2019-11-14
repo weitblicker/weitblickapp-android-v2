@@ -1,14 +1,10 @@
 package com.example.weitblickapp_android.ui.project;
 
-import java.util.ArrayList;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ProjectViewModel extends ViewModel {
+import java.util.ArrayList;
 
-    private MutableLiveData<String> mText;
+public class ProjectViewModel extends ViewModel {
 
     private int id;
     private String name;
@@ -17,16 +13,17 @@ public class ProjectViewModel extends ViewModel {
     private int locationId;
     private ArrayList <Integer> partner_ids;
 
-
-    public ProjectViewModel() {
-        mText = new MutableLiveData<>();
-    }
-
     public ProjectViewModel(Integer projectId, String projectName, String projectDescription, Integer locationId) {
         this.id = projectId;
         this.name = projectName;
         this.description = projectDescription;
         this.locationId = locationId;
+    }
+
+    public ProjectViewModel(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
     }
 
     public int getId() {
@@ -75,9 +72,6 @@ public class ProjectViewModel extends ViewModel {
         this.partner_ids = partner_ids;
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
 
     @Override
     public String toString() {
