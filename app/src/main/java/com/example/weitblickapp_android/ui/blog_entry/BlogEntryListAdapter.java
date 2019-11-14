@@ -53,7 +53,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
-            TextView textView_location = (TextView) view.findViewById(R.id.location);
+            //TextView textView_location = (TextView) view.findViewById(R.id.location);
            // TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
             TextView textView_date = (TextView) view.findViewById(R.id.date);
 

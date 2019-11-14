@@ -14,7 +14,7 @@ import com.example.weitblickapp_android.R;
 
 public class BlogDetailFragment extends Fragment {
 
-    String location;
+    //String location;
     String title;
     String text;
     String date;
@@ -25,8 +25,8 @@ public class BlogDetailFragment extends Fragment {
 
     }
 
-    BlogDetailFragment(String location, String title, String text, String date){
-        this.location=location;
+    BlogDetailFragment(String title, String text, String date){
+        //this.location=location;
         this.title=title;
         this.text=text;
         this.date=date;
@@ -40,8 +40,8 @@ public class BlogDetailFragment extends Fragment {
 
         final ImageView imageView = root.findViewById(R.id.detail_image);
         imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
-        final TextView locationTextView = root.findViewById(R.id.detail_location);
-        locationTextView.setText(this.location);
+        //final TextView locationTextView = root.findViewById(R.id.detail_location);
+        //locationTextView.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
