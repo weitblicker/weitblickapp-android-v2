@@ -85,6 +85,7 @@ public class BlogEntryListFragment extends ListFragment {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
                     JSONObject imageObject = null;
+                    BlogEntryViewModel temp = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer blogId = responseObject.getInt("id");
@@ -96,7 +97,10 @@ public class BlogEntryListFragment extends ListFragment {
 
                         text.trim();
 
-                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, published, imageUrl);
+                        //TODO: Check if picture exists
+
+                        temp = new BlogEntryViewModel(blogId, title, text, published, imageUrl);
+
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -104,7 +108,6 @@ public class BlogEntryListFragment extends ListFragment {
                     }
 
                 }
-
                 for(BlogEntryViewModel entry:blogEntries){
                     Log.e("BlogEntry",entry.toString());
                 }
