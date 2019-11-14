@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -48,21 +49,26 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        if(view == null) {
-            view = mInflater.inflate(R.layout.fragment_blog_list, null);
+        String weitblickUrl = "https://new.weitblicker.org";
 
-            ImageView imageView = (ImageView) view.findViewById(R.id.image);
-            TextView textView_title = (TextView) view.findViewById(R.id.title);
-            TextView textView_location = (TextView) view.findViewById(R.id.location);
-           // TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
-            TextView textView_date = (TextView) view.findViewById(R.id.date);
+        view = mInflater.inflate(R.layout.fragment_blog_list, null);
 
-            imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
+        ImageView imageView = (ImageView) view.findViewById(R.id.image);
+        TextView textView_title = (TextView) view.findViewById(R.id.title);
+        TextView textView_location = (TextView) view.findViewById(R.id.location);
+        // TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
+        TextView textView_date = (TextView) view.findViewById(R.id.date);
 
-            final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
+        final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
+
+        weitblickUrl = weitblickUrl.concat(blog.getImageUrl());
+
+        Picasso.with(mContext).load(weitblickUrl).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
             textView_title.setText(blog.getTitle());
-            //   textView_location.setText(article.get);
+            //  textView_location.setText(article.get);
            // textView_shorttext.setText(blog.getText());
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +91,6 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
                     ft.commit();
                 }
             });
-        }
         return view;
     }
 }

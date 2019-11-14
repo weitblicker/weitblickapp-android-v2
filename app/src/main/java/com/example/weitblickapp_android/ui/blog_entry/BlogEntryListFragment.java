@@ -84,16 +84,19 @@ public class BlogEntryListFragment extends ListFragment {
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
+                    JSONObject imageObject = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer blogId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String published = responseObject.getString("published");
+                        imageObject = responseObject.getJSONObject("image");
+                        String imageUrl = imageObject.getString("url");
 
                         text.trim();
 
-                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, published);
+                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, published, imageUrl);
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
