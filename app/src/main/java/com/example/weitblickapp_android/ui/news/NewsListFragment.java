@@ -78,6 +78,7 @@ public class NewsListFragment extends ListFragment{
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
+                        String date = responseObject.getString("published");
 
                         imageObject = responseObject.getJSONObject("image");
                         String imageUrl = imageObject.getString("url");
@@ -86,7 +87,7 @@ public class NewsListFragment extends ListFragment{
 
                         text.trim();
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser, imageUrl);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrl);
                         newsList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
