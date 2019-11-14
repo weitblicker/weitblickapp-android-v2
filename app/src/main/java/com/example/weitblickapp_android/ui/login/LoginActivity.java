@@ -25,17 +25,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weitblickapp_android.MainActivity;
+import com.example.weitblickapp_android.MapsActivity;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.register.RegisterActivity;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        session = new SessionManager(getApplicationContext());
+
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -140,8 +146,11 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        Intent intent  =new Intent( this, MainActivity.class);
+        Intent intent  =new Intent( this, MapsActivity.class);
+
+        session.createLoginSession("Jannik","jannik.bergmann@hs-osnabrueck.de");
         startActivity(intent);
+
         //Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 

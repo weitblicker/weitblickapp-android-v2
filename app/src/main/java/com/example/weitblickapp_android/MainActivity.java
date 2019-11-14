@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.navigation.NavigationView;
@@ -39,11 +40,16 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SessionManager session;
+
     private AppBarConfiguration mAppBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+         session = new SessionManager(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

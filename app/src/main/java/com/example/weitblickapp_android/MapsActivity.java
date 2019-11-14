@@ -2,6 +2,7 @@ package com.example.weitblickapp_android;
 
 import android.os.Bundle;
 
+import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,11 +18,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private AppBarConfiguration mAppBarConfiguration;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        session = new SessionManager(getApplicationContext());
+
+        if(!session.checkLogin()){
+            finish();
+        }
         setContentView(R.layout.fragment_map);
+
+
 
         //Setup Toolbarnavigation for Maps-Activity
   /*      Toolbar toolbar = findViewById(R.id.toolbar);
