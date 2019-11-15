@@ -2,17 +2,29 @@ package com.example.weitblickapp_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.style.TabStopSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapter;
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListFragment;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
+import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectListFragment;
+import com.example.weitblickapp_android.ui.stats.StatsFragment;
+import com.example.weitblickapp_android.ui.tabs.TabsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,21 +42,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        if (android.os.Build.VERSION.SDK_INT >= 21){
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+        }
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
 
                 R.id.nav_tabs, R.id.nav_project, R.id.nav_imprint,
                 R.id.nav_stats, R.id.nav_location, R.id.nav_blog, R.id.nav_faq)
-
-                .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
+        NavigationUI.setupWithNavController(bottomNav, navController);
         }
 
         // Menu-Navigation-Item onclick- Function
