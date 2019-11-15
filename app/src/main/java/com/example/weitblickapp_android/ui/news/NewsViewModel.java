@@ -4,20 +4,22 @@ import android.location.Location;
 
 import androidx.lifecycle.ViewModel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NewsViewModel extends ViewModel {
 
-    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
+
 
     private int id;
     private String title;
     private String text;
     private String teaser;
     private int image_id;
-    private String date;
-    private Date updated_at;
+    private Date published;
     private Location location;
     private String imageUrl;
 
@@ -25,12 +27,18 @@ public class NewsViewModel extends ViewModel {
 
     }
 
-    public NewsViewModel(int id, String title, String text, String teaser, String imageUrl) {
+    public NewsViewModel(int id, String title, String text, String teaser,String date, String imageUrl) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.teaser = teaser;
         this.imageUrl = imageUrl;
+
+        try {
+            this.published = formatterRead.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public NewsViewModel(int id, String title, String text) {
@@ -70,17 +78,7 @@ public class NewsViewModel extends ViewModel {
     }
 
     public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {this.date = date; }
-
-    public Date getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
+        return formatterWrite.format(published);
     }
 
     public Location getLocation() {
@@ -110,8 +108,7 @@ public class NewsViewModel extends ViewModel {
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
                 ", image_id=" + image_id +
-                ", date=" + date +
-                ", updated_at=" + updated_at +
+                ", date=" + published +
                 '}';
     }
 
