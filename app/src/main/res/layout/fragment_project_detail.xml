@@ -80,13 +80,16 @@
 
         <com.razerdp.widget.animatedpieview.AnimatedPieView
             android:id="@+id/pieChart"
-            android:layout_width="416dp"
-            android:layout_height="140dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="48dp"
-            app:layout_constraintBottom_toTopOf="@+id/heart"
+            android:layout_width="269dp"
+            android:layout_height="222dp"
+            android:layout_marginStart="69dp"
+            android:layout_marginLeft="69dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_text" />
 
@@ -103,8 +106,7 @@
             app:layout_constraintBottom_toTopOf="@+id/detail_location"
             app:layout_constraintEnd_toStartOf="@+id/detail_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_image"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_image"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
