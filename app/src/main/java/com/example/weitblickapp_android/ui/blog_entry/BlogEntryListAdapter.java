@@ -80,6 +80,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
             public void onClick(View v) {
                 FragmentTransaction ft = fragManager.beginTransaction();
                 ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
+                ft.addToBackStack(null);
                 ft.commit();
             }
         });
@@ -91,6 +92,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
             public void onClick(View v) {
                 FragmentTransaction ft = fragManager.beginTransaction();
                 ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
+                ft.addToBackStack(null);
                 ft.commit();
             }
         });

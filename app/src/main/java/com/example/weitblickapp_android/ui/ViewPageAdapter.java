@@ -1,5 +1,9 @@
 package com.example.weitblickapp_android.ui;
 
+import android.content.Context;
+
+import com.example.weitblickapp_android.ui.news.NewsListFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPageAdapter extends FragmentPagerAdapter {
+
     private final List<Fragment> FragmentList = new ArrayList<>();
     private final List<String> FragmentListTitles = new ArrayList<>();
 

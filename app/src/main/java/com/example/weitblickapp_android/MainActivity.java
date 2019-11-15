@@ -6,24 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
-import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,8 +18,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             ProfilFragment fragment = new ProfilFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
             ft.commit();
         }
         return super.onOptionsItemSelected(item);

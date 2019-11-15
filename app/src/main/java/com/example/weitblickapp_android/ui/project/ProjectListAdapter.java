@@ -78,6 +78,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                 public void onClick(View v) {
                     FragmentTransaction ft = fragManager.beginTransaction();
                     ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
+                    ft.addToBackStack(null);
                     ft.commit();
                 }
             });
@@ -87,6 +88,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                 public void onClick(View v) {
                     FragmentTransaction ft = fragManager.beginTransaction();
                     ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
+                    ft.addToBackStack(null);
                     ft.commit();
                 }
             });

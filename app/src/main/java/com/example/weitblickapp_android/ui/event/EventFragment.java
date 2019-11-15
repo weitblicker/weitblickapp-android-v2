@@ -173,6 +173,7 @@ public class EventFragment extends Fragment {
                 public void onClick(View v) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.fragment_container, new EventDetailFragment(location[position], title[position], date[position], text[position]));
+                    ft.addToBackStack(null);
                     ft.commit();
                 }
             });
