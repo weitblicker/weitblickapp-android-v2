@@ -37,6 +37,10 @@ public class ProfilFragment extends Fragment {
 
         session = new SessionManager(getActivity().getApplicationContext());
 
+        if(!session.checkLogin()){
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
+
         final Button logOutButton = root.findViewById(R.id.log_out);
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
