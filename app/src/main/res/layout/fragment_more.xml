@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:id="@+id/fragment_container">
+
+    <ImageView
+        android:id="@+id/blog"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginLeft="49dp"
+        android:layout_marginTop="97dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="31dp"
+        app:layout_constraintBottom_toTopOf="@+id/faq"
+        app:layout_constraintEnd_toStartOf="@+id/faqtext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_blog" />
+
+    <ImageView
+        android:id="@+id/faq"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginLeft="49dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="513dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/blogtext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/blog"
+        app:srcCompat="@drawable/icon_faq" />
+
+    <TextView
+        android:id="@+id/blogtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="113dp"
+        android:layout_marginRight="113dp"
+        android:layout_marginBottom="511dp"
+        android:fontFamily="@font/opensansbold"
+        android:text="Blog"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/blogButton"
+        app:layout_constraintStart_toEndOf="@+id/faq"
+        app:layout_constraintTop_toBottomOf="@+id/faqtext" />
+
+        <TextView
+            android:id="@+id/faqtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="95dp"
+            android:layout_marginEnd="117dp"
+            android:layout_marginRight="117dp"
+            android:layout_marginBottom="31dp"
+            android:fontFamily="@font/opensansbold"
+            android:text="FAQ"
+            android:textSize="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/blogtext"
+            app:layout_constraintEnd_toStartOf="@+id/faqButton"
+            app:layout_constraintStart_toEndOf="@+id/blog"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+        android:id="@+id/blogButton"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginRight="71dp"
+        android:layout_marginBottom="513dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/blogtext"
+        app:layout_constraintTop_toBottomOf="@+id/faqButton"
+        app:srcCompat="@drawable/icon_more" />
+
+    <ImageButton
+        android:id="@+id/faqButton"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="97dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginRight="71dp"
+        android:layout_marginBottom="31dp"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/blogButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/faqtext"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_more" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

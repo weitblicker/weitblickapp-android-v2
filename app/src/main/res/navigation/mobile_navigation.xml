@@ -57,8 +57,8 @@
         tools:layout="@layout/fragment_blog" />
 
     <fragment
-        android:id="@+id/nav_imprint"
-        android:name="com.example.weitblickapp_android.ui.imprint.ImprintFragment"
-        android:label="@string/menu_imprint"
-        tools:layout="@layout/fragment_imprint" />
+        android:id="@+id/nav_more"
+        android:name="com.example.weitblickapp_android.ui.more.MoreFragment"
+        android:label="@string/menu_more"
+        tools:layout="@layout/fragment_more" />
 </navigation>

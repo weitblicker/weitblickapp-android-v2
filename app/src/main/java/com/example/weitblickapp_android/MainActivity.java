@@ -1,6 +1,7 @@
 package com.example.weitblickapp_android;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.style.TabStopSpan;
 import android.view.Menu;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (android.os.Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21){
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
 
-                R.id.nav_tabs, R.id.nav_project, R.id.nav_imprint,
+                R.id.nav_tabs, R.id.nav_project, R.id.nav_more,
                 R.id.nav_stats, R.id.nav_location, R.id.nav_blog, R.id.nav_faq)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
