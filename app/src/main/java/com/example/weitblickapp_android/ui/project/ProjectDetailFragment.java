@@ -24,6 +24,7 @@ public class ProjectDetailFragment extends Fragment {
     String title;
     String text;
     String imageUrl;
+    Boolean favorite = false;
     View root;
 
     public ProjectDetailFragment() {
@@ -61,7 +62,14 @@ public class ProjectDetailFragment extends Fragment {
         changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeImage.setImageResource(R.drawable.icon_stats);
+                if(!favorite){
+                    changeImage.setImageResource(R.drawable.ic_heart_filled);
+                    favorite=true;
+                }else{
+                    changeImage.setImageResource(R.drawable.ic_heart_outline);
+                    favorite=false;
+                }
+
             }
         });
 
@@ -81,8 +89,8 @@ public class ProjectDetailFragment extends Fragment {
         AnimatedPieView mAnimatedPieView = root.findViewById(R.id.pieChart);
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
         config.startAngle(-90)// Starting angle offset
-                .addData(new SimplePieInfo(30, Color.parseColor("#ff0000"), "Titel"))//Data (bean that implements the IPieInfo interface)
-                .addData(new SimplePieInfo(18.0f, Color.parseColor("#00ff00"), "Titel")).duration(2000);// draw pie animation duration
+                .addData(new SimplePieInfo(30, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)
+                .addData(new SimplePieInfo(18.0f, Color.parseColor("#d9e2ed"), "Gesammelte Spenden")).duration(2000);// draw pie animation duration
         // The following two sentences can be replace directly 'mAnimatedPieView.start (config); '
         mAnimatedPieView.applyConfig(config);
         mAnimatedPieView.start();

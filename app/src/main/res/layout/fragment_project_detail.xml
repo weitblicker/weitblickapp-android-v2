@@ -49,18 +49,17 @@
 
         <TextView
             android:id="@+id/detail_title"
-            android:layout_width="wrap_content"
+            android:layout_width="257dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="177dp"
-            android:layout_marginLeft="177dp"
             android:layout_marginTop="22dp"
-            android:layout_marginEnd="177dp"
-            android:layout_marginRight="177dp"
-            android:fontFamily="@font/opensansbold"
+            android:layout_marginEnd="78dp"
+            android:layout_marginRight="78dp"
             android:layout_marginBottom="19dp"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/detail_location"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/heart"
             app:layout_constraintTop_toBottomOf="@+id/detail_image" />
 
         <TextView
@@ -93,17 +92,18 @@
 
         <ImageButton
             android:id="@+id/heart"
-            android:layout_width="58dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="320dp"
-            android:layout_marginRight="320dp"
-            android:src="@drawable/icon_bike"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="44dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="12dp"
+            android:background="#ffffff"
+            android:src="@drawable/ic_heart_outline"
+            app:layout_constraintBottom_toTopOf="@+id/detail_location"
+            app:layout_constraintEnd_toStartOf="@+id/detail_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pieChart"
+            app:layout_constraintTop_toBottomOf="@+id/detail_image"
             tools:srcCompat="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

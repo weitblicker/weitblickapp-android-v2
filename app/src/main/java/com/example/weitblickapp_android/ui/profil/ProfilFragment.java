@@ -30,7 +30,7 @@ public class ProfilFragment extends Fragment {
                 ViewModelProviders.of(this).get(ProfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profil, container, false);
         final ImageView imageView = root.findViewById(R.id.imageProfil);
-        imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
+        imageView.setImageResource(R.drawable.ic_launcher_background);
         final TextView donationTextView = root.findViewById(R.id.donation);
         donationTextView.setText(this.donation);
         final TextView passwordTextView = root.findViewById(R.id.password);
