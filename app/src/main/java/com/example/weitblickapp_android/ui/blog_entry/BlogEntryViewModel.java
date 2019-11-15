@@ -12,17 +12,18 @@ public class BlogEntryViewModel extends ViewModel {
     private String title;
     private String text;
     private  int image_id;
+    private String imageUrl;
     String  published;
     String  updated_at;
     private int location_id;
 
 
-    public BlogEntryViewModel(int id, String title, String text, String published) {
+    public BlogEntryViewModel(int id, String title, String text, String published, String imageUrl) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.published = published;
-
+        this.imageUrl = imageUrl;
     }
 
     public BlogEntryViewModel(int id, String title, String text, int image_id, String created_at, String updated_at, int location_id) {
@@ -74,11 +75,11 @@ public class BlogEntryViewModel extends ViewModel {
         return published;
     }
 
-    public void setCreated_at(String datetime) {
+    public void setCreated_at(String datetime) { this.published = datetime; }
 
-            this.published = datetime;
+    public String getImageUrl() { return imageUrl; }
 
-    }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public String getUpdated_at() {
         return updated_at;
