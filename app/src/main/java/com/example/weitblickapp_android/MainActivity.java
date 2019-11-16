@@ -3,45 +3,22 @@ package com.example.weitblickapp_android;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.style.TabStopSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.weitblickapp_android.data.Session.SessionManager;
-import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapter;
-import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListFragment;
-import com.example.weitblickapp_android.ui.profil.ProfilFragment;
-import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
-import com.example.weitblickapp_android.ui.project.ProjectListFragment;
-import com.example.weitblickapp_android.ui.stats.StatsFragment;
-import com.example.weitblickapp_android.ui.tabs.TabsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
-
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.navigation.NavigationView;
+import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.profil.ProfilFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_tabs, R.id.nav_project, R.id.nav_more,
                 R.id.nav_stats, R.id.nav_location, R.id.nav_blog, R.id.nav_faq)
 
-                .setDrawerLayout(drawer)
+                //.setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
