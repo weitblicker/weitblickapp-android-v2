@@ -6,14 +6,41 @@ import androidx.lifecycle.ViewModel;
 
 public class FaqViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    int id;
+    String question;
+    String answer;
 
-    public FaqViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is FAQ fragment");
+    public FaqViewModel(int id, String answer, String question){
+        this.id=id;
+        this.answer=answer;
+        this.question=question;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public FaqViewModel(){
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }

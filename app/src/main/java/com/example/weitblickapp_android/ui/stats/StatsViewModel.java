@@ -10,7 +10,7 @@ public class StatsViewModel extends ViewModel {
 
     public StatsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Das sind die Statistiken");
+        mText.setValue("Hier werden bald deine Statistiken stehen!");
     }
 
     public LiveData<String> getText() {

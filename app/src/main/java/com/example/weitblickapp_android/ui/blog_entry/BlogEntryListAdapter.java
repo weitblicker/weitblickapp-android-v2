@@ -31,6 +31,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragManager = fragManager;
     }
+
     @Override
     public int getCount() {
         return blogEntries.size();
@@ -55,42 +56,46 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView_title = (TextView) view.findViewById(R.id.title);
-        TextView textView_location = (TextView) view.findViewById(R.id.location);
-        // TextView textView_shorttext = (TextView) view.findViewById(R.id.shorttext);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
 
         final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
 
+        //Set picture for BlogEntries using Picasso-Lib
         weitblickUrl = weitblickUrl.concat(blog.getImageUrl());
 
         Picasso.with(mContext).load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
-            textView_title.setText(blog.getTitle());
-            //  textView_location.setText(article.get);
-           // textView_shorttext.setText(blog.getText());
+        //Set title for BlogEntries
+        textView_title.setText(blog.getTitle());
 
-            view.setOnClickListener(new View.OnClickListener() {
+        //Set published date for BlogEntries
+        textView_date.setText(blog.getPublished());
 
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
-                    ft.commit();
-                }
-            });
+        // onClick Listener for whole view-element -->redirect to DetailsPage
+        view.setOnClickListener(new View.OnClickListener() {
 
-            ImageButton detail = (ImageButton) view.findViewById(R.id.blog_more_btn);
-            detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+        // onClick Listener for Button-element -->redirect to DetailsPage
+        ImageButton detail = (ImageButton) view.findViewById(R.id.blog_more_btn);
+        detail.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
-                    ft.commit();
-                }
-            });
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
         return view;
     }
 }

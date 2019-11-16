@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 public class BlogDetailFragment extends Fragment {
 
-    String location;
+    //String location;
     String title;
     String text;
     String imageUrl;
@@ -28,8 +28,8 @@ public class BlogDetailFragment extends Fragment {
 
     }
 
-    BlogDetailFragment(String location, String title, String text, String date){
-        this.location=location;
+    BlogDetailFragment(String title, String text, String date){
+        //this.location=location;
         this.title=title;
         this.text=text;
         this.date=date;
@@ -49,9 +49,6 @@ public class BlogDetailFragment extends Fragment {
         Picasso.with(getContext()).load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
-
-        final TextView locationTextView = root.findViewById(R.id.detail_location);
-        locationTextView.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);

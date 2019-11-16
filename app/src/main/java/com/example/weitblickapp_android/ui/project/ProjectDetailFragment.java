@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class ProjectDetailFragment extends Fragment {
     String title;
     String text;
     String imageUrl;
+    Boolean favorite = false;
     View root;
 
     public ProjectDetailFragment() {
@@ -55,6 +57,21 @@ public class ProjectDetailFragment extends Fragment {
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
+        final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
+
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!favorite){
+                    changeImage.setImageResource(R.drawable.ic_heart_filled);
+                    favorite=true;
+                }else{
+                    changeImage.setImageResource(R.drawable.ic_heart_outline);
+                    favorite=false;
+                }
+
+            }
+        });
 
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
@@ -72,8 +89,8 @@ public class ProjectDetailFragment extends Fragment {
         AnimatedPieView mAnimatedPieView = root.findViewById(R.id.pieChart);
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
         config.startAngle(-90)// Starting angle offset
-                .addData(new SimplePieInfo(30, Color.parseColor("#ff0000"), "Titel"))//Data (bean that implements the IPieInfo interface)
-                .addData(new SimplePieInfo(18.0f, Color.parseColor("#00ff00"), "Titel")).duration(2000);// draw pie animation duration
+                .addData(new SimplePieInfo(30, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)
+                .addData(new SimplePieInfo(18.0f, Color.parseColor("#d9e2ed"), "Gesammelte Spenden")).duration(2000);// draw pie animation duration
         // The following two sentences can be replace directly 'mAnimatedPieView.start (config); '
         mAnimatedPieView.applyConfig(config);
         mAnimatedPieView.start();

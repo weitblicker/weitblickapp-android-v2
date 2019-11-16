@@ -25,7 +25,8 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/open_sans"/>
 
     <EditText
         android:id="@+id/password"
@@ -42,7 +43,8 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        android:fontFamily="@font/open_sans"/>
 
     <Button
         android:id="@+id/login"
@@ -60,7 +62,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.2"
+        android:fontFamily="@font/opensansbold"/>
 
     <ProgressBar
         android:id="@+id/loading"
@@ -90,7 +93,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.118"
+        android:fontFamily="@font/opensansbold"/>
 
     <ImageView
         android:id="@+id/loginPicture"
@@ -103,7 +107,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@tools:sample/backgrounds/scenic[3]" />
+        tools:srcCompat="@tools:sample/backgrounds/scenic[3]"/>
 
     <TextView
         android:id="@+id/text_forgot_password"
@@ -113,6 +117,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up"
+        android:fontFamily="@font/open_sans"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

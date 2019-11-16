@@ -23,6 +23,7 @@
             android:layout_marginLeft="27dp"
             android:layout_marginEnd="27dp"
             android:layout_marginRight="27dp"
+            android:fontFamily="@font/open_sans"
             app:layout_constraintBottom_toTopOf="@+id/detail_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,21 +44,22 @@
             app:layout_constraintHorizontal_bias="0.533"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.6"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <TextView
             android:id="@+id/detail_title"
-            android:layout_width="wrap_content"
+            android:layout_width="257dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="177dp"
-            android:layout_marginLeft="177dp"
             android:layout_marginTop="22dp"
-            android:layout_marginEnd="177dp"
-            android:layout_marginRight="177dp"
+            android:layout_marginEnd="78dp"
+            android:layout_marginRight="78dp"
             android:layout_marginBottom="19dp"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/detail_location"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/heart"
             app:layout_constraintTop_toBottomOf="@+id/detail_image" />
 
         <TextView
@@ -70,6 +72,7 @@
             android:layout_marginEnd="27dp"
             android:layout_marginRight="27dp"
             android:layout_marginBottom="21dp"
+            android:fontFamily="@font/open_sans"
             app:layout_constraintBottom_toTopOf="@+id/pieChart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,13 +80,33 @@
 
         <com.razerdp.widget.animatedpieview.AnimatedPieView
             android:id="@+id/pieChart"
-            android:layout_width="416dp"
-            android:layout_height="140dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="269dp"
+            android:layout_height="222dp"
+            android:layout_marginStart="69dp"
+            android:layout_marginLeft="69dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_text" />
+
+        <ImageButton
+            android:id="@+id/heart"
+            android:layout_width="44dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="12dp"
+            android:background="#ffffff"
+            android:src="@drawable/ic_heart_outline"
+            app:layout_constraintBottom_toTopOf="@+id/detail_location"
+            app:layout_constraintEnd_toStartOf="@+id/detail_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_image"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
