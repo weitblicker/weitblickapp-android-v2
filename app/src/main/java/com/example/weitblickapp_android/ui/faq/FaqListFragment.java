@@ -7,18 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.AuthFailureError;
@@ -28,10 +22,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.event.EventFragment;
-import com.example.weitblickapp_android.ui.event.EventViewModel;
-import com.example.weitblickapp_android.ui.faq.FaqViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +44,7 @@ public class FaqListFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        ((MainActivity) getActivity()).setActionBarTitle("FAQ");
 
         faqViewModel =
                 ViewModelProviders.of(this).get(FaqViewModel.class);

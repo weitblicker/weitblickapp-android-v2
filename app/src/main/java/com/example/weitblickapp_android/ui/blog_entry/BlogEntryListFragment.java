@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 
 import org.json.JSONArray;
@@ -41,6 +42,8 @@ public class BlogEntryListFragment extends ListFragment {
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        ((MainActivity) getActivity()).setActionBarTitle("Blog");
 
         View view = inflater.inflate(R.layout.fragment_blog, container, false);
 
