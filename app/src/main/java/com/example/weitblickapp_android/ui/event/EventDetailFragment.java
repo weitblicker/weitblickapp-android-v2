@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.weitblickapp_android.R;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.weitblickapp_android.R;
 
 public class EventDetailFragment extends Fragment {
     String location;
@@ -35,7 +35,7 @@ public class EventDetailFragment extends Fragment {
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
         final TextView textTextView = root.findViewById(R.id.detail_text);
-        textTextView.setText(this.location);
+        textTextView.setText(this.text);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView dateTextView = root.findViewById(R.id.detail_date);
