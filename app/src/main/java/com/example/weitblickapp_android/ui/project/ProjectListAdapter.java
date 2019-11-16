@@ -95,5 +95,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         return view;
     }
+
 }
 

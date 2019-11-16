@@ -29,6 +29,7 @@ import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -87,14 +88,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.profil) {
-            ProfilFragment fragment = new ProfilFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.commit();
+        if(!session.checkLogin()){
+
+            return false;
         }
-        return super.onOptionsItemSelected(item);
+        else{
+            int id = item.getItemId();
+            if (id == R.id.profil) {
+                ProfilFragment fragment = new ProfilFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment, "profile_fragment");
+                ft.addToBackStack("profile_fragment");
+                ft.commit();
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
     }
 
     public void setActionBarTitle(String title){
@@ -107,4 +116,20 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override
+    public void onBackPressed() {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+
+    }
+
+
 }

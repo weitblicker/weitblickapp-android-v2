@@ -37,9 +37,7 @@ public class ProfilFragment extends Fragment {
 
         session = new SessionManager(getActivity().getApplicationContext());
 
-        if(!session.checkLogin()){
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
+
 
         final Button logOutButton = root.findViewById(R.id.log_out);
 
@@ -55,6 +53,7 @@ public class ProfilFragment extends Fragment {
                 }
                 else {
                     session.logoutUser();
+                    getActivity().onBackPressed();
                     Toast toast = Toast.makeText(getActivity().getApplicationContext(),
                             "Erfolgreich ausgeloggt!",
                             Toast.LENGTH_SHORT);
@@ -75,5 +74,7 @@ public class ProfilFragment extends Fragment {
         final TextView emailTextView = root.findViewById(R.id.email);
         emailTextView.setText(this.email);
         return root;
+
+
     }
 }

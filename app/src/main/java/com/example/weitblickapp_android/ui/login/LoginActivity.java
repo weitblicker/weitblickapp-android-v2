@@ -149,6 +149,14 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent  =new Intent( this, MapsActivity.class);
 
         session.createLoginSession("Jannik","jannik.bergmann@hs-osnabrueck.de");
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+        }
+
+
         startActivity(intent);
 
         //Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
