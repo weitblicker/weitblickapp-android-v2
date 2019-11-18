@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toStartOf="@+id/faqtext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_blog" />
+        app:srcCompat="@drawable/icon_faq" />
 
     <ImageView
         android:id="@+id/faq"
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toStartOf="@+id/blogtext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blog"
-        app:srcCompat="@drawable/icon_faq" />
+        app:srcCompat="@drawable/icon_blog" />
 
     <TextView
         android:id="@+id/blogtext"
