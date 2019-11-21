@@ -38,10 +38,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
-        </activity>
-        <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_app"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

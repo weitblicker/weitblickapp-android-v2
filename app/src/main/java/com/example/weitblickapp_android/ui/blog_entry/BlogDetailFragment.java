@@ -20,7 +20,7 @@ public class BlogDetailFragment extends Fragment {
     String text;
     String imageUrl;
     String date;
-    
+
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();

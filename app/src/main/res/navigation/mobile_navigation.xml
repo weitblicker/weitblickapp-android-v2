@@ -6,6 +6,12 @@
     app:startDestination="@+id/nav_tabs">
 
     <fragment
+        android:id="@+id/nav_profil"
+        android:name="com.example.weitblickapp_android.ui.profil.ProfilFragment"
+        android:label="Profil"
+        tools:layout="@layout/fragment_profil" />
+
+    <fragment
         android:id="@+id/nav_tabs"
         android:name="com.example.weitblickapp_android.ui.tabs.TabsFragment"
         android:label="@string/menu_tabs"
@@ -24,19 +30,10 @@
         tools:layout="@layout/fragment_project" />
 
     <fragment
-
         android:id="@+id/nav_faq"
         android:name="com.example.weitblickapp_android.ui.faq.FaqListFragment"
         android:label="@string/menu_faq"
         tools:layout="@layout/fragment_faq" />
-
-    <fragment
-
-        android:id="@+id/nav_maps"
-        android:name="com.example.weitblickapp_android.ui.event.MapsFragment"
-        android:label="@string/title_activity_maps"
-        tools:layout="@layout/fragment_event" />
-
 
     <fragment
         android:id="@+id/nav_stats"
@@ -46,9 +43,9 @@
 
     <fragment
         android:id="@+id/nav_location"
-        android:name="com.example.weitblickapp_android.ui.location.LocationFragment"
+        android:name="com.example.weitblickapp_android.ui.location.LocationMapFragment"
         android:label="@string/menu_location"
-        tools:layout="@layout/fragment_location" />
+        tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/nav_blog"
