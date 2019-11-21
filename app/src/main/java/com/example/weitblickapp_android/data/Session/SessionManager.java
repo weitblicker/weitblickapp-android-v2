@@ -98,6 +98,16 @@ public class SessionManager {
         return user;
     }
 
+    public String getUserName() {
+
+        return pref.getString(KEY_NAME, null);
+    }
+
+    public String getEmail() {
+
+        return pref.getString(KEY_EMAIL, null);
+    }
+
     /**
      * Clear session details
      * */

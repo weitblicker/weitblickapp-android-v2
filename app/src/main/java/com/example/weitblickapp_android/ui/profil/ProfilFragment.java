@@ -37,6 +37,7 @@ public class ProfilFragment extends Fragment {
 
         session = new SessionManager(getActivity().getApplicationContext());
 
+        email = session.getEmail();
 
 
         final Button logOutButton = root.findViewById(R.id.log_out);

@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private boolean saveLogin = false;
+    private boolean debug = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //lade Login Preferences, muss nach Initalisierung der Textfelder geladen werden
         if(loginPref.isLoginSaved()){
-            Toast.makeText(getApplicationContext(),"Login is Saved! (:",Toast.LENGTH_SHORT).show();
+            if(debug)Toast.makeText(getApplicationContext(),"Login is Saved! (:",Toast.LENGTH_SHORT).show();
             checkBox.setChecked(true);
             usernameEditText.setText(loginPref.getUserName());
             passwordEditText.setText(loginPref.getPassword());
@@ -179,6 +180,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
 
+        if(debug)Toast.makeText(getApplicationContext(),"Willkommen " + model.getDisplayName(),Toast.LENGTH_SHORT).show();
+
         Intent intent  =new Intent( this, MapsActivity.class);
         session.createLoginSession("Jannik","jannik.bergmann@hs-osnabrueck.de");
 
@@ -187,15 +190,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
-
         if (count == 0) {
             super.onBackPressed();
         }
 
-
         startActivity(intent);
-
-        //Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
@@ -203,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void switchToRegister(){
-        Intent intent  =new Intent( this, RegisterActivity.class);
+        Intent intent  = new Intent( this, RegisterActivity.class);
         startActivity(intent);
     }
 }
