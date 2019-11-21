@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
                 R.id.nav_tabs, R.id.nav_project, R.id.nav_more,
                 R.id.nav_stats, R.id.nav_location, R.id.nav_blog, R.id.nav_faq)
-
-                .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);

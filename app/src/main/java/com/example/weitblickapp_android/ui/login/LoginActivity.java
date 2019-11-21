@@ -18,15 +18,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.MapsActivity;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.LoginPreferences;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.register.RegisterActivity;
 
@@ -35,25 +36,33 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private SessionManager session;
+    private LoginPreferences loginPref;
+    private EditText usernameEditText;
+    private EditText passwordEditText;
+    private boolean saveLogin = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         session = new SessionManager(getApplicationContext());
+        loginPref = new LoginPreferences(getApplicationContext());
 
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
+        usernameEditText = findViewById(R.id.username);
+        passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final Button registerButton = findViewById(R.id.sign_up);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final ImageView loginImage = findViewById(R.id.loginPicture);
+        final CheckBox checkBox = findViewById(R.id.save_login);
 
-        loginImage.setImageResource(R.drawable.login_logo);
+        loginImage.setImageResource(R.drawable.ic_wbcd_logo_standard_black_font);
+
+
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -124,6 +133,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //lade Login Preferences, muss nach Initalisierung der Textfelder geladen werden
+        if(loginPref.isLoginSaved()){
+            Toast.makeText(getApplicationContext(),"Login is Saved! (:",Toast.LENGTH_SHORT).show();
+            checkBox.setChecked(true);
+            usernameEditText.setText(loginPref.getUserName());
+            passwordEditText.setText(loginPref.getPassword());
+        }
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,14 +158,33 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+        //handle save-login checkbox
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    saveLogin = true;
+                }
+                else{
+                    saveLogin =false;
+                    loginPref.clearLoginPreferences();
+                    loginPref.setTo_NOT_Save();
+                }
+            }
+        });
+
+
+
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Intent intent  =new Intent( this, MapsActivity.class);
 
+        Intent intent  =new Intent( this, MapsActivity.class);
         session.createLoginSession("Jannik","jannik.bergmann@hs-osnabrueck.de");
+
+        if(saveLogin){
+            loginPref.saveLogin(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+        }
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
 
