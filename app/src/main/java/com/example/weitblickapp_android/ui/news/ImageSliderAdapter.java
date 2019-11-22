@@ -25,6 +25,7 @@ public class ImageSliderAdapter extends PagerAdapter {
     }
 
     public ImageSliderAdapter(FragmentManager fm, Context context, ArrayList<String> images) {
+        super();
         this.context = context;
         this.images = images;
     }

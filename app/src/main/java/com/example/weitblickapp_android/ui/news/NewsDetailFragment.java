@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,11 +22,18 @@ public class NewsDetailFragment extends Fragment {
     String text;
     String date;
     ArrayList<String> imageUrls = new ArrayList<String>();
-    private ViewPager pagerAdaptor;
+    public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
 
 
     public NewsDetailFragment() {
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ViewPager mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mViewPager.setAdapter(new ImageSliderAdapter(getChildFragmentManager(),getActivity(), imageUrls));
     }
     public NewsDetailFragment(NewsViewModel article){
         this.title = article.getTitle();
@@ -42,11 +48,6 @@ public class NewsDetailFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_news_detail, container, false);
-        this.pagerAdaptor = (ViewPager)root.findViewById(R.id.view_pager);
-
-        ImageView imageView = root.findViewById(R.id.detail_image);
-
-        this.pagerAdaptor.setAdapter(new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls));
 
         /*final ImageView imageView = root.findViewById(R.id.detail_image);
 
@@ -59,7 +60,6 @@ public class NewsDetailFragment extends Fragment {
         locationTextView.setText(this.location);
 
 */
-
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
