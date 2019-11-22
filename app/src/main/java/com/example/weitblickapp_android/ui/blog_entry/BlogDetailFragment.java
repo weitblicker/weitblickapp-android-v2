@@ -46,7 +46,7 @@ public class BlogDetailFragment extends Fragment {
         weitblickUrl = weitblickUrl.concat(imageUrl);
         
         final ImageView imageView = root.findViewById(R.id.detail_image);
-        Picasso.with(getContext()).load(weitblickUrl).fit().centerCrop().
+        Picasso.get().load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
         final TextView titleTextView = root.findViewById(R.id.detail_title);

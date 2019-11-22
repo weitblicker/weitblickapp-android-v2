@@ -63,7 +63,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
         //Set picture for BlogEntries using Picasso-Lib
         weitblickUrl = weitblickUrl.concat(blog.getImageUrl());
 
-        Picasso.with(mContext).load(weitblickUrl).fit().centerCrop().
+        Picasso.get().load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 

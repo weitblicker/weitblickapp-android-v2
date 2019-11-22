@@ -53,7 +53,7 @@ public class ProjectDetailFragment extends Fragment {
 
         weitblickUrl = weitblickUrl.concat(imageUrl);
 
-        Picasso.with(getContext()).load(weitblickUrl).fit().centerCrop().
+        Picasso.get().load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
