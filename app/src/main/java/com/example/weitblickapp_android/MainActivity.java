@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.nav_profil) {
             ProfilFragment fragment = new ProfilFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
+            ft.replace(R.id.tabs, fragment);
             ft.addToBackStack(null);
             ft.commit();
         }

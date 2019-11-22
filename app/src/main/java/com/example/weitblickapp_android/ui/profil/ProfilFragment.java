@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +40,16 @@ public class ProfilFragment extends Fragment {
         kmTextView.setText(this.km);
         final TextView emailTextView = root.findViewById(R.id.email);
         emailTextView.setText(this.email);
+        ImageButton back = (ImageButton) root.findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
         return root;
     }
 }

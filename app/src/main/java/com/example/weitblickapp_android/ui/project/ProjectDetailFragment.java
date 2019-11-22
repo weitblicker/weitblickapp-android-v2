@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
@@ -72,6 +73,18 @@ public class ProjectDetailFragment extends Fragment {
 
             }
         });
+
+        ImageButton back = (ImageButton) root.findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
+
 
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,6 +50,16 @@ public class FaqListFragment extends Fragment {
         faqViewModel =
                 ViewModelProviders.of(this).get(FaqViewModel.class);
         View root = inflater.inflate(R.layout.fragment_faq, container, false);
+        ImageButton back = (ImageButton) root.findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
         ListView listview = (ListView)root.findViewById(R.id.listView);
 
         FaqListFragment.CustomAdapter customAdapter = new FaqListFragment.CustomAdapter();

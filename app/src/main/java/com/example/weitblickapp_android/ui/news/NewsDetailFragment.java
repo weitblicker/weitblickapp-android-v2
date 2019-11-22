@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.squareup.picasso.Picasso;
 
@@ -38,6 +40,7 @@ public class NewsDetailFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         String weitblickUrl = "https://new.weitblicker.org";
+        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         View root = inflater.inflate(R.layout.fragment_news_detail, container, false);
 
@@ -55,6 +58,17 @@ public class NewsDetailFragment extends Fragment {
         textTextView.setText(this.text);
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         dateTextView.setText(this.date);
+
+        ImageButton back = (ImageButton) root.findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
 
         return root;
     }
