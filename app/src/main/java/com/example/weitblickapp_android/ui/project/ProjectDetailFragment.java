@@ -14,12 +14,18 @@ import androidx.fragment.app.Fragment;
 
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 import com.squareup.picasso.Picasso;
 
-public class ProjectDetailFragment extends Fragment {
+public class ProjectDetailFragment extends Fragment implements OnMapReadyCallback {
 
     String location;
     String title;
@@ -27,6 +33,7 @@ public class ProjectDetailFragment extends Fragment {
     String imageUrl;
     Boolean favorite = false;
     View root;
+    private GoogleMap mMap;
 
     public ProjectDetailFragment() {
     }
@@ -59,6 +66,10 @@ public class ProjectDetailFragment extends Fragment {
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
         final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        //mapFragment.getMapAsync(this);
 
         changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,4 +119,14 @@ public class ProjectDetailFragment extends Fragment {
         mAnimatedPieView.applyConfig(config);
         mAnimatedPieView.start();
     };
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng sydney = new LatLng( 52.2984, 8.0132);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
 }

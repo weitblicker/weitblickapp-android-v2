@@ -34,7 +34,7 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback 
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), R.id.donation,
+                Toast.makeText(getActivity().getApplicationContext(), R.string.donation,
                         Toast.LENGTH_SHORT).show();
             }
         });
