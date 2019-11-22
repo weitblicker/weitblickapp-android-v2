@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.squareup.picasso.Picasso;
@@ -43,9 +44,10 @@ public class ImageSliderAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
+    //Setup Slider items and put them into ViewPager "container"
     @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+    @Override public Object instantiateItem(@NonNull ViewGroup container, int position) {
+
         LayoutInflater inflater = LayoutInflater.from(context);
         View itemView = inflater.inflate(R.layout.image_slider_item, container, false);
         ImageView imageView = itemView.findViewById(R.id.image_pager_item_image);
@@ -60,7 +62,8 @@ public class ImageSliderAdapter extends PagerAdapter {
                 .error(R.drawable.ic_wbcd_logo_standard_svg2)
                 .into(imageView);
 
-        container.addView(itemView);
+        ((ViewPager) container).addView(itemView);
+
         return imageView;
     }
 

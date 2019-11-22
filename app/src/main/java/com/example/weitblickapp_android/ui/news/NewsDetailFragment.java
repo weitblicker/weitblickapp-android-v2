@@ -1,6 +1,8 @@
 package com.example.weitblickapp_android.ui.news;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +24,10 @@ public class NewsDetailFragment extends Fragment {
     String text;
     String date;
     ArrayList<String> imageUrls = new ArrayList<String>();
+    ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
 
-
-    public NewsDetailFragment() {
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ViewPager mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
-        mViewPager.setAdapter(new ImageSliderAdapter(getChildFragmentManager(),getActivity(), imageUrls));
-    }
     public NewsDetailFragment(NewsViewModel article){
         this.title = article.getTitle();
         this.text = article.getText();
@@ -44,26 +37,48 @@ public class NewsDetailFragment extends Fragment {
             this.imageUrls.add(i, urlWeitblick + article.getImageUrls().get(i));
         }
     }
+
+    public NewsDetailFragment() {
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+      //  mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        //mViewPager.setAdapter(new ImageSliderAdapter(getChildFragmentManager(),getActivity(), imageUrls));
+       // mViewPager.bringToFront();
+
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_news_detail, container, false);
 
-        /*final ImageView imageView = root.findViewById(R.id.detail_image);
+        mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
+        ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
+        mViewPager.setAdapter(adapter);
+        mViewPager.bringToFront();
 
-        Picasso.get().load(imageUrls.get(2)).fit().centerCrop().
+
+
+
+        //Load 1 Picture into imageView (depricated)
+/*
+        final ImageView imageView = root.findViewById(R.id.detail_image);
+        Picasso.get().load(imageUrls.get(0)).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
-
-
-        final TextView locationTextView = root.findViewById(R.id.detail_location);
-        locationTextView.setText(this.location);
-
 */
+
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
-        textTextView.setText(this.text);
+
+        //Parse HTML in TextView
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
+        }
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         dateTextView.setText(this.date);
 

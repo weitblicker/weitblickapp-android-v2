@@ -94,11 +94,11 @@ public class BlogEntryListFragment extends ListFragment {
                         Integer blogId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
+                        text = text.trim();
+                        text = text.replaceAll("\n{2,}", "\n");
                         String published = responseObject.getString("published");
                         imageObject = responseObject.getJSONObject("image");
                         String imageUrl = imageObject.getString("url");
-
-                        text.trim();
 
                         //TODO: Check if picture exists
 
