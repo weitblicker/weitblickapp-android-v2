@@ -49,6 +49,7 @@ public class EventFragment extends Fragment {
     String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
     String[] text = {"Heute ist es wieder soweit für unser wöchentliches Weitblick-Treffen! Wir freuen uns hier all die neuen Gesichter begrüßen zu dürfen... ", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +168,17 @@ public class EventFragment extends Fragment {
 
 
             ImageButton detail = (ImageButton) view.findViewById(R.id.event_more_btn);
+            view.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, new EventDetailFragment(location[position], title[position], date[position], text[position]));
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+
             detail.setOnClickListener(new View.OnClickListener() {
 
                 @Override

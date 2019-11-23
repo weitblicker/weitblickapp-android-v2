@@ -1,31 +1,40 @@
 package com.example.weitblickapp_android.ui.project;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
-import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class ProjectDetailFragment extends Fragment {
+    static final String urlWeitblick = "https://new.weitblicker.org";
 
     String location;
     String title;
     String text;
-    String imageUrl;
+    ArrayList <String> imageUrls = new ArrayList<String>();
     Boolean favorite = false;
     View root;
+
+    public ImageSliderAdapter imageSlider;
+    private LayoutInflater mLayoutInflator;
+    ViewPager mViewPager;
 
     public ProjectDetailFragment() {
     }
@@ -33,7 +42,10 @@ public class ProjectDetailFragment extends Fragment {
     public ProjectDetailFragment(ProjectViewModel project){
         this.title = project.getName();
         this.text = project.getDescription();
-        this.imageUrl = project.getImageUrl();
+        //Concat imageUrls with Weitblick url and add values to "imageUrls"
+        for(int i = 0; i < project.getImageUrls().size(); i++){
+            this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
+        }
     }
 
     ProjectDetailFragment(String location, String title, String text){
@@ -45,17 +57,12 @@ public class ProjectDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
-
         root = inflater.inflate(R.layout.fragment_project_detail, container, false);
 
-        final ImageView imageView = root.findViewById(R.id.detail_image);
-
-        weitblickUrl = weitblickUrl.concat(imageUrl);
-
-        Picasso.with(getContext()).load(weitblickUrl).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        //Set Image-Slider Adapter
+        mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
+        ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
+        mViewPager.setAdapter(adapter);
 
         final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
 
@@ -77,8 +84,11 @@ public class ProjectDetailFragment extends Fragment {
         locationTextView.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
+
         final TextView textTextView = root.findViewById(R.id.detail_text);
-        textTextView.setText(this.text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
+        }
 
         drawPie();
 
