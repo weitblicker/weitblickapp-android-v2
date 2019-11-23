@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 
 import java.util.ArrayList;
 
@@ -41,35 +42,15 @@ public class NewsDetailFragment extends Fragment {
     public NewsDetailFragment() {
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-      //  mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
-        //mViewPager.setAdapter(new ImageSliderAdapter(getChildFragmentManager(),getActivity(), imageUrls));
-       // mViewPager.bringToFront();
-
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_news_detail, container, false);
 
+        //Set Image-Slider Adapter
         mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
-        mViewPager.bringToFront();
-
-
-
-
-        //Load 1 Picture into imageView (depricated)
-/*
-        final ImageView imageView = root.findViewById(R.id.detail_image);
-        Picasso.get().load(imageUrls.get(0)).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
-*/
 
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);

@@ -60,7 +60,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
-            weitblickUrl = weitblickUrl.concat(project.getImageUrl());
+            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
             Picasso.get()
                     .load(weitblickUrl)

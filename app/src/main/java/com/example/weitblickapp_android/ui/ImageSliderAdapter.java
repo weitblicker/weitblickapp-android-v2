@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.news;
+package com.example.weitblickapp_android.ui;
 
 import android.content.Context;
 import android.util.Log;
@@ -64,7 +64,7 @@ public class ImageSliderAdapter extends PagerAdapter {
 
         ((ViewPager) container).addView(itemView);
 
-        return imageView;
+        return itemView;
     }
 
 

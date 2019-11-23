@@ -86,7 +86,9 @@ public class ProjectListFragment extends ListFragment {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
                     JSONObject galleryObject = null;
-                    JSONArray imageObject = null;
+                    JSONObject image = null;
+                    ArrayList<String> imageUrls = new ArrayList<String>();
+                    JSONArray images = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer projectId = responseObject.getInt("id");
@@ -96,12 +98,20 @@ public class ProjectListFragment extends ListFragment {
                         //String teaser = responseObject.getString("teaser");
 
                         galleryObject = responseObject.getJSONObject("gallery");
-                        imageObject = galleryObject.getJSONArray("images");
-                        String imageUrl = imageObject.getJSONObject(0).getString("url");
+
+                        if (galleryObject != null) {
+                            images = galleryObject.getJSONArray("images");
+                            for (int x = 0; x < images.length(); x++) {
+                                image = images.getJSONObject(x);
+                                String url = image.getString("url");
+                                Log.e("!!!!ImageUrl!!!!",url);
+                                imageUrls.add(url);
+                            }
+                        }
 
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text,1, imageUrl);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text,1, imageUrls);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
