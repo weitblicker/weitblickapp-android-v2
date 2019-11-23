@@ -40,8 +40,6 @@ public class NewsDetailFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         String weitblickUrl = "https://new.weitblicker.org";
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         View root = inflater.inflate(R.layout.fragment_news_detail, container, false);
 
         final ImageView imageView = root.findViewById(R.id.detail_image);

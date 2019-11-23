@@ -26,7 +26,6 @@ public class ProfilFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).setActionBarTitle("Dein Profil");
         profilViewModel =
                 ViewModelProviders.of(this).get(ProfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profil, container, false);
