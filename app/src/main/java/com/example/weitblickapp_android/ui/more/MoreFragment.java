@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListFragment;
+import com.example.weitblickapp_android.ui.contact.ContactFragment;
 import com.example.weitblickapp_android.ui.event.EventDetailFragment;
 import com.example.weitblickapp_android.ui.faq.FaqListFragment;
+import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ public class MoreFragment extends Fragment {
 
         ImageButton faqButton = (ImageButton) root.findViewById(R.id.faqButton);
         ImageButton blogButton = (ImageButton) root.findViewById(R.id.blogButton);
+        ImageButton contactButton = (ImageButton) root.findViewById(R.id.contactButton);
 
         faqButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -52,6 +55,17 @@ public class MoreFragment extends Fragment {
                 ft.commit();
             }
         });
+
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new ContactFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
         return root;
     }
 
