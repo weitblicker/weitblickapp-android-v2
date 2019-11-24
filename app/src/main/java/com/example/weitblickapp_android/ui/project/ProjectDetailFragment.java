@@ -104,6 +104,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView textTextView = root.findViewById(R.id.detail_text);
         textTextView.setText(this.text);
 
+        SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
+
         drawPie();
 
         return root;
@@ -123,7 +126,6 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         LatLng sydney = new LatLng( 52.2984, 8.0132);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15.0f));

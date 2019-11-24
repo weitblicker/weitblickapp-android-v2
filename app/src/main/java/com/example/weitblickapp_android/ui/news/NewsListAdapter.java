@@ -79,7 +79,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.tabs, new NewsDetailFragment(article));
+                    ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
                     ft.addToBackStack(null);
                     ft.commit();
                 }
@@ -91,7 +91,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.tabs, new NewsDetailFragment(article));
+                    ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
                     ft.addToBackStack(null);
                     ft.commit();
                 }

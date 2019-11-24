@@ -172,7 +172,7 @@ public class EventFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.tabs, new EventDetailFragment(location[position], title[position], date[position], text[position]));
+                    ft.replace(R.id.fragment_container, new EventDetailFragment(location[position], title[position], date[position], text[position]));
                     ft.addToBackStack(null);
                     ft.commit();
                 }
@@ -183,7 +183,7 @@ public class EventFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.tabs, new EventDetailFragment(location[position], title[position], date[position], text[position]));
+                    ft.replace(R.id.fragment_container, new EventDetailFragment(location[position], title[position], date[position], text[position]));
                     ft.addToBackStack(null);
                     ft.commit();
                 }
