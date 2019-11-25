@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,9 +19,11 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,13 +32,12 @@ public class NewsListFragment extends ListFragment{
 
     ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
     private NewsListAdapter adapter;
-    private ViewPager sliderPager;
 
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        loadNews();
-    }
+      public void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+          loadNews();
+      }
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,14 +46,6 @@ public class NewsListFragment extends ListFragment{
 
         adapter = new NewsListAdapter(getActivity(), newsList, getFragmentManager());
         this.setListAdapter(adapter);
-
-        View detailsView = inflater.inflate(R.layout.fragment_news_detail, container, false);
-/*
-        ViewPager viewPager = detailsView.findViewById(R.id.view_pager);
-        NewsPagerAdapter adapter = new NewsPagerAdapter(this, newsList);
-        viewPager.setAdapter(adapter);
-
- */
 
         return view;
     }
@@ -68,7 +60,7 @@ public class NewsListFragment extends ListFragment{
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/news/?limit=4";
+        String URL = "https://new.weitblicker.org/rest/news/?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -78,17 +70,10 @@ public class NewsListFragment extends ListFragment{
             public void onResponse(JSONArray response) {
                 //Save Data into Model
                 String jsonData = response.toString();
-
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
-
                     JSONObject imageObject = null;
-                    JSONObject galleryObject = null;
-                    JSONObject image = null;
-                    ArrayList<String> imageUrls = new ArrayList<String>();
-                    JSONArray images = null;
-
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer newsId = responseObject.getInt("id");
@@ -96,22 +81,14 @@ public class NewsListFragment extends ListFragment{
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
 
+                        imageObject = responseObject.getJSONObject("image");
+                        String imageUrl = imageObject.getString("url");
+
                         String teaser = responseObject.getString("teaser");
+
                         text.trim();
 
-                        //Get all image-Urls from Gallery
-                        galleryObject = responseObject.getJSONObject("gallery");
-
-                        if (galleryObject != null) {
-                            images = galleryObject.getJSONArray("images");
-                            for (int x = 0; x < images.length(); x++) {
-                                image = images.getJSONObject(x);
-                                String url = image.getString("url");
-                                Log.e("!!!!ImageUrl!!!!",url);
-                                imageUrls.add(url);
-                            }
-                        }
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrl);
                         newsList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -120,9 +97,9 @@ public class NewsListFragment extends ListFragment{
 
                 }
 
-                //for(NewsViewModel newsArticle:newsList){
-                //  Log.e("NewsArticle",newsArticle.getUrls());
-                //}
+                for(NewsViewModel newsArticle:newsList){
+                    Log.e("NewsArticle",newsArticle.toString());
+                }
 
             }
 

@@ -5,36 +5,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.ImageSliderAdapter;
-
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
 
 public class BlogDetailFragment extends Fragment {
-    static final String urlWeitblick = "https://new.weitblicker.org";
+
     //String location;
     String title;
     String text;
-    ArrayList<String> imageUrls = new ArrayList<>();
+    String imageUrl;
     String date;
-
-    ViewPager mViewPager;
-    public ImageSliderAdapter imageSlider;
-    private LayoutInflater mLayoutInflator;
 
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();
-        for(int i = 0; i < blogEntry.getImageUrls().size(); i++){
-            this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
-        }
-        this.date = blogEntry.getPublished();
+        this.imageUrl = blogEntry.getImageUrl();
+
     }
 
     BlogDetailFragment(String title, String text, String date){
@@ -48,12 +40,16 @@ public class BlogDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        String weitblickUrl = "https://new.weitblicker.org";
+
         View root = inflater.inflate(R.layout.fragment_blog_detail, container, false);
 
-        mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
-        ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
-        mViewPager.setAdapter(adapter);
-
+        weitblickUrl = weitblickUrl.concat(imageUrl);
+        
+        final ImageView imageView = root.findViewById(R.id.detail_image);
+        Picasso.with(getContext()).load(weitblickUrl).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);

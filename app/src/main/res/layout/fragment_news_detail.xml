@@ -9,28 +9,13 @@
     tools:layout_editor_absoluteY="1dp"
     android:background="#ffffff"
     >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff">
-        <!-- ViewPager-Container to add slider-items into-->
-       <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="344dp"
-            android:layout_height="182dp"
-            android:layout_marginStart="27dp"
-            android:layout_marginLeft="27dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="27dp"
-            android:layout_marginRight="27dp"
-            android:background="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
 
-<!-- depricated single picture View
-          <ImageView
+        <ImageView
             android:id="@+id/detail_image"
             android:layout_width="344dp"
             android:layout_height="182dp"
@@ -40,11 +25,12 @@
             android:layout_marginEnd="27dp"
             android:layout_marginRight="27dp"
             android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/detail_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
-            -->
+
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="344dp"
@@ -103,6 +89,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon_back"
             tools:ignore="VectorDrawableCompat" />
-            app:layout_constraintTop_toBottomOf="@+id/view_pager" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

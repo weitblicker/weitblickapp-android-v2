@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class BlogEntryViewModel extends ViewModel {
@@ -16,12 +15,12 @@ public class BlogEntryViewModel extends ViewModel {
     private String title;
     private String text;
     private  int image_id;
-    private ArrayList<String> imageUrls;
+    private String imageUrl;
     Date published;
     private int location_id;
 
 
-    public BlogEntryViewModel(int id, String title, String text, String published, ArrayList<String> imageUrls) {
+    public BlogEntryViewModel(int id, String title, String text, String published, String imageUrl) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -30,7 +29,7 @@ public class BlogEntryViewModel extends ViewModel {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        this.imageUrls = imageUrls;
+        this.imageUrl = imageUrl;
     }
 
     public BlogEntryViewModel(int id, String title, String text, String published) {
@@ -87,9 +86,9 @@ public class BlogEntryViewModel extends ViewModel {
         this.published = published;
     }
 
-    public ArrayList<String> getImageUrls() { return imageUrls; }
+    public String getImageUrl() { return imageUrl; }
 
-    public void setImageUrl(ArrayList<String> imageUrl) { this.imageUrls = imageUrls; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
 
     public int getLocation_id() {

@@ -52,18 +52,18 @@
         android:layout_height="27dp"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
         android:background="@menu/btn_round"
         android:enabled="false"
-        android:fontFamily="@font/opensansbold"
         android:text="@string/action_sign_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save_login"
-        app:layout_constraintVertical_bias="0.179" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintVertical_bias="0.2"
+        android:fontFamily="@font/opensansbold"/>
 
     <ProgressBar
         android:id="@+id/loading"
@@ -119,19 +119,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up"
         android:fontFamily="@font/open_sans"/>
-
-    <CheckBox
-        android:id="@+id/save_login"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="30dp"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-
-        android:text="Login-Daten speichern?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

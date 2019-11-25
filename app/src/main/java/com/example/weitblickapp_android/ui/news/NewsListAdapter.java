@@ -61,9 +61,9 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
             final NewsViewModel article = (NewsViewModel) getItem(position);
 
-            weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));
+            weitblickUrl = weitblickUrl.concat(article.getImageUrl());
 
-            Picasso.get().load(weitblickUrl).fit().centerCrop().
+            Picasso.with(mContext).load(weitblickUrl).fit().centerCrop().
                      placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 

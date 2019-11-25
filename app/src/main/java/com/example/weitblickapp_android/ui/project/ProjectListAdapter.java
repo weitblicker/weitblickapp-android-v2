@@ -60,14 +60,11 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
-            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+            weitblickUrl = weitblickUrl.concat(project.getImageUrl());
 
-            Picasso.get()
-                    .load(weitblickUrl)
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+            Picasso.with(mContext).load(weitblickUrl).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
             textView_title.setText(project.getName());
            // textView_location.setText(project.getDescription());
@@ -98,6 +95,5 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         return view;
     }
-
 }
 

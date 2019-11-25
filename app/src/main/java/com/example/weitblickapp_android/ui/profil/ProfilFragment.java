@@ -5,14 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.data.Session.SessionManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,8 +18,6 @@ import androidx.lifecycle.ViewModelProviders;
 public class ProfilFragment extends Fragment {
 
     private ProfilViewModel profilViewModel;
-    private SessionManager session;
-
 
     private String donation = "10,40 €";
     private String password = "******";
@@ -34,36 +29,6 @@ public class ProfilFragment extends Fragment {
         profilViewModel =
                 ViewModelProviders.of(this).get(ProfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profil, container, false);
-
-        session = new SessionManager(getActivity().getApplicationContext());
-
-        email = session.getEmail();
-
-
-        final Button logOutButton = root.findViewById(R.id.log_out);
-
-        logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!session.isLoggedIn()){
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                            "Du bist schon ausgeloggt!",
-                            Toast.LENGTH_SHORT);
-
-                    toast.show();
-                }
-                else {
-                    session.logoutUser();
-                    getActivity().onBackPressed();
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                            "Erfolgreich ausgeloggt!",
-                            Toast.LENGTH_SHORT);
-
-                    toast.show();
-                }
-            }
-        });
-
         final ImageView imageView = root.findViewById(R.id.imageProfil);
         imageView.setImageResource(R.drawable.ic_launcher_background);
         final TextView donationTextView = root.findViewById(R.id.donation);
@@ -85,7 +50,5 @@ public class ProfilFragment extends Fragment {
             }
         });
         return root;
-
-
     }
 }
