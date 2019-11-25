@@ -42,6 +42,7 @@ public class BlogEntryListFragment extends ListFragment {
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         ((MainActivity) getActivity()).setActionBarTitle("Blog");
 
         ((MainActivity) getActivity()).setActionBarTitle("Blog");

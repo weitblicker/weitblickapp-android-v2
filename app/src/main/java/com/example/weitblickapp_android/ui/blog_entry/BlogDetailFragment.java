@@ -1,6 +1,8 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +59,12 @@ public class BlogDetailFragment extends Fragment {
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
-        textTextView.setText(this.text);
+
+        //Parse HTML in TextView
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
+        }
+
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         dateTextView.setText(this.date);
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
