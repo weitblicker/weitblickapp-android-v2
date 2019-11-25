@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class NewsViewModel extends ViewModel {
@@ -21,18 +22,17 @@ public class NewsViewModel extends ViewModel {
     private int image_id;
     private Date published;
     private Location location;
-    private String imageUrl;
+    private ArrayList<String> imageUrls;
 
     public NewsViewModel() {
-
     }
 
-    public NewsViewModel(int id, String title, String text, String teaser,String date, String imageUrl) {
+    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList<String> imageUrl) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.teaser = teaser;
-        this.imageUrl = imageUrl;
+        this.imageUrls = imageUrl;
 
         try {
             this.published = formatterRead.parse(date);
@@ -97,9 +97,9 @@ public class NewsViewModel extends ViewModel {
         this.teaser = teaser;
     }
 
-    public String getImageUrl() { return imageUrl; }
+    public ArrayList<String> getImageUrls() { return imageUrls; }
 
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public void setImageUrls(ArrayList<String> imageUrl) { this.imageUrls = imageUrl; }
 
     @Override
     public String toString() {

@@ -59,13 +59,6 @@ public class LoginViewModel extends ViewModel {
             return false;
         }
 
-        /*
-        if (username.equals("admin")){
-            return true;
-        }
-        else return false;
-        */
-
         if (username.contains("@")) {
             return Patterns.EMAIL_ADDRESS.matcher(username).matches();
         } else {
@@ -75,12 +68,6 @@ public class LoginViewModel extends ViewModel {
 
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
-
-        /*
-        if(password.equals("12345")){
-            return true;
-        }
-        */
         return password != null && password.trim().length() > 5;
     }
 }

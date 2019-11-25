@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/detail_image"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
             android:layout_width="344dp"
             android:layout_height="182dp"
             android:layout_marginStart="27dp"
@@ -29,7 +29,7 @@
             app:layout_constraintHorizontal_bias="0.533"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            />
 
         <TextView
             android:id="@+id/detail_date"
@@ -46,7 +46,7 @@
             app:layout_constraintBottom_toTopOf="@+id/detail_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/detail_title"
-            app:layout_constraintTop_toBottomOf="@+id/detail_image" />
+            app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
         <TextView
             android:id="@+id/detail_title"
@@ -64,7 +64,7 @@
             app:layout_constraintBottom_toTopOf="@+id/detail_text"
             app:layout_constraintEnd_toStartOf="@+id/detail_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_image"
+            app:layout_constraintTop_toBottomOf="@+id/view_pager"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
