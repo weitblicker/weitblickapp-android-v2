@@ -44,6 +44,8 @@ public class BlogEntryListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((MainActivity) getActivity()).setActionBarTitle("Blog");
 
+        ((MainActivity) getActivity()).setActionBarTitle("Blog");
+
         View view = inflater.inflate(R.layout.fragment_blog, container, false);
 
         adapter = new BlogEntryListAdapter(getActivity(), blogEntries, getFragmentManager());
@@ -88,20 +90,36 @@ public class BlogEntryListFragment extends ListFragment {
                     JSONObject responseObject = null;
                     JSONObject imageObject = null;
                     BlogEntryViewModel temp = null;
+                    JSONObject galleryObject = null;
+                    JSONObject image = null;
+                    ArrayList<String> imageUrls = new ArrayList<String>();
+                    JSONArray images = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer blogId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
+                        text = text.trim();
+                        text = text.replaceAll("\n{2,}", "\n");
                         String published = responseObject.getString("published");
-                        imageObject = responseObject.getJSONObject("image");
-                        String imageUrl = imageObject.getString("url");
 
-                        text.trim();
+                        //Get all imageUrls from Gallery
+                        try {
+                            galleryObject = responseObject.getJSONObject("gallery");
 
+                            images = galleryObject.getJSONArray("images");
+                            for (int x = 0; x < images.length(); x++) {
+                                image = images.getJSONObject(x);
+                                String url = image.getString("url");
+                                imageUrls.add(url);
+                            }
+
+                        }catch(JSONException e){
+
+                        }
                         //TODO: Check if picture exists
 
-                        temp = new BlogEntryViewModel(blogId, title, text, published, imageUrl);
+                        temp = new BlogEntryViewModel(blogId, title, text, published, imageUrls);
 
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
@@ -110,9 +128,12 @@ public class BlogEntryListFragment extends ListFragment {
                     }
 
                 }
+                /*DEBUGGING PURPOSE
                 for(BlogEntryViewModel entry:blogEntries){
                     Log.e("BlogEntry",entry.toString());
                 }
+                */
+
 
             }
 

@@ -1,6 +1,7 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,9 +62,12 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
         final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
 
         //Set picture for BlogEntries using Picasso-Lib
-        weitblickUrl = weitblickUrl.concat(blog.getImageUrl());
-
-        Picasso.with(mContext).load(weitblickUrl).fit().centerCrop().
+        try {
+            weitblickUrl = weitblickUrl.concat(blog.getImageUrls().get(0));
+        }catch(IndexOutOfBoundsException e){
+            Log.e("Info", "no pictures for this BlogEntry");
+        }
+        Picasso.get().load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
