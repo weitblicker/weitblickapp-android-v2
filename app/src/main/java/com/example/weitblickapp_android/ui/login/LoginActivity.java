@@ -1,17 +1,8 @@
 package com.example.weitblickapp_android.ui.login;
 
 import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -25,7 +16,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.weitblickapp_android.MapsActivity;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginPreferences;
 import com.example.weitblickapp_android.data.Session.SessionManager;
@@ -182,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(debug)Toast.makeText(getApplicationContext(),"Willkommen " + model.getDisplayName(),Toast.LENGTH_SHORT).show();
 
-        Intent intent  =new Intent( this, MapsActivity.class);
+       // Intent intent  =new Intent( this, MapsActivity.class);
         session.createLoginSession("Jannik","jannik.bergmann@hs-osnabrueck.de");
 
         if(saveLogin){
@@ -194,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
             super.onBackPressed();
         }
 
-        startActivity(intent);
+       // startActivity(intent);
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {

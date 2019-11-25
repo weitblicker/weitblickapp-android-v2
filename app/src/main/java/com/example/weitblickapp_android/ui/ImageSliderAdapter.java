@@ -51,7 +51,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         View itemView = inflater.inflate(R.layout.image_slider_item, container, false);
         ImageView imageView = itemView.findViewById(R.id.image_pager_item_image);
-
+        
         Log.e("!!URL!!", images.get(position));
 
         Picasso.get()
