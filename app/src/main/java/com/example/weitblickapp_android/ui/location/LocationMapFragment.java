@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.se.omapi.Session;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.login.LoginActivity;
 import com.example.weitblickapp_android.ui.stats.StatsViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -44,6 +47,8 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback 
 
     private GoogleMap mMap;
     Location currentLocation;
+    private SessionManager session;
+
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
     boolean nope = false;
@@ -52,12 +57,21 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback 
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_map, container, false);
 
+        session = new SessionManager(getActivity().getApplicationContext());
+
         ImageView img = root.findViewById(R.id.imageView);
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.donation,
-                        Toast.LENGTH_SHORT).show();
+
+                if(!session.isLoggedIn()){
+                    Intent redirect=new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(redirect);
+                }
+                else{
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.donation,
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
