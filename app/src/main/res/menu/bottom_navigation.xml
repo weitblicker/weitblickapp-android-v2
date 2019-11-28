@@ -16,7 +16,7 @@
         android:icon="@drawable/icon_bike"
         android:title="@string/menu_location" />
     <item
-        android:id="@+id/nav_stats"
+        android:id="@+id/nav_stats_tabs"
         android:icon="@drawable/icon_stats"
         android:title="@string/menu_stats" />
     <item

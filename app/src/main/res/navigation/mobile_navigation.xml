@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_tabs" />
 
     <fragment
+        android:id="@+id/nav_stats_tabs"
+        android:name="com.example.weitblickapp_android.ui.tabs.TabsStatsFragment"
+        android:label="@string/menu_stats"
+        tools:layout="@layout/fragment_tabs" />
+
+    <fragment
         android:id="@+id/nav_news"
         android:name="com.example.weitblickapp_android.ui.news.NewsListFragment"
         android:label="@string/menu_tabs"
@@ -34,12 +40,6 @@
         android:name="com.example.weitblickapp_android.ui.faq.FaqListFragment"
         android:label="@string/menu_faq"
         tools:layout="@layout/fragment_faq" />
-
-    <fragment
-        android:id="@+id/nav_stats"
-        android:name="com.example.weitblickapp_android.ui.stats.StatsFragment"
-        android:label="@string/menu_stats"
-        tools:layout="@layout/fragment_stats" />
 
     <fragment
         android:id="@+id/nav_location"
