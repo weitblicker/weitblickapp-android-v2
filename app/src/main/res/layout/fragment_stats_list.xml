@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/distance"
+        android:id="@+id/distancetext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="71dp"
@@ -49,7 +49,7 @@
         android:fontFamily="@font/open_sans"
         android:text="200 min"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/distance"
+        app:layout_constraintEnd_toStartOf="@+id/distancetext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/durationtext" />
 
@@ -81,7 +81,7 @@
         android:fontFamily="@font/opensansbold"
         android:text="Strecke"
         android:textColor="@color/wb_orange"
-        app:layout_constraintBottom_toTopOf="@+id/distance"
+        app:layout_constraintBottom_toTopOf="@+id/distancetext"
         app:layout_constraintEnd_toStartOf="@+id/donationtext"
         app:layout_constraintStart_toEndOf="@+id/durationtext"
         app:layout_constraintTop_toTopOf="parent" />
@@ -113,7 +113,7 @@
         android:text="200 €"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/distance"
+        app:layout_constraintStart_toEndOf="@+id/distancetext"
         app:layout_constraintTop_toBottomOf="@+id/donationtext" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

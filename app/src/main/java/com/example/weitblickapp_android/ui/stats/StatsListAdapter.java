@@ -5,19 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModel;
 
 import com.example.weitblickapp_android.R;
-
-import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -56,7 +48,7 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
         view = mInflater.inflate(R.layout.fragment_stats_list, null);
 
         TextView textView_duration = (TextView) view.findViewById(R.id.duration);
-        TextView textView_distance = (TextView) view.findViewById(R.id.distance);
+        TextView textView_distance = (TextView) view.findViewById(R.id.distancetext);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
         TextView textView_donation = (TextView) view.findViewById(R.id.donation);
 

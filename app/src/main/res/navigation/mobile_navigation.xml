@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/nav_location"
-        android:name="com.example.weitblickapp_android.ui.location.LocationMapFragment"
+        android:name="com.example.weitblickapp_android.ui.location.MapOverviewFragment"
         android:label="@string/menu_location"
         tools:layout="@layout/fragment_map" />
 
