@@ -44,8 +44,7 @@ public class EndFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        endViewModel =
-                ViewModelProviders.of(this).get(EndViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_end, container, false);
         ListView listview = (ListView) root.findViewById(R.id.list);
 
