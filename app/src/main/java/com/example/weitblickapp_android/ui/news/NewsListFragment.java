@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NewsListFragment extends ListFragment{
 
@@ -49,12 +51,6 @@ public class NewsListFragment extends ListFragment{
         this.setListAdapter(adapter);
 
         View detailsView = inflater.inflate(R.layout.fragment_news_detail, container, false);
-/*
-        ViewPager viewPager = detailsView.findViewById(R.id.view_pager);
-        NewsPagerAdapter adapter = new NewsPagerAdapter(this, newsList);
-        viewPager.setAdapter(adapter);
-
- */
 
         return view;
     }
@@ -98,7 +94,16 @@ public class NewsListFragment extends ListFragment{
                         String date = responseObject.getString("published");
 
                         String teaser = responseObject.getString("teaser");
+
                         text.trim();
+
+                        //Find image-tag markdowns and extract
+                        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
+                                .matcher(text);
+                        while (m.find()) {
+                            Log.e("ImageUrl", m.group(2));
+                            imageUrls.add(m.group(2));
+                        }
 
                         //Get all image-Urls from Gallery
                         try {
@@ -107,11 +112,10 @@ public class NewsListFragment extends ListFragment{
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                Log.e("!!!!ImageUrl!!!!",url);
                                 imageUrls.add(url);
                             }
                         }catch(JSONException e){
-                            Log.e("Keine Gallery", "für" + title);
+                           // Log.e("Keine Gallery", "für" + title);
                         }
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
@@ -149,10 +153,6 @@ public class NewsListFragment extends ListFragment{
             }
         };
         requestQueue.add(objectRequest);
-    }
-    public class Image{
-        String url;
-        String crop_from;
     }
 }
 

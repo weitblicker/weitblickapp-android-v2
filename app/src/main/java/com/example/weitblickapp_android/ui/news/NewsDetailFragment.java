@@ -3,6 +3,7 @@ package com.example.weitblickapp_android.ui.news;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class NewsDetailFragment extends Fragment {
         this.text = article.getText();
         this.date = article.getDate();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
+
         for(int i = 0; i < article.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + article.getImageUrls().get(i));
         }
@@ -58,9 +60,28 @@ public class NewsDetailFragment extends Fragment {
         final TextView textTextView = root.findViewById(R.id.detail_text);
 
         //Parse HTML in TextView
+
+        Spannable html;
+/*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            html = (Spannable) Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT);
+            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
+        }else {
+            html = (Spannable) Html.fromHtml(this.text);
+        }
+        textTextView.setText((html));
+
+*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
         }
+        /*
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textTextView.setText(this.text);
+        }
+
+*/
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         dateTextView.setText(this.date);
 
