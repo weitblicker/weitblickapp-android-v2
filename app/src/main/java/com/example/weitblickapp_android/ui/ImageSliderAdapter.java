@@ -54,6 +54,7 @@ public class ImageSliderAdapter extends PagerAdapter {
 
         Log.e("!!URL!!", images.get(position));
 
+
         Picasso.get()
                 .load(images.get(position))
                 .fit()

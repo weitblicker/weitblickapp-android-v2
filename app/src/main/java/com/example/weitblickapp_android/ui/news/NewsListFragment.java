@@ -18,7 +18,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 
 import org.json.JSONArray;
@@ -104,11 +103,6 @@ public class NewsListFragment extends ListFragment{
                         //Get all image-Urls from Gallery
                         try {
                             galleryObject = responseObject.getJSONObject("gallery");
-                        }catch(JSONException e){
-
-                        }
-
-                        if (galleryObject != null) {
                             images = galleryObject.getJSONArray("images");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
@@ -116,7 +110,10 @@ public class NewsListFragment extends ListFragment{
                                 Log.e("!!!!ImageUrl!!!!",url);
                                 imageUrls.add(url);
                             }
+                        }catch(JSONException e){
+                            Log.e("Keine Gallery", "für" + title);
                         }
+
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
                         newsList.add(temp);
                         adapter.notifyDataSetChanged();
