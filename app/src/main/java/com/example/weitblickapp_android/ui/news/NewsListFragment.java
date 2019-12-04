@@ -20,9 +20,11 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,7 +102,11 @@ public class NewsListFragment extends ListFragment{
                         text.trim();
 
                         //Get all image-Urls from Gallery
-                        galleryObject = responseObject.getJSONObject("gallery");
+                        try {
+                            galleryObject = responseObject.getJSONObject("gallery");
+                        }catch(JSONException e){
+
+                        }
 
                         if (galleryObject != null) {
                             images = galleryObject.getJSONArray("images");

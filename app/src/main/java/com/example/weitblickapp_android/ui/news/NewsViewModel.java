@@ -111,7 +111,4 @@ public class NewsViewModel extends ViewModel {
                 ", date=" + published +
                 '}';
     }
-
-
-
 }
