@@ -6,16 +6,14 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Base64;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -29,9 +27,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
-import com.example.weitblickapp_android.MainActivity;
-
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -117,14 +112,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void sendSegment(){
 
-        String URL = "new.weitblicker.org/rest/cycle/segment";
+        String URL = "https://new.weitblicker.org/rest/cycle/segment/";
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("start", "2019-10-01T07:08");
             jsonBody.put("end", "2019-10-01T07:08");
             jsonBody.put("distance", "0.5");
+            jsonBody.put("project", "1");
             jsonBody.put("tour", "1");
+            jsonBody.put("token", "Tolkien");
         }catch(JSONException e) {
         }
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -132,14 +129,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onResponse(JSONObject response) {
-
+                Log.e("Server Response", response.toString());
             }
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Display Error Message
-                Log.e("Rest Response", error.toString());
+                Log.e("Server Response onError", error.toString());
             }
         }){
             //Override getHeaders() to set Credentials for REST-Authentication
@@ -149,7 +145,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 String credentials = "surfer:hangloose";
                 String auth = "Basic "
                         + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Content-Type", "application/json");
+                headers.put("Media-Type", "application/json");
                 headers.put("Authorization", auth);
                 return headers;
             }

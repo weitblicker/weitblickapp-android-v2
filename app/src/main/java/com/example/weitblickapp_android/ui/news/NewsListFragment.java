@@ -43,28 +43,14 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private NewsListAdapter adapter;
     private int preLast;
     private String lastItemDate;
-    private String lastItemDateCheck = "Haaall";
-
-    public ArrayList <String> extractImageUrls(String text){
-        //Find image-tag markdowns and extract
-        ArrayList <String> imageUrls = new ArrayList<>();
-        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
-                .matcher(text);
-        while (m.find()) {
-            Log.e("ImageUrl", m.group(2));
-            imageUrls.add(m.group(2));
-        }
-        return imageUrls;
-    }
+    private String lastItemDateCheck = "";
+    private String url = "new.weitblicker.org/rest/news";
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadNews();
-        //extractImageUrls(newsList);
-
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -220,7 +206,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                 String jsonData = response.toString();
 
                 //Parse the JSON response array by iterating over it
-                for (int i = 0; i < response.length(); i++) {
+                for (int i = 1; i < response.length(); i++) {
                     JSONObject responseObject = null;
 
                     JSONObject imageObject = null;
@@ -230,7 +216,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     JSONArray images = null;
 
                     try {
-                        responseObject = response.getJSONObject(i + 1);
+                        responseObject = response.getJSONObject(i);
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
@@ -292,6 +278,18 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
             }
         };
         requestQueue.add(objectRequest);
+    }
+
+    public ArrayList <String> extractImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
+                .matcher(text);
+        while (m.find()) {
+            Log.e("ImageUrl", m.group(2));
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
     }
 }
 
