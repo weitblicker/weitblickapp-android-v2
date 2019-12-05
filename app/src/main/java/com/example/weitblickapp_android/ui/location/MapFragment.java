@@ -118,7 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         try {
             jsonBody.put("start", "2019-10-01T07:08");
             jsonBody.put("end", "2019-10-01T07:08");
-            jsonBody.put("distance", "0.5");
+            jsonBody.put("distance", "1000");
             jsonBody.put("project", "1");
             jsonBody.put("tour", "1");
             jsonBody.put("token", "Tolkien");

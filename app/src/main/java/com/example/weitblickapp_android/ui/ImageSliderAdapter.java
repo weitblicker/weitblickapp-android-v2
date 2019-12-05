@@ -53,7 +53,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         ImageView imageView = itemView.findViewById(R.id.image_pager_item_image);
 
 
-            Log.e("dasd", images.get(0));
+            Log.e("!!!!!!!!!!!!!!!!!", images.get(0));
 
 
 

@@ -44,12 +44,12 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private int preLast;
     private String lastItemDate;
     private String lastItemDateCheck = "";
-    private String url = "new.weitblicker.org/rest/news";
+    private String url = "https://new.weitblicker.org/rest/news?limit=5";
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadNews();
+        loadNews(url);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,11 +76,9 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     }
 
 
-    public void loadNews(){
+    public void loadNews(String URL){
 
         // Talk to Rest API
-
-        String URL = "https://new.weitblicker.org/rest/news?limit=5";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -108,6 +106,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
 
+                        //Get Date of last Item loaded in List loading more news starting at that date
                         try {
                             Date ItemDate = formatterRead.parse(date);
                             lastItemDate = formatterWrite.format(ItemDate);
@@ -132,7 +131,9 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                            // Log.e("Keine Gallery", "für" + title);
                         }
 
-                        imageUrls = extractImageUrls(text);
+                        //Get inline-Urls from Text, then extract them
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
                         newsList.add(temp);
@@ -173,123 +174,32 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-
         if(totalItemCount > 0) {
             final int lastItem = firstVisibleItem + visibleItemCount;
-
             if (lastItem == totalItemCount && !lastItemDateCheck.equals(lastItemDate)) {
-
-                Log.e("Last", "Last!:" + lastItemDate);
-                loadMoreNews();
+                url = url.concat(("&end=" + lastItemDate));
+                loadNews(url);
                 lastItemDateCheck = lastItemDate;
             }
-
         }
     }
 
-    public void loadMoreNews(){
-
-        String URL = "https://new.weitblicker.org/rest/news?limit=3";
-
-        URL = URL.concat("&end=" + lastItemDate);
-
-        Log.e("URL", URL);
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
-
-            @Override
-            public void onResponse(JSONArray response) {
-                //Save Data into Model
-                String jsonData = response.toString();
-
-                //Parse the JSON response array by iterating over it
-                for (int i = 1; i < response.length(); i++) {
-                    JSONObject responseObject = null;
-
-                    JSONObject imageObject = null;
-                    JSONObject galleryObject = null;
-                    JSONObject image = null;
-                    ArrayList<String> imageUrls = new ArrayList<String>();
-                    JSONArray images = null;
-
-                    try {
-                        responseObject = response.getJSONObject(i);
-                        Integer newsId = responseObject.getInt("id");
-                        String title = responseObject.getString("title");
-                        String text = responseObject.getString("text");
-                        String date = responseObject.getString("published");
-
-                        try {
-                            Date ItemDate = formatterRead.parse(date);
-                            lastItemDate = formatterWrite.format(ItemDate);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        String teaser = responseObject.getString("teaser");
-
-                        text.trim();
-
-                        //Get all image-Urls from Gallery
-                        try {
-                            galleryObject = responseObject.getJSONObject("gallery");
-                            images = galleryObject.getJSONArray("images");
-                            for (int x = 0; x < images.length(); x++) {
-                                image = images.getJSONObject(x);
-                                String url = image.getString("url");
-                                imageUrls.add(url);
-                            }
-                        }catch(JSONException e){
-                            // Log.e("Keine Gallery", "für" + title);
-                        }
-
-                        imageUrls = extractImageUrls(text);
-
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
-                        newsList.add(temp);
-                        adapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Display Error Message
-                Log.e("Rest Response", error.toString());
-            }
-        }){
-            //Override getHeaders() to set Credentials for REST-Authentication
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
-        requestQueue.add(objectRequest);
-    }
-
-    public ArrayList <String> extractImageUrls(String text){
+    public ArrayList <String> getImageUrls(String text){
         //Find image-tag markdowns and extract
         ArrayList <String> imageUrls = new ArrayList<>();
         Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
                 .matcher(text);
         while (m.find()) {
-            Log.e("ImageUrl", m.group(2));
+            //Log.e("ImageUrl", m.group(2));
             imageUrls.add(m.group(2));
         }
         return imageUrls;
+    }
+
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        Log.e("TEXT", text);
+        return text;
     }
 }
 
