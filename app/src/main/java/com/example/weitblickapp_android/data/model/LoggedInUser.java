@@ -5,19 +5,25 @@ package com.example.weitblickapp_android.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
-    private String displayName;
+    private String username;
+    private String email;
+    private String key;
 
-    public LoggedInUser(String userId, String displayName) {
-        this.userId = userId;
-        this.displayName = displayName;
+    public LoggedInUser(String username, String email, String key) {
+        this.username = username;
+        this.email = email;
+        this.key = key;
     }
 
-    public String getUserId() {
-        return userId;
+
+
+    public String getUsername() {
+        return username;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getEmail() {
+        return email;
     }
+
+    public String getKey() {return key;}
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.example.weitblickapp_android.ui.login.LoginActivity;
+import com.example.weitblickapp_android.ui.login.Login_Activity;
 
 import java.util.HashMap;
 
@@ -33,6 +33,9 @@ public class SessionManager {
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
 
+    // Email address (make variable public to access from outside)
+    public static final String KEY_USERKEY = "key";
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -43,7 +46,7 @@ public class SessionManager {
     /**
      * Create login session
      * */
-    public void createLoginSession(String name, String email){
+    public void createLoginSession(String name, String email, String key){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -52,6 +55,9 @@ public class SessionManager {
 
         // Storing email in pref
         editor.putString(KEY_EMAIL, email);
+
+        // Storing email in pref
+        editor.putString(KEY_USERKEY, key);
 
         // commit changes
         editor.commit();
@@ -66,7 +72,7 @@ public class SessionManager {
         // Check login status
         if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
-            Intent i = new Intent(_context, LoginActivity.class);
+            Intent i = new Intent(_context, Login_Activity.class);
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -106,6 +112,11 @@ public class SessionManager {
     public String getEmail() {
 
         return pref.getString(KEY_EMAIL, null);
+    }
+
+    public String getKey() {
+
+        return pref.getString(KEY_USERKEY, null);
     }
 
     /**

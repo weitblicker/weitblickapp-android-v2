@@ -17,30 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.login.LoginActivity;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.example.weitblickapp_android.ui.login.Login_Activity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void switchToLogin(){
-        Intent intent  = new Intent( this, LoginActivity.class);
+        Intent intent  = new Intent( this, Login_Activity.class);
         startActivity(intent);
     }
 
