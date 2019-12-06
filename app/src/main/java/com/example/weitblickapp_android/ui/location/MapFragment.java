@@ -108,6 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     pause.setImageResource(R.mipmap.ic_pause);
                     paused=false;
                     delay = 1000;
+                    sendSegment(url);
                     startFetchLocation();
                 }
             }
@@ -148,19 +149,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         checkKm();
     }
 
+    //Fetches Location every second
     private void startFetchLocation(){
         handler.postDelayed(new Runnable(){
             public void run(){
                 fetchLastLocation();
                 if(delay != 0){
-                    handler.postDelayed(this, 2000);
+                    handler.postDelayed(this, 1000);
                 }
             }
-        }, 2000);
+        }, 1000);
     }
+    // Sends Segment every 5 Seconds
     private void sendRouteSegments(){
         segmentHandler.postDelayed(new Runnable() {
-
             @Override
             public void run() {
                 //Send Segment here
