@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="125dp"
         android:layout_marginLeft="125dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="140dp"
         android:layout_marginEnd="126dp"
         android:layout_marginRight="126dp"
         android:layout_marginBottom="38dp"
@@ -84,7 +84,7 @@
         app:layout_constraintBottom_toTopOf="@+id/project"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distancetext" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/project"
