@@ -145,10 +145,12 @@ public class RegisterActivity extends AppCompatActivity {
                         //JSONObject responseObject = n;
 
                         try {
+
                             if(response.has("username")) {
                                 String usernameResp = response.getString("username");
                                 Log.e("USERNAME ERROR", usernameResp);
                             }
+
                             if(response.has("email")) {
                                 String emailResp = response.getString("email");
                                 Log.e("EMAIL ERROR", emailResp);
@@ -161,6 +163,10 @@ public class RegisterActivity extends AppCompatActivity {
                                 String password2Resp = response.getString("password2");
                                 Log.e("password2 ERROR", password2Resp);
                             }
+
+
+                            switchToLogin();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

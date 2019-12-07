@@ -1,0 +1,3 @@
+-Weiterleitung reigistration login 			-- DONE
+-Logout							-- DONE
+-User interface fehler anmeldung/reg. anzeigen

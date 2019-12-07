@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
 
 import java.util.HashMap;
 
 public class SessionManager {
+
+    private LoginData loginData;
+
     // Shared Preferences
     SharedPreferences pref;
 
@@ -126,8 +130,10 @@ public class SessionManager {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
+
+
 /*
-        // After logout redirect user to Loing Activity
+        // After logout redirect user to Login Activity
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
