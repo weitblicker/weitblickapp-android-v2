@@ -1,5 +1,6 @@
-package com.example.weitblickapp_android.data;
+/*package com.example.weitblickapp_android.data;
 
+import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.data.model.LoggedInUser;
+import com.example.weitblickapp_android.ui.login.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,21 +26,33 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
- */
+
 public class LoginDataSource {
 
-    public Result<LoggedInUser> login(String email, String password) {
+    private String key;
 
+    //RequestQueue requestQueue = Volley.newRequestQueue();
+
+    public Result<LoggedInUser> login(String email, String password, Context c) {
+
+        Log.e("LOGIN", "login in Data-Source aufgerufen");
+
+        key = null;
+//TODO: ActivityContext übergeben
         try {
             // handle loggedInUser authentication
-            try {
-                //RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-                String URL = "https://new.weitblicker.org/rest/auth/registration/";
+            try {
+
+
+                RequestQueue requestQueue = Volley.newRequestQueue(c);
+
+                String URL = "https://new.weitblicker.org/rest/auth/login/";
+
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("username", "");
                 jsonBody.put("email", email);
-                jsonBody.put("password1", password);
+                jsonBody.put("password", password);
 
                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -46,30 +60,18 @@ public class LoginDataSource {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        //Toast.makeText(getApplicationContext(),"Erfolgreich registriert!" , Toast.LENGTH_SHORT).show();
-                        Log.e("REGISTRATION SUCCESFUL", "VERY sucessful ---------------------------------------------------------------------------------");
-
+                        //Toast.makeText(getApplicationContext(),"Anmeldung erfolgreich!" , Toast.LENGTH_SHORT).show();
+                        Log.e("LOGIN ONRESPONSE", "VERY sucessful ---------------------------------------------------------------------------------");
 
                         try {
                             if (response.has("key")) {
-                                String key = response.getString("username");
-
+                                key = response.getString("key");
+                                Log.e("LOGIN", "login in Data-Source aufgerufen");
                             }
-
-                            /*
-
-
-                            NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
-                            newsList.add(temp);
-                            adapter.notifyDataSetChanged();
-
-                             */
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
-
                 }, new Response.ErrorListener() {
 
                     @Override
@@ -88,7 +90,6 @@ public class LoginDataSource {
                                 e.printStackTrace();
                             }
                         }
-
                     }
                 }) {
                     @Override
@@ -106,36 +107,31 @@ public class LoginDataSource {
                         headers.put("Authorization", auth);
                         return headers;
                     }
-
-
-                /*
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-                */
-
                 };
 
-                //requestQueue.add( objectRequest);
+                requestQueue.add( objectRequest);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
+
+
+
 
             if (email.equals("admin") && password.equals("123456")) {
                 LoggedInUser user =
                         new LoggedInUser(
                                 java.util.UUID.randomUUID().toString(),
-                                email);
+                                email,"123456789");
 
 
                 return new Result.Success<>(user);
-            } else {
+            }else if(key != null){
+                LoggedInUser user = new LoggedInUser("username_placeholder", email, key);
+                return new Result.Success<>(user);
+            }
+            else {
                 return new Result.Error(new IOException("Error logging in"));
             }
 
@@ -150,3 +146,5 @@ public class LoginDataSource {
 
 
 }
+
+*/

@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,22 +26,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class NewsListFragment extends ListFragment{
+public class NewsListFragment extends ListFragment implements AbsListView.OnScrollListener {
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
 
     ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
     private NewsListAdapter adapter;
-    private ViewPager sliderPager;
+    private String lastItemDate;
+    private String lastItemDateCheck = "";
+    private String url = "https://new.weitblicker.org/rest/news?limit=5";
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadNews();
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -48,15 +57,16 @@ public class NewsListFragment extends ListFragment{
         adapter = new NewsListAdapter(getActivity(), newsList, getFragmentManager());
         this.setListAdapter(adapter);
 
-        View detailsView = inflater.inflate(R.layout.fragment_news_detail, container, false);
-/*
-        ViewPager viewPager = detailsView.findViewById(R.id.view_pager);
-        NewsPagerAdapter adapter = new NewsPagerAdapter(this, newsList);
-        viewPager.setAdapter(adapter);
-
- */
+        ListView listView = (ListView) view.findViewById(R.id.list);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadNews(url);
+        getListView().setOnScrollListener(this);
     }
 
     @Override
@@ -65,11 +75,9 @@ public class NewsListFragment extends ListFragment{
     }
 
 
-    public void loadNews(){
+    private void loadNews(String URL){
 
         // Talk to Rest API
-
-        String URL = "https://new.weitblicker.org/rest/news/?limit=4";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -97,7 +105,16 @@ public class NewsListFragment extends ListFragment{
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
 
+                        //Get Date of last Item loaded in List loading more news starting at that date
+                        try {
+                            Date ItemDate = formatterRead.parse(date);
+                            lastItemDate = formatterWrite.format(ItemDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         String teaser = responseObject.getString("teaser");
+
                         text.trim();
 
                         //Get all image-Urls from Gallery
@@ -107,12 +124,15 @@ public class NewsListFragment extends ListFragment{
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                Log.e("!!!!ImageUrl!!!!",url);
                                 imageUrls.add(url);
                             }
                         }catch(JSONException e){
-                            Log.e("Keine Gallery", "für" + title);
+                           // Log.e("Keine Gallery", "für" + title);
                         }
+
+                        //Get inline-Urls from Text, then extract them
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
                         newsList.add(temp);
@@ -122,11 +142,6 @@ public class NewsListFragment extends ListFragment{
                     }
 
                 }
-
-                //for(NewsViewModel newsArticle:newsList){
-                //  Log.e("NewsArticle",newsArticle.getUrls());
-                //}
-
             }
 
         }, new Response.ErrorListener() {
@@ -150,9 +165,40 @@ public class NewsListFragment extends ListFragment{
         };
         requestQueue.add(objectRequest);
     }
-    public class Image{
-        String url;
-        String crop_from;
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if(totalItemCount > 0) {
+            final int lastItem = firstVisibleItem + visibleItemCount;
+            if (lastItem == totalItemCount && !lastItemDateCheck.equals(lastItemDate)) {
+                url = url.concat(("&end=" + lastItemDate));
+                loadNews(url);
+                lastItemDateCheck = lastItemDate;
+            }
+        }
+    }
+
+    public ArrayList <String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
+                .matcher(text);
+        while (m.find()) {
+            //Log.e("ImageUrl", m.group(2));
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
+    }
+
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        Log.e("TEXT", text);
+        return text;
     }
 }
 

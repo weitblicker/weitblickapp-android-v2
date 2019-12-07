@@ -1,7 +1,5 @@
 package com.example.weitblickapp_android.ui.register;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,31 +14,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.login.LoginActivity;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.example.weitblickapp_android.ui.login.Login_Activity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void switchToLogin(){
-        Intent intent  = new Intent( this, LoginActivity.class);
+        Intent intent  = new Intent( this, Login_Activity.class);
         startActivity(intent);
     }
 
@@ -149,16 +139,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Erfolgreich registriert!" , Toast.LENGTH_SHORT).show();
                     Log.i("REGISTRATION SUCCESFUL", "VERY sucessful ---------------------------------------------------------------------------------");
-                    //String jsonData = response.toString();
-
-                    //JSONObject responseObject = response.;
 
                     //Parse the JSON response array by iterating over it
                     for (int i = 0; i < response.length(); i++) {
                         //JSONObject responseObject = n;
 
                         try {
-                            //response.get;
                             if(response.has("username")) {
                                 String usernameResp = response.getString("username");
                                 Log.e("USERNAME ERROR", usernameResp);
@@ -175,29 +161,10 @@ public class RegisterActivity extends AppCompatActivity {
                                 String password2Resp = response.getString("password2");
                                 Log.e("password2 ERROR", password2Resp);
                             }
-
-                            /*
-
-
-                            NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
-                            newsList.add(temp);
-                            adapter.notifyDataSetChanged();
-
-                             */
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
-
-                    //for(NewsViewModel newsArticle:newsList){
-                    //  Log.e("NewsArticle",newsArticle.getUrls());
-                    //}
-
-
-
-
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -216,7 +183,6 @@ public class RegisterActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-
                 }
             }) {
                 @Override
@@ -232,22 +198,9 @@ public class RegisterActivity extends AppCompatActivity {
                             + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Content-Type", "application/json");
                     headers.put("Authorization", auth);
+                    Log.e("REGISTRATION-HEADER = ", headers.toString());
                     return headers;
                 }
-
-
-                /*
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-                */
-
             };
 
             requestQueue.add( objectRequest);
