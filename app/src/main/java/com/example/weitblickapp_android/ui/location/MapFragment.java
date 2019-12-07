@@ -79,24 +79,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
-    LocationManager manager;
+    LocationManager locationManager;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         askGpsPermission();
-        //setUpGpsReceiver();
-        //registerGpsReceiver();
+        setUpGpsReceiver();
+        registerGpsReceiver();
         startFetchLocation();
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        manager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        this.gpsIsEnabled = checkIfGpsIsEnabled();
+        this.gpsIsEnabled = isLocationEnabled();
 
         View root = inflater.inflate(R.layout.fragment_location, container, false);
 
@@ -118,11 +117,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (!paused) {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
                     paused = true;
-                    delay = 0;
                 } else {
                     pause.setImageResource(R.mipmap.ic_pause);
                     paused = false;
-                    delay = 1000;
                     //sendSegment(url);
                 }
             }
@@ -133,26 +130,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 EndFragment fragment = new EndFragment();
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
-                delay = 0;
                 ft.commit();
                // sendSegment(url);
                 paused = true;
+                //TODO: Save Route
             }
         });
         return root;
     }
     //Checks every Second if GPS is enabled, if so -> fetchLastLocation
     private void startFetchLocation() {
-        Log.e("GPS-STATUS:", gpsIsEnabled + "");
-        Log.e("PAUSE-STATUS:", paused + "");
         handler.postDelayed(new Runnable() {
             public void run() {
                 if(!paused && gpsIsEnabled) {
                     fetchLastLocation();
                 }
-                handler.postDelayed(this, 3000);
+                handler.postDelayed(this, 1000);
             }
-        }, 3000);
+        }, 1000);
     }
 
     //Fetches last GPS-Location and calculates resulting km
@@ -163,13 +158,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return;
             }
         }
+
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
                     currentLocation = location;
-                    Log.e("LOCATION:" , currentLocation.toString());
                     if (!load) {
                         setUpMapIfNeeded();
                     }
@@ -179,14 +174,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         checkKm();
     }
 
-    private boolean checkIfGpsIsEnabled() {
-       /* if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            buildAlertMessageNoGps();
-        }
-        */
-
-        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
     private void askGpsPermission(){
         if (getContext() != null && getActivity() != null) {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -195,6 +182,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+
     // Sends Segment every 5 Seconds
     private void sendRouteSegments() {
         segmentHandler.postDelayed(new Runnable() {
@@ -256,7 +244,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private boolean isLocationEnabled() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
                 LocationManager.NETWORK_PROVIDER
         );
@@ -309,11 +297,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                if (LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
+                if (locationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
 
-                    manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                    boolean isGpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                    boolean isNetworkEnabled = manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                    locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                    boolean isGpsEnabled = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
+                    boolean isNetworkEnabled = locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER);
 
                     if (isGpsEnabled || isNetworkEnabled) {
                         gpsIsEnabled = true;
@@ -330,6 +318,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         filter.addAction(Intent.ACTION_PROVIDER_CHANGED);
         getActivity().registerReceiver(locationSwitchStateReceiver, filter);
     }
+
     private void buildAlertMessageNoGps () {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Dein GPS scheint deaktiviert zu sein, möchsten Sie es aktivieren?")
