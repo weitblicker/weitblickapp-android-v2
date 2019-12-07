@@ -48,7 +48,7 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
         view = mInflater.inflate(R.layout.fragment_stats_list, null);
 
         TextView textView_duration = (TextView) view.findViewById(R.id.duration);
-        TextView textView_distance = (TextView) view.findViewById(R.id.distancetext);
+        TextView textView_distance = (TextView) view.findViewById(R.id.distance);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
         TextView textView_donation = (TextView) view.findViewById(R.id.donation);
 
