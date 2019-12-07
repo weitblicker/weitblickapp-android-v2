@@ -42,8 +42,8 @@ public class FaqListFragment extends Fragment {
     private FaqViewModel faqViewModel;
     ArrayList<FaqViewModel> faq = new ArrayList<FaqViewModel>();
 
-    String[] question = {"Was ist Weitblick?" , "Wie verläuft eine Spende genau ab?", "Wie werden meine Routen gespeichert?"};
-    String[] answer = {"Die Studenteninitiative Weitblick besteht aus eigenständigen und als gemeinnützig anerkannten Vereinen, die sich zu einem Bundesverband zusammengeschlossen haben. Ausgehend von unserem studentischen Hintergrund befasst sich Weitblick sowohl in Deutschland als auch im Ausland mit bildungsrelevanten Themen und setzt sich gezielt für gerechtere Bildungschancen ein. Weitblick wird von ehrenamtlich und freiwillig tätigen Studierenden getragen. Darüber hinaus ist jeder herzlich willkommen uns zu unterstützen. Wir sind politisch, konfessionell und ideologisch unabhängig und offen für Studierende aller Fachrichtungen.", "Bei einer Spende werden zunächst Projekte gewählt, für die", "Deine Routen werden nur zum Ermitteln der erfahrenen Spende gespeichert und danach sofort wieder gelöscht."};
+    String[] question = {"Test","hfzuhdjldndsadhilyjbvhedfsihl nbvdsköhvjhadl","Was ist Weitblick?" , "Wie verläuft eine Spende genau ab?", "Wie werden meine Routen gespeichert?"};
+    String[] answer = {"Test ashkjfkafh","+üepdfoiuhsdnköacslöpad ci0ümnlkv haüahdbuvja ankoskPL*AXODEI=FWU)VIFU OBCKBSVUHOIDW    SO?Q*WQDEJPWDCNSXMAY;.aäö,smsdswbuhqdjw süwewjihvofb","Die Studenteninitiative Weitblick besteht aus eigenständigen und als gemeinnützig anerkannten Vereinen, die sich zu einem Bundesverband zusammengeschlossen haben. Ausgehend von unserem studentischen Hintergrund befasst sich Weitblick sowohl in Deutschland als auch im Ausland mit bildungsrelevanten Themen und setzt sich gezielt für gerechtere Bildungschancen ein. Weitblick wird von ehrenamtlich und freiwillig tätigen Studierenden getragen. Darüber hinaus ist jeder herzlich willkommen uns zu unterstützen. Wir sind politisch, konfessionell und ideologisch unabhängig und offen für Studierende aller Fachrichtungen.", "Bei einer Spende werden zunächst Projekte gewählt, für die", "Deine Routen werden nur zum Ermitteln der erfahrenen Spende gespeichert und danach sofort wieder gelöscht."};
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -160,13 +160,13 @@ public class FaqListFragment extends Fragment {
 
             if(view == null){
                 view = getLayoutInflater().inflate(R.layout.fragment_faq_list,null);
-
-                TextView textView_question = (TextView)view.findViewById(R.id.question);
-                TextView textView_answer = (TextView)view.findViewById(R.id.answer);
-
-                textView_answer.setText(answer[position]);
-                textView_question.setText(question[position]);
             }
+
+            TextView textView_question = (TextView)view.findViewById(R.id.question);
+            TextView textView_answer = (TextView)view.findViewById(R.id.answer);
+
+            textView_answer.setText(answer[position]);
+            textView_question.setText(question[position]);
             return view;
         }
     }
