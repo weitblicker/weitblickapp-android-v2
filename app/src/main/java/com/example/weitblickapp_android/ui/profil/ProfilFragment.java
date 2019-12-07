@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ public class ProfilFragment extends Fragment {
 
     private ProfilViewModel profilViewModel;
     private SessionManager session;
-
+    LoginData loginData;
 
     private String donation = "10,40 €";
     private String password = "******";
@@ -36,7 +37,7 @@ public class ProfilFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_profil, container, false);
 
         session = new SessionManager(getActivity().getApplicationContext());
-
+        loginData = new LoginData(getActivity().getApplicationContext());
         email = session.getEmail();
 
 
@@ -53,7 +54,8 @@ public class ProfilFragment extends Fragment {
                     toast.show();
                 }
                 else {
-                    session.logoutUser();
+                    loginData.logout();
+
                     getActivity().onBackPressed();
                     Toast toast = Toast.makeText(getActivity().getApplicationContext(),
                             "Erfolgreich ausgeloggt!",

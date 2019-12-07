@@ -33,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.LoginPreferences;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.LoggedInUser;
@@ -49,15 +50,18 @@ import java.util.Map;
 public class Login_Activity extends AppCompatActivity {
 
 
-    private LoggedInUser user;
+    //private LoggedInUser user;
 
     private SessionManager session;
+    private LoginData loginData;
     private LoginPreferences loginPref;
     private EditText usernameEditText;
     private EditText passwordEditText;
     private boolean saveLogin = false;
     private boolean debug = true;
-    private String key;
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,8 +69,12 @@ public class Login_Activity extends AppCompatActivity {
 
         session = new SessionManager(getApplicationContext());
         loginPref = new LoginPreferences(getApplicationContext());
+        loginData = new LoginData(Login_Activity.this);
 
-        user = null;
+        LoginViewModel model = ViewModelProviders.of(this).get(LoginViewModel.class);
+        model.getUsers().observe(this, users -> {
+
+        });
 
         setContentView(R.layout.activity_login);
 
@@ -94,7 +102,12 @@ public class Login_Activity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+
+                //login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+                loginData.login(usernameEditText.getText().toString(), passwordEditText.getText().toString(), saveLogin);
+
+
+
             }
         });
 
@@ -123,6 +136,14 @@ public class Login_Activity extends AppCompatActivity {
 
     }
 
+
+
+
+    private void switchToRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+    /*
     private void updateUiWithUser() {
 
         if (user != null) {
@@ -146,6 +167,10 @@ public class Login_Activity extends AppCompatActivity {
         } else {
             Log.e("INIT_ERROR: ", "user nich initalisiert!");
         }
+    }
+
+    public void login_new(String email, String password, boolean saveLogin){
+       this.loginData.login(email,password,saveLogin);
     }
 
     public boolean login(String email, String password) {
@@ -238,14 +263,6 @@ public class Login_Activity extends AppCompatActivity {
             return false;
         }
     }
-
-    private void switchToRegister() {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    void logout(){
-
-    }
+*/
 }
 

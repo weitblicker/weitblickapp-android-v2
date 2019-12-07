@@ -148,32 +148,13 @@ public class RegisterActivity extends AppCompatActivity {
                         //JSONObject responseObject = n;
 
                         try {
-                            //response.get;
+
                             if(response.has("username")) {
                                 String usernameResp = response.getString("username");
                                 Log.e("USERNAME ERROR", usernameResp);
                             }
-                            if(response.has("email")) {
-                                String emailResp = response.getString("email");
-                                Log.e("EMAIL ERROR", emailResp);
-                            }
-                            if(response.has("password1")) {
-                                String password1Resp = response.getString("password1");
-                                Log.e("password1 ERROR", password1Resp);
-                            }
-                            if(response.has("password2")) {
-                                String password2Resp = response.getString("password2");
-                                Log.e("password2 ERROR", password2Resp);
-                            }
 
-                            /*
-
-
-                            NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
-                            newsList.add(temp);
-                            adapter.notifyDataSetChanged();
-
-                             */
+                            switchToLogin();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
