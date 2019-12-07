@@ -245,9 +245,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private boolean isLocationEnabled() {
          locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER
-        );
+         boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+                 LocationManager.NETWORK_PROVIDER
+         );
+         if(!enabled){
+             buildAlertMessageNoGps();
+         }
+        return enabled;
     }
 
     private void sendSegment(String URL) {
@@ -297,7 +301,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                if (locationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
+                if (LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
 
                     locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
                     boolean isGpsEnabled = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
