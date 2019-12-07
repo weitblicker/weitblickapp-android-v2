@@ -1,7 +1,5 @@
 package com.example.weitblickapp_android.ui.register;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -139,16 +139,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Erfolgreich registriert!" , Toast.LENGTH_SHORT).show();
                     Log.i("REGISTRATION SUCCESFUL", "VERY sucessful ---------------------------------------------------------------------------------");
-                    //String jsonData = response.toString();
-
-                    //JSONObject responseObject = response.;
 
                     //Parse the JSON response array by iterating over it
                     for (int i = 0; i < response.length(); i++) {
                         //JSONObject responseObject = n;
 
                         try {
-                            //response.get;
                             if(response.has("username")) {
                                 String usernameResp = response.getString("username");
                                 Log.e("USERNAME ERROR", usernameResp);
@@ -165,29 +161,10 @@ public class RegisterActivity extends AppCompatActivity {
                                 String password2Resp = response.getString("password2");
                                 Log.e("password2 ERROR", password2Resp);
                             }
-
-                            /*
-
-
-                            NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
-                            newsList.add(temp);
-                            adapter.notifyDataSetChanged();
-
-                             */
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
-
-                    //for(NewsViewModel newsArticle:newsList){
-                    //  Log.e("NewsArticle",newsArticle.getUrls());
-                    //}
-
-
-
-
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -206,7 +183,6 @@ public class RegisterActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-
                 }
             }) {
                 @Override
@@ -222,22 +198,9 @@ public class RegisterActivity extends AppCompatActivity {
                             + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Content-Type", "application/json");
                     headers.put("Authorization", auth);
+                    Log.e("REGISTRATION-HEADER = ", headers.toString());
                     return headers;
                 }
-
-
-                /*
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-                */
-
             };
 
             requestQueue.add( objectRequest);

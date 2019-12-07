@@ -41,7 +41,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
     ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
     private NewsListAdapter adapter;
-    private int preLast;
     private String lastItemDate;
     private String lastItemDateCheck = "";
     private String url = "https://new.weitblicker.org/rest/news?limit=5";
@@ -49,7 +48,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadNews(url);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +65,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadNews(url);
         getListView().setOnScrollListener(this);
     }
 
@@ -76,7 +75,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     }
 
 
-    public void loadNews(String URL){
+    private void loadNews(String URL){
 
         // Talk to Rest API
 

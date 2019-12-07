@@ -1,7 +1,12 @@
 package com.example.weitblickapp_android.ui.location;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -43,7 +48,6 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,8 +60,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Location lastLocation;
     private SessionManager session;
     private String token;
+    private BroadcastReceiver locationSwitchStateReceiver;
     private boolean paused = false;
     private boolean load = false;
+    private boolean gpsIsEnabled;
+    private boolean GpsActive;
     static private double km = 0;
     private final Handler handler = new Handler();
     private final Handler segmentHandler = new Handler();
@@ -72,17 +79,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
+    LocationManager manager;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        fetchLastLocation();
+        askGpsPermission();
+        //setUpGpsReceiver();
+        //registerGpsReceiver();
         startFetchLocation();
-        sendRouteSegments();
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        manager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        this.gpsIsEnabled = checkIfGpsIsEnabled();
+
         View root = inflater.inflate(R.layout.fragment_location, container, false);
 
         session = new SessionManager(getActivity().getApplicationContext());
@@ -94,22 +109,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         speedKmh = root.findViewById(R.id.speed);
         donation = root.findViewById(R.id.donation);
 
-        if(getActivity() != null)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        if (getActivity() != null)
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!paused){
+                if (!paused) {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
-                    paused=true;
+                    paused = true;
                     delay = 0;
-                }else{
+                } else {
                     pause.setImageResource(R.mipmap.ic_pause);
-                    paused=false;
+                    paused = false;
                     delay = 1000;
-                    sendSegment(url);
-                    startFetchLocation();
+                    //sendSegment(url);
                 }
             }
         });
@@ -127,9 +141,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
         return root;
     }
-    private void fetchLastLocation(){
-        if(getContext() != null  && getActivity() != null){
-            if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+    //Checks every Second if GPS is enabled, if so -> fetchLastLocation
+    private void startFetchLocation() {
+        Log.e("GPS-STATUS:", gpsIsEnabled + "");
+        Log.e("PAUSE-STATUS:", paused + "");
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                if(!paused && gpsIsEnabled) {
+                    fetchLastLocation();
+                }
+                handler.postDelayed(this, 3000);
+            }
+        }, 3000);
+    }
+
+    //Fetches last GPS-Location and calculates resulting km
+    private void fetchLastLocation() {
+        if (getContext() != null && getActivity() != null) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
                 return;
             }
@@ -138,9 +167,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if(location != null){
+                if (location != null) {
                     currentLocation = location;
-                    if(!load) {
+                    Log.e("LOCATION:" , currentLocation.toString());
+                    if (!load) {
                         setUpMapIfNeeded();
                     }
                 }
@@ -149,47 +179,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         checkKm();
     }
 
-    //Fetches Location every second
-    private void startFetchLocation(){
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                fetchLastLocation();
-                if(delay != 0){
-                    handler.postDelayed(this, 1000);
-                }
+    private boolean checkIfGpsIsEnabled() {
+       /* if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            buildAlertMessageNoGps();
+        }
+        */
+
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+    private void askGpsPermission(){
+        if (getContext() != null && getActivity() != null) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+                return;
             }
-        }, 1000);
+        }
     }
     // Sends Segment every 5 Seconds
-    private void sendRouteSegments(){
+    private void sendRouteSegments() {
         segmentHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //Send Segment here
-                if(!paused) {
+                if (!paused) {
                     Log.e("SEGMENT-INFO", "SEGMENT-SENT with KM: " + km);
                     //sendSegment(url);
                 }
-                segmentHandler.postDelayed(this, 5000);
+                segmentHandler.postDelayed(this, 10000);
             }
-        }, 5000);
+        }, 10000);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         //LatLng latLng = new LatLng( -33.865143, 151.209900);
         this.mMap = googleMap;
-        if(isLocationEnabled()) {
-            if(currentLocation != null){
+        if (isLocationEnabled()) {
+            if (currentLocation != null) {
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.setMyLocationEnabled(true);
             }
         }
     }
 
-    private void checkKm(){
-        if(lastLocation != null){
+    private void checkKm() {
+        if (lastLocation != null) {
             double dis = currentLocation.distanceTo(lastLocation) / 1000;
             double speed = currentLocation.getSpeed();
             km += dis;
@@ -202,10 +237,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResult){
-        switch (requestCode){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResult) {
+        switch (requestCode) {
             case REQUEST_CODE:
-                if(grantResult.length<0 && grantResult[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResult.length < 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                     fetchLastLocation();
                 }
                 break;
@@ -220,24 +255,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         load = true;
     }
 
-    private boolean isLocationEnabled(){
+    private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
                 LocationManager.NETWORK_PROVIDER
         );
     }
 
-    private void sendSegment(String URL){
+    private void sendSegment(String URL) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("start", "2019-10-01T07:08");
             jsonBody.put("end", "2019-10-01T07:08");
-            jsonBody.put("distance", km);
+            jsonBody.put("distance", this.km);
             jsonBody.put("project", "1");
             jsonBody.put("tour", "1");
             jsonBody.put("token", this.token);
-        }catch(JSONException e) {
+        } catch (JSONException e) {
             Log.e("SegmentJsonException:", e.toString());
         }
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -253,7 +288,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 //Display Error Message
                 Log.e("Server Response onError", error.toString());
             }
-        }){
+        }) {
             //Override getHeaders() to set Credentials for REST-Authentication
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -269,61 +304,59 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         requestQueue.add(objectRequest);
     }
 
-    public class Segment{
-        Date startDate;
-        Date endDate;
-        private double km;
-        private int project_id;
-        private int tour_id;
+    private void setUpGpsReceiver(){
+        locationSwitchStateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
-        public Segment(Date startDate, Date endDate, double km, int project_id, int tour_id) {
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.km = km;
-            this.project_id = project_id;
-            this.tour_id = tour_id;
-        }
+                if (LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
 
-        public Date getStartDate() {
-            return startDate;
-        }
+                    manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                    boolean isGpsEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                    boolean isNetworkEnabled = manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
+                    if (isGpsEnabled || isNetworkEnabled) {
+                        gpsIsEnabled = true;
+                    } else {
+                        gpsIsEnabled = false;
+                        buildAlertMessageNoGps();
+                    }
+                }
+            }
+        };
+    }
+    private void registerGpsReceiver(){
+        IntentFilter filter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
+        filter.addAction(Intent.ACTION_PROVIDER_CHANGED);
+        getActivity().registerReceiver(locationSwitchStateReceiver, filter);
+    }
+    private void buildAlertMessageNoGps () {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Dein GPS scheint deaktiviert zu sein, möchsten Sie es aktivieren?")
+                .setCancelable(false)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
-        public Date getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(Date endDate) {
-            this.endDate = endDate;
-        }
-
-        public double getKm() {
-            return km;
-        }
-
-        public void setKm(double km) {
-            this.km = km;
-        }
-
-        public int getProject_id() {
-            return project_id;
-        }
-
-        public void setProject_id(int project_id) {
-            this.project_id = project_id;
-        }
-
-        public int getTour_id() {
-            return tour_id;
-        }
-
-        public void setTour_id(int tour_id) {
-            this.tour_id = tour_id;
+   /* @Override
+    public void onPause() {
+        super.onPause();
+        if(locationSwitchStateReceiver != null) {
+            getActivity().unregisterReceiver(locationSwitchStateReceiver);
         }
     }
+    */
+
 }
 
 
