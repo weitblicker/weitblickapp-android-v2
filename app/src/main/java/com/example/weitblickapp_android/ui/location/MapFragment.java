@@ -48,24 +48,35 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
+    final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     private GoogleMap mMap;
+    private Tour currentTour;
     private Location currentLocation;
     private Location lastLocation;
     private SessionManager session;
-    private String token;
+
     private BroadcastReceiver locationSwitchStateReceiver;
     private boolean paused = false;
     private boolean load = false;
     private boolean gpsIsEnabled;
-    private boolean GpsActive;
+
+    //Segment-Information
     static private double km = 0;
+    private String segmentStartTime;
+    private String segmentEndTime;
+    private String token;
+    private int projectId;
+
+    //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
     private final Handler segmentHandler = new Handler();
     private int delay = 1000; //milliseconds
@@ -75,6 +86,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView donation;
     private double betrag = 0.10;
     static private double don = 0;
+
+
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
@@ -87,7 +100,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         askGpsPermission();
         setUpGpsReceiver();
         registerGpsReceiver();
+        initializeRoute();
         startFetchLocation();
+        sendRouteSegments();
+    }
+
+    private String getFormattedDate(){
+       // formatter.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
+        Date date = new Date();
+        return formatter.format(date);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -111,32 +132,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (getActivity() != null)
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!paused) {
-                    pause.setImageResource(R.mipmap.ic_play_foreground);
-                    paused = true;
-                } else {
-                    pause.setImageResource(R.mipmap.ic_pause);
-                    paused = false;
-                    //sendSegment(url);
-                }
+        pause.setOnClickListener(v -> {
+            if (!paused) {
+                pause.setImageResource(R.mipmap.ic_play_foreground);
+                paused = true;
+            } else {
+                pause.setImageResource(R.mipmap.ic_pause);
+                paused = false;
+                segmentStartTime = getFormattedDate();
+                //sendSegment(url);
             }
         });
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EndFragment fragment = new EndFragment();
-                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.commit();
-               // sendSegment(url);
-                paused = true;
-                //TODO: Save Route
-            }
+
+        stop.setOnClickListener(v -> {
+            EndFragment fragment = new EndFragment();
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.commit();
+           // sendSegment(url);
+            paused = true;
+            saveRoute();
+            //TODO: Save Route
         });
         return root;
+    }
+
+    private void initializeRoute(){
+        this.currentTour = new Tour();
+    }
+
+    private void saveRoute(){
+      //  Tour routeCycled = new Tour(km, )
     }
     //Checks every Second if GPS is enabled, if so -> fetchLastLocation
     private void startFetchLocation() {
@@ -183,15 +209,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    // Sends Segment every 5 Seconds
+    // Sends Segment every 10 Seconds
     private void sendRouteSegments() {
+        segmentStartTime = getFormattedDate();
+
         segmentHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //Send Segment here
-                if (!paused) {
-                    Log.e("SEGMENT-INFO", "SEGMENT-SENT with KM: " + km);
+                if ((!paused) && gpsIsEnabled) {
+                    segmentEndTime = getFormattedDate();
+                    Log.e("SEGMENT-SENT", "START:" + segmentStartTime + " END:" + segmentEndTime);
                     //sendSegment(url);
+                    segmentStartTime = segmentEndTime;
                 }
                 segmentHandler.postDelayed(this, 10000);
             }
@@ -258,9 +288,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("start", "2019-10-01T07:08");
-            jsonBody.put("end", "2019-10-01T07:08");
-            jsonBody.put("distance", this.km);
+            jsonBody.put("start", segmentStartTime);
+            jsonBody.put("end", segmentEndTime);
+            jsonBody.put("distance", km);
             jsonBody.put("project", "1");
             jsonBody.put("tour", "1");
             jsonBody.put("token", this.token);
@@ -300,7 +330,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         locationSwitchStateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
                 if (LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
 
                     locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
