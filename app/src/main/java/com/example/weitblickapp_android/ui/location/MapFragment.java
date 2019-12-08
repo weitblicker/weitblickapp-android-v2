@@ -127,6 +127,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     pause.setImageResource(R.mipmap.ic_pause);
                     paused = false;
                     //sendSegment(url);
+                    getCurrentLocation();
                 }
             }
         });
@@ -154,6 +155,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 handler.postDelayed(this, 1000);
             }
         }, 1000);
+    }
+
+    private void getCurrentLocation(){
+        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location != null){
+                    lastLocation = location;
+                    currentLocation = location;
+                }
+            }
+        });
+        checkKm();
+        startFetchLocation();
     }
 
     //Fetches last GPS-Location and calculates resulting km
@@ -220,7 +236,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void checkKm() {
         if (lastLocation != null) {
             double dis = currentLocation.distanceTo(lastLocation) / 1000;
-            double speed = currentLocation.getSpeed();
+            double speed = currentLocation.getSpeed() * 10;
             km += dis;
             don = (betrag * km) / 100;
             speedKmh.setText((String.valueOf(Math.round(speed * 10.00) / 10.00)) + "km/h");
