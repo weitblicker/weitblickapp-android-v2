@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,11 +76,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView donation;
     private double betrag = 0.10;
     static private double don = 0;
+    private int projectId = 0;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
     LocationManager locationManager;
+
+    MapFragment(int projectId){
+        this.projectId = projectId;
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
