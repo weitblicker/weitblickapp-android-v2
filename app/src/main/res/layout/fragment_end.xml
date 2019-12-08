@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-
     <TextView
         android:id="@+id/distancetext"
         android:layout_width="wrap_content"

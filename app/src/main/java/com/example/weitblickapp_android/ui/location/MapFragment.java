@@ -48,7 +48,6 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,9 +65,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private SessionManager session;
 
     private BroadcastReceiver locationSwitchStateReceiver;
+
     private boolean paused = false;
     private boolean load = false;
     private boolean gpsIsEnabled;
+    private boolean projectFinished;
 
     //Segment-Information
     static private double km = 0;
@@ -80,11 +81,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
     private final Handler segmentHandler = new Handler();
-    private int delay = 1000; //milliseconds
+    private int fetchLocationDelay = 1000; //milliseconds
     private int segmentSendDelay = 30000; //milliseconds
+
     private TextView distance;
     private TextView speedKmh;
     private TextView donation;
+
     private double betrag = 0.10;
     static private double don = 0;
 
@@ -105,7 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         askGpsPermission();
         setUpGpsReceiver();
         registerGpsReceiver();
-        initializeRoute();
+        initializeTour();
         startFetchLocation();
         sendRouteSegments();
     }
@@ -151,25 +154,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
         stop.setOnClickListener(v -> {
-            EndFragment fragment = new EndFragment();
+            EndFragment fragment = new EndFragment(currentTour);
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, fragment);
             ft.commit();
-           // sendSegment(url);
+            sendSegment();
             paused = true;
-            saveRoute();
-            //TODO: Save Route
         });
         return root;
     }
 
-    private void initializeRoute(){
-        this.currentTour = new Tour();
+    private void initializeTour(){
+    currentTour = new Tour(projectId);
     }
 
-    private void saveRoute(){
-      //  Tour routeCycled = new Tour(km, )
-    }
 
     //Checks every Second if GPS is enabled, if so -> fetchLastLocation
     private void startFetchLocation() {
@@ -178,9 +176,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if(!paused && gpsIsEnabled) {
                     fetchLastLocation();
                 }
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, fetchLocationDelay);
             }
-        }, 1000);
+        }, fetchLocationDelay);
     }
 
     private void getCurrentLocation(){
@@ -206,7 +204,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return;
             }
         }
-
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -240,14 +237,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void run() {
                 //Send Segment here
                 if ((!paused) && gpsIsEnabled) {
-                    segmentEndTime = getFormattedDate();
                     Log.e("SEGMENT-SENT", "START:" + segmentStartTime + " END:" + segmentEndTime);
-                    //sendSegment(url);
-                    segmentStartTime = segmentEndTime;
+                    sendSegment();
                 }
-                segmentHandler.postDelayed(this, 10000);
+                segmentHandler.postDelayed(this, segmentSendDelay);
             }
-        }, 10000);
+        }, segmentSendDelay);
     }
 
     @Override
@@ -306,24 +301,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return enabled;
     }
 
-    private void sendSegment(String URL) {
+    private void sendSegment() {
+
+        segmentEndTime = getFormattedDate();
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("start", segmentStartTime);
             jsonBody.put("end", segmentEndTime);
             jsonBody.put("distance", km);
-            jsonBody.put("project", "1");
-            jsonBody.put("tour", "1");
-            jsonBody.put("token", this.token);
+            jsonBody.put("project", projectId);
+            jsonBody.put("tour", "2");
+            jsonBody.put("token", token);
         } catch (JSONException e) {
             Log.e("SegmentJsonException:", e.toString());
         }
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
+                double eurosTotal = 0;
+                double kmTotal = 0;
+                try {
+                    projectFinished = response.getBoolean("finished");
+                    eurosTotal = response.getDouble("euro");
+                    kmTotal = response.getDouble("km");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                currentTour.setEurosTotal(eurosTotal);
+                currentTour.setDistanceTotal(kmTotal);
+
                 Log.e("Server Response", response.toString());
             }
         }, new Response.ErrorListener() {
@@ -346,6 +355,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         };
         requestQueue.add(objectRequest);
+
+        segmentStartTime = segmentEndTime;
     }
 
     private void setUpGpsReceiver(){
@@ -376,11 +387,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void buildAlertMessageNoGps () {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Dein GPS scheint deaktiviert zu sein, möchsten Sie es aktivieren?")
-                .setCancelable(false)
+        builder.setMessage("Dein GPS scheint deaktiviert zu sein, möchtest du es aktivieren?")
+                .setCancelable(true)
                 .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        dialog.cancel();
                     }
                 })
                 .setNegativeButton("Nein", new DialogInterface.OnClickListener() {
@@ -391,16 +403,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         final AlertDialog alert = builder.create();
         alert.show();
     }
-
-   /* @Override
-    public void onPause() {
-        super.onPause();
-        if(locationSwitchStateReceiver != null) {
-            getActivity().unregisterReceiver(locationSwitchStateReceiver);
-        }
-    }
-    */
-
 }
 
 

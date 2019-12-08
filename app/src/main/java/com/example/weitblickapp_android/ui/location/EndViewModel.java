@@ -12,6 +12,7 @@ public class EndViewModel extends ViewModel {
         this.id = id;
         this.sponsor = sponsor;
         this.project = project;
+
     }
     EndViewModel(){
 
