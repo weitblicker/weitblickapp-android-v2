@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProjectListFragment extends ListFragment {
+public class ProjectCycleListFragment extends ListFragment {
     ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
-    private ProjectListAdapter adapter;
+    private ProjectCycleListAdapter adapter;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -44,9 +44,9 @@ public class ProjectListFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_project_cycle, container, false);
 
-        adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+        adapter = new ProjectCycleListAdapter(getActivity(), projectList, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;
@@ -130,11 +130,11 @@ public class ProjectListFragment extends ListFragment {
 
                         for (int x = 0; x < cycleJSONObject.length(); x++) {
                             cycleObject = cycleJSONObject.getJSONObject(x);
-                             current_amount = cycleObject.getLong("current_amount");
-                             cycle_donation = cycleObject.getLong("goal_amount");
-                             finished = cycleObject.getBoolean("finished");
-                             cycle_id = cycleObject.getInt("cycle_donation");
-                             goal_amount = cycleObject.getLong("goal_amount");
+                            current_amount = cycleObject.getLong("current_amount");
+                            cycle_donation = cycleObject.getLong("goal_amount");
+                            finished = cycleObject.getBoolean("finished");
+                            cycle_id = cycleObject.getInt("cycle_donation");
+                            goal_amount = cycleObject.getLong("goal_amount");
                         }
 
                         text.trim();

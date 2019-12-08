@@ -48,6 +48,7 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -94,6 +95,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
+    MapFragment(int projectId){
+        this.projectId = projectId;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -133,16 +138,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         pause.setOnClickListener(v -> {
-            if (!paused) {
-                pause.setImageResource(R.mipmap.ic_play_foreground);
-                paused = true;
-            } else {
-                pause.setImageResource(R.mipmap.ic_pause);
-                paused = false;
-                segmentStartTime = getFormattedDate();
-                //sendSegment(url);
-            }
-        });
+                if (!paused) {
+                    pause.setImageResource(R.mipmap.ic_play_foreground);
+                    paused = true;
+                } else {
+                    pause.setImageResource(R.mipmap.ic_pause);
+                    paused = false;
+                    segmentStartTime = getFormattedDate();
+                    //sendSegment(url);
+                }
+            });
+
 
         stop.setOnClickListener(v -> {
             EndFragment fragment = new EndFragment();
@@ -164,6 +170,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void saveRoute(){
       //  Tour routeCycled = new Tour(km, )
     }
+
     //Checks every Second if GPS is enabled, if so -> fetchLastLocation
     private void startFetchLocation() {
         handler.postDelayed(new Runnable() {
@@ -174,6 +181,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 handler.postDelayed(this, 1000);
             }
         }, 1000);
+    }
+
+    private void getCurrentLocation(){
+        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location != null){
+                    lastLocation = location;
+                    currentLocation = location;
+                }
+            }
+        });
+        checkKm();
+        startFetchLocation();
     }
 
     //Fetches last GPS-Location and calculates resulting km
@@ -241,10 +263,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void checkKm() {
+    private void checkKm(){
         if (lastLocation != null) {
             double dis = currentLocation.distanceTo(lastLocation) / 1000;
-            double speed = currentLocation.getSpeed();
+            double speed = currentLocation.getSpeed() * 10;
             km += dis;
             don = (betrag * km) / 100;
             speedKmh.setText((String.valueOf(Math.round(speed * 10.00) / 10.00)) + "km/h");
@@ -380,5 +402,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     */
 
 }
+
 
 

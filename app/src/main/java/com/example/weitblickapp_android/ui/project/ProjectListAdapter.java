@@ -54,13 +54,13 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
-            TextView textView_location = (TextView) view.findViewById(R.id.location);
-            TextView textView_date = (TextView) view.findViewById(R.id.date);
+            TextView textView_address = (TextView) view.findViewById(R.id.location);
+            //TextView textView_date = (TextView) view.findViewById(R.id.date);
 
 
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
-            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+            //weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
             Picasso.get()
                     .load(weitblickUrl)
@@ -70,8 +70,8 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
             textView_title.setText(project.getName());
-           // textView_location.setText(project.getDescription());
-           // textView_date.setText();
+            textView_address.setText(project.getAddress());
+            //textView_title.setText(project.g);
 
             //Set Button-Listener and redirect to Details-Page
             ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
