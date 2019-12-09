@@ -111,8 +111,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void switchToLogin(){
-        Intent intent  = new Intent( this, Login_Activity.class);
-        startActivity(intent);
+        /*Intent intent  = new Intent( this, Login_Activity.class);
+        startActivity(intent);*/
+        finish();
     }
 
     private boolean register(final String username, String email, String password, String password_confirm) {
@@ -139,11 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Erfolgreich registriert!" , Toast.LENGTH_SHORT).show();
                     Log.i("REGISTRATION SUCCESFUL", "VERY sucessful ---------------------------------------------------------------------------------");
-                    //String jsonData = response.toString();
 
-                    //JSONObject responseObject = response.;
-
-                    //Parse the JSON response array by iterating over it
                     for (int i = 0; i < response.length(); i++) {
                         //JSONObject responseObject = n;
 
@@ -158,17 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
-
-                    //for(NewsViewModel newsArticle:newsList){
-                    //  Log.e("NewsArticle",newsArticle.getUrls());
-                    //}
-
-
-
-
-
                 }
             }, new Response.ErrorListener() {
                 @Override
