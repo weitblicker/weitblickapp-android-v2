@@ -1,17 +1,17 @@
 package com.example.weitblickapp_android.ui.stats;
 
+import androidx.lifecycle.ViewModel;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 public class StatsViewModel extends ViewModel {
 
-    private String distance;
-    private String donation;
+    private int tourId;
+    private int projectId;
+    private double distance;
+    private double donation;
     private String duration;
     private Date date;
 
@@ -19,7 +19,9 @@ public class StatsViewModel extends ViewModel {
 
     }
 
-    public StatsViewModel(String distance, String donation, String duration, String date) {
+    public StatsViewModel(int projectId, int tourId, double distance, double donation, String duration, String date) {
+        this.projectId = projectId;
+        this.tourId = tourId;
         this.distance = distance;
         this.donation = donation;
         this.duration = duration;
@@ -34,19 +36,19 @@ public class StatsViewModel extends ViewModel {
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
-    public String getDistance() {
+    public double getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(double distance) {
         this.distance = distance;
     }
 
-    public String getDonation() {
+    public double getDonation() {
         return donation;
     }
 
-    public void setDonation(String donation) {
+    public void setDonation(double donation) {
         this.donation = donation;
     }
 

@@ -6,8 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
@@ -15,9 +16,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.Session.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,17 +34,27 @@ public class StatsFragment extends ListFragment {
     private StatsViewModel statsViewModel;
     private StatsListAdapter adapter;
 
+    private SessionManager session;
+    private String token;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadStats();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadStats();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
         adapter = new StatsListAdapter(getActivity(), statsList, getFragmentManager());
         this.setListAdapter(adapter);
+
+        session = new SessionManager(getActivity().getApplicationContext());
+        this.token = session.getKey();
 
         return view;
     }
@@ -54,56 +65,66 @@ public class StatsFragment extends ListFragment {
     }
 
 
-    public void loadStats(){
+    public void loadStats() {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/news/?limit=4";
+        String URL = "https://new.weitblicker.org/rest/cycle/tours/";
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("token", this.token);
+            Log.e("TOKEN:", this.token);
+        } catch (JSONException e) {
+            Log.e("TourJsonException:", e.toString());
+        }
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+        MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
                 //Save Data into Model
                 String jsonData = response.toString();
 
+                Log.e("STATSRESPONSE:", jsonData);
+
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
-
-                    JSONObject imageObject = null;
-                    JSONObject image = null;
-                    ArrayList<String> imageUrls = new ArrayList<String>();
-                    JSONArray images = null;
-
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer statsID = responseObject.getInt("id");
-                        String distance = responseObject.getString("title");
-                        String duration = responseObject.getString("text");
-                        String date = responseObject.getString("published");
-                        String donation = responseObject.getString("teaser");
 
-                        StatsViewModel temp = new StatsViewModel(distance, donation, duration, date);
+                        double distance = responseObject.getDouble("km");
+                        double donation = responseObject.getDouble("euro");
+                        int tourId = responseObject.getInt("tour");
+
+                        JSONObject projectObject = responseObject.getJSONObject("project");
+                        int projectId = projectObject.getInt("id");
+
+
+                        //TODO: GET duration and date of Tour
+
+                        String duration = "30";
+                        String tourDate = "2019-10-01T07:08:04Z";
+
+                        StatsViewModel temp = new StatsViewModel(projectId, tourId, distance, donation, duration, tourDate);
                         statsList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Display Error Message
-                Log.e("Rest Response", error.toString());
+                Log.e("StatsError Response", error.toString());
             }
-        }){
+        }) {
             //Override getHeaders() to set Credentials for REST-Authentication
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -119,3 +140,6 @@ public class StatsFragment extends ListFragment {
         requestQueue.add(objectRequest);
     }
 }
+
+
+
