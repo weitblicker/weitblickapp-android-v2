@@ -29,6 +29,7 @@ public class BlogEntryViewModel extends ViewModel {
             this.published = formatterRead.parse(published);
         } catch (ParseException e) {
             e.printStackTrace();
+            this.published = new Date();
         }
         this.imageUrls = imageUrls;
     }
@@ -80,7 +81,7 @@ public class BlogEntryViewModel extends ViewModel {
     }
 
     public String getPublished() {
-        return formatterWrite.format(published);
+            return formatterWrite.format(published);
     }
 
     public void setPublished(Date published) {
