@@ -65,6 +65,7 @@ public class ProjectListFragment extends ListFragment {
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
+                ft.addToBackStack(null);
                 ft.commit();
             }
         });
