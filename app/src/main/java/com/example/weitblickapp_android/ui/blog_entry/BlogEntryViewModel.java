@@ -22,17 +22,17 @@ public class BlogEntryViewModel extends ViewModel {
     private int location_id;
 
 
-    public BlogEntryViewModel(int id, String title, String text, String teaser, ArrayList<String> imageUrls) {
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published) {
         this.id = id;
         this.title = title;
         this.text = text;
-        /*try {
+        try {
             this.published = formatterRead.parse(published);
         } catch (ParseException e) {
             e.printStackTrace();
             this.published = new Date();
         }
-        this.imageUrls = imageUrls;*/
+        //this.imageUrls = imageUrls;
         this.teaser = teaser;
 
     }

@@ -79,7 +79,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
         teaser.setText(blog.getTeaser());
 
         //Set published date for BlogEntries
-        //textView_date.setText(blog.getPublished());
+        textView_date.setText(blog.getPublished());
 
         // onClick Listener for whole view-element -->redirect to DetailsPage
         view.setOnClickListener(new View.OnClickListener() {
