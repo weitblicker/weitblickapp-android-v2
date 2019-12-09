@@ -33,10 +33,10 @@ public class BlogDetailFragment extends Fragment {
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();
-        for(int i = 0; i < blogEntry.getImageUrls().size(); i++){
+        /*for(int i = 0; i < blogEntry.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
         }
-        this.date = blogEntry.getPublished();
+        this.date = blogEntry.getPublished();*/
     }
 
     BlogDetailFragment(String title, String text, String date){
@@ -65,8 +65,8 @@ public class BlogDetailFragment extends Fragment {
             textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
         }
 
-        final TextView dateTextView = root.findViewById(R.id.detail_date);
-        dateTextView.setText(this.date);
+        //final TextView dateTextView = root.findViewById(R.id.detail_date);
+        //dateTextView.setText(this.date);
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
         back.setOnClickListener(new View.OnClickListener() {

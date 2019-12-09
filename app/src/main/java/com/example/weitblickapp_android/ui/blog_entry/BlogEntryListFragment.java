@@ -102,10 +102,10 @@ public class BlogEntryListFragment extends ListFragment {
                         String text = responseObject.getString("text");
                         text = text.trim();
                         text = text.replaceAll("\n{2,}", "\n");
-                        String published = responseObject.getString("published");
-
+                        //String published = responseObject.getString("published");
+                        String teaser = responseObject.getString("teaser");
                         //Get all imageUrls from Gallery
-                        try {
+                        /*try {
                             galleryObject = responseObject.getJSONObject("gallery");
 
                             images = galleryObject.getJSONArray("images");
@@ -117,10 +117,10 @@ public class BlogEntryListFragment extends ListFragment {
 
                         }catch(JSONException e){
 
-                        }
+                        }*/
                         //TODO: Check if picture exists
 
-                        temp = new BlogEntryViewModel(blogId, title, text, published, imageUrls);
+                        temp = new BlogEntryViewModel(blogId, title, text, teaser);
 
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
