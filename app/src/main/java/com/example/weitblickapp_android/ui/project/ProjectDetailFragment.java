@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -38,6 +39,10 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     String location;
     String title;
     String text;
+    float lng;
+    float lat;
+    float current_amount;
+    float goal_amount;
     ArrayList <String> imageUrls = new ArrayList<String>();
     Boolean favorite = false;
     View root;
@@ -53,16 +58,15 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     public ProjectDetailFragment(ProjectViewModel project){
         this.title = project.getName();
         this.text = project.getDescription();
+        this.location = project.getAddress();
+        this.lat = project.getLat();
+        this.lng = project.getLng();
+        this.current_amount = project.getCurrent_amount();
+        this.goal_amount = project.getGoal_amount();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
-        for(int i = 0; i < project.getImageUrls().size(); i++){
+        /*for(int i = 0; i < project.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
-        }
-    }
-
-    ProjectDetailFragment(String location, String title, String text){
-        this.location=location;
-        this.title=title;
-        this.text=text;
+        }*/
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -71,9 +75,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         root = inflater.inflate(R.layout.fragment_project_detail, container, false);
 
         //Set Image-Slider Adapter
-        mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
+        /*mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
-        mViewPager.setAdapter(adapter);
+        mViewPager.setAdapter(adapter);*/
 
         final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
 
@@ -106,11 +110,14 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             }
         });
 
-
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
+        final TextView goalTextView = root.findViewById(R.id.amount_goal);
+        goalTextView.setText("Noch zu erreichen " + (this.goal_amount - this.current_amount) + " €");
+        final TextView amountTextView = root.findViewById(R.id.amount);
+        amountTextView.setText("Bereits gesammelt " + current_amount + " €");
 
         final TextView textTextView = root.findViewById(R.id.detail_text);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -126,11 +133,12 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     }
 
     public void drawPie(){
+        float current = (100 / goal_amount) * current_amount;
         AnimatedPieView mAnimatedPieView = root.findViewById(R.id.pieChart);
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
         config.startAngle(-90)// Starting angle offset
-                .addData(new SimplePieInfo(30, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)
-                .addData(new SimplePieInfo(18.0f, Color.parseColor("#d9e2ed"), "Gesammelte Spenden")).duration(2000);// draw pie animation duration
+                .addData(new SimplePieInfo(100 - current, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)
+                .addData(new SimplePieInfo(current, Color.parseColor("#d9e2ed"), "Gesammelte Spenden")).duration(2000);// draw pie animation duration
         // The following two sentences can be replace directly 'mAnimatedPieView.start (config); '
         mAnimatedPieView.applyConfig(config);
         mAnimatedPieView.start();
@@ -139,9 +147,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng sydney = new LatLng( 52.2984, 8.0132);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(15.0f));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng location = new LatLng( this.lat, this.lng);
+        mMap.addMarker(new MarkerOptions().position(location).title(this.location));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 }

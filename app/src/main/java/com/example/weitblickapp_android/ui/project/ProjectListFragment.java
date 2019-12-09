@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -85,21 +86,24 @@ public class ProjectListFragment extends ListFragment {
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
+                    JSONObject locationObject = null;
+                    JSONArray cycleJSONObject = null;
+                    JSONObject cycleObject = null;
                     JSONObject galleryObject = null;
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer projectId = responseObject.getInt("id");
+                        int projectId = responseObject.getInt("id");
                         String title = responseObject.getString("name");
 
                         String text = responseObject.getString("description");
                         //String teaser = responseObject.getString("teaser");
 
-                        galleryObject = responseObject.getJSONObject("gallery");
+                        //galleryObject = responseObject.getJSONObject("gallery");
 
-                        if (galleryObject != null) {
+                        /*if (galleryObject != null) {
                             images = galleryObject.getJSONArray("images");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
@@ -107,11 +111,35 @@ public class ProjectListFragment extends ListFragment {
                                 Log.e("!!!!ImageUrl!!!!",url);
                                 imageUrls.add(url);
                             }
+                        }*/
+
+                        locationObject = responseObject.getJSONObject("location");
+
+                        float lat = locationObject.getLong("lat");
+                        float lng = locationObject.getLong("lng");
+                        String name = locationObject.getString("name");
+                        String address = locationObject.getString("address");
+
+                        cycleJSONObject = responseObject.getJSONArray("cycle");
+
+                        float current_amount = 0;
+                        float cycle_donation = 0;
+                        boolean finished = false;
+                        int cycle_id = 0;
+                        float goal_amount = 0;
+
+                        for (int x = 0; x < cycleJSONObject.length(); x++) {
+                            cycleObject = cycleJSONObject.getJSONObject(x);
+                             current_amount = cycleObject.getLong("current_amount");
+                             cycle_donation = cycleObject.getLong("goal_amount");
+                             finished = cycleObject.getBoolean("finished");
+                             cycle_id = cycleObject.getInt("cycle_donation");
+                             goal_amount = cycleObject.getLong("goal_amount");
                         }
 
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text,1, imageUrls);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {

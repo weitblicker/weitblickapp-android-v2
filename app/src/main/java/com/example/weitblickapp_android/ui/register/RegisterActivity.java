@@ -1,7 +1,5 @@
 package com.example.weitblickapp_android.ui.register;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -151,7 +151,22 @@ public class RegisterActivity extends AppCompatActivity {
                                 Log.e("USERNAME ERROR", usernameResp);
                             }
 
+                            if(response.has("email")) {
+                                String emailResp = response.getString("email");
+                                Log.e("EMAIL ERROR", emailResp);
+                            }
+                            if(response.has("password1")) {
+                                String password1Resp = response.getString("password1");
+                                Log.e("password1 ERROR", password1Resp);
+                            }
+                            if(response.has("password2")) {
+                                String password2Resp = response.getString("password2");
+                                Log.e("password2 ERROR", password2Resp);
+                            }
+
+
                             switchToLogin();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -174,7 +189,6 @@ public class RegisterActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-
                 }
             }) {
                 @Override
@@ -190,22 +204,9 @@ public class RegisterActivity extends AppCompatActivity {
                             + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Content-Type", "application/json");
                     headers.put("Authorization", auth);
+                    Log.e("REGISTRATION-HEADER = ", headers.toString());
                     return headers;
                 }
-
-
-                /*
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-                */
-
             };
 
             requestQueue.add( objectRequest);

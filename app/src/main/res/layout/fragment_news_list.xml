@@ -27,7 +27,7 @@
         android:layout_height="182dp"
         android:layout_marginStart="27dp"
         android:layout_marginLeft="27dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="27dp"
         android:layout_marginRight="27dp"
         android:background="@color/colorPrimaryDark"
@@ -39,16 +39,17 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="278dp"
+        android:layout_width="344dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
         android:layout_marginLeft="34dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginRight="42dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
         android:fontFamily="@font/opensansbold"
+        android:textColor="@color/wb_orange"
         app:layout_constraintBottom_toTopOf="@+id/teaser"
-        app:layout_constraintEnd_toStartOf="@+id/news_more_btn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date" />
 

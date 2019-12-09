@@ -5,12 +5,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@id/fragment_container">
+    android:id="@id/fragment_container"
+    android:background="#ffffff">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="346dp"
+        android:layout_height="430dp"
+        android:layout_marginBottom="300dp"
+        map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent">
@@ -25,21 +28,57 @@
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="141dp"
-        android:layout_height="123dp"
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="118dp"
         android:layout_marginLeft="118dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="450dp"
         android:layout_marginEnd="118dp"
         android:layout_marginRight="118dp"
-        android:layout_marginBottom="56dp"
-        app:srcCompat="@drawable/icon_start"
+        android:layout_marginBottom="80dp"
+        app:srcCompat="@mipmap/ic_play_foreground"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/frameLayout"
-        map:layout_constraintVertical_bias="0.434"
+        map:layout_constraintTop_toTopOf="parent"
         tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/defaultProject"
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="71dp"
+        android:layout_marginLeft="71dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginRight="71dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/opensansbold"
+        android:textColor="@color/wb_orange"
+        android:text="TextView"
+        android:gravity="center"
+        map:layout_constraintBottom_toTopOf="@+id/play"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <ImageButton
+        android:id="@+id/changeDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="244dp"
+        android:background="@null"
+        app:srcCompat="@android:drawable/ic_input_add"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toEndOf="@+id/defaultProject"
+        map:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

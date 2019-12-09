@@ -27,12 +27,12 @@ public class NewsViewModel extends ViewModel {
     public NewsViewModel() {
     }
 
-    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList<String> imageUrl) {
+    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.teaser = teaser;
-        this.imageUrls = imageUrl;
+        this.imageUrls = imageUrls;
 
         try {
             this.published = formatterRead.parse(date);
@@ -111,7 +111,4 @@ public class NewsViewModel extends ViewModel {
                 ", date=" + published +
                 '}';
     }
-
-
-
 }
