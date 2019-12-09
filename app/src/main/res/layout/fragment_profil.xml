@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <ImageButton
         android:id="@+id/back"
@@ -201,4 +206,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/kmtext" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

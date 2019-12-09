@@ -9,12 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
@@ -109,6 +106,8 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("projectid", project.getId());
                 editor.putString("projectname", project.getName());
+                editor.putFloat("lat", project.getLat());
+                editor.putFloat("lng", project.getLng());
                 editor.commit();
                 FragmentTransaction ft = fragManager.beginTransaction();
                 ft.replace(R.id.fragment_container, new MapOverviewFragment());

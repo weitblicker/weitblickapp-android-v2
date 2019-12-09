@@ -165,11 +165,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if(location != null){
                     lastLocation = location;
                     currentLocation = location;
+                    checkKm();
+                    startFetchLocation();
                 }
             }
         });
-        checkKm();
-        startFetchLocation();
     }
 
     //Fetches last GPS-Location and calculates resulting km
