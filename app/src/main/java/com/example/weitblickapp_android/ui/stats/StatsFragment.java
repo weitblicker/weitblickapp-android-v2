@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +66,7 @@ public class StatsFragment extends ListFragment {
     }
 
 
-    public void loadStats() {
+    private void loadStats() {
 
         // Talk to Rest API
 

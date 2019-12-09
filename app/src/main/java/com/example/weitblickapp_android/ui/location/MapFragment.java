@@ -35,6 +35,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,6 +46,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,12 +79,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private String segmentEndTime;
     private String token;
     private int projectId;
+    private int tourId;
 
     //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
     private final Handler segmentHandler = new Handler();
-    private int fetchLocationDelay = 1000; //milliseconds
-    private int segmentSendDelay = 30000; //milliseconds
+    private final int fetchLocationDelay = 1000; //milliseconds
+    private final int segmentSendDelay = 30000; //milliseconds
 
     private TextView distance;
     private TextView speedKmh;
@@ -126,10 +129,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         this.gpsIsEnabled = isLocationEnabled();
 
+
         View root = inflater.inflate(R.layout.fragment_location, container, false);
 
         session = new SessionManager(getActivity().getApplicationContext());
         this.token = session.getKey();
+
+        getAmountTours();
 
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
@@ -137,8 +143,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         speedKmh = root.findViewById(R.id.speed);
         donation = root.findViewById(R.id.donation);
 
-        if (getActivity() != null)
+        if (getActivity() != null) {
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        }
 
         pause.setOnClickListener(v -> {
                 if (!paused) {
@@ -237,7 +244,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void run() {
                 //Send Segment here
                 if ((!paused) && gpsIsEnabled) {
-                    Log.e("SEGMENT-SENT", "START:" + segmentStartTime + " END:" + segmentEndTime);
                     sendSegment();
                 }
                 segmentHandler.postDelayed(this, segmentSendDelay);
@@ -301,6 +307,50 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return enabled;
     }
 
+    //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
+    private void getAmountTours(){
+            // Talk to Rest API
+
+            String URL = "https://new.weitblicker.org/rest/cycle/tours/";
+
+            JSONObject jsonBody = new JSONObject();
+            try {
+                jsonBody.put("token", this.token);
+            } catch (JSONException e) {
+                Log.e("TourJsonException:", e.toString());
+            }
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+            MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONArray>() {
+
+                @Override
+                public void onResponse(JSONArray response) {
+                    tourId = (response.length() + 1);
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Display Error Message
+                    Log.e("TourError Response", error.toString());
+                }
+            }) {
+                //Override getHeaders() to set Credentials for REST-Authentication
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "surfer:hangloose";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+            };
+            requestQueue.add(objectRequest);
+        }
+
     private void sendSegment() {
 
         segmentEndTime = getFormattedDate();
@@ -311,11 +361,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             jsonBody.put("end", segmentEndTime);
             jsonBody.put("distance", km);
             jsonBody.put("project", projectId);
-            jsonBody.put("tour", "2");
+            jsonBody.put("tour", tourId);
             jsonBody.put("token", token);
         } catch (JSONException e) {
             Log.e("SegmentJsonException:", e.toString());
         }
+
+        Log.e("JSON:", jsonBody.toString());
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 

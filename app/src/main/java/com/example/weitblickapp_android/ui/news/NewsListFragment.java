@@ -197,7 +197,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
     public String extractImageUrls(String text){
         text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
-        Log.e("TEXT", text);
         return text;
     }
 }

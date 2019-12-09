@@ -1,6 +1,5 @@
 package com.example.weitblickapp_android.ui.project;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -148,11 +147,6 @@ public class ProjectCycleListFragment extends ListFragment {
                     }
 
                 }
-
-                for(ProjectViewModel newsArticle:projectList){
-                    Log.e("NewsArticle",newsArticle.toString());
-                }
-
             }
 
         }, new Response.ErrorListener() {

@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.stats;
+package com.example.weitblickapp_android.ui;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-    class MyJsonArrayRequest extends JsonRequest<JSONArray> {
+   public class MyJsonArrayRequest extends JsonRequest<JSONArray> {
 
         public MyJsonArrayRequest(int method, String url, JSONObject jsonRequest,
                                   Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
