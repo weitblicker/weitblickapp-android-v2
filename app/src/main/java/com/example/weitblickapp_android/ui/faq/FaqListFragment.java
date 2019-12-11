@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.AuthFailureError;
@@ -27,6 +28,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+import com.example.weitblickapp_android.ui.stats.StatsListAdapter;
+import com.example.weitblickapp_android.ui.stats.StatsViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,53 +41,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FaqListFragment extends Fragment {
+public class FaqListFragment extends ListFragment {
 
     private FaqViewModel faqViewModel;
-    ArrayList<FaqViewModel> faq = new ArrayList<FaqViewModel>();
+    ArrayList<FaqViewModel> faqList = new ArrayList<FaqViewModel>();
+    private FaqListAdapter adapter;
 
-    String[] question = {"Test","hfzuhdjldndsadhilyjbvhedfsihl nbvdsköhvjhadl","Was ist Weitblick?" , "Wie verläuft eine Spende genau ab?", "Wie werden meine Routen gespeichert?"};
-    String[] answer = {"Test ashkjfkafh","+üepdfoiuhsdnköacslöpad ci0ümnlkv haüahdbuvja ankoskPL*AXODEI=FWU)VIFU OBCKBSVUHOIDW    SO?Q*WQDEJPWDCNSXMAY;.aäö,smsdswbuhqdjw süwewjihvofb","Die Studenteninitiative Weitblick besteht aus eigenständigen und als gemeinnützig anerkannten Vereinen, die sich zu einem Bundesverband zusammengeschlossen haben. Ausgehend von unserem studentischen Hintergrund befasst sich Weitblick sowohl in Deutschland als auch im Ausland mit bildungsrelevanten Themen und setzt sich gezielt für gerechtere Bildungschancen ein. Weitblick wird von ehrenamtlich und freiwillig tätigen Studierenden getragen. Darüber hinaus ist jeder herzlich willkommen uns zu unterstützen. Wir sind politisch, konfessionell und ideologisch unabhängig und offen für Studierende aller Fachrichtungen.", "Bei einer Spende werden zunächst Projekte gewählt, für die", "Deine Routen werden nur zum Ermitteln der erfahrenen Spende gespeichert und danach sofort wieder gelöscht."};
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadStats();
+    }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).setActionBarTitle("FAQ");
 
-        faqViewModel =
-                ViewModelProviders.of(this).get(FaqViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_faq, container, false);
-        ImageButton back = (ImageButton) root.findViewById(R.id.back);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
-                    getFragmentManager().popBackStack();
-                }
-            }
-        });
-        ListView listview = (ListView)root.findViewById(R.id.listView);
+        View view = inflater.inflate(R.layout.fragment_faq, container, false);
+        adapter = new FaqListAdapter(getActivity(), faqList, getFragmentManager());
+        this.setListAdapter(adapter);
 
-        FaqListFragment.CustomAdapter customAdapter = new FaqListFragment.CustomAdapter();
-        listview.setAdapter(customAdapter);
-
-        return root;
+        return view;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        loadFaq();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
 
-    public void onActivityCreated(Bundle saveInstanceState) {
-        super.onActivityCreated(saveInstanceState);
-        loadFaq();
-    }
+    public void loadStats(){
 
-    public void loadFaq(){
-        String URL = "https://new.weitblicker.org/rest/events/?limit=3&search=Benin";
+        // Talk to Rest API
+
+        String URL = "https://new.weitblicker.org/rest/faq/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -96,22 +85,29 @@ public class FaqListFragment extends Fragment {
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
+                    JSONArray faqArrayObject = null;
+                    JSONObject faqObject = null;
+
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer eventId = responseObject.getInt("id");
-                        String question = responseObject.getString("question");
-                        String answer = responseObject.getString("answer");
 
-                        FaqViewModel temp = new FaqViewModel(eventId, question, answer);
-                        faq.add(temp);
+                        faqArrayObject = responseObject.getJSONArray("faqs");
+
+                        String question = null;
+                        String answer = null;
+
+                        for (int x = 0; x < faqArrayObject.length(); x++) {
+                            faqObject = faqArrayObject.getJSONObject(x);
+                            answer = faqObject.getString("answer");
+                            question = faqObject.getString("question");
+                            FaqViewModel temp = new FaqViewModel(question, answer);
+                            faqList.add(temp);
+                            adapter.notifyDataSetChanged();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                }
-
-                for(FaqViewModel faq:faq){
-                    Log.e("Faq",faq.toString());
                 }
 
             }
@@ -136,38 +132,5 @@ public class FaqListFragment extends Fragment {
             }
         };
         requestQueue.add(objectRequest);
-    }
-
-    class CustomAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return question.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(final int position, View view, ViewGroup parent) {
-
-            if(view == null){
-                view = getLayoutInflater().inflate(R.layout.fragment_faq_list,null);
-            }
-
-            TextView textView_question = (TextView)view.findViewById(R.id.question);
-            TextView textView_answer = (TextView)view.findViewById(R.id.answer);
-
-            textView_answer.setText(answer[position]);
-            textView_question.setText(question[position]);
-            return view;
-        }
     }
 }

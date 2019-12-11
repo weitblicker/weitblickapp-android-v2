@@ -72,7 +72,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private int delay = 1000; //milliseconds
     private int segmentSendDelay = 30000; //milliseconds
     private TextView distance;
-    private TextView speedKmh;
     private TextView donation;
     private double betrag = 0.10;
     static private double don = 0;
@@ -111,7 +110,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
         distance = root.findViewById(R.id.distance);
-        speedKmh = root.findViewById(R.id.speed);
         donation = root.findViewById(R.id.donation);
 
         if (getActivity() != null)
@@ -166,7 +164,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     lastLocation = location;
                     currentLocation = location;
                     checkKm();
-                    startFetchLocation();
                 }
             }
         });
@@ -234,14 +231,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void checkKm() {
-        if (lastLocation != null) {
-            double dis = currentLocation.distanceTo(lastLocation) / 1000;
-            double speed = currentLocation.getSpeed() * 10;
-            km += dis;
-            don = (betrag * km) / 100;
-            speedKmh.setText((String.valueOf(Math.round(speed * 10.00) / 10.00)) + "km/h");
-            distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
-            donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+        if(paused == false){
+            if (lastLocation != null) {
+                double dis = currentLocation.distanceTo(lastLocation) / 1000;
+                km += dis;
+                don = (betrag * km) ;
+                distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
+                donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+            }
+        }else{
+            if (lastLocation != null) {
+                double dis = currentLocation.distanceTo(lastLocation) / 1000;
+                km += dis;
+                don = (betrag * km) / 100;
+                distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
+                donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+            }
+            startFetchLocation();
         }
         lastLocation = currentLocation;
     }

@@ -6,27 +6,17 @@ import androidx.lifecycle.ViewModel;
 
 public class FaqViewModel extends ViewModel {
 
-    int id;
     String question;
     String answer;
 
-    public FaqViewModel(int id, String answer, String question){
-        this.id=id;
+    public FaqViewModel(String question, String answer){
         this.answer=answer;
         this.question=question;
     }
 
     public FaqViewModel(){
-
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getQuestion() {
         return question;
