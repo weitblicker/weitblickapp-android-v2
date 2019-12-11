@@ -100,15 +100,12 @@ public class StatsFragment extends ListFragment {
                         double distance = responseObject.getDouble("km");
                         double donation = responseObject.getDouble("euro");
                         int tourId = responseObject.getInt("tour");
+                        String tourDate = responseObject.getString("start");
+                        int duration = responseObject.getInt("duration");
 
                         JSONObject projectObject = responseObject.getJSONObject("project");
                         int projectId = projectObject.getInt("id");
 
-
-                        //TODO: GET duration and date of Tour
-
-                        String duration = "30";
-                        String tourDate = "2019-10-01T07:08:04Z";
 
                         StatsViewModel temp = new StatsViewModel(projectId, tourId, distance, donation, duration, tourDate);
                         statsList.add(temp);

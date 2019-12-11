@@ -12,19 +12,19 @@ public class StatsViewModel extends ViewModel {
     private int projectId;
     private double distance;
     private double donation;
-    private String duration;
+    private int duration;
     private Date date;
 
     public StatsViewModel(){
 
     }
 
-    public StatsViewModel(int projectId, int tourId, double distance, double donation, String duration, String date) {
+    public StatsViewModel(int projectId, int tourId, double distance, double donation, int duration, String date) {
         this.projectId = projectId;
         this.tourId = tourId;
         this.distance = distance;
         this.donation = donation;
-        this.duration = duration;
+        this.duration = (duration/60);
 
         try {
             this.date = formatterRead.parse(date);
@@ -52,11 +52,11 @@ public class StatsViewModel extends ViewModel {
         this.donation = donation;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 

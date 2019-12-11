@@ -63,7 +63,7 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
         textView_donation.setText(donation);
         textView_distance.setText(distance);
         textView_date.setText(tour.getDate());
-        textView_duration.setText(tour.getDuration());
+        textView_duration.setText(Integer.toString(tour.getDuration()).concat(" min"));
         return view;
     }
 }
