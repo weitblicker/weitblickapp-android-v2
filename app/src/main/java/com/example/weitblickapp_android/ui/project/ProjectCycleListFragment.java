@@ -139,9 +139,11 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount);
-                        projectList.add(temp);
-                        adapter.notifyDataSetChanged();
+                        if(cycle_id != 0){
+                            ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount);
+                            projectList.add(temp);
+                            adapter.notifyDataSetChanged();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

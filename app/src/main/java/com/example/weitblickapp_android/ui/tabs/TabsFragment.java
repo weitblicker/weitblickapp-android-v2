@@ -28,7 +28,7 @@ public class TabsFragment extends Fragment {
         viewPager = (ViewPager) root.findViewById(R.id.pager);
 
         ViewPageAdapter adapter = new ViewPageAdapter(getChildFragmentManager());
-        adapter.AddFragment(new NewsListFragment(), "Neuheiten");
+        adapter.AddFragment(new NewsListFragment(), "Neuigkeiten");
         adapter.AddFragment(new EventFragment(), "Veranstaltungen");
 
         viewPager.setAdapter(adapter);

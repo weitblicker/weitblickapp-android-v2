@@ -37,6 +37,7 @@ public class RankingViewModel extends ViewModel {
         this.username = username;
     }
 
+
     public double getCycledKm() {
         return cycledKm;
     }

@@ -88,7 +88,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private final int segmentSendDelay = 30000; //milliseconds
 
     private TextView distance;
-    private TextView speedKmh;
     private TextView donation;
 
     private double betrag = 0.10;
@@ -140,33 +139,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
         distance = root.findViewById(R.id.distance);
-        speedKmh = root.findViewById(R.id.speed);
         donation = root.findViewById(R.id.donation);
 
         if (getActivity() != null) {
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         }
 
-        pause.setOnClickListener(v -> {
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (!paused) {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
                     paused = true;
                 } else {
                     pause.setImageResource(R.mipmap.ic_pause);
                     paused = false;
-                    segmentStartTime = getFormattedDate();
+                    segmentStartTime = MapFragment.this.getFormattedDate();
                     //sendSegment(url);
                 }
-            });
+            }
+        });
 
 
-        stop.setOnClickListener(v -> {
-            EndFragment fragment = new EndFragment(currentTour);
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.commit();
-            sendSegment();
-            paused = true;
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EndFragment fragment = new EndFragment(currentTour);
+                FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.commit();
+                MapFragment.this.sendSegment();
+                paused = true;
+            }
         });
         return root;
     }
@@ -197,7 +201,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     lastLocation = location;
                     currentLocation = location;
                     checkKm();
-                    startFetchLocation();
                 }
             }
         });
@@ -264,15 +267,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void checkKm(){
-        if (lastLocation != null) {
-            double dis = currentLocation.distanceTo(lastLocation) / 1000;
-            double speed = currentLocation.getSpeed() * 10;
-            km += dis;
-            don = (betrag * km) / 100;
-            speedKmh.setText((String.valueOf(Math.round(speed * 10.00) / 10.00)) + "km/h");
-            distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
-            donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+
+    private void checkKm() {
+        if(paused == false){
+            if (lastLocation != null) {
+                double dis = currentLocation.distanceTo(lastLocation) / 1000;
+                km += dis;
+                don = (betrag * km) ;
+                distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
+                donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+            }
+        }else{
+            if (lastLocation != null) {
+                double dis = currentLocation.distanceTo(lastLocation) / 1000;
+                km += dis;
+                don = (betrag * km) / 100;
+                distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
+                donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+            }
+            startFetchLocation();
         }
         lastLocation = currentLocation;
     }

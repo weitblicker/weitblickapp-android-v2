@@ -6,11 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,22 +29,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RankingFragment extends Fragment {
+
+public class RankingFragment extends ListFragment{
 
     private RankingViewModel rankingViewModel;
-    private ArrayList<RankingViewModel> rankings = new ArrayList<>();
+    private RankingListAdapter adapter;
+    ArrayList<RankingViewModel> rankings = new ArrayList<RankingViewModel>();
+    private String url = "https://new.weitblicker.org/rest/cycle/ranking/";
 
-    static final String url = "https://new.weitblicker.org/rest/cycle/ranking/";
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_ranking, container, false);
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        rankingViewModel =
-                ViewModelProviders.of(this).get(RankingViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_ranking, container, false);
+        adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager());
+        this.setListAdapter(adapter);
+        ListView listView = (ListView) view.findViewById(R.id.list);
 
-        return root;
+        return view;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -78,7 +86,7 @@ public class RankingFragment extends Fragment {
 
                         RankingViewModel temp = new RankingViewModel(imageUrl, username, distance, donation);
                         rankings.add(temp);
-                        //adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

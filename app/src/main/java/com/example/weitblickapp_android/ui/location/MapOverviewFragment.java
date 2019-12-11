@@ -78,7 +78,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                 else{
                     MapFragment fragment = new MapFragment(projectID);
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container, fragment);
+                    ft.replace(R.id.fragment_map, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
                 }

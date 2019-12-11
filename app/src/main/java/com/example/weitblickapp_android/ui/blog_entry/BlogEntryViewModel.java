@@ -16,12 +16,13 @@ public class BlogEntryViewModel extends ViewModel {
     private String title;
     private String text;
     private  int image_id;
+    private String teaser;
     private ArrayList<String> imageUrls;
     Date published;
     private int location_id;
 
 
-    public BlogEntryViewModel(int id, String title, String text, String published, ArrayList<String> imageUrls) {
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -31,7 +32,9 @@ public class BlogEntryViewModel extends ViewModel {
             e.printStackTrace();
             this.published = new Date();
         }
-        this.imageUrls = imageUrls;
+        //this.imageUrls = imageUrls;
+        this.teaser = teaser;
+
     }
 
     public BlogEntryViewModel(int id, String title, String text, String published) {
@@ -45,6 +48,14 @@ public class BlogEntryViewModel extends ViewModel {
             e.printStackTrace();
         }
         this.location_id = location_id;
+    }
+
+    public String getTeaser() {
+        return teaser;
+    }
+
+    public void setTeaser(String teaser) {
+        this.teaser = teaser;
     }
 
     public BlogEntryViewModel() {

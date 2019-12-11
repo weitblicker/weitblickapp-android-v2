@@ -50,6 +50,8 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
+        final ProjectViewModel project = (ProjectViewModel) getItem(position);
+
         String weitblickUrl = "https://new.weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_project_cycle_list, null);
@@ -58,8 +60,6 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
         TextView textView_title = (TextView) view.findViewById(R.id.title);
         TextView textView_address = (TextView) view.findViewById(R.id.location);
 
-
-        final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
         //weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
