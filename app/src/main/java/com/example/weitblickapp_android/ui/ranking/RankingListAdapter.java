@@ -5,19 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
 
@@ -64,9 +59,11 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
         rank = rank + 1;
         String r = Integer.toString(rank);
         ranks.setText(r);
-        String val = Float.toString(ranking.getKm());
-        value.setText(val);
+
+        String val = String.format("%.2f", ranking.getCycledKm()).concat(" km");
+
         username.setText(ranking.getUsername());
+
         imageView.setImageResource(R.drawable.ic_launcher_background);
 
         return view;
