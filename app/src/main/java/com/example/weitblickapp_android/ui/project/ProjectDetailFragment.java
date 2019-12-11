@@ -167,5 +167,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(location).title(this.location));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
     }
 }
