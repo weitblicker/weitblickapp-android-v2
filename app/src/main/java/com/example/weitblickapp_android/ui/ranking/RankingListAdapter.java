@@ -61,6 +61,7 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
         ranks.setText(r);
 
         String val = String.format("%.2f", ranking.getCycledKm()).concat(" km");
+        value.setText(val);
 
         username.setText(ranking.getUsername());
 
