@@ -1,138 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_ranking"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    >
 
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:background="#ffffff"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/rank1text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="78dp"
-            android:layout_marginLeft="78dp"
-            android:layout_marginTop="38dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginRight="47dp"
-            android:fontFamily="@font/opensansbold"
-            android:text="1."
-            app:layout_constraintEnd_toStartOf="@+id/name1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/rank2text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="78dp"
-            android:layout_marginLeft="78dp"
-            android:layout_marginTop="38dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginRight="47dp"
-            android:fontFamily="@font/opensansbold"
-            android:text="2."
-            app:layout_constraintEnd_toStartOf="@+id/name2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rank1text" />
-
-        <TextView
-            android:id="@+id/rank3text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="78dp"
-            android:layout_marginLeft="78dp"
-            android:layout_marginTop="38dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginRight="47dp"
-            android:fontFamily="@font/opensansbold"
-            android:text="3."
-            app:layout_constraintEnd_toStartOf="@+id/name3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rank2text" />
-
-        <TextView
-            android:id="@+id/name1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:layout_marginEnd="230dp"
-            android:layout_marginRight="230dp"
-            android:fontFamily="@font/open_sans"
-            android:text="Franky"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rank1text"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/name2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:layout_marginEnd="232dp"
-            android:layout_marginRight="232dp"
-            android:fontFamily="@font/open_sans"
-            android:text="Trudel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rank2text"
-            app:layout_constraintTop_toBottomOf="@+id/name1" />
-
-        <TextView
-            android:id="@+id/name3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:layout_marginEnd="234dp"
-            android:layout_marginRight="234dp"
-            android:fontFamily="@font/open_sans"
-            android:text="Heinzi"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rank3text"
-            app:layout_constraintTop_toBottomOf="@+id/name2" />
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="53dp"
-            android:layout_marginEnd="205dp"
-            android:layout_marginRight="205dp"
-            android:fontFamily="@font/open_sans"
-            android:text="Username"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/userrank"
-            app:layout_constraintTop_toBottomOf="@+id/name3" />
-
-        <TextView
-            android:id="@+id/userrank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="78dp"
-            android:layout_marginLeft="78dp"
-            android:layout_marginTop="53dp"
-            android:layout_marginEnd="38dp"
-            android:layout_marginRight="38dp"
-            android:fontFamily="@font/opensansbold"
-            android:text="23."
-            app:layout_constraintEnd_toStartOf="@+id/username"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rank3text" />
+        android:id="@+id/fragment_container">
 
         <ListView
-            android:id="@+id/listView2"
-            android:layout_width="411dp"
-            android:layout_height="392dp"
-            android:layout_marginTop="43dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username"></ListView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@android:id/list"></ListView>
+
+    </RelativeLayout>
+</LinearLayout>
