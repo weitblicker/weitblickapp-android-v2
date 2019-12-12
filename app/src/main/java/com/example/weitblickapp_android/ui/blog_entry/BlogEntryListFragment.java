@@ -65,7 +65,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         ((MainActivity) getActivity()).setActionBarTitle("Blog");
-        
+
         View view = inflater.inflate(R.layout.fragment_blog, container, false);
 
         adapter = new BlogEntryListAdapter(getActivity(), blogEntries, getFragmentManager());
@@ -124,7 +124,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
                         //Get all imageUrls from Gallery
-                        /*try {
+                        try {
                             galleryObject = responseObject.getJSONObject("gallery");
 
                             images = galleryObject.getJSONArray("images");
@@ -136,7 +136,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
 
                         }catch(JSONException e){
 
-                        }*/
+                        }
                         //TODO: Check if picture exists
                         //Get Date of last Item loaded in List loading more news starting at that date
                         try {

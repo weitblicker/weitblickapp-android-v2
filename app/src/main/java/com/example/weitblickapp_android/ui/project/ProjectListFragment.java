@@ -103,17 +103,19 @@ public class ProjectListFragment extends ListFragment {
                         String text = responseObject.getString("description");
                         //String teaser = responseObject.getString("teaser");
 
-                        //galleryObject = responseObject.getJSONObject("gallery");
+                        try {
+                            galleryObject = responseObject.getJSONObject("gallery");
 
-                        /*if (galleryObject != null) {
                             images = galleryObject.getJSONArray("images");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                Log.e("!!!!ImageUrl!!!!",url);
                                 imageUrls.add(url);
                             }
-                        }*/
+
+                        }catch(JSONException e){
+
+                        }
 
                         locationObject = responseObject.getJSONObject("location");
 
