@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.weitblickapp_android.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -64,6 +65,10 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
         value.setText(val);
 
         username.setText(ranking.getUsername());
+
+        Picasso.get().load(ranking.getProfileImageUrl()).transform(new RoundedCornersTransform()).fit().centerCrop().
+                placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background).into(imageView);
 
         imageView.setImageResource(R.drawable.ic_launcher_background);
 
