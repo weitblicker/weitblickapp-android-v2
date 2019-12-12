@@ -176,7 +176,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
                     paused = true;
                 } else {
-                    pause.setImageResource(R.mipmap.ic_pause);
+                    pause.setImageResource(R.mipmap.ic_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
                     //sendSegment(url);
