@@ -51,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,10 +63,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Tour currentTour;
+    private ArrayList <Location> locations = new ArrayList<Location>();
     private Location currentLocation;
     private Location lastLocation;
     private SessionManager session;
 
+    //Receiver for Change of GPS-Turned ON/OFF
     private BroadcastReceiver locationSwitchStateReceiver;
 
     private boolean paused = false;
@@ -220,6 +223,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onSuccess(Location location) {
                 if (location != null) {
                     currentLocation = location;
+                    locations.add(location);
                     if (!load) {
                         setUpMapIfNeeded();
                     }
