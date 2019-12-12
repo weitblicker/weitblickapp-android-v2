@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class BlogEntryViewModel extends ViewModel {
 
-    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
     private int id;
@@ -22,7 +22,7 @@ public class BlogEntryViewModel extends ViewModel {
     private int location_id;
 
 
-    public BlogEntryViewModel(int id, String title, String text, String teaser, String published) {
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -32,7 +32,7 @@ public class BlogEntryViewModel extends ViewModel {
             e.printStackTrace();
             this.published = new Date();
         }
-        //this.imageUrls = imageUrls;
+        this.imageUrls = imageUrls;
         this.teaser = teaser;
 
     }

@@ -23,7 +23,7 @@ public class ProjectViewModel extends ViewModel {
     private String address;
     private float goal_amount;
 
-    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount) {
+    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount, ArrayList<String>imageUrls) {
         this.id = projectId;
         this.name = title;
         this.description = text;
@@ -36,6 +36,7 @@ public class ProjectViewModel extends ViewModel {
         this.finished = finished;
         this.address = address;
         this.goal_amount = goal_amount;
+        this.imageUrls = imageUrls;
     }
 
     public float getGoal_amount() {

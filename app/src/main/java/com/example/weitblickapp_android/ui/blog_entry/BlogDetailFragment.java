@@ -34,10 +34,10 @@ public class BlogDetailFragment extends Fragment {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();
         this.date = blogEntry.getPublished();
-        /*for(int i = 0; i < blogEntry.getImageUrls().size(); i++){
+        for(int i = 0; i < blogEntry.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
         }
-        this.date = blogEntry.getPublished();*/
+        this.date = blogEntry.getPublished();
     }
 
     BlogDetailFragment(String title, String text, String date){

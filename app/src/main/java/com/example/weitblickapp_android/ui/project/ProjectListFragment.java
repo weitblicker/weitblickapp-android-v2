@@ -1,6 +1,5 @@
 package com.example.weitblickapp_android.ui.project;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -30,6 +29,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProjectListFragment extends ListFragment {
     ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
@@ -140,7 +141,12 @@ public class ProjectListFragment extends ListFragment {
 
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount);
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
+
+
+
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -150,7 +156,7 @@ public class ProjectListFragment extends ListFragment {
                 }
 
                 for(ProjectViewModel newsArticle:projectList){
-                    Log.e("NewsArticle",newsArticle.toString());
+                    Log.e("Projects",newsArticle.toString());
                 }
 
             }
@@ -175,5 +181,23 @@ public class ProjectListFragment extends ListFragment {
             }
         };
         requestQueue.add(objectRequest);
+    }
+
+    public ArrayList <String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\)")
+                .matcher(text);
+        while (m.find()) {
+            Log.e("ImageUrl", m.group(2));
+
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
+    }
+
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        return text;
     }
 }

@@ -29,6 +29,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProjectCycleListFragment extends ListFragment {
     ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
@@ -139,8 +141,11 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         text.trim();
 
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
+
                         if(cycle_id != 0){
-                            ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount);
+                            ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);
                             projectList.add(temp);
                             adapter.notifyDataSetChanged();
                         }
@@ -171,5 +176,21 @@ public class ProjectCycleListFragment extends ListFragment {
             }
         };
         requestQueue.add(objectRequest);
+    }
+    public ArrayList <String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\)")
+                .matcher(text);
+        while (m.find()) {
+            //Log.e("ImageUrl", m.group(2));
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
+    }
+
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        return text;
     }
 }

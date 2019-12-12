@@ -2,6 +2,7 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,11 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                 });
             }
 
-            //weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+        try {
+            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+        }catch(IndexOutOfBoundsException e){
+            Log.e("Info", "no pictures for this BlogEntry");
+        }
 
             Picasso.get()
                     .load(weitblickUrl)

@@ -9,21 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
@@ -66,9 +64,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.goal_amount = project.getGoal_amount();
         this.cycleID = project.getCycle_id();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
-        /*for(int i = 0; i < project.getImageUrls().size(); i++){
+        for(int i = 0; i < project.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
-        }*/
+        }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -77,9 +75,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         root = inflater.inflate(R.layout.fragment_project_detail, container, false);
 
         //Set Image-Slider Adapter
-        /*mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
+        mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
-        mViewPager.setAdapter(adapter);*/
+        mViewPager.setAdapter(adapter);
 
         final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
 
