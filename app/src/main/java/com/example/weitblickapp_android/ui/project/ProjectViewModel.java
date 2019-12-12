@@ -39,6 +39,10 @@ public class ProjectViewModel extends ViewModel {
         this.imageUrls = imageUrls;
     }
 
+    public ProjectViewModel(){
+
+    }
+
     public float getGoal_amount() {
         return goal_amount;
     }
