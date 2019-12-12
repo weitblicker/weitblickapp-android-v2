@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
         android:layout_marginLeft="34dp"
-        android:fontFamily="@font/opensansbold"
+        android:fontFamily="@font/breeserif"
         android:textColor="@color/wb_orange"
         app:layout_constraintEnd_toStartOf="@+id/event_more_btn"
         app:layout_constraintStart_toStartOf="parent"

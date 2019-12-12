@@ -73,7 +73,7 @@ public class RankingFragment extends ListFragment{
                 Log.e("RANKING:", jsonData);
 
                 //Parse the JSON response array by iterating over it
-                for (int i = 0; i < response.length(); i++) {
+                for (int i = response.length()-1; i >= 0; i--) {
                     JSONObject responseObject = null;
 
                     try {
