@@ -240,9 +240,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
+                Log.e("LOCATIONACCURAY:", location.getAccuracy() +"");
                 if (location != null) {
-                    currentLocation = location;
-                    locations.add(location);
+                    if (location.getAccuracy() < 20) {
+                        currentLocation = location;
+                        locations.add(location);
+                    }
                     if (!load) {
                         setUpMapIfNeeded();
                     }
@@ -575,8 +578,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\)")
                 .matcher(text);
         while (m.find()) {
-            Log.e("ImageUrl", m.group(2));
-
             imageUrls.add(m.group(2));
         }
         return imageUrls;
