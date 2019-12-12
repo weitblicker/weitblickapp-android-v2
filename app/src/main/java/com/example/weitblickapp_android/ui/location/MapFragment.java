@@ -17,8 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,11 +34,16 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
+import com.example.weitblickapp_android.ui.contact.ContactFragment;
+import com.example.weitblickapp_android.ui.project.ProjectCycleListFragment;
+import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,6 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +89,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private String token;
     private int projectId;
     private int tourId;
+    private ProjectViewModel project;
 
     //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
@@ -100,8 +110,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
-    MapFragment(int projectId){
-        this.projectId = projectId;
+    MapFragment(int projectid){
+        this.projectId = projectid;
     }
 
     @Override
@@ -127,7 +137,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         this.gpsIsEnabled = isLocationEnabled();
-
+        loadProject(projectId);
 
         View root = inflater.inflate(R.layout.fragment_location, container, false);
 
@@ -138,12 +148,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
+        ImageView projectDetail = root.findViewById(R.id.projectDetail);
         distance = root.findViewById(R.id.distance);
         donation = root.findViewById(R.id.donation);
 
         if (getActivity() != null) {
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         }
+
+        projectDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(project != null){
+                    ProjectDetailFragment fragment = new ProjectDetailFragment(project);
+                    FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            }
+        });
 
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,6 +344,80 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return enabled;
     }
 
+    private void loadProject(int projectID){
+
+        String URL = "https://new.weitblicker.org/rest/projects/" + projectID + "/";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                String jsonData = response.toString();
+                //Parse the JSON response array by iterating over it
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject responseObject = null;
+                    JSONObject locationObject = null;
+                    JSONArray cycleJSONObject = null;
+                    JSONObject cycleObject = null;
+                    try {
+                        int projectId = response.getInt("id");
+                        String title = response.getString("name");
+
+                        String text = response.getString("description");
+                        locationObject = response.getJSONObject("location");
+
+                        float lat = locationObject.getLong("lat");
+                        float lng = locationObject.getLong("lng");
+                        String name = locationObject.getString("name");
+                        String address = locationObject.getString("address");
+
+                        cycleJSONObject = response.getJSONArray("cycle");
+
+                        float current_amount = 0;
+                        float cycle_donation = 0;
+                        boolean finished = false;
+                        int cycle_id = 0;
+                        float goal_amount = 0;
+
+                        for (int x = 0; x < cycleJSONObject.length(); x++) {
+                            cycleObject = cycleJSONObject.getJSONObject(x);
+                            current_amount = cycleObject.getLong("current_amount");
+                            cycle_donation = cycleObject.getLong("goal_amount");
+                            finished = cycleObject.getBoolean("finished");
+                            cycle_id = cycleObject.getInt("cycle_donation");
+                            goal_amount = cycleObject.getLong("goal_amount");
+                        }
+
+                        text.trim();
+                        project = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Display Error Message
+                Log.e("Rest Response", error.toString());
+            }
+        }){
+            //Override getHeaders() to set Credentials for REST-Authentication
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = "surfer:hangloose";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+        };
+        requestQueue.add(objectRequest);
+    }
     //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
     private void getAmountTours(){
             // Talk to Rest API

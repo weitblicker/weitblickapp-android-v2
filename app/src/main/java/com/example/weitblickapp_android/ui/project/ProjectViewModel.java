@@ -38,6 +38,10 @@ public class ProjectViewModel extends ViewModel {
         this.goal_amount = goal_amount;
     }
 
+    public ProjectViewModel(){
+
+    }
+
     public float getGoal_amount() {
         return goal_amount;
     }
