@@ -17,11 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,14 +31,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
-import com.example.weitblickapp_android.ui.contact.ContactFragment;
-import com.example.weitblickapp_android.ui.project.ProjectCycleListFragment;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -63,6 +57,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -363,6 +359,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     JSONObject locationObject = null;
                     JSONArray cycleJSONObject = null;
                     JSONObject cycleObject = null;
+                    ArrayList<String> imageUrls = new ArrayList<String>();
                     try {
                         int projectId = response.getInt("id");
                         String title = response.getString("name");
@@ -392,8 +389,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             goal_amount = cycleObject.getLong("goal_amount");
                         }
 
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
+
                         text.trim();
-                        project = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount);
+                        project = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -568,6 +568,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+    public ArrayList <String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\)")
+                .matcher(text);
+        while (m.find()) {
+            Log.e("ImageUrl", m.group(2));
+
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
+    }
+
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        return text;
     }
 }
 

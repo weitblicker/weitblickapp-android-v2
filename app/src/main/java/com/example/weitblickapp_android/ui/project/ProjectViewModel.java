@@ -38,6 +38,20 @@ public class ProjectViewModel extends ViewModel {
         this.goal_amount = goal_amount;
         this.imageUrls = imageUrls;
     }
+    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount) {
+        this.id = projectId;
+        this.name = title;
+        this.description = text;
+        this.Lng = lng;
+        this.Lat = lat;
+        this.locationName = name;
+        this.current_amount = current_amount;
+        this.cycle_donation = cycle_donation;
+        this.cycle_id = cycle_id;
+        this.finished = finished;
+        this.address = address;
+        this.goal_amount = goal_amount;
+    }
 
     public ProjectViewModel(){
 

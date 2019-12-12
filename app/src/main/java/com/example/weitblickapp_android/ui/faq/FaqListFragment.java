@@ -6,17 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,12 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
-import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.example.weitblickapp_android.ui.stats.StatsListAdapter;
-import com.example.weitblickapp_android.ui.stats.StatsViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +46,17 @@ public class FaqListFragment extends ListFragment {
         View view = inflater.inflate(R.layout.fragment_faq, container, false);
         adapter = new FaqListAdapter(getActivity(), faqList, getFragmentManager());
         this.setListAdapter(adapter);
+
+        ImageButton back = (ImageButton) view.findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
 
         return view;
     }
