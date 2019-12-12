@@ -40,14 +40,15 @@ import java.util.regex.Pattern;
 public class BlogEntryListFragment extends ListFragment implements AbsListView.OnScrollListener {
 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
 
     ArrayList<BlogEntryViewModel> blogEntries = new ArrayList<BlogEntryViewModel>();
     private BlogEntryListAdapter adapter;
 
     private String lastItemDate;
     private String lastItemDateCheck = "";
-    private String url = "https://new.weitblicker.org/rest/blog?limit=5";
+    int limitLoadedBlogs = 20;
+    private String url = "https://new.weitblicker.org/rest/blog?limit=";
 
 
 
@@ -95,9 +96,10 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
 
         // Talk to Rest API
 
+        String requestUrl = url.concat(Integer.toString(limitLoadedBlogs));
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
@@ -145,10 +147,10 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-
                         temp = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls);
 
                         blogEntries.add(temp);
+
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -206,12 +208,12 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if(totalItemCount > 0) {
             final int lastItem = firstVisibleItem + visibleItemCount;
-            if (lastItem == totalItemCount && !lastItemDateCheck.equals(lastItemDate)) {
-                Log.e("LASTITEMDAte", lastItemDate);
-                Log.e("FIRSTITEMDAte", lastItemDateCheck);
-                url = url.concat(("&end=" + lastItemDate));
+            if (lastItem == totalItemCount) {
+                /*limitLoadedBlogs +=5;
                 loadBlogs(url);
                 lastItemDateCheck = lastItemDate;
+                */
+
             }
         }
     }
