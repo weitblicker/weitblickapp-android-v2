@@ -67,7 +67,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Tour currentTour;
-    private ArrayList <Location> locations = new ArrayList<Location>();
     private Location currentLocation;
     private Location lastLocation;
     private SessionManager session;
@@ -174,15 +173,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (!paused) {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
                     paused = true;
+                    sendSegment();
+                    resetLocations();
                 } else {
                     pause.setImageResource(R.mipmap.ic_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
+                    getCurrentLocation();
                     //sendSegment(url);
                 }
             }
         });
-
 
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,11 +192,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
                 ft.commit();
-                MapFragment.this.sendSegment();
+                sendSegment();
                 paused = true;
+                kmTotal = 0;
             }
         });
         return root;
+    }
+
+    private void resetLocations(){
+        currentLocation = null;
+        lastLocation = null;
     }
 
     private void initializeTour(){
@@ -245,7 +252,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (location != null) {
                     if (location.getAccuracy() < 20) {
                         currentLocation = location;
-                        locations.add(location);
+                        currentTour.getLocations().add(location);
                     }
                     if (!load) {
                         setUpMapIfNeeded();
@@ -294,15 +301,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-
     private void checkKm() {
         if(paused == false){
             if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation) / 1000;
                 km += dis;
-                don = (betrag * km) ;
+                don = (betrag * kmTotal) ;
                 String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
-                String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00);
+                String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
                 distance.setText(distanceTotal);
                 donation.setText(donationTotal);
             }
@@ -311,8 +317,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 double dis = currentLocation.distanceTo(lastLocation) / 1000;
                 km += dis;
                 don = (betrag * km) / 100;
-                distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
-                donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+                String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
+                String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
+                distance.setText(distanceTotal);
+                donation.setText(donationTotal);
             }
             startFetchLocation();
         }
@@ -530,6 +538,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         requestQueue.add(objectRequest);
 
         segmentStartTime = segmentEndTime;
+
+        //Reset Km-Counter for Segment
         km = 0;
     }
 
@@ -538,7 +548,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())) {
-
                     locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
                     boolean isGpsEnabled = locationManager.isProviderEnabled(locationManager.GPS_PROVIDER);
                     boolean isNetworkEnabled = locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER);
