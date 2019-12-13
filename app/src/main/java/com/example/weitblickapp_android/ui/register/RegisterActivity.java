@@ -2,6 +2,7 @@ package com.example.weitblickapp_android.ui.register;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -9,6 +10,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -18,6 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -31,6 +39,7 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.RegistrationData;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
+import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,9 +71,22 @@ public class RegisterActivity extends AppCompatActivity {
         final ImageButton infoButton = findViewById(R.id.infoButton);
         final ImageView loginImage = findViewById(R.id.loginPicture);
 
+        final CheckBox checkbox = (CheckBox)findViewById(R.id.checkBox1);
+        final TextView acceptTextView = (TextView)findViewById(R.id.textView2);
+        final TextView agbTextView = (TextView)findViewById(R.id.textView3);
+
+
+        checkbox.setText("");
+        acceptTextView.setText("Ich akzeptiere die ");
+        agbTextView.setText("AGB");
+
         registrationData = new RegistrationData(RegisterActivity.this);
 
         registerButton.setEnabled(false);
+
+
+
+
         //Bild initialisieren
         loginImage.setImageResource(R.drawable.ic_wbcd_logo_standard_black_font);
 
@@ -114,28 +136,21 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        CheckBox checkbox = (CheckBox)findViewById(R.id.checkBox1);
-        TextView textView = (TextView)findViewById(R.id.textView2);
-        TextView textView2 = (TextView)findViewById(R.id.textView3);
-
-        checkbox.setText("");
-        textView.setText("Ich akzeptiere die ");
-        textView2.setText("AGB");
-        //textView2.setTextColor(1);
-
-
-        textView2.setOnClickListener(new View.OnClickListener()
-        {
-
+        agbTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                switchToMain();
+                    RegisterFragment fragment = new RegisterFragment();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+
             }
         });
-        /*
 
-        agb_checkbox.setOnClickListener(new View.OnClickListener() {
+
+        checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
@@ -147,10 +162,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        String checkBoxText = "Ich akzeptiere die <a href='login.mainactivity' > AGB   </a>";
-
-        agb_checkbox.setText(Html.fromHtml(checkBoxText));
-        agb_checkbox.setMovementMethod(LinkMovementMethod.getInstance());*/
     }
 
     private void switchToMain(){

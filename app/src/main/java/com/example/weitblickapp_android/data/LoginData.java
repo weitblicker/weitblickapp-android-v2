@@ -258,4 +258,6 @@ public class LoginData{
             Log.e("INIT_ERROR: ", "user nicht initalisiert!");
         }
     }
+
+
 }
