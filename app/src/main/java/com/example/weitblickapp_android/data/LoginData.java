@@ -240,6 +240,97 @@ public class LoginData{
         }
     }
 
+    public void changePassword(final String old_password, final String password,final String password1,final String password2, final VolleyCallback callback){
+
+        try {
+            try {
+                RequestQueue requestQueue = Volley.newRequestQueue(app_context);
+
+                String URL = "https://new.weitblicker.org/rest/auth/password/change";
+
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("key", sessionManager.getKey());
+                jsonBody.put("old_password", old_password);
+                jsonBody.put("new_password1", password1);
+                jsonBody.put("new_password2", password2);
+
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        callback.onSuccess("Passwort erfolgreich geändert.");
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY ERROR", error.toString());
+                        String body;
+                        //get status code here
+                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        if (error.networkResponse.data != null) {
+                            try {
+                                //create errorJSON from VolleyError
+                                body = new String(error.networkResponse.data, "UTF-8");
+
+                                String result = "";
+
+                                JsonParser parser = new JsonParser();
+                                JsonObject jObject = parser.parse(body).getAsJsonObject();
+
+                                Map<String, Object> attributes = new HashMap<String, Object>();
+
+                                Set<Map.Entry<String, JsonElement>> entrySet = jObject.entrySet();
+
+                                for(Map.Entry<String,JsonElement> entry : entrySet){
+                                    result += jObject.get(entry.getKey()).getAsString();
+                                }
+
+                                Log.e("Statuscode:", body);
+                                callback.onError(result);
+
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        String credentials = "surfer:hangloose";
+                        String auth = "Basic "
+                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", auth);
+                        return headers;
+                    }
+                };
+
+                requestQueue.add(objectRequest);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+        } catch (Exception e) {
+            Log.e("LOGIN_EXCEPTION: ", e.toString());
+
+        }
+
+    }
+
     private void updateUiWithUser(final String email, final String password, final boolean isLoginSaved) {
 
         if (user != null) {
