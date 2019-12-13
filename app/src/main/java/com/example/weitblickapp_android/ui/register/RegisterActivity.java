@@ -3,11 +3,14 @@ package com.example.weitblickapp_android.ui.register;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +28,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.RegistrationData;
+import com.example.weitblickapp_android.data.model.VolleyCallback;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
 
 import org.json.JSONException;
@@ -39,6 +44,7 @@ import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 public class RegisterActivity extends AppCompatActivity {
 
     private RequestQueue queue;
+    private RegistrationData registrationData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +56,34 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText emailEditText = findViewById(R.id.email);
         final EditText passwordEditText = findViewById(R.id.password);
         final EditText password_confirmEditText = findViewById(R.id.password_confirm);
-
+        //final CheckBox agb_checkbox = findViewById(R.id.agb_accept);
         final Button registerButton = findViewById(R.id.sign_up);
         final TextView signInText = findViewById(R.id.sign_in);
         final ImageButton infoButton = findViewById(R.id.infoButton);
         final ImageView loginImage = findViewById(R.id.loginPicture);
 
+        registrationData = new RegistrationData(RegisterActivity.this);
+
+        registerButton.setEnabled(false);
         //Bild initialisieren
         loginImage.setImageResource(R.drawable.ic_wbcd_logo_standard_black_font);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                register(usernameEditText.getText().toString(),emailEditText.getText().toString(), passwordEditText.getText().toString(), password_confirmEditText.getText().toString() );
+                registrationData.register(usernameEditText.getText().toString(), emailEditText.getText().toString(), passwordEditText.getText().toString(), password_confirmEditText.getText().toString(), new VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(String result) {
+                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+
+                    }
+                });
             }
         });
 
@@ -89,20 +110,47 @@ public class RegisterActivity extends AppCompatActivity {
                         .transparentOverlay(true)
                         .build()
                         .show();
-                /*
-                if(!show){
-
-                    Toast.makeText(getApplicationContext(),"Die Info wird angezeigt.",Toast.LENGTH_SHORT).show();
-                    show = true;
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Die Info ist zugeklappt.",Toast.LENGTH_SHORT).show();
-                    show = false;
-                }
-                */
 
             }
         });
+
+        CheckBox checkbox = (CheckBox)findViewById(R.id.checkBox1);
+        TextView textView = (TextView)findViewById(R.id.textView2);
+        TextView textView2 = (TextView)findViewById(R.id.textView3);
+
+        checkbox.setText("");
+        textView.setText("Ich akzeptiere die ");
+        textView2.setText("AGB");
+        //textView2.setTextColor(1);
+
+
+        textView2.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+
+                switchToMain();
+            }
+        });
+        /*
+
+        agb_checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    registerButton.setEnabled(true);
+
+                } else {
+                    registerButton.setEnabled(false);
+                }
+            }
+        });
+
+        String checkBoxText = "Ich akzeptiere die <a href='login.mainactivity' > AGB   </a>";
+
+        agb_checkbox.setText(Html.fromHtml(checkBoxText));
+        agb_checkbox.setMovementMethod(LinkMovementMethod.getInstance());*/
     }
 
     private void switchToMain(){
@@ -116,104 +164,4 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean register(final String username, String email, String password, String password_confirm) {
-
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-            String URL = "https://new.weitblicker.org/rest/auth/registration/";
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("username", username);
-            jsonBody.put("email", email);
-            jsonBody.put("password1", password);
-            jsonBody.put("password2", password_confirm);
-
-
-            final String requestBody = jsonBody.toString();
-
-
-            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody , new Response.Listener<JSONObject>() {
-
-
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    Toast.makeText(getApplicationContext(),"Erfolgreich registriert!" , Toast.LENGTH_SHORT).show();
-                    Log.i("REGISTRATION SUCCESFUL", "VERY sucessful ---------------------------------------------------------------------------------");
-
-                    for (int i = 0; i < response.length(); i++) {
-                        //JSONObject responseObject = n;
-
-                        try {
-
-                            if(response.has("username")) {
-                                String usernameResp = response.getString("username");
-                                Log.e("USERNAME ERROR", usernameResp);
-                            }
-
-                            if(response.has("email")) {
-                                String emailResp = response.getString("email");
-                                Log.e("EMAIL ERROR", emailResp);
-                            }
-                            if(response.has("password1")) {
-                                String password1Resp = response.getString("password1");
-                                Log.e("password1 ERROR", password1Resp);
-                            }
-                            if(response.has("password2")) {
-                                String password2Resp = response.getString("password2");
-                                Log.e("password2 ERROR", password2Resp);
-                            }
-
-
-                            switchToLogin();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY ERROR", error.toString());
-
-                    String body;
-                    //get status code here
-                    String statusCode = String.valueOf(error.networkResponse.statusCode);
-                    //get response body and parse with appropriate encoding
-                    if(error.networkResponse.data!=null) {
-                        try {
-                            body = new String(error.networkResponse.data,"UTF-8");
-                            Log.e("Statuscode:", body);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
-                    Log.e("REGISTRATION-HEADER = ", headers.toString());
-                    return headers;
-                }
-            };
-
-            requestQueue.add( objectRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return true;
-
-    }
 }
