@@ -53,4 +53,14 @@ public class RankingViewModel extends ViewModel {
     public void setCycledDonation(double cycledDonation) {
         this.cycledDonation = cycledDonation;
     }
+
+    @Override
+    public String toString() {
+        return "RankingViewModel{" +
+                "profileImageUrl='" + profileImageUrl + '\'' +
+                ", username='" + username + '\'' +
+                ", cycledKm=" + cycledKm +
+                ", cycledDonation=" + cycledDonation +
+                '}';
+    }
 }

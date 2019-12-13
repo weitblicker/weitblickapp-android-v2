@@ -26,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,14 +53,34 @@ public class RankingFragment extends ListFragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getRankingData();
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getRankingData();
     }
+
+    private void sortByKm(){
+        Collections.sort(rankings, new Comparator<RankingViewModel>() {
+            @Override
+            public int compare(RankingViewModel o1, RankingViewModel o2) {
+                return Double.compare(o1.getCycledKm(), o2.getCycledKm());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortByDonation(){
+        Collections.sort(rankings, new Comparator<RankingViewModel>() {
+            @Override
+            public int compare(RankingViewModel o1, RankingViewModel o2) {
+                return Double.compare(o2.getCycledDonation(), o1.getCycledDonation());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
 
     public void getRankingData(){
 
