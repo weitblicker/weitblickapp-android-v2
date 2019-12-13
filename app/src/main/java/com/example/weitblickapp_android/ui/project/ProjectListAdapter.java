@@ -1,6 +1,8 @@
 package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private LayoutInflater mInflater;
     private ArrayList<ProjectViewModel> projects;
     private FragmentManager fragManager;
+    String PREF_NAME = "DefaultProject";
 
     public ProjectListAdapter(Context mContext, ArrayList<ProjectViewModel> mDataSource, FragmentManager fragManager) {
         super(mContext, R.layout.fragment_project_list, mDataSource);
@@ -55,12 +59,39 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_address = (TextView) view.findViewById(R.id.location);
+            ImageButton maps = (ImageButton) view.findViewById(R.id.project_maps_btn);
+
+
             //TextView textView_date = (TextView) view.findViewById(R.id.date);
 
 
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
-            //weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+            if(project.getCycle_id() == 0){
+                maps.setVisibility(View.GONE);
+            }else{
+                maps.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putInt("projectid", project.getId());
+                        editor.putString("projectname", project.getName());
+                        editor.putFloat("lat", project.getLat());
+                        editor.putFloat("lng", project.getLng());
+                        editor.commit();
+                        FragmentTransaction ft = fragManager.beginTransaction();
+                        ft.replace(R.id.fragment_container, new MapOverviewFragment());
+                        ft.commit();
+                    }
+                });
+            }
+
+        try {
+            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+        }catch(IndexOutOfBoundsException e){
+            Log.e("Info", "no pictures for this BlogEntry");
+        }
 
             Picasso.get()
                     .load(weitblickUrl)

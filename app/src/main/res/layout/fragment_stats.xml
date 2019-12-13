@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     >
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
@@ -15,11 +16,95 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/donationtext2"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/breeserif"
+            android:text="Spende"
+            android:textColor="@color/wb_orange"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/distancetext2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/distancetext2"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/breeserif"
+            android:text="Strecke"
+            android:textColor="@color/wb_orange"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
+            app:layout_constraintEnd_toStartOf="@+id/donationtext2"
+            app:layout_constraintStart_toEndOf="@+id/durationtext"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/durationtext"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/breeserif"
+            android:text="Dauer"
+            android:textColor="@color/wb_orange"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
+            app:layout_constraintEnd_toStartOf="@+id/distancetext2"
+            app:layout_constraintStart_toEndOf="@+id/datetext"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/datetext"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/breeserif"
+            android:text="Datum"
+            android:textColor="@color/wb_orange"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
+            app:layout_constraintEnd_toStartOf="@+id/durationtext"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></ListView>
+
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

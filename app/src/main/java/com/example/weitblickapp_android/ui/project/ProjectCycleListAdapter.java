@@ -9,12 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
@@ -53,6 +50,8 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
+        final ProjectViewModel project = (ProjectViewModel) getItem(position);
+
         String weitblickUrl = "https://new.weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_project_cycle_list, null);
@@ -61,8 +60,6 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
         TextView textView_title = (TextView) view.findViewById(R.id.title);
         TextView textView_address = (TextView) view.findViewById(R.id.location);
 
-
-        final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
         //weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
@@ -109,6 +106,8 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("projectid", project.getId());
                 editor.putString("projectname", project.getName());
+                editor.putFloat("lat", project.getLat());
+                editor.putFloat("lng", project.getLng());
                 editor.commit();
                 FragmentTransaction ft = fragManager.beginTransaction();
                 ft.replace(R.id.fragment_container, new MapOverviewFragment());

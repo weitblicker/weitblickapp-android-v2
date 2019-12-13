@@ -4,20 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.weitblickapp_android.MainActivity;
-import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.data.LoginData;
-import com.example.weitblickapp_android.data.Session.SessionManager;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.data.LoginData;
+import com.example.weitblickapp_android.data.Session.SessionManager;
 
 public class ProfilFragment extends Fragment {
 
@@ -50,7 +49,6 @@ public class ProfilFragment extends Fragment {
                     Toast toast = Toast.makeText(getActivity().getApplicationContext(),
                             "Du bist schon ausgeloggt!",
                             Toast.LENGTH_SHORT);
-
                     toast.show();
                 }
                 else {

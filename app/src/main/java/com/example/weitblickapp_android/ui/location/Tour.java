@@ -1,5 +1,8 @@
 package com.example.weitblickapp_android.ui.location;
 
+import android.location.Location;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Tour {
@@ -9,11 +12,11 @@ public class Tour {
   private String userToken;
   private double eurosTotal;
   private double distanceTotal;
+  private ArrayList<Location> locations;
   private int projectId;
 
   public Tour(int projectId){
     this.projectId = projectId;
-
   }
 
   public Tour(Date startTime, Date endTime, String userToken, double eurosTotal, double distanceTotal) {
@@ -62,5 +65,21 @@ public class Tour {
 
   public void setDistanceTotal(double distanceTotal) {
     this.distanceTotal = distanceTotal;
+  }
+
+  public ArrayList<Location> getLocations() {
+    return locations;
+  }
+
+  public void setLocations(ArrayList<Location> locations) {
+    this.locations = locations;
+  }
+
+  public int getProjectId() {
+    return projectId;
+  }
+
+  public void setProjectId(int projectId) {
+    this.projectId = projectId;
   }
 }
