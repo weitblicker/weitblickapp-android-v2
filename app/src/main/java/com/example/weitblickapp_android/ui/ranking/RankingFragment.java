@@ -112,7 +112,6 @@ public class RankingFragment extends ListFragment{
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 
