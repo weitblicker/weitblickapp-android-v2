@@ -70,8 +70,6 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
                 placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background).into(imageView);
 
-        imageView.setImageResource(R.drawable.ic_launcher_background);
-
         return view;
     }
 }
