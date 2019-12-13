@@ -82,6 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     //Segment-Information
     static private double km = 0;
+    static private double kmTotal = 0;
     private String segmentStartTime;
     private String segmentEndTime;
     private String token;
@@ -300,8 +301,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 double dis = currentLocation.distanceTo(lastLocation) / 1000;
                 km += dis;
                 don = (betrag * km) ;
-                distance.setText((String.valueOf(Math.round(km * 100.00) / 100.00)) + " km");
-                donation.setText((String.valueOf(Math.round(don * 100.00) / 100.00)) + " €");
+                String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
+                String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00);
+                distance.setText(distanceTotal);
+                donation.setText(donationTotal);
             }
         }else{
             if (lastLocation != null) {
@@ -471,6 +474,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void sendSegment() {
 
         segmentEndTime = getFormattedDate();
+        kmTotal += km;
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -526,6 +530,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         requestQueue.add(objectRequest);
 
         segmentStartTime = segmentEndTime;
+        km = 0;
     }
 
     private void setUpGpsReceiver(){
