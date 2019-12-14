@@ -44,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         final Button registerButton = findViewById(R.id.change_password_button);
         final TextView signInText = findViewById(R.id.sign_in);
         final ImageButton infoButton = findViewById(R.id.infoButton);
+        final ImageButton back = findViewById(R.id.back);
         final ImageView loginImage = findViewById(R.id.loginPicture);
 
         final CheckBox checkbox = (CheckBox)findViewById(R.id.checkBox1);
@@ -125,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +136,13 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     registerButton.setEnabled(false);
                 }
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               onBackPressed();
             }
         });
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class ChangePasswordFragment extends Fragment {
     private EditText newPasswordEditText;
     private EditText newPasswordConfirmEditText;
     private Button changePasswordButton;
+    private ImageButton back;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +62,16 @@ public class ChangePasswordFragment extends Fragment {
             }
         });
 
+        back = (ImageButton) root.findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
 
         return root;
     }

@@ -6,10 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginData;
@@ -17,6 +20,7 @@ import com.example.weitblickapp_android.data.LoginPreferences;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
 import com.example.weitblickapp_android.ui.register.RegisterActivity;
+import com.example.weitblickapp_android.ui.register.RegisterFragment;
 
 public class Login_Activity extends AppCompatActivity {
 
@@ -26,6 +30,7 @@ public class Login_Activity extends AppCompatActivity {
     private LoginPreferences loginPref;
     private EditText usernameEditText;
     private EditText passwordEditText;
+    private TextView forgotPasswordTextView;
     private boolean saveLogin = false;
     private boolean debug = true;
 
@@ -51,8 +56,10 @@ public class Login_Activity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.login);
         final Button registerButton = findViewById(R.id.change_password_button);
 
+        final ImageButton back = findViewById(R.id.back);
         final ImageView loginImage = findViewById(R.id.loginPicture);
         final CheckBox checkBox = findViewById(R.id.save_login);
+        forgotPasswordTextView = findViewById(R.id.text_forgot_password);
 
         loginImage.setImageResource(R.drawable.ic_wbcd_logo_standard_black_font);
 
@@ -108,6 +115,24 @@ public class Login_Activity extends AppCompatActivity {
             }
         });
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ForgotPasswordFragment fragment = new ForgotPasswordFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
     }
 

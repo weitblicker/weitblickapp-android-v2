@@ -5,6 +5,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import com.example.weitblickapp_android.R;
 public class RegisterFragment extends Fragment {
 
     private TextView agbTextView;
+    private ImageButton back;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,6 +27,18 @@ public class RegisterFragment extends Fragment {
         agbTextView = root.findViewById(R.id.agbTextView);
         agbTextView.setText(getAgbString());
         //agbTextView.setMovementMethod(new ScrollingMovementMethod());
+
+        back = (ImageButton) root.findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
+
 
         return root;
     }
