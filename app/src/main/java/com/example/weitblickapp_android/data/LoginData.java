@@ -240,7 +240,7 @@ public class LoginData{
         }
     }
 
-    public void changePassword(final String old_password, final String password,final String password1,final String password2, final VolleyCallback callback){
+    public void changePassword(final String old_password,final String password1,final String password2, final VolleyCallback callback){
 
         try {
             try {

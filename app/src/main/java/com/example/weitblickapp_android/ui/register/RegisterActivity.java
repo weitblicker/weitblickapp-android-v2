@@ -2,16 +2,9 @@ package com.example.weitblickapp_android.ui.register;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,32 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.RegistrationData;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
-import com.example.weitblickapp_android.ui.login.Login_Activity;
-import com.example.weitblickapp_android.ui.profil.ProfilFragment;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
@@ -62,11 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);
         final EditText usernameEditText = findViewById(R.id.username);
-        final EditText emailEditText = findViewById(R.id.email);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final EditText password_confirmEditText = findViewById(R.id.password_confirm);
+        final EditText emailEditText = findViewById(R.id.old_password);
+        final EditText passwordEditText = findViewById(R.id.new_password);
+        final EditText password_confirmEditText = findViewById(R.id.new_password_confirm);
         //final CheckBox agb_checkbox = findViewById(R.id.agb_accept);
-        final Button registerButton = findViewById(R.id.sign_up);
+        final Button registerButton = findViewById(R.id.change_password_button);
         final TextView signInText = findViewById(R.id.sign_in);
         final ImageButton infoButton = findViewById(R.id.infoButton);
         final ImageView loginImage = findViewById(R.id.loginPicture);

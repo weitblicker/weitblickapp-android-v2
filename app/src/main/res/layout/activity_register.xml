@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/loginPicture" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/old_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/new_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -61,10 +61,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/old_password" />
 
     <EditText
-        android:id="@+id/password_confirm"
+        android:id="@+id/new_password_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -79,7 +79,7 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/new_password" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -92,8 +92,8 @@
         android:layout_marginBottom="64dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="@+id/new_password"
+        app:layout_constraintStart_toStartOf="@+id/new_password"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
@@ -123,7 +123,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_confirm">
+        app:layout_constraintTop_toBottomOf="@+id/new_password_confirm">
 
         <CheckBox
             android:id="@+id/checkBox1"
@@ -160,7 +160,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <Button
-            android:id="@+id/sign_up"
+            android:id="@+id/change_password_button"
             android:layout_width="142dp"
             android:layout_height="31dp"
             android:background="@menu/btn_round"
@@ -178,8 +178,8 @@
 
     <LinearLayout
         android:id="@+id/login_layout"
-        android:layout_width="182dp"
-        android:layout_height="31dp"
+        android:layout_width="202dp"
+        android:layout_height="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

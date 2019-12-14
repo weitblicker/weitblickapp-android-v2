@@ -46,10 +46,10 @@ public class Login_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         usernameEditText = findViewById(R.id.username);
-        passwordEditText = findViewById(R.id.password);
+        passwordEditText = findViewById(R.id.new_password);
 
         final Button loginButton = findViewById(R.id.login);
-        final Button registerButton = findViewById(R.id.sign_up);
+        final Button registerButton = findViewById(R.id.change_password_button);
 
         final ImageView loginImage = findViewById(R.id.loginPicture);
         final CheckBox checkBox = findViewById(R.id.save_login);
