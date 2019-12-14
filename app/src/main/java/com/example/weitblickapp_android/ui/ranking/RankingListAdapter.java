@@ -21,7 +21,6 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
     private LayoutInflater mInflater;
     private ArrayList<RankingViewModel> rankings;
     private FragmentManager fragManager;
-    private int rank = 0;
     static private boolean km_donation = true;
 
     public RankingListAdapter(Context mContext, ArrayList<RankingViewModel> mDataSource, FragmentManager fragManager, boolean km_donation) {
@@ -60,7 +59,7 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
 
         final RankingViewModel ranking = (RankingViewModel) getItem(position);
 
-        rank = rank + 1;
+        int rank = (position + 1);
         String r = Integer.toString(rank);
         ranks.setText(r);
 

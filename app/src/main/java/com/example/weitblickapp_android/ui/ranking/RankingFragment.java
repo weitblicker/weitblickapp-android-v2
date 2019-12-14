@@ -116,9 +116,6 @@ public class RankingFragment extends ListFragment{
         adapter.notifyDataSetChanged();
     }
 
-
-
-
     public void getRankingData(boolean km){
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());

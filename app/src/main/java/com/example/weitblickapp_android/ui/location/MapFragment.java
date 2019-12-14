@@ -180,7 +180,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
                     getCurrentLocation();
-                    //sendSegment(url);
+                    sendSegment();
                 }
             }
         });
@@ -257,7 +257,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             setUpMapIfNeeded();
                         }
                     }
-
                 }
             }
         });
@@ -304,9 +303,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void checkKm() {
         if(paused == false){
             if (lastLocation != null) {
-                double dis = currentLocation.distanceTo(lastLocation); // /1000
+                double dis = currentLocation.distanceTo(lastLocation)/1000;
                 km += dis;
-                don = (betrag * kmTotal) ;
+                don = currentTour.getEurosTotal() / 100;
                 String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
                 String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
                 distance.setText(distanceTotal);
@@ -314,9 +313,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }else{
             if (lastLocation != null) {
-                double dis = currentLocation.distanceTo(lastLocation); // /1000
+                double dis = currentLocation.distanceTo(lastLocation)/1000;
                 km += dis;
-                don = (betrag * km) / 100;
+                don = currentTour.getEurosTotal() / 100;
                 String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
                 String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
                 distance.setText(distanceTotal);
