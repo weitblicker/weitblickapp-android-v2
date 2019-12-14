@@ -17,6 +17,7 @@ public class Tour {
 
   public Tour(int projectId){
     this.projectId = projectId;
+    this.locations = new ArrayList<Location>();
   }
 
   public Tour(Date startTime, Date endTime, String userToken, double eurosTotal, double distanceTotal) {
@@ -25,6 +26,7 @@ public class Tour {
     this.userToken = userToken;
     this.eurosTotal = eurosTotal;
     this.distanceTotal = distanceTotal;
+    this.locations = new ArrayList<Location>();
   }
 
   public Date getStartTime() {

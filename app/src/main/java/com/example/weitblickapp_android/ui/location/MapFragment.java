@@ -98,6 +98,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView distance;
     private TextView donation;
 
+    //get ration for
     private double betrag = 0.10;
     static private double don = 0;
 
@@ -124,7 +125,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private String getFormattedDate(){
-       // formatter.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
         Date date = new Date();
         return formatter.format(date);
     }
@@ -253,10 +253,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     if (location.getAccuracy() < 20) {
                         currentLocation = location;
                         currentTour.getLocations().add(location);
+                        if (!load) {
+                            setUpMapIfNeeded();
+                        }
                     }
-                    if (!load) {
-                        setUpMapIfNeeded();
-                    }
+
                 }
             }
         });
@@ -290,7 +291,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        //LatLng latLng = new LatLng( -33.865143, 151.209900);
         this.mMap = googleMap;
         if (isLocationEnabled()) {
             if (currentLocation != null) {
@@ -304,7 +304,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void checkKm() {
         if(paused == false){
             if (lastLocation != null) {
-                double dis = currentLocation.distanceTo(lastLocation) / 1000;
+                double dis = currentLocation.distanceTo(lastLocation); // /1000
                 km += dis;
                 don = (betrag * kmTotal) ;
                 String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
@@ -314,7 +314,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }else{
             if (lastLocation != null) {
-                double dis = currentLocation.distanceTo(lastLocation) / 1000;
+                double dis = currentLocation.distanceTo(lastLocation); // /1000
                 km += dis;
                 don = (betrag * km) / 100;
                 String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
