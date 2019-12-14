@@ -173,14 +173,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (!paused) {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
                     paused = true;
-                    sendSegment();
+                   // sendSegment();
                     resetLocations();
                 } else {
                     pause.setImageResource(R.mipmap.ic_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
                     getCurrentLocation();
-                    sendSegment();
+                    //sendSegment();
                 }
             }
         });
@@ -257,6 +257,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             setUpMapIfNeeded();
                         }
                     }
+                }
+                if (!load) {
+                    setUpMapIfNeeded();
                 }
             }
         });
