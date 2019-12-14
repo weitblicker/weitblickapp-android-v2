@@ -1,6 +1,15 @@
 package com.example.weitblickapp_android.ui.profil;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +24,13 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -29,6 +44,8 @@ public class ProfilFragment extends Fragment {
     private String password = "******";
     private String km = "20,4 km";
     private String email = "max.mustermann@hs-osnabrueck.de";
+    ImageView imageProfil = null;
+    public static final int IMAGE_GALLERY_REQUEST = 20;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +57,23 @@ public class ProfilFragment extends Fragment {
         loginData = new LoginData(getActivity().getApplicationContext());
         email = session.getEmail();
 
+        ImageButton changeProfile = root.findViewById(R.id.changeProfil);
+
+        changeProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            2000);
+                }
+                else {
+                    startGallery();
+                }
+            }
+        });
 
         final Button logOutButton = root.findViewById(R.id.log_out);
 
@@ -66,8 +100,8 @@ public class ProfilFragment extends Fragment {
             }
         });
 
-        final ImageView imageView = root.findViewById(R.id.imageProfil);
-        imageView.setImageResource(R.drawable.ic_launcher_background);
+        imageProfil = root.findViewById(R.id.imageProfil);
+        imageProfil.setImageResource(R.drawable.ic_launcher_background);
         final TextView donationTextView = root.findViewById(R.id.donation);
         donationTextView.setText(this.donation);
         final TextView passwordTextView = root.findViewById(R.id.password);
@@ -89,5 +123,34 @@ public class ProfilFragment extends Fragment {
         return root;
 
 
+    }
+
+    private void startGallery(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String pictureDirectoryPath = pictureDirectory.getPath();
+
+        Uri data = Uri.parse(pictureDirectoryPath);
+
+        photoPickerIntent.setDataAndType(data, "image/*");
+        startActivityForResult(photoPickerIntent, IMAGE_GALLERY_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Uri imageUri = data.getData();
+
+        InputStream inputStream;
+
+        try {
+            inputStream = getActivity().getContentResolver().openInputStream(imageUri);
+
+            Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+            imageProfil.setImageBitmap(image);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
