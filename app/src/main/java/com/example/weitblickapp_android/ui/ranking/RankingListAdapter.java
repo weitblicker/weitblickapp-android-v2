@@ -21,14 +21,17 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
     private ArrayList<RankingViewModel> rankings;
     private FragmentManager fragManager;
     private int rank = 0;
+    static private boolean km_donation = true;
 
-    public RankingListAdapter(Context mContext, ArrayList<RankingViewModel> mDataSource, FragmentManager fragManager) {
+    public RankingListAdapter(Context mContext, ArrayList<RankingViewModel> mDataSource, FragmentManager fragManager, boolean km_donation) {
         super(mContext, R.layout.fragment_ranking_list, mDataSource);
         this.mContext = mContext;
         this.rankings = mDataSource;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragManager = fragManager;
+        this.km_donation = km_donation;
     }
+
     @Override
     public int getCount() {
         return rankings.size();
@@ -60,8 +63,13 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
         String r = Integer.toString(rank);
         ranks.setText(r);
 
-        String val = String.format("%.2f", ranking.getCycledKm()).concat(" km");
-        value.setText(val);
+        if(this.km_donation == false){
+            String val = String.format("%.2f", ranking.getCycledKm()).concat(" km");
+            value.setText(val);
+        }else{
+            String val = String.format("%.2f", ranking.getCycledDonation()).concat(" €");
+            value.setText(val);
+        }
 
         username.setText(ranking.getUsername());
 

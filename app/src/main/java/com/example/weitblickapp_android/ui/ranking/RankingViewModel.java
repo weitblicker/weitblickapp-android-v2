@@ -9,7 +9,6 @@ public class RankingViewModel extends ViewModel {
     private double cycledKm;
     private double cycledDonation;
 
-
     public RankingViewModel() {
 
     }
