@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -36,16 +37,50 @@ public class RankingFragment extends ListFragment{
 
     private RankingViewModel rankingViewModel;
     private RankingListAdapter adapter;
+    private ListView listView;
     ArrayList<RankingViewModel> rankings = new ArrayList<RankingViewModel>();
-    private String url = "https://new.weitblicker.org/rest/cycle/ranking/";
+    private boolean km_donation = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_ranking, container, false);
 
-        adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager());
+        adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager(), km_donation);
         this.setListAdapter(adapter);
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        listView = (ListView) view.findViewById(R.id.list);
+
+        Button km = (Button) view.findViewById(R.id.km);
+        Button donation = (Button) view.findViewById(R.id.donation);
+
+        km.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                km_donation = false;
+                rankings.clear();
+                getRankingData(km_donation);
+                donation.setAlpha(1.0f);
+                km.setAlpha(0.5f);
+                km.setClickable(false);
+                donation.setClickable(true);
+                adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager(), km_donation);
+                setListAdapter(adapter);
+            }
+        });
+
+        donation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                km_donation = true;
+                rankings.clear();
+                getRankingData(km_donation);
+                km.setAlpha(1.0f);
+                donation.setAlpha(0.5f);
+                km.setClickable(true);
+                donation.setClickable(false);
+                adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager(), km_donation);
+                setListAdapter(adapter);
+            }
+        });
 
         return view;
     }
@@ -53,7 +88,7 @@ public class RankingFragment extends ListFragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getRankingData();
+        getRankingData(km_donation);
     }
 
     @Override
@@ -82,9 +117,18 @@ public class RankingFragment extends ListFragment{
     }
 
 
-    public void getRankingData(){
+
+
+    public void getRankingData(boolean km){
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        String url = null;
+        if(km == true){
+            url = "https://new.weitblicker.org/rest/cycle/ranking/";
+        }else{
+            url = "https://new.weitblicker.org/rest/cycle/ranking/";
+        }
 
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
