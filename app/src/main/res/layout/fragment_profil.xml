@@ -49,13 +49,17 @@
             android:id="@+id/changeProfil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="250dp"
+            android:layout_marginEnd="53dp"
+            android:layout_marginRight="53dp"
+            android:layout_marginBottom="50dp"
             android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/email"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.762"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageProfil"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.407"
             app:srcCompat="@drawable/ic_change_profil" />
 
         <Button
@@ -140,15 +144,16 @@
             android:id="@+id/email"
             android:layout_width="378dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="43dp"
             android:fontFamily="@font/open_sans"
             android:textAlignment="center"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/passwordtext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.484"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.506" />
+            app:layout_constraintTop_toBottomOf="@+id/imageProfil" />
 
         <TextView
             android:id="@+id/kmtext"
