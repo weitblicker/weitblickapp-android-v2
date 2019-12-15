@@ -62,7 +62,7 @@ public class RankingFragment extends ListFragment{
                     km_donation = false;
                     bestRankings.clear();
                     getRankingData(km_donation);
-                    toggle.setImageResource(R.drawable.ic_switcheuro);
+                    toggle.setImageResource(R.drawable.ic_switchkm);
                     adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
                     setListAdapter(adapter);
                     km = false;
@@ -70,7 +70,7 @@ public class RankingFragment extends ListFragment{
                     km_donation = true;
                     bestRankings.clear();
                     getRankingData(km_donation);
-                    toggle.setImageResource(R.drawable.ic_switchkm);
+                    toggle.setImageResource(R.drawable.ic_switcheuro);
                     adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
                     setListAdapter(adapter);
                     km = true;
