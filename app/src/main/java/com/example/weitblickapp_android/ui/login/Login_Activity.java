@@ -33,7 +33,7 @@ public class Login_Activity extends AppCompatActivity {
     private EditText passwordEditText;
     private TextView forgotPasswordTextView;
     private boolean saveLogin = false;
-    private boolean debug = true;
+    private boolean debug = false;
 
 
 

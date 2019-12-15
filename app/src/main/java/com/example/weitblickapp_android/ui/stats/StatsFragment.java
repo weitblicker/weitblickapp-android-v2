@@ -52,7 +52,7 @@ public class StatsFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if(!session.isLoggedIn()){
-            
+
             Intent redirect=new Intent(getActivity(), Login_Activity.class);
             getActivity().startActivity(redirect);
             getActivity().getSupportFragmentManager().popBackStack();
