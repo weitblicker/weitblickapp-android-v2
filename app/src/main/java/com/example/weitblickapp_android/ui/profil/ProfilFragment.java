@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.weitblickapp_android.R;
@@ -77,7 +78,9 @@ public class ProfilFragment extends Fragment {
             }
         });
 
+
         final Button logOutButton = root.findViewById(R.id.log_out);
+        final ImageButton changePasswordButton = root.findViewById(R.id.changePassword);
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,15 +104,28 @@ public class ProfilFragment extends Fragment {
             }
         });
 
+
         imageProfil = root.findViewById(R.id.imageProfil);
         imageProfil.setImageResource(R.drawable.ic_launcher_background);
+
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangePasswordFragment fragment = new ChangePasswordFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+        
         final TextView donationTextView = root.findViewById(R.id.donation);
         donationTextView.setText(this.donation);
-        final TextView passwordTextView = root.findViewById(R.id.password);
+        final TextView passwordTextView = root.findViewById(R.id.new_password);
         passwordTextView.setText(this.password);
         final TextView kmTextView = root.findViewById(R.id.km);
         kmTextView.setText(this.km);
-        final TextView emailTextView = root.findViewById(R.id.email);
+        final TextView emailTextView = root.findViewById(R.id.old_password);
         emailTextView.setText(this.email);
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
