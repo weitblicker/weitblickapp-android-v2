@@ -1,7 +1,6 @@
 package com.example.weitblickapp_android.ui.profil;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +16,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.weitblickapp_android.MainActivity;
-import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.data.LoginData;
-import com.example.weitblickapp_android.data.Session.SessionManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -36,6 +26,10 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.Session.SessionManager;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class ProfilFragment extends Fragment {
 
@@ -118,7 +112,7 @@ public class ProfilFragment extends Fragment {
                 ft.commit();
             }
         });
-        
+
         final TextView donationTextView = root.findViewById(R.id.donation);
         donationTextView.setText(this.donation);
         final TextView passwordTextView = root.findViewById(R.id.new_password);
@@ -166,8 +160,10 @@ public class ProfilFragment extends Fragment {
 
             imageProfil.setImageBitmap(image);
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e){
             e.printStackTrace();
+        }catch(NullPointerException np){
+            np.printStackTrace();
         }
     }
 }

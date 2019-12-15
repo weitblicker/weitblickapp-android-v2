@@ -326,7 +326,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 distance.setText(distanceTotal);
                 donation.setText(donationTotal);
             }
-            startFetchLocation();
+            //startFetchLocation();
         }
         lastLocation = currentLocation;
     }
