@@ -9,12 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ViewPageAdapter;
-import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListFragment;
-import com.example.weitblickapp_android.ui.event.EventFragment;
-import com.example.weitblickapp_android.ui.news.NewsListFragment;
+import com.example.weitblickapp_android.ui.blog_entry.RegisterFragment;
 import com.example.weitblickapp_android.ui.project.ProjectListFragment;
-import com.example.weitblickapp_android.ui.ranking.RankingFragment;
-import com.example.weitblickapp_android.ui.stats.StatsFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class TabsProjectFragment extends Fragment {
@@ -32,7 +28,7 @@ public class TabsProjectFragment extends Fragment {
 
         ViewPageAdapter adapter = new ViewPageAdapter(getChildFragmentManager());
         adapter.AddFragment(new ProjectListFragment(), "Projekte");
-        adapter.AddFragment(new BlogEntryListFragment(), "Blog");
+        adapter.AddFragment(new RegisterFragment(), "Blog");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

@@ -436,5 +436,7 @@ public class LoginData{
         }
     }
 
-
+    public void getUserData(){
+        
+    }
 }
