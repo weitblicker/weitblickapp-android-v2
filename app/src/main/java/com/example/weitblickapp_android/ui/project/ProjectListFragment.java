@@ -101,12 +101,12 @@ public class ProjectListFragment extends ListFragment {
                         String title = responseObject.getString("name");
 
                         String text = responseObject.getString("description");
-                        //String teaser = responseObject.getString("teaser");
+
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
 
                         try {
-                            galleryObject = responseObject.getJSONObject("gallery");
-
-                            images = galleryObject.getJSONArray("images");
+                            images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
@@ -142,11 +142,6 @@ public class ProjectListFragment extends ListFragment {
                         }
 
                         text.trim();
-
-                        imageUrls = getImageUrls(text);
-                        text = extractImageUrls(text);
-
-
 
                         ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);
                         projectList.add(temp);

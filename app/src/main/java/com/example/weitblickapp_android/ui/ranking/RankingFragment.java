@@ -18,7 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 
@@ -38,14 +38,15 @@ public class RankingFragment extends ListFragment{
     private RankingViewModel rankingViewModel;
     private RankingListAdapter adapter;
     private ListView listView;
-    ArrayList<RankingViewModel> rankings = new ArrayList<RankingViewModel>();
+    ArrayList<RankingViewModel> bestRankings = new ArrayList<RankingViewModel>();
+    ArrayList<RankingViewModel> userFieldRankings = new ArrayList<RankingViewModel>();
     private boolean km_donation = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_ranking, container, false);
 
-        adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager(), km_donation);
+        adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
         this.setListAdapter(adapter);
         listView = (ListView) view.findViewById(R.id.list);
 
@@ -56,13 +57,13 @@ public class RankingFragment extends ListFragment{
             @Override
             public void onClick(View v) {
                 km_donation = false;
-                rankings.clear();
+                bestRankings.clear();
                 getRankingData(km_donation);
                 donation.setAlpha(1.0f);
                 km.setAlpha(0.5f);
                 km.setClickable(false);
                 donation.setClickable(true);
-                adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager(), km_donation);
+                adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
                 setListAdapter(adapter);
             }
         });
@@ -71,13 +72,13 @@ public class RankingFragment extends ListFragment{
             @Override
             public void onClick(View v) {
                 km_donation = true;
-                rankings.clear();
+                bestRankings.clear();
                 getRankingData(km_donation);
                 km.setAlpha(1.0f);
                 donation.setAlpha(0.5f);
                 km.setClickable(true);
                 donation.setClickable(false);
-                adapter = new RankingListAdapter(getActivity(), rankings, getFragmentManager(), km_donation);
+                adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
                 setListAdapter(adapter);
             }
         });
@@ -97,7 +98,7 @@ public class RankingFragment extends ListFragment{
     }
 
     private void sortByKm(){
-        Collections.sort(rankings, new Comparator<RankingViewModel>() {
+        Collections.sort(bestRankings, new Comparator<RankingViewModel>() {
             @Override
             public int compare(RankingViewModel o1, RankingViewModel o2) {
                 return Double.compare(o1.getCycledKm(), o2.getCycledKm());
@@ -107,7 +108,7 @@ public class RankingFragment extends ListFragment{
     }
 
     private void sortByDonation(){
-        Collections.sort(rankings, new Comparator<RankingViewModel>() {
+        Collections.sort(bestRankings, new Comparator<RankingViewModel>() {
             @Override
             public int compare(RankingViewModel o1, RankingViewModel o2) {
                 return Double.compare(o2.getCycledDonation(), o1.getCycledDonation());
@@ -116,7 +117,7 @@ public class RankingFragment extends ListFragment{
         adapter.notifyDataSetChanged();
     }
 
-    public void getRankingData(boolean km){
+    private void getRankingData(boolean km){
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -127,28 +128,41 @@ public class RankingFragment extends ListFragment{
             url = "https://new.weitblicker.org/rest/cycle/ranking/";
         }
 
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
                 //Save Data into Model
+                JSONArray userField = null;
+                JSONArray bestField = null;
+
                 String jsonData = response.toString();
                 Log.e("RANKING:", jsonData);
 
+                try {
+                    bestField = response.getJSONArray("best_field");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    userField = response.getJSONArray("best_field");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 //Parse the JSON response array by iterating over it
-                for (int i = response.length()-1; i >= 0; i--) {
-                    JSONObject responseObject = null;
+                for (int i = 0; i < bestField.length(); i++) {
+                    JSONObject userObject = null;
 
                     try {
-                        responseObject = response.getJSONObject(i);
-
-                        String username = responseObject.getString("username");
-                        String imageUrl = responseObject.getString("image");
-                        double distance = responseObject.getDouble("km");
-                        double donation = responseObject.getDouble("euro");
+                        userObject = bestField.getJSONObject(i);
+                        String username = userObject.getString("username");
+                        String imageUrl = userObject.getString("image");
+                        double distance = userObject.getDouble("km");
+                        double donation = userObject.getDouble("euro");
 
                         RankingViewModel temp = new RankingViewModel(imageUrl, username, distance, donation);
-                        rankings.add(temp);
+                        bestRankings.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();

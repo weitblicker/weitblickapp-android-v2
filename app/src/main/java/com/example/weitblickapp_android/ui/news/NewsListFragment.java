@@ -119,8 +119,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                         //Get all image-Urls from Gallery
                         try {
-                            galleryObject = responseObject.getJSONObject("gallery");
-                            images = galleryObject.getJSONArray("images");
+                            images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
@@ -131,7 +130,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         }
 
                         //Get inline-Urls from Text, then extract them
-                        imageUrls = getImageUrls(text);
+                       // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
@@ -189,7 +188,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
         Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
                 .matcher(text);
         while (m.find()) {
-            //Log.e("ImageUrl", m.group(2));
             imageUrls.add(m.group(2));
         }
         return imageUrls;

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel;
 
 public class RankingViewModel extends ViewModel {
 
+    private final String imageUrl = "https://new.weitblicker.org/";
+
     private String profileImageUrl;
     private String username;
     private double cycledKm;
@@ -14,7 +16,7 @@ public class RankingViewModel extends ViewModel {
     }
 
     public RankingViewModel(String profileImageUrl, String username, double cycledKm, double cycledDonation) {
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageUrl = imageUrl.concat(profileImageUrl);
         this.username = username;
         this.cycledKm = cycledKm;
         this.cycledDonation = cycledDonation;
