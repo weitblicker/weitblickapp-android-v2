@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
@@ -32,6 +33,8 @@ public class Login_Activity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private TextView forgotPasswordTextView;
+    private Button loginButton;
+    private Button registerButton;
     private boolean saveLogin = false;
     private boolean debug = false;
 
@@ -54,8 +57,8 @@ public class Login_Activity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.new_password);
 
-        final Button loginButton = findViewById(R.id.login);
-        final Button registerButton = findViewById(R.id.change_password_button);
+        loginButton = findViewById(R.id.login);
+        registerButton = findViewById(R.id.change_password_button);
 
         final ImageButton back = findViewById(R.id.back);
         final ImageView loginImage = findViewById(R.id.loginPicture);
@@ -126,7 +129,8 @@ public class Login_Activity extends AppCompatActivity {
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loginButton.setVisibility(View.INVISIBLE);
+                registerButton.setVisibility(View.INVISIBLE);
                 ForgotPasswordFragment fragment = new ForgotPasswordFragment();
                 //fragment.geView().setBackgroundColor(Color.WHITE);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -138,6 +142,26 @@ public class Login_Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loginButton =findViewById(R.id.login);
+        registerButton = findViewById(R.id.change_password_button);
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        //Toast.makeText(getApplicationContext(), "Back Pressed", Toast.LENGTH_SHORT).show();
+        if (count == 0) {
+            super.onBackPressed();
+
+        } else {
+            getSupportFragmentManager().popBackStack();
+            loginButton.setVisibility(View.VISIBLE);
+            registerButton.setVisibility(View.VISIBLE);
+        }
+    }
 
     private void switchToRegister() {
         Intent intent = new Intent(this, RegisterActivity.class);

@@ -44,11 +44,10 @@ public class ForgotPasswordFragment extends Fragment {
             back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (getFragmentManager().getBackStackEntryCount() > 0 ) {
-                        getFragmentManager().popBackStack();
-                    }
+                    getActivity().onBackPressed();
                 }
             });
+
 
             resetPasswordButton.setOnClickListener(new View.OnClickListener() {
                 @Override
