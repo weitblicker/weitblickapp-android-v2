@@ -28,7 +28,7 @@ public class RegisterFragment extends Fragment {
         agbTextView.setText(getAgbString());
         //agbTextView.setMovementMethod(new ScrollingMovementMethod());
 
-        back = (ImageButton) root.findViewById(R.id.back);
+        back = root.findViewById(R.id.back);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
