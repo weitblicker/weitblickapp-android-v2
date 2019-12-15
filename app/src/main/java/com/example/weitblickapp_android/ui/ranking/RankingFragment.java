@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class RankingFragment extends ListFragment{
     ArrayList<RankingViewModel> bestRankings = new ArrayList<RankingViewModel>();
     ArrayList<RankingViewModel> userFieldRankings = new ArrayList<RankingViewModel>();
     private boolean km_donation = false;
+    private boolean km = true;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -50,39 +52,31 @@ public class RankingFragment extends ListFragment{
         this.setListAdapter(adapter);
         listView = (ListView) view.findViewById(R.id.list);
 
-        Button km = (Button) view.findViewById(R.id.km);
-        Button donation = (Button) view.findViewById(R.id.donation);
+        ImageView toggle = (ImageView) view.findViewById(R.id.toogleButton);
 
-        km.setOnClickListener(new View.OnClickListener() {
+        toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                km_donation = false;
-                bestRankings.clear();
-                getRankingData(km_donation);
-                donation.setAlpha(1.0f);
-                km.setAlpha(0.5f);
-                km.setClickable(false);
-                donation.setClickable(true);
-                adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
-                setListAdapter(adapter);
+
+                if(km == true){
+                    km_donation = false;
+                    bestRankings.clear();
+                    getRankingData(km_donation);
+                    toggle.setImageResource(R.drawable.ic_switcheuro);
+                    adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
+                    setListAdapter(adapter);
+                    km = false;
+                }else{
+                    km_donation = true;
+                    bestRankings.clear();
+                    getRankingData(km_donation);
+                    toggle.setImageResource(R.drawable.ic_switchkm);
+                    adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
+                    setListAdapter(adapter);
+                    km = true;
+                }
             }
         });
-
-        donation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                km_donation = true;
-                bestRankings.clear();
-                getRankingData(km_donation);
-                km.setAlpha(1.0f);
-                donation.setAlpha(0.5f);
-                km.setClickable(true);
-                donation.setClickable(false);
-                adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
-                setListAdapter(adapter);
-            }
-        });
-
         return view;
     }
 

@@ -102,8 +102,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private double betrag = 0.10;
     static private double don = 0;
 
-
-
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
@@ -159,7 +157,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 if(project != null){
                     ProjectDetailFragment fragment = new ProjectDetailFragment(project);
-                    FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
                     FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
@@ -189,12 +187,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 paused = true;
-                kmTotal = 0;
                 EndFragment fragment = new EndFragment(currentTour);
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
                 ft.commit();
                 sendSegment();
+                kmTotal = 0;
             }
         });
         return root;
@@ -502,50 +501,48 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         Log.e("JSON:", jsonBody.toString());
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                double eurosTotal = 0;
-                double kmTotal = 0;
-                try {
-                    projectFinished = response.getBoolean("finished");
-                    eurosTotal = response.getDouble("euro");
-                    kmTotal = response.getDouble("km");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                @Override
+                public void onResponse(JSONObject response) {
+                    double eurosTotal = 0;
+                    double kmTotal = 0;
+                    try {
+                        projectFinished = response.getBoolean("finished");
+                        eurosTotal = response.getDouble("euro");
+                        kmTotal = response.getDouble("km");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    currentTour.setEurosTotal(eurosTotal);
+                    currentTour.setDistanceTotal(kmTotal);
+
+                    Log.e("Server Response", response.toString());
                 }
-                currentTour.setEurosTotal(eurosTotal);
-                currentTour.setDistanceTotal(kmTotal);
-
-                Log.e("Server Response", response.toString());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Display Error Message
-                Log.e("Server Response onError", error.toString());
-            }
-        }) {
-            //Override getHeaders() to set Credentials for REST-Authentication
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Media-Type", "application/json");
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
-        requestQueue.add(objectRequest);
-
-        segmentStartTime = segmentEndTime;
-
-        //Reset Km-Counter for Segment
-        km = 0;
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Display Error Message
+                    Log.e("Server Response onError", error.toString());
+                }
+            }) {
+                //Override getHeaders() to set Credentials for REST-Authentication
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "surfer:hangloose";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Media-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+            };
+            requestQueue.add(objectRequest);
+            //Reset Km-Counter for Segment
+            segmentStartTime = segmentEndTime;
+            km = 0;
     }
 
     private void setUpGpsReceiver(){
