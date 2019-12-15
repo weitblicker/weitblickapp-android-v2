@@ -350,5 +350,91 @@ public class LoginData{
         }
     }
 
+    public void resetPassword(final String email, VolleyCallback callback){
+        try {
+            try {
+                RequestQueue requestQueue = Volley.newRequestQueue(app_context);
+
+                String URL = "https://new.weitblicker.org/rest/auth/password/reset";
+
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("email", email);
+
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        callback.onSuccess("Passwort erfolgreich geändert.");
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY ERROR", error.toString());
+                        String body;
+                        //get status code here
+                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        if (error.networkResponse.data != null) {
+                            try {
+                                //create errorJSON from VolleyError
+                                body = new String(error.networkResponse.data, "UTF-8");
+
+                                String result = "";
+
+                                JsonParser parser = new JsonParser();
+                                JsonObject jObject = parser.parse(body).getAsJsonObject();
+
+                                Map<String, Object> attributes = new HashMap<String, Object>();
+
+                                Set<Map.Entry<String, JsonElement>> entrySet = jObject.entrySet();
+
+                                for(Map.Entry<String,JsonElement> entry : entrySet){
+                                    result += jObject.get(entry.getKey()).getAsString();
+                                }
+
+                                Log.e("Statuscode:", body);
+                                callback.onError(result);
+
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        String credentials = "surfer:hangloose";
+                        String auth = "Basic "
+                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", auth);
+                        return headers;
+                    }
+                };
+
+                requestQueue.add(objectRequest);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+        } catch (Exception e) {
+            Log.e("LOGIN_EXCEPTION: ", e.toString());
+
+        }
+    }
+
 
 }
