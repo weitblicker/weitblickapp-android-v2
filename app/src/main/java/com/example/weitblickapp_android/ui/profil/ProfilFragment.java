@@ -99,7 +99,5 @@ public class ProfilFragment extends Fragment {
             }
         });
         return root;
-
-
     }
 }
