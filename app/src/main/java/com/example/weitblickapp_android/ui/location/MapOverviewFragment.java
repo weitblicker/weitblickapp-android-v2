@@ -92,17 +92,21 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(!session.isLoggedIn()){
                     Intent redirect=new Intent(getActivity(), Login_Activity.class);
                     getActivity().startActivity(redirect);
                 }
                 else{
-                    MapFragment fragment = new MapFragment(projectID);
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_map, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                    if(settings.contains("projectid")) {
+                        MapFragment fragment = new MapFragment(projectID);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                        ft.commit();
+                    }else{
+                        Toast.makeText(getActivity(), "Du hast noch kein Projekt zum Spenden ausgewählt.",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -118,10 +122,10 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
             lat = settings.getFloat("lat", -1);
             lng = settings.getFloat("lng", -1);
         }else{
-            defaultproject = "Kein Projekt ausgewählt. Bitte wähle ein Projekt aus!";
+            lat = 0;
+            lng = 0;
+            defaultproject = "Kein Projekt ausgewählt. Bitte wähle ein Projekt aus.";
         }
-        /*Toast.makeText(getContext(), Integer.toString(settings.getInt("projectid", -1)),
-                Toast.LENGTH_LONG).show();*/
     }
 
     private void setMarker(){

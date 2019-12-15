@@ -7,22 +7,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_map"
     android:background="#ffffff"
-    android:clickable="true"
-    android:focusable="true"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             map:layout_constraintEnd_toEndOf="parent"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent">
@@ -52,24 +51,20 @@
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="118dp"
-            android:layout_marginLeft="118dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="118dp"
-            android:layout_marginRight="118dp"
-            android:layout_marginBottom="50dp"
-            app:srcCompat="@mipmap/ic_playorange_foreground"
-            map:layout_constraintBottom_toBottomOf="parent"
-            map:layout_constraintEnd_toEndOf="parent"
-            map:layout_constraintStart_toStartOf="parent"
-            map:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            tools:ignore="VectorDrawableCompat" />
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@mipmap/ic_playorange_foreground"
+                map:layout_constraintBottom_toBottomOf="@+id/map"
+                map:layout_constraintEnd_toEndOf="parent"
+                map:layout_constraintHorizontal_bias="0.498"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toTopOf="@+id/map"
+                map:layout_constraintVertical_bias="0.86"
+                tools:ignore="VectorDrawableCompat" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

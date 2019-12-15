@@ -139,6 +139,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             legendeTwo.setVisibility(View.GONE);
             goalTextView.setVisibility(View.GONE);
             amountTextView.setVisibility(View.GONE);
+            TextView text = root.findViewById(R.id.textView);
+            text.setVisibility(View.GONE);
             drawPie(false);
         }
         return root;

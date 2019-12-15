@@ -25,7 +25,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.16"
-            app:srcCompat="@drawable/icon_blog" />
+            app:srcCompat="@drawable/icon_blog"
+            android:tint="#333333"
+            android:alpha="0.8"/>
 
         <ImageView
             android:id="@+id/faq"
@@ -37,7 +39,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.306"
-            app:srcCompat="@drawable/icon_faq" />
+            app:srcCompat="@drawable/icon_faq"
+            android:tint="#333333"
+            android:alpha="0.8"/>
 
         <ImageView
             android:id="@+id/contact"
@@ -50,7 +54,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.45"
             app:srcCompat="@drawable/icon_contact"
-            tools:ignore="VectorDrawableCompat" />
+            tools:ignore="VectorDrawableCompat"
+            android:tint="#333333"
+            android:alpha="0.8"/>
 
         <TextView
             android:id="@+id/blogtext"
