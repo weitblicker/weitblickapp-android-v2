@@ -34,7 +34,7 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
 
     @Override
     public StatsViewModel getItem(int position) {
-        return stats.get(position);
+        return stats.get((stats.size()-1) - position);
     }
 
     @Override

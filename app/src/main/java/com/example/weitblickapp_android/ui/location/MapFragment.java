@@ -188,13 +188,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                paused = true;
+                kmTotal = 0;
                 EndFragment fragment = new EndFragment(currentTour);
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
                 ft.commit();
                 sendSegment();
-                paused = true;
-                kmTotal = 0;
             }
         });
         return root;
@@ -248,8 +248,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                Log.e("LOCATIONACCURAY:", location.getAccuracy() +"");
                 if (location != null) {
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        if(mMap != null) {
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        }
+
+                    Log.e("LOCATIONACCURAY:", location.getAccuracy() +"");
                     if (location.getAccuracy() < 20) {
                         currentLocation = location;
                         currentTour.getLocations().add(location);
@@ -294,14 +299,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
-        if (isLocationEnabled()) {
-            if (currentLocation != null) {
-                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                mMap.setMyLocationEnabled(true);
-            }
+        if (isLocationEnabled()){
+            mMap.setMyLocationEnabled(true);
         }
     }
+
+
 
     private void checkKm() {
         if(paused == false){
