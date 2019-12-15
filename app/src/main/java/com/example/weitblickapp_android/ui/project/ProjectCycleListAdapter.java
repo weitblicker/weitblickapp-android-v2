@@ -61,7 +61,7 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
         TextView textView_address = (TextView) view.findViewById(R.id.location);
 
 
-        //weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+        weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
         Picasso.get()
                 .load(weitblickUrl)
