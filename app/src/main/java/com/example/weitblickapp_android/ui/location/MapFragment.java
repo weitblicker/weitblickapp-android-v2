@@ -105,6 +105,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
+    RequestQueue requestQueue;
+
     LocationManager locationManager;
 
     MapFragment(int projectid){
@@ -140,6 +142,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         session = new SessionManager(getActivity().getApplicationContext());
         this.token = session.getKey();
 
+        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
         getAmountTours();
 
         final ImageView pause = root.findViewById(R.id.pause);
@@ -171,14 +175,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (!paused) {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
                     paused = true;
-                   // sendSegment();
+                    sendSegment();
                     resetLocations();
                 } else {
                     pause.setImageResource(R.mipmap.ic_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
                     getCurrentLocation();
-                    //sendSegment();
+                    sendSegment();
                 }
             }
         });
@@ -501,7 +505,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         Log.e("JSON:", jsonBody.toString());
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
                 @Override
@@ -539,7 +543,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
             //Reset Km-Counter for Segment
             segmentStartTime = segmentEndTime;
             km = 0;
