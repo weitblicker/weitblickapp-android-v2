@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_project"
+    android:id="@+id/fragment_faq"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -41,7 +41,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/back">
 
                         <ListView
-                            android:id="@+id/listView"
+                            android:id="@android:id/list"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"></ListView>
 

@@ -16,6 +16,7 @@
         android:layout_marginEnd="33dp"
         android:layout_marginRight="33dp"
         android:fontFamily="@font/open_sans"
+        android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,12 +45,13 @@
         android:layout_marginStart="34dp"
         android:layout_marginLeft="34dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
+        android:layout_marginEnd="149dp"
+        android:layout_marginRight="149dp"
         android:layout_marginBottom="20dp"
-        android:fontFamily="@font/opensansbold"
+        android:fontFamily="@font/breeserif"
+        android:textColor="@color/wb_orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/project_maps_btn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
@@ -57,16 +59,18 @@
         android:id="@+id/project_maps_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="310dp"
+        android:layout_marginLeft="310dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
         android:layout_marginBottom="3dp"
         android:background="@null"
         android:focusable="false"
         android:src="@drawable/icon_bike"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/project_more_btn"
-        app:layout_constraintStart_toEndOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
     <ImageButton
@@ -82,7 +86,8 @@
         android:src="@drawable/icon_more"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/project_maps_btn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

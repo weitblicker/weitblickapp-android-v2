@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+
 import java.util.ArrayList;
 import androidx.fragment.app.FragmentManager;
 

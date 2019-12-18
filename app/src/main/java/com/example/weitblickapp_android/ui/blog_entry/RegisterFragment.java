@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
@@ -26,24 +28,42 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class BlogEntryListFragment extends ListFragment {
+public class RegisterFragment extends ListFragment implements AbsListView.OnScrollListener {
+
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
+
     ArrayList<BlogEntryViewModel> blogEntries = new ArrayList<BlogEntryViewModel>();
     private BlogEntryListAdapter adapter;
+
+    private String lastItemDate;
+    private String lastItemDateCheck = "";
+    int limitLoadedBlogs = 20;
+    private String url = "https://new.weitblicker.org/rest/blog?limit=";
+
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadBlogs();
+        loadBlogs(url);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnScrollListener(this);
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        ((MainActivity) getActivity()).setActionBarTitle("Blog");
 
         ((MainActivity) getActivity()).setActionBarTitle("Blog");
 
@@ -72,15 +92,14 @@ public class BlogEntryListFragment extends ListFragment {
             }
         });
     }
-    public void loadBlogs(){
+    public void loadBlogs(String URL){
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/blog/?limit=5";
-
+        String requestUrl = url.concat(Integer.toString(limitLoadedBlogs));
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
@@ -103,7 +122,9 @@ public class BlogEntryListFragment extends ListFragment {
                         text = text.trim();
                         text = text.replaceAll("\n{2,}", "\n");
                         String published = responseObject.getString("published");
-
+                        String teaser = responseObject.getString("teaser");
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
                         //Get all imageUrls from Gallery
                         try {
                             galleryObject = responseObject.getJSONObject("gallery");
@@ -119,21 +140,23 @@ public class BlogEntryListFragment extends ListFragment {
 
                         }
                         //TODO: Check if picture exists
-
-                        temp = new BlogEntryViewModel(blogId, title, text, published, imageUrls);
+                        //Get Date of last Item loaded in List loading more news starting at that date
+                        try {
+                            Date ItemDate = formatterRead.parse(published);
+                            lastItemDate = formatterWrite.format(ItemDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        temp = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls);
 
                         blogEntries.add(temp);
+
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
-                /*DEBUGGING PURPOSE
-                for(BlogEntryViewModel entry:blogEntries){
-                    Log.e("BlogEntry",entry.toString());
-                }
-                */
 
 
             }
@@ -158,5 +181,40 @@ public class BlogEntryListFragment extends ListFragment {
             }
         };
         requestQueue.add(objectRequest);
+    }
+
+    public ArrayList <String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
+                .matcher(text);
+        while (m.find()) {
+            //Log.e("ImageUrl", m.group(2));
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
+    }
+
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        return text;
+    }
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if(totalItemCount > 0) {
+            final int lastItem = firstVisibleItem + visibleItemCount;
+            if (lastItem == totalItemCount) {
+                /*limitLoadedBlogs +=5;
+                loadBlogs(url);
+                lastItemDateCheck = lastItemDate;
+                */
+
+            }
+        }
     }
 }

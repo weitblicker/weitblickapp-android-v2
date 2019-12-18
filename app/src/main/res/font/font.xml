@@ -6,4 +6,8 @@
         android:fontStyle="normal"
         android:fontWeight="400"
         android:font="@font/open_sans" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/breeserif" />
 </font-family>

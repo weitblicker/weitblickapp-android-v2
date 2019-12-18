@@ -30,10 +30,10 @@
         tools:layout="@layout/fragment_news" />
 
     <fragment
-        android:id="@+id/nav_project"
-        android:name="com.example.weitblickapp_android.ui.project.ProjectListFragment"
+        android:id="@+id/nav_project_tabs"
+        android:name="com.example.weitblickapp_android.ui.tabs.TabsProjectFragment"
         android:label="@string/menu_project"
-        tools:layout="@layout/fragment_project" />
+        tools:layout="@layout/fragment_tabs" />
 
     <fragment
         android:id="@+id/nav_faq"
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/nav_blog"
-        android:name="com.example.weitblickapp_android.ui.blog_entry.BlogEntryListFragment"
+        android:name="com.example.weitblickapp_android.ui.blog_entry.RegisterFragment"
         android:label="@string/menu_blog"
         tools:layout="@layout/fragment_blog" />
 

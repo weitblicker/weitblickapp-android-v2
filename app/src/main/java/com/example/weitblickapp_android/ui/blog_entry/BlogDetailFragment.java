@@ -33,6 +33,7 @@ public class BlogDetailFragment extends Fragment {
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();
+        this.date = blogEntry.getPublished();
         for(int i = 0; i < blogEntry.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
         }

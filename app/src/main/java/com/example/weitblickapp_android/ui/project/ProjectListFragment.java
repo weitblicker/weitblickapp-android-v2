@@ -29,6 +29,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProjectListFragment extends ListFragment {
     ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
@@ -64,6 +66,7 @@ public class ProjectListFragment extends ListFragment {
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
+                ft.addToBackStack(null);
                 ft.commit();
             }
         });
@@ -72,7 +75,7 @@ public class ProjectListFragment extends ListFragment {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/projects/?limit=5";
+        String URL = "https://new.weitblicker.org/rest/projects/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -85,33 +88,62 @@ public class ProjectListFragment extends ListFragment {
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
+                    JSONObject locationObject = null;
+                    JSONArray cycleJSONObject = null;
+                    JSONObject cycleObject = null;
                     JSONObject galleryObject = null;
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer projectId = responseObject.getInt("id");
+                        int projectId = responseObject.getInt("id");
                         String title = responseObject.getString("name");
 
                         String text = responseObject.getString("description");
-                        //String teaser = responseObject.getString("teaser");
 
-                        galleryObject = responseObject.getJSONObject("gallery");
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
 
-                        if (galleryObject != null) {
-                            images = galleryObject.getJSONArray("images");
+                        try {
+                            images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                Log.e("!!!!ImageUrl!!!!",url);
                                 imageUrls.add(url);
                             }
+
+                        }catch(JSONException e){
+
+                        }
+
+                        locationObject = responseObject.getJSONObject("location");
+
+                        float lat = locationObject.getLong("lat");
+                        float lng = locationObject.getLong("lng");
+                        String name = locationObject.getString("name");
+                        String address = locationObject.getString("address");
+
+                        cycleJSONObject = responseObject.getJSONArray("cycle");
+
+                        float current_amount = 0;
+                        float cycle_donation = 0;
+                        boolean finished = false;
+                        int cycle_id = 0;
+                        float goal_amount = 0;
+
+                        for (int x = 0; x < cycleJSONObject.length(); x++) {
+                            cycleObject = cycleJSONObject.getJSONObject(x);
+                             current_amount = cycleObject.getLong("current_amount");
+                             cycle_donation = cycleObject.getLong("goal_amount");
+                             finished = cycleObject.getBoolean("finished");
+                             cycle_id = cycleObject.getInt("cycle_donation");
+                             goal_amount = cycleObject.getLong("goal_amount");
                         }
 
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text,1, imageUrls);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -121,7 +153,7 @@ public class ProjectListFragment extends ListFragment {
                 }
 
                 for(ProjectViewModel newsArticle:projectList){
-                    Log.e("NewsArticle",newsArticle.toString());
+                    Log.e("Projects",newsArticle.toString());
                 }
 
             }
@@ -146,5 +178,23 @@ public class ProjectListFragment extends ListFragment {
             }
         };
         requestQueue.add(objectRequest);
+    }
+
+    public ArrayList <String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\)")
+                .matcher(text);
+        while (m.find()) {
+            Log.e("ImageUrl", m.group(2));
+
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
+    }
+
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        return text;
     }
 }

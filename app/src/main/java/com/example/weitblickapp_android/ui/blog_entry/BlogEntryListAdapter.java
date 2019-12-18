@@ -58,6 +58,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView_title = (TextView) view.findViewById(R.id.title);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
+        TextView teaser = (TextView) view.findViewById(R.id.teaser);
 
         final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
 
@@ -73,6 +74,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
         //Set title for BlogEntries
         textView_title.setText(blog.getTitle());
+        teaser.setText(blog.getTeaser());
 
         //Set published date for BlogEntries
         textView_date.setText(blog.getPublished());

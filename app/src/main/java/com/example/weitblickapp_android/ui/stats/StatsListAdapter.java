@@ -34,7 +34,7 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
 
     @Override
     public StatsViewModel getItem(int position) {
-        return stats.get(position);
+        return stats.get((stats.size()-1) - position);
     }
 
     @Override
@@ -54,12 +54,16 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
 
 
 
-        final StatsViewModel article = (StatsViewModel) getItem(position);
+        final StatsViewModel tour = (StatsViewModel) getItem(position);
 
-        textView_donation.setText("5,40 €");
-        textView_distance.setText("25,34 km");
-        textView_date.setText("24.12.2019");
-        textView_duration.setText("52 min");
+
+        String donation = String.format("%.2f", tour.getDonation()).concat(" €");
+        String distance = String.format("%.2f", tour.getDistance()).concat(" km");
+
+        textView_donation.setText(donation);
+        textView_distance.setText(distance);
+        textView_date.setText(tour.getDate());
+        textView_duration.setText(Integer.toString(tour.getDuration()).concat(" min"));
         return view;
     }
 }
