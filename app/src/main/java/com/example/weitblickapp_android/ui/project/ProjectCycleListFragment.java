@@ -101,19 +101,20 @@ public class ProjectCycleListFragment extends ListFragment {
                         String title = responseObject.getString("name");
 
                         String text = responseObject.getString("description");
-                        //String teaser = responseObject.getString("teaser");
+                        imageUrls = getImageUrls(text);
+                        text = extractImageUrls(text);
 
-                        //galleryObject = responseObject.getJSONObject("gallery");
-
-                        /*if (galleryObject != null) {
-                            images = galleryObject.getJSONArray("images");
+                        try {
+                            images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                Log.e("!!!!ImageUrl!!!!",url);
                                 imageUrls.add(url);
                             }
-                        }*/
+
+                        }catch(JSONException e){
+
+                        }
 
                         locationObject = responseObject.getJSONObject("location");
 
@@ -140,9 +141,6 @@ public class ProjectCycleListFragment extends ListFragment {
                         }
 
                         text.trim();
-
-                        imageUrls = getImageUrls(text);
-                        text = extractImageUrls(text);
 
                         if(cycle_id != 0){
                             ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);

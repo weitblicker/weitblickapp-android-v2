@@ -93,6 +93,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.667" />
 
+
             <TextView
                 android:id="@+id/passwordtext"
                 android:layout_width="150dp"
@@ -105,6 +106,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.598" />
+
+        <TextView
+            android:id="@+id/new_password"
+            android:layout_width="127dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:gravity="end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.728"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.598" />
+
 
             <TextView
                 android:id="@+id/password"
@@ -132,6 +147,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.677" />
 
+
             <TextView
                 android:id="@+id/km"
                 android:layout_width="127dp"
@@ -144,6 +160,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.73" />
+
+        <TextView
+            android:id="@+id/old_password"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="43dp"
+            android:fontFamily="@font/open_sans"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/passwordtext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageProfil" />
+
 
             <TextView
                 android:id="@+id/email"

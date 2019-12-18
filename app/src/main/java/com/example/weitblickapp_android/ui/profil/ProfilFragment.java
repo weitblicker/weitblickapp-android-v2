@@ -1,7 +1,6 @@
 package com.example.weitblickapp_android.ui.profil;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.weitblickapp_android.MainActivity;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.Session.SessionManager;
@@ -26,15 +30,6 @@ import com.example.weitblickapp_android.data.Session.SessionManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
-import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.data.LoginData;
-import com.example.weitblickapp_android.data.Session.SessionManager;
 
 public class ProfilFragment extends Fragment {
 
@@ -77,7 +72,9 @@ public class ProfilFragment extends Fragment {
             }
         });
 
+
         final Button logOutButton = root.findViewById(R.id.log_out);
+        final ImageButton changePasswordButton = root.findViewById(R.id.changePassword);
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,15 +98,28 @@ public class ProfilFragment extends Fragment {
             }
         });
 
+
         imageProfil = root.findViewById(R.id.imageProfil);
         imageProfil.setImageResource(R.drawable.ic_launcher_background);
+
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangePasswordFragment fragment = new ChangePasswordFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
         final TextView donationTextView = root.findViewById(R.id.donation);
         donationTextView.setText(this.donation);
-        final TextView passwordTextView = root.findViewById(R.id.password);
+        final TextView passwordTextView = root.findViewById(R.id.new_password);
         passwordTextView.setText(this.password);
         final TextView kmTextView = root.findViewById(R.id.km);
         kmTextView.setText(this.km);
-        final TextView emailTextView = root.findViewById(R.id.email);
+        final TextView emailTextView = root.findViewById(R.id.old_password);
         emailTextView.setText(this.email);
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
@@ -122,8 +132,6 @@ public class ProfilFragment extends Fragment {
             }
         });
         return root;
-
-
     }
 
     private void startGallery(){
@@ -150,8 +158,10 @@ public class ProfilFragment extends Fragment {
 
             imageProfil.setImageBitmap(image);
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e){
             e.printStackTrace();
+        }catch(NullPointerException np){
+            np.printStackTrace();
         }
     }
 }
