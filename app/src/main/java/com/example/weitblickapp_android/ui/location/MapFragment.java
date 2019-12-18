@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,6 +60,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.content.Context.POWER_SERVICE;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -129,9 +132,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-
         this.gpsIsEnabled = isLocationEnabled();
         loadProject(projectId);
 
@@ -205,7 +205,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void initializeTour(){
-    currentTour = new Tour(projectId);
+        currentTour = new Tour(projectId);
     }
 
 
