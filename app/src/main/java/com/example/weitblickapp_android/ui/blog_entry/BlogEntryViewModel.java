@@ -1,40 +1,64 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
-import java.util.Date;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class BlogEntryViewModel extends ViewModel {
 
-    int id;
-    String title;
-    String text;
-    int image_id;
-    Date created_at;
-    Date updated_at;
-    int location_id;
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
-    private MutableLiveData<String> mText;
+    private int id;
+    private String title;
+    private String text;
+    private  int image_id;
+    private String teaser;
+    private ArrayList<String> imageUrls;
+    Date published;
+    private int location_id;
 
-    public BlogEntryViewModel(int id, String title, String text, int image_id, Date created_at, Date updated_at, int location_id) {
+
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        try {
+            this.published = formatterRead.parse(published);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            this.published = new Date();
+        }
+        this.imageUrls = imageUrls;
+        this.teaser = teaser;
+
+    }
+
+    public BlogEntryViewModel(int id, String title, String text, String published) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.image_id = image_id;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        try {
+            this.published = formatterRead.parse(published);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.location_id = location_id;
     }
 
-    public BlogEntryViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is blog_entry fragment");
+    public String getTeaser() {
+        return teaser;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void setTeaser(String teaser) {
+        this.teaser = teaser;
+    }
+
+    public BlogEntryViewModel() {
     }
 
     public int getId() {
@@ -57,6 +81,8 @@ public class BlogEntryViewModel extends ViewModel {
         this.text = text;
     }
 
+    public String getText(){return this.text;}
+
     public int getImage_id() {
         return image_id;
     }
@@ -65,21 +91,18 @@ public class BlogEntryViewModel extends ViewModel {
         this.image_id = image_id;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public String getPublished() {
+            return formatterWrite.format(published);
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setPublished(Date published) {
+        this.published = published;
     }
 
-    public Date getUpdated_at() {
-        return updated_at;
-    }
+    public ArrayList<String> getImageUrls() { return imageUrls; }
 
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
-    }
+    public void setImageUrl(ArrayList<String> imageUrl) { this.imageUrls = imageUrls; }
+
 
     public int getLocation_id() {
         return location_id;
@@ -89,4 +112,15 @@ public class BlogEntryViewModel extends ViewModel {
         this.location_id = location_id;
     }
 
+    @Override
+    public String toString() {
+        return "BlogEntryViewModel{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", image_id=" + image_id +
+                ", created_at=" + published +
+                ", location_id=" + location_id +
+                '}';
+    }
 }

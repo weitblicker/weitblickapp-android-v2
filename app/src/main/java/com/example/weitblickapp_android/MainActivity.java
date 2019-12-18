@@ -1,43 +1,59 @@
 package com.example.weitblickapp_android;
 
+import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
+import com.example.weitblickapp_android.ui.profil.ProfilFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.google.android.material.navigation.NavigationView;
-import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.view.Menu;
+import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.profil.ProfilFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SessionManager session;
 
     private AppBarConfiguration mAppBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+         session = new SessionManager(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        if (Build.VERSION.SDK_INT >= 21){
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+        }
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
-                .setDrawerLayout(drawer)
+
+                R.id.nav_tabs, R.id.nav_project_tabs, R.id.nav_more,
+                R.id.nav_stats_tabs, R.id.nav_location, R.id.nav_blog, R.id.nav_faq, R.id.nav_profil)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-    }
+        NavigationUI.setupWithNavController(bottomNav, navController);
+        }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,7 +62,29 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(!session.checkLogin()){
 
+            return false;
+        }
+        else {
+            int id = item.getItemId();
+            if (id == R.id.nav_profil) {
+                ProfilFragment fragment = new ProfilFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void setActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -54,4 +92,20 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override
+    public void onBackPressed() {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+
+    }
+
+
 }
