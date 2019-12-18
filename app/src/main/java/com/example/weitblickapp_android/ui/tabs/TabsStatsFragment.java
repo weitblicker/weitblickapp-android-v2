@@ -12,6 +12,7 @@ import com.example.weitblickapp_android.ui.ViewPageAdapter;
 import com.example.weitblickapp_android.ui.event.EventFragment;
 import com.example.weitblickapp_android.ui.news.NewsListFragment;
 import com.example.weitblickapp_android.ui.ranking.RankingFragment;
+import com.example.weitblickapp_android.ui.ranking.RankingListAdapter;
 import com.example.weitblickapp_android.ui.stats.StatsFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -29,8 +30,8 @@ public class TabsStatsFragment extends Fragment {
         viewPager = (ViewPager) root.findViewById(R.id.pager);
 
         ViewPageAdapter adapter = new ViewPageAdapter(getChildFragmentManager());
-        adapter.AddFragment(new StatsFragment(), "Deine Strecken");
         adapter.AddFragment(new RankingFragment(), "Rangliste");
+        adapter.AddFragment(new StatsFragment(), "Deine Strecken");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
