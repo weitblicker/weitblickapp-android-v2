@@ -55,8 +55,9 @@
         android:layout_marginBottom="64dp"
         android:background="@menu/btn_round"
         android:enabled="true"
-        android:fontFamily="@font/opensansbold"
+        android:fontFamily="@font/open_sans"
         android:text="@string/action_sign_in"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.522"
@@ -85,15 +86,15 @@
         android:layout_width="199dp"
         android:layout_height="30dp"
         android:background="@menu/btn_round"
-
         android:orientation="vertical"
         android:text="@string/action_sign_up"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
         app:layout_constraintVertical_bias="0.118"
-        android:fontFamily="@font/opensansbold"/>
+        android:fontFamily="@font/open_sans"/>
 
     <ImageView
         android:id="@+id/loginPicture"
@@ -125,6 +126,7 @@
         android:layout_height="32dp"
         android:layout_marginTop="30dp"
         android:button="@null"
+        android:fontFamily="@font/open_sans"
         android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
 
         android:text="Login-Daten speichern?"
