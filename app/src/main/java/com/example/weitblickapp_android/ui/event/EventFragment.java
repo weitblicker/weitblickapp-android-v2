@@ -47,7 +47,7 @@ public class EventFragment extends Fragment {
     String[] title = {"Wöchentliche Veranstaltung", "Spendensammel Aktion", "Kleidertausch"};
     String[] location = {"Osnabrück", "Münster", "Osnabrück"};
     String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
-    String[] text = {"Heute ist es wieder soweit für unser wöchentliches Weitblick-Treffen! Wir freuen uns hier all die neuen Gesichter begrüßen zu dürfen... ", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
+    String[] text = {"Heute ist es wieder soweit für unser wöchentliches Weitblick-Treffen! Wir freuen uns hier all die neuen Gesichter begrüßen zu dürfen... ", "Spendensammel-Projekt", "Kleidertausch Veranstaltung"};
 
 
     @Override
