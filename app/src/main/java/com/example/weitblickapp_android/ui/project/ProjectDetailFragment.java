@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
@@ -79,13 +80,13 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
 
-        final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
+        //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         //mapFragment.getMapAsync(this);
 
-        changeImage.setOnClickListener(new View.OnClickListener() {
+        /*changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!favorite){
@@ -97,7 +98,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 }
 
             }
-        });
+        });*/
 
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
@@ -164,7 +165,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng location = new LatLng( this.lat, this.lng);
-        mMap.addMarker(new MarkerOptions().position(location).title(this.location));
+        mMap.addMarker(new MarkerOptions().position(location).title(this.location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         mMap.getUiSettings().setScrollGesturesEnabled(false);

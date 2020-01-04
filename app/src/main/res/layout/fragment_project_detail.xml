@@ -42,108 +42,100 @@
 
             <TextView
                 android:id="@+id/amount_goal"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="9dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="30dp"
                 android:fontFamily="@font/open_sans"
                 android:text="Hoo"
-                app:layout_constraintBottom_toTopOf="@+id/amount"
+                app:layout_constraintBottom_toTopOf="@+id/sponsor"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.069"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/legende1"
-                app:layout_constraintTop_toBottomOf="@+id/pieChart" />
+                app:layout_constraintTop_toBottomOf="@+id/amount" />
 
             <com.razerdp.widget.animatedpieview.AnimatedPieView
                 android:id="@+id/pieChart"
-                android:layout_width="269dp"
-                android:layout_height="222dp"
-                android:layout_marginStart="71dp"
-                android:layout_marginLeft="71dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="71dp"
-                android:layout_marginRight="71dp"
+                android:layout_width="91dp"
+                android:layout_height="82dp"
+                android:layout_marginTop="75dp"
+                android:layout_marginBottom="71dp"
+                app:layout_constraintBottom_toTopOf="@+id/listView2"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.915"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map" />
+                app:layout_constraintTop_toBottomOf="@+id/map"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/detail_location"
-                android:layout_width="344dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="27dp"
-                android:layout_marginLeft="27dp"
-                android:layout_marginEnd="27dp"
-                android:layout_marginRight="27dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/open_sans"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toTopOf="@+id/detail_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintHorizontal_bias="0.468"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detail_title" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
-                android:layout_width="344dp"
-                android:layout_height="182dp"
-                android:layout_marginStart="27dp"
-                android:layout_marginLeft="27dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="27dp"
-                android:layout_marginRight="27dp"
+                android:layout_marginBottom="8dp"
                 android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toTopOf="@+id/city"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.466"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/detail_title"
-                android:layout_width="257dp"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="22dp"
-                android:layout_marginEnd="78dp"
-                android:layout_marginRight="78dp"
-                android:layout_marginBottom="19dp"
                 android:fontFamily="@font/breeserif"
                 android:gravity="center"
                 android:textColor="@color/wb_orange"
-                app:layout_constraintBottom_toTopOf="@+id/detail_location"
+                android:textSize="21dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/heart"
+                app:layout_constraintHorizontal_bias="0.207"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/city" />
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/breeserif"
+                android:gravity="center"
+                android:textColor="@color/wb_orange"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/detail_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.432"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
             <TextView
                 android:id="@+id/detail_text"
-                android:layout_width="344dp"
+                android:layout_width="340dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="27dp"
-                android:layout_marginLeft="27dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="27dp"
-                android:layout_marginRight="27dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/open_sans"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toTopOf="@+id/map"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintHorizontal_bias="0.236"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detail_location" />
-
-            <ImageButton
-                android:id="@+id/heart"
-                android:layout_width="44dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@null"
-                android:src="@drawable/ic_heart_outline"
-                app:layout_constraintBottom_toTopOf="@+id/detail_location"
-                app:layout_constraintEnd_toStartOf="@+id/detail_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_image"
-                app:layout_constraintVertical_bias="1.0" />
 
             <FrameLayout
                 android:id="@+id/frameLayout"
@@ -160,67 +152,125 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detail_text" />
 
             <TextView
                 android:id="@+id/legende1"
-                android:layout_width="16dp"
+                android:layout_width="25dp"
                 android:layout_height="17dp"
-                android:layout_marginBottom="14dp"
+                android:layout_marginBottom="36dp"
                 android:background="@color/wb_orange"
-                app:layout_constraintBottom_toTopOf="@+id/legende2"
+                app:layout_constraintBottom_toTopOf="@+id/sponsor"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.245"
+                app:layout_constraintHorizontal_bias="0.044"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pieChart" />
+                app:layout_constraintTop_toBottomOf="@+id/legende2" />
 
             <TextView
                 android:id="@+id/legende2"
-                android:layout_width="16dp"
+                android:layout_width="25dp"
                 android:layout_height="17dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="11dp"
                 android:background="#d9e2ed"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/legende1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.245"
+                app:layout_constraintHorizontal_bias="0.043"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/legende1" />
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <TextView
                 android:id="@+id/amount"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/open_sans"
                 android:text="hallo"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/amount_goal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/legende2"
-                app:layout_constraintTop_toBottomOf="@+id/amount_goal" />
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
-                android:layout_marginLeft="37dp"
-                android:layout_marginTop="19dp"
-                android:layout_marginEnd="291dp"
-                android:layout_marginRight="291dp"
-                android:layout_marginBottom="11dp"
+                android:layout_width="209dp"
+                android:layout_height="69dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="25dp"
                 android:fontFamily="@font/breeserif"
-                android:text="Übersicht"
-                android:textColor="@color/wb_orange"
-                android:textSize="19dp"
-                app:layout_constraintBottom_toTopOf="@+id/pieChart"
+                android:text="Fahrrad fahren und Spenden sammeln"
+                android:textColor="#0972b3"
+                android:textSize="22dp"
+                app:layout_constraintBottom_toTopOf="@+id/legende2"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.083"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/map" />
-            app:layout_constraintTop_toBottomOf="@+id/view_pager"/>
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginBottom="9dp"
+                app:layout_constraintBottom_toTopOf="@+id/detail_title"
+                app:layout_constraintEnd_toStartOf="@+id/city"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager"
+                app:layout_constraintVertical_bias="1.0"
+                map:srcCompat="@drawable/logo_bildmarke" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/detail_text"
+                app:layout_constraintEnd_toStartOf="@+id/detail_location"
+                app:layout_constraintHorizontal_bias="0.857"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_title"
+                map:srcCompat="@drawable/logo_location" />
+
+            <ListView
+                android:id="@+id/listView2"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sponsor"></ListView>
+
+            <TextView
+                android:id="@+id/sponsor"
+                android:layout_width="104dp"
+                android:layout_height="31dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/opensansbold"
+                android:text="Sponsor"
+                android:textSize="22dp"
+                app:layout_constraintBottom_toTopOf="@+id/listView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.052"
+                app:layout_constraintTop_toBottomOf="@+id/legende1"
+                map:layout_constraintStart_toStartOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

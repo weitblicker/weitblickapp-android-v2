@@ -25,6 +25,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -53,13 +54,10 @@ public class ProjectListFragment extends ListFragment implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(0.0f));
         for(int i = 0; i < projectList.size(); i++){
             LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
-            mMap.addMarker(new MarkerOptions().position(location).title(projectList.get(i).getName()));
+            mMap.addMarker(new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)).title(projectList.get(i).getName()));
         }
-        mMap.getUiSettings().setScrollGesturesEnabled(false);
-        mMap.getUiSettings().setZoomGesturesEnabled(false);
     }
 
 
