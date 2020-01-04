@@ -21,6 +21,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,14 +38,28 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProjectListFragment extends ListFragment {
+public class ProjectListFragment extends ListFragment implements OnMapReadyCallback {
     ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
     private ProjectListAdapter adapter;
+    private GoogleMap mMap;
+    SupportMapFragment mapFrag;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadProjects();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(0.0f));
+        for(int i = 0; i < projectList.size(); i++){
+            LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
+            mMap.addMarker(new MarkerOptions().position(location).title(projectList.get(i).getName()));
+        }
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
     }
 
 
@@ -49,6 +69,10 @@ public class ProjectListFragment extends ListFragment {
 
         adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
         this.setListAdapter(adapter);
+
+        mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
+
 
         return view;
     }
@@ -75,7 +99,7 @@ public class ProjectListFragment extends ListFragment {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/projects/?limit=5";
+        String URL = "https://new.weitblicker.org/rest/projects/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
