@@ -40,234 +40,602 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/amount_goal"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="30dp"
-                android:fontFamily="@font/open_sans"
-                android:text="Hoo"
-                app:layout_constraintBottom_toTopOf="@+id/sponsor"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="411dp"
+                android:layout_height="320dp"
+                android:background="@color/wb_grey"
+                app:layout_constraintBottom_toTopOf="@+id/sponsorlist"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/legende1"
-                app:layout_constraintTop_toBottomOf="@+id/amount" />
-
-            <com.razerdp.widget.animatedpieview.AnimatedPieView
-                android:id="@+id/pieChart"
-                android:layout_width="91dp"
-                android:layout_height="82dp"
-                android:layout_marginTop="75dp"
-                android:layout_marginBottom="71dp"
-                app:layout_constraintBottom_toTopOf="@+id/listView2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.915"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/orange3">
 
-            <TextView
-                android:id="@+id/detail_location"
-                android:layout_width="300dp"
+                <TextView
+                    android:id="@+id/biker"
+                    android:layout_width="59dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Radfahrer"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bikernumber" />
+
+                <TextView
+                    android:id="@+id/gefahren"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginLeft="13dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="bereits gefahren"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/biker"
+                    app:layout_constraintTop_toBottomOf="@+id/erreichtnumber" />
+
+                <TextView
+                    android:id="@+id/stand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginLeft="13dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Spendenstand"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/gefahren"
+                    app:layout_constraintTop_toBottomOf="@+id/standnumber" />
+
+                <TextView
+                    android:id="@+id/goal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginLeft="13dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Spendenziel"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/stand"
+                    app:layout_constraintTop_toBottomOf="@+id/goalnumber" />
+
+                <TextView
+                    android:id="@+id/bikeText"
+                    android:layout_width="163dp"
+                    android:layout_height="61dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/breeserif"
+                    android:text="Fahrrad fahren und Spenden sammeln"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    map:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/bikeText2"
+                    android:layout_width="150dp"
+                    android:layout_height="69dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="60dp"
+                    android:fontFamily="@font/breeserif"
+                    android:text="Für jeden mit dem Fahrrad gefahrenen Kilometer spenden unsere Sponsoren für das Projekt"
+                    android:textColor="#ffffff"
+                    android:textSize="11dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/biker" />
+
+                <ImageButton
+                    android:id="@+id/bike2"
+                    android:layout_width="39dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="124dp"
+                    android:layout_marginLeft="124dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@null"
+                    app:layout_constraintStart_toEndOf="@+id/bikeText"
+                    app:layout_constraintTop_toTopOf="parent"
+                    map:srcCompat="@drawable/icon_bike" />
+
+                <com.razerdp.widget.animatedpieview.AnimatedPieView
+                    android:id="@+id/pieChart"
+                    android:layout_width="152dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginLeft="64dp"
+                    android:layout_marginTop="28dp"
+                    app:layout_constraintStart_toEndOf="@+id/bikeText2"
+                    app:layout_constraintTop_toBottomOf="@+id/stand" />
+
+                <TextView
+                    android:id="@+id/bikernumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="320"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="22dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bikeText" />
+
+                <TextView
+                    android:id="@+id/erreichtnumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="88dp"
+                    android:layout_marginLeft="88dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="2030km"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="22dp"
+                    app:layout_constraintTop_toBottomOf="@+id/bikeText"
+                    map:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/goalnumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="33dp"
+                    android:layout_marginLeft="33dp"
+                    android:layout_marginTop="37dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="50 000€"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="22dp"
+                    app:layout_constraintStart_toEndOf="@+id/standnumber"
+                    app:layout_constraintTop_toBottomOf="@+id/bike2" />
+
+                <TextView
+                    android:id="@+id/standnumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginTop="101dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="1732€"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="22dp"
+                    app:layout_constraintStart_toEndOf="@+id/erreichtnumber"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/detail_text"
+                app:layout_constraintBottom_toTopOf="@+id/orange3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.468"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+                app:layout_constraintTop_toBottomOf="@+id/orange2">
+
+                <TextView
+                    android:id="@+id/donationkonto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="28dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="Spendenkonto"
+                    android:textSize="22dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/amount_goal_number" />
+
+                <TextView
+                    android:id="@+id/donationgoaldescription"
+                    android:layout_width="376dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:fontFamily="@font/breeserif"
+                    android:text="Hier kommt eine Beschreibung des Spendenziels"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/donationgoal" />
+
+                <TextView
+                    android:id="@+id/amount_goal_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginTop="48dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Spendenstand"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription" />
+
+                <TextView
+                    android:id="@+id/bankname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Studenteninitiative Weitblick e.V."
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/donationkonto" />
+
+                <TextView
+                    android:id="@+id/BIC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="BIC: GENFJVHDFHV"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bankname" />
+
+                <TextView
+                    android:id="@+id/IBAN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="IBAN: DE12 65265236 52695 5 "
+                    app:layout_constraintTop_toBottomOf="@+id/BIC"
+                    map:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/amount_goal_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginLeft="48dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="17 523 €"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="22dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/amount_goal_text" />
+
+                <TextView
+                    android:id="@+id/amountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="74dp"
+                    android:layout_marginLeft="74dp"
+                    android:layout_marginTop="48dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Spendenziel"
+                    app:layout_constraintStart_toEndOf="@+id/amount_goal_text"
+                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription" />
+
+                <TextView
+                    android:id="@+id/amountNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="82dp"
+                    android:layout_marginLeft="82dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="50 000 €"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="22dp"
+                    app:layout_constraintStart_toEndOf="@+id/amount_goal_number"
+                    app:layout_constraintTop_toBottomOf="@+id/amountText" />
+
+                <TextView
+                    android:id="@+id/donationgoal"
+                    android:layout_width="140dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="Spendenziel"
+                    android:textSize="22dp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    map:srcCompat="@android:drawable/star_big_off" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/map"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager">
+
+                <TextView
+                    android:id="@+id/detail_location2"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Hier die Location einfügen"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/logo_location2"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_text" />
+
+                <TextView
+                    android:id="@+id/city"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="@font/breeserif"
+                    android:gravity="center"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/logo_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/detail_text"
+                    android:layout_width="335dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_location" />
+
+                <TextView
+                    android:id="@+id/detail_location3"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Beschreibung der Städte"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/logo_location2" />
+
+                <TextView
+                    android:id="@+id/detail_title"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/breeserif"
+                    android:textColor="@color/wb_orange"
+                    android:textSize="21dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/city" />
+
+                <ImageView
+                    android:id="@+id/logo_location2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="11dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_text"
+                    map:srcCompat="@drawable/logo_location" />
+
+                <ImageView
+                    android:id="@+id/logo_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="19dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    map:srcCompat="@drawable/logo_bildmarke" />
+
+                <TextView
+                    android:id="@+id/detail_location"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/logo_location"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+                <ImageView
+                    android:id="@+id/logo_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="9dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_title"
+                    map:srcCompat="@drawable/logo_location" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ListView
+                android:id="@+id/blog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/orange6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orange5"></ListView>
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="8dp"
                 android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/city"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/detail_title"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/breeserif"
-                android:gravity="center"
-                android:textColor="@color/wb_orange"
-                android:textSize="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.207"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/city" />
-
-            <TextView
-                android:id="@+id/city"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/breeserif"
-                android:gravity="center"
-                android:textColor="@color/wb_orange"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/detail_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.432"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
-
-            <TextView
-                android:id="@+id/detail_text"
-                android:layout_width="340dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/open_sans"
-                android:textSize="18dp"
-                app:layout_constraintBottom_toTopOf="@+id/map"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.236"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_location" />
-
-            <FrameLayout
-                android:id="@+id/frameLayout"
+            <ListView
+                android:id="@+id/events"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                map:layout_constraintEnd_toEndOf="parent"
-                map:layout_constraintStart_toStartOf="parent"
-                map:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/orange7"
+                app:layout_constraintTop_toBottomOf="@+id/orange7">
 
-            </FrameLayout>
+            </ListView>
+
+            <ListView
+                android:id="@+id/news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/orange7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orange6">
+
+            </ListView>
 
             <fragment
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginBottom="2dp"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintBottom_toTopOf="@+id/orange"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_text" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
             <TextView
-                android:id="@+id/legende1"
-                android:layout_width="25dp"
-                android:layout_height="17dp"
-                android:layout_marginBottom="36dp"
+                android:id="@+id/orange7"
+                android:layout_width="179dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="231dp"
+                android:layout_marginRight="231dp"
                 android:background="@color/wb_orange"
-                app:layout_constraintBottom_toTopOf="@+id/sponsor"
+                app:layout_constraintBottom_toTopOf="@+id/events"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.044"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/legende2" />
-
-            <TextView
-                android:id="@+id/legende2"
-                android:layout_width="25dp"
-                android:layout_height="17dp"
-                android:layout_marginBottom="11dp"
-                android:background="#d9e2ed"
-                app:layout_constraintBottom_toTopOf="@+id/legende1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.043"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-            <TextView
-                android:id="@+id/amount"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/open_sans"
-                android:text="hallo"
-                app:layout_constraintBottom_toTopOf="@+id/amount_goal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/legende2"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="209dp"
-                android:layout_height="69dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="25dp"
-                android:fontFamily="@font/breeserif"
-                android:text="Fahrrad fahren und Spenden sammeln"
-                android:textColor="#0972b3"
-                android:textSize="22dp"
-                app:layout_constraintBottom_toTopOf="@+id/legende2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.083"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginRight="7dp"
-                android:layout_marginBottom="9dp"
-                app:layout_constraintBottom_toTopOf="@+id/detail_title"
-                app:layout_constraintEnd_toStartOf="@+id/city"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager"
-                app:layout_constraintVertical_bias="1.0"
-                map:srcCompat="@drawable/logo_bildmarke" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginRight="7dp"
-                android:layout_marginBottom="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/detail_text"
-                app:layout_constraintEnd_toStartOf="@+id/detail_location"
-                app:layout_constraintHorizontal_bias="0.857"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_title"
-                map:srcCompat="@drawable/logo_location" />
+                app:layout_constraintTop_toBottomOf="@+id/news" />
 
             <ListView
-                android:id="@+id/listView2"
+                android:id="@+id/sponsorlist"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/orange4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"></ListView>
+
+            <ListView
+                android:id="@+id/milenstone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/orange5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orange4">
+
+            </ListView>
+
+            <ListView
+                android:id="@+id/projectpartner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/orange2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sponsor"></ListView>
+                app:layout_constraintTop_toBottomOf="@+id/orange"
+                app:layout_constraintVertical_bias="0.0"></ListView>
 
             <TextView
-                android:id="@+id/sponsor"
-                android:layout_width="104dp"
-                android:layout_height="31dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/opensansbold"
-                android:text="Sponsor"
-                android:textSize="22dp"
-                app:layout_constraintBottom_toTopOf="@+id/listView2"
+                android:id="@+id/orange"
+                android:layout_width="179dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="232dp"
+                android:layout_marginRight="232dp"
+                android:background="@color/wb_orange"
+                app:layout_constraintBottom_toTopOf="@+id/projectpartner"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.052"
-                app:layout_constraintTop_toBottomOf="@+id/legende1"
+                app:layout_constraintTop_toBottomOf="@+id/map"
+                map:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/orange3"
+                android:layout_width="179dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="232dp"
+                android:layout_marginRight="232dp"
+                android:background="@color/wb_orange"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                map:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/orange6"
+                android:layout_width="179dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="232dp"
+                android:layout_marginRight="232dp"
+                android:background="@color/wb_orange"
+                app:layout_constraintBottom_toTopOf="@+id/news"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orange5"
+                map:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/orange5"
+                android:layout_width="179dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="232dp"
+                android:layout_marginRight="232dp"
+                android:background="@color/wb_orange"
+                app:layout_constraintBottom_toTopOf="@+id/blog"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orange4"
+                map:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/orange4"
+                android:layout_width="179dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="232dp"
+                android:layout_marginRight="232dp"
+                android:background="@color/wb_orange"
+                app:layout_constraintBottom_toTopOf="@+id/milenstone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sponsorlist"
+                map:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/orange2"
+                android:layout_width="179dp"
+                android:layout_height="10dp"
+                android:background="@color/wb_orange"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/projectpartner"
                 map:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

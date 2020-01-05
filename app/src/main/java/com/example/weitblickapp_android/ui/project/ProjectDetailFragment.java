@@ -124,22 +124,16 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-        final TextView goalTextView = root.findViewById(R.id.amount_goal);
-        final TextView amountTextView = root.findViewById(R.id.amount);
+        final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
+        final TextView amountTextView = root.findViewById(R.id.amountNumber);
 
         if(cycleID != 0){
             drawPie(true);
-            goalTextView.setText("Noch zu erreichen " + (this.goal_amount - this.current_amount) + " €");
-            amountTextView.setText("Bereits gesammelt " + current_amount + " €");
+            goalTextView.setText((this.goal_amount - this.current_amount) + " €");
+            amountTextView.setText(current_amount + " €");
         }else{
-            final TextView legendeOne = root.findViewById(R.id.legende1);
-            final TextView legendeTwo = root.findViewById(R.id.legende2);
-            legendeOne.setVisibility(View.GONE);
-            legendeTwo.setVisibility(View.GONE);
             goalTextView.setVisibility(View.GONE);
             amountTextView.setVisibility(View.GONE);
-            TextView text = root.findViewById(R.id.textView);
-            text.setVisibility(View.GONE);
             drawPie(false);
         }
         return root;
