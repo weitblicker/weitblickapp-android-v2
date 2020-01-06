@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/city"
+        android:id="@+id/location"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
