@@ -31,69 +31,123 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:background="#ffffff">
+            <!-- ViewPager-Container to add slider-items into-->
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
-                android:layout_width="344dp"
+                android:layout_width="match_parent"
                 android:layout_height="182dp"
-                android:layout_marginStart="27dp"
-                android:layout_marginLeft="27dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="27dp"
-                android:layout_marginRight="27dp"
                 android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/detail_date"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.533"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/detail_date"
+            </androidx.viewpager.widget.ViewPager>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="344dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/open_sans"
-                android:gravity="end"
-                android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/detail_text"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="11dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+                app:layout_constraintTop_toBottomOf="@+id/view_pager">
 
-            <TextView
-                android:id="@+id/detail_title"
-                android:layout_width="344dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/breeserif"
-                android:textColor="@color/wb_orange"
-                android:gravity="start"
-                android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/detail_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.522"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_date" />
+                <TextView
+                    android:id="@+id/detail_title"
+                    android:layout_width="344dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/breeserif"
+                    android:textColor="@color/wb_orange"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/partner" />
 
-            <TextView
-                android:id="@+id/detail_text"
-                android:layout_width="342dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="34dp"
-                android:layout_marginLeft="34dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="33dp"
-                android:layout_marginRight="33dp"
-                android:layout_marginBottom="20dp"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_date" />
+                <TextView
+                    android:id="@+id/detail_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="90dp"
+                    android:layout_marginLeft="90dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="end"
+                    android:text="12.11.2034"
+                    app:layout_constraintStart_toEndOf="@+id/authorname"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_title" />
 
+                <TextView
+                    android:id="@+id/partner"
+                    android:layout_width="115dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Münster"
+                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/logo_bildmarke" />
+
+                <ImageView
+                    android:id="@+id/authorpicture"
+                    android:layout_width="50dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="3dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_title"
+                    tools:srcCompat="@drawable/ic_launcher_background" />
+
+                <TextView
+                    android:id="@+id/authorname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Viktoria von Hassell"
+                    app:layout_constraintStart_toEndOf="@+id/authorpicture"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+                <TextView
+                    android:id="@+id/detail_text"
+                    android:layout_width="344dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/open_sans"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/authorpicture" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintStart_toEndOf="@+id/partner"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/logo_location" />
+
+                <TextView
+                    android:id="@+id/city"
+                    android:layout_width="115dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Indien"
+                    app:layout_constraintStart_toEndOf="@+id/imageView9"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

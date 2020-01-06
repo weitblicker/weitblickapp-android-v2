@@ -7,7 +7,7 @@
     android:background="#ffffff">
 
     <TextView
-        android:id="@+id/location"
+        android:id="@+id/city"
         android:layout_width="344dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
