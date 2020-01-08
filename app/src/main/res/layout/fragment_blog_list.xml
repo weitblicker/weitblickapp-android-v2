@@ -6,126 +6,135 @@
     android:layout_height="wrap_content"
     android:background="#ffffff">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout5"
-        android:layout_width="344dp"
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
         android:layout_height="182dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginLeft="11dp"
         android:layout_marginTop="11dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="344dp"
-            android:layout_height="182dp"
-            android:background="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    <TextView
+        android:id="@+id/whiteTriangle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="176dp"
+        android:background="#ffffff"
+        android:rotation="-45"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="78dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="266dp"
-            android:layout_marginLeft="266dp"
-            android:layout_marginTop="163dp"
-            android:background="#ffffff"
-            android:fontFamily="@font/open_sans"
-            android:gravity="end"
-            android:text="02.11.2016"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="78dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:fontFamily="@font/opensansbold"
+        android:gravity="end"
+        android:text="02.11.2016"
+        android:textColor="@color/wb_grey"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/city"
+        app:layout_constraintTop_toBottomOf="@+id/image" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="344dp"
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="6dp"
+        android:text="Indien"
+        android:textColor="@color/wb_grey"
+        android:textSize="12dp"
+        android:fontFamily="@font/opensansbold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/image" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"
         android:layout_marginLeft="11dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:fontFamily="@font/breeserif"
+        android:textColor="#000000"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-        <TextView
-            android:id="@+id/city"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="6dp"
-            android:text="Stadt"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        app:srcCompat="@drawable/logo_location" />
 
-        <TextView
-            android:id="@+id/city"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="6dp"
-            android:text="Indien"
-            app:layout_constraintStart_toEndOf="@+id/imageView6"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/location"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        app:srcCompat="@drawable/logo_bildmarke" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo_bildmarke" />
+    <TextView
+        android:id="@+id/teaser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:fontFamily="@font/open_sans"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="344dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/breeserif"
-            android:textColor="@color/wb_orange"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+    <TextView
+        android:id="@+id/partner"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="6dp"
+        android:text="Stadt"
+        android:textColor="@color/wb_grey"
+        android:fontFamily="@font/opensansbold"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/image" />
 
-        <ImageButton
-            android:id="@+id/blog_more_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="3dp"
-            android:background="@null"
-            android:focusable="false"
-            android:src="@drawable/icon_more"
-            app:layout_constraintStart_toEndOf="@+id/location"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/teaser"
-            android:layout_width="344dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/open_sans"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginLeft="11dp"
-            android:layout_marginTop="3dp"
-            app:layout_constraintStart_toEndOf="@+id/city"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo_location" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

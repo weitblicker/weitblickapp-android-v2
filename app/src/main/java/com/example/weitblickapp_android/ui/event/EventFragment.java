@@ -166,8 +166,6 @@ public class EventFragment extends Fragment {
                 textView_date.setText(date[position]);
 
 
-
-            ImageButton detail = (ImageButton) view.findViewById(R.id.event_more_btn);
             view.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -179,6 +177,7 @@ public class EventFragment extends Fragment {
                 }
             });
 
+            /*
             detail.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -188,7 +187,7 @@ public class EventFragment extends Fragment {
                     ft.addToBackStack(null);
                     ft.commit();
                 }
-            });
+            });*/
 
             view.setOnClickListener(new View.OnClickListener() {
 

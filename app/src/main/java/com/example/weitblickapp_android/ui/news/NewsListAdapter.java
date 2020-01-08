@@ -87,7 +87,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
                 }
             });
 
-            ImageButton detail = (ImageButton) view.findViewById(R.id.news_more_btn);
+            /*ImageButton detail = (ImageButton) view.findViewById(R.id.news_more_btn);
             detail.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -97,7 +97,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
                     ft.addToBackStack(null);
                     ft.commit();
                 }
-            });
+            });*/
 
         return view;
     }

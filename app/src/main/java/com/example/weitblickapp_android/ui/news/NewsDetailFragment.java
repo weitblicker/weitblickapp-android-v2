@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,6 +59,8 @@ public class NewsDetailFragment extends Fragment {
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
+
+        final ImageView image = root.findViewById(R.id.image);
 
         //Parse HTML in TextView
 

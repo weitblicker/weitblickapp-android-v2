@@ -80,19 +80,6 @@ public class ProjectListFragment extends ListFragment implements OnMapReadyCallb
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, final int position, long id) {
-        ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-    }
     public void loadProjects(){
 
         // Talk to Rest API

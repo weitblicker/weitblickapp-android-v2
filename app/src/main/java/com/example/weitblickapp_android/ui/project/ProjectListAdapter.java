@@ -106,16 +106,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             //Set Button-Listener and redirect to Details-Page
             ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
-            view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-            });
             detail.setOnClickListener(new View.OnClickListener() {
 
                 @Override

@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:background="#ffffff">
             <!-- ViewPager-Container to add slider-items into-->
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
@@ -49,11 +50,24 @@
 
             </androidx.viewpager.widget.ViewPager>
 
+            <TextView
+                android:id="@+id/whiteTriangle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="176dp"
+                android:background="#ffffff"
+                android:rotation="-45"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_pager">
+
 
                 <TextView
                     android:id="@+id/detail_title"
@@ -65,7 +79,8 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginRight="11dp"
                     android:fontFamily="@font/breeserif"
-                    android:textColor="@color/wb_orange"
+                    android:textColor="#000000"
+                    android:textSize="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.089"
                     app:layout_constraintStart_toStartOf="parent"
@@ -78,9 +93,11 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginRight="11dp"
-                    android:fontFamily="@font/open_sans"
+                    android:fontFamily="@font/opensansbold"
                     android:gravity="end"
                     android:text="12.11.2034"
+                    android:textSize="12dp"
+                    android:textColor="@color/wb_grey"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.961"
                     app:layout_constraintStart_toEndOf="@+id/authorname"
@@ -97,6 +114,9 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginRight="11dp"
                     android:text="Münster"
+                    android:textColor="@color/wb_grey"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/opensansbold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.009"
                     app:layout_constraintStart_toEndOf="@+id/imageView8"
@@ -115,7 +135,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/logo_bildmarke" />
 
-                <ImageView
+                <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/authorpicture"
                     android:layout_width="50dp"
                     android:layout_height="46dp"
@@ -126,7 +146,7 @@
                     app:layout_constraintHorizontal_bias="0.014"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_title"
-                    tools:srcCompat="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ic_launcher_background" />
 
                 <TextView
                     android:id="@+id/authorname"
@@ -136,6 +156,8 @@
                     android:layout_marginLeft="7dp"
                     android:layout_marginTop="16dp"
                     android:text="Viktoria von Hassell"
+                    android:textSize="12dp"
+                    android:textColor="#000000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/authorpicture"
@@ -147,10 +169,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
+                    android:layout_marginTop="3dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginRight="11dp"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/open_sans"
+                    android:textColor="#000000"
+                    android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
