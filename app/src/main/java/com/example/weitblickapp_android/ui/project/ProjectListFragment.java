@@ -1,15 +1,19 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
@@ -21,12 +25,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -39,12 +45,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProjectListFragment extends ListFragment implements OnMapReadyCallback {
+public class ProjectListFragment extends Fragment implements OnMapReadyCallback {
     ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
     private ProjectListAdapter adapter;
     private GoogleMap mMap;
     SupportMapFragment mapFrag;
-
+    ListView list;
+    private Map<Marker, Integer> allMarkersMap = new HashMap<Marker, Integer>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,29 +63,56 @@ public class ProjectListFragment extends ListFragment implements OnMapReadyCallb
         mMap = googleMap;
         for(int i = 0; i < projectList.size(); i++){
             LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
-            mMap.addMarker(new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)).title(projectList.get(i).getName()));
+            Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)).title(projectList.get(i).getName()));
+            allMarkersMap.put(marker, i);
         }
-    }
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                int index = allMarkersMap.get(marker);
+                list.setSelection(index);
+                adapter.select(index);
+                CameraUpdate cu = CameraUpdateFactory.newLatLng(marker.getPosition());
+                mMap.animateCamera(cu);
+                int height = list.getHeight();
+                list.smoothScrollToPositionFromTop(index, height/6);
+                return true;
+
+            }
+        });
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_project, container, false);
 
+
+        list = (ListView) view.findViewById(R.id.liste);
         adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
-        this.setListAdapter(adapter);
+        list.setAdapter(adapter);
+
+        adapter.setOnItemClickedListener(
+                new ProjectListAdapter.OnItemClicked(){
+                    @Override
+                    public void onClick(int position) {
+                        ProjectViewModel pro = adapter.getItem(position);
+                        LatLng posLatLng = new LatLng(pro.getLat(),pro.getLng());
+                        CameraUpdate cu = CameraUpdateFactory.newLatLng(posLatLng);
+                        mMap.animateCamera(cu);
+                        adapter.select(position);
+                        int height = list.getHeight();
+                        list.smoothScrollToPositionFromTop(position,height/6);
+
+                    }
+                });
 
         mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     public void loadProjects(){
 
