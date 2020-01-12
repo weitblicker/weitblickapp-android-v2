@@ -215,6 +215,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void run() {
                 if(!paused && gpsIsEnabled) {
                     fetchLastLocation();
+                }else{
+                    return;
                 }
                 handler.postDelayed(this, fetchLocationDelay);
             }
@@ -233,6 +235,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
+        startFetchLocation();
     }
 
     //Fetches last GPS-Location and calculates resulting km
@@ -248,6 +251,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
+                    currentLocation = location;
+                    if (!load) {
+                        setUpMapIfNeeded();
+                    }
+                }
+                /*if (location != null) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                         if(mMap != null) {
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -264,7 +273,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
                 if (!load) {
                     setUpMapIfNeeded();
-                }
+                }*/
             }
         });
         checkKm();
@@ -295,11 +304,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }, segmentSendDelay);
     }
 
-    @Override
+    /*@Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
         if (isLocationEnabled()){
             mMap.setMyLocationEnabled(true);
+        }
+    }*/
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //LatLng latLng = new LatLng( -33.865143, 151.209900);
+        this.mMap = googleMap;
+        if (isLocationEnabled()) {
+            if (currentLocation != null) {
+                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mMap.setMyLocationEnabled(true);
+            }
         }
     }
 

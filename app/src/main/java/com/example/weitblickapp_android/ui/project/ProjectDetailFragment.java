@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -46,7 +48,26 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     Boolean favorite = false;
     View root;
     private GoogleMap mMap;
-    private int cycleID;
+    /*private int cycleID = 0;
+    private int donationGoalID = 0;
+    private int projectPartnerID = 0;
+    private int statsID = 0;
+    private int milenstoneID = 0;
+    private int newsID = 0;
+    private int blogsID = 0;
+    private int eventsID = 0;*/
+
+    private int cycleID = 1;
+    private int donationGoalID = 1;
+    private int projectPartnerID = 1;
+    private int statsID = 1;
+    private int milenstoneID = 1;
+    private int newsID = 1;
+    private int blogsID = 1;
+    private int eventsID = 1;
+
+    ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
+    ArrayList<SponsorViewModel> sponsorList = new ArrayList<SponsorViewModel>();
 
     public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
@@ -135,6 +156,59 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             goalTextView.setVisibility(View.GONE);
             amountTextView.setVisibility(View.GONE);
             drawPie(false);
+        }
+        if(donationGoalID != 0){
+            ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
+            SponsorViewModel test1 = new SponsorViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de", "nbhvjsmnvobs kevj hsl");
+            SponsorViewModel test2 = new SponsorViewModel("Test2", "oi09uh jhwsbv wjbv wlkbv , hw  wh luefv wwe fwf wjweb", "www.dhejvhebvkrv-vevee.com", "fhubvdacnlkdjfoeihvs");
+            SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
+            listViewSponsor.setAdapter(adapterSponsor);
+            sponsorList.add(test1);
+            sponsorList.add(test2);
+            sponsorList.add(test1);
+        }else{
+            ConstraintLayout donation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
+            donation.setVisibility(View.GONE);
+            ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
+            stats.setVisibility(View.GONE);
+            ConstraintLayout sponsor = (ConstraintLayout) root.findViewById(R.id.sponsorContainer);
+            sponsor.setVisibility(View.GONE);
+        }
+        if(newsID != 0){
+
+        }else{
+            ConstraintLayout news = (ConstraintLayout) root.findViewById(R.id.newsContainer);
+            news.setVisibility(View.GONE);
+        }
+        if(blogsID != 0){
+
+        }else{
+            ConstraintLayout blog = (ConstraintLayout) root.findViewById(R.id.blogContainer);
+            blog.setVisibility(View.GONE);
+        }
+        if(eventsID != 0){
+
+        }else{
+            ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
+            event.setVisibility(View.GONE);
+        }
+        if(projectPartnerID != 0){
+            ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
+            ProjectPartnerViewModel test1 = new ProjectPartnerViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
+            ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
+            listPartner.setAdapter(adapterPartner);
+            partnerList.add(test1);
+            partnerList.add(test1);
+            partnerList.add(test1);
+        }else{
+            ConstraintLayout projectPartner = (ConstraintLayout) root.findViewById(R.id.projectPartnerContainer);
+            projectPartner.setVisibility(View.GONE);
+        }
+        if(milenstoneID != 0){
+
+        }else{
+            ConstraintLayout mile = (ConstraintLayout) root.findViewById(R.id.milenstoneContainer);
+            mile.setVisibility(View.GONE);
         }
         return root;
     }
