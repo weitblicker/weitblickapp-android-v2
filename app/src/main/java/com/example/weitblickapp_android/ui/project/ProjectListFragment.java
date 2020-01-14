@@ -103,7 +103,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         adapter.select(position);
                         int height = list.getHeight();
                         list.smoothScrollToPositionFromTop(position,height/6);
-
                     }
                 });
 
@@ -118,7 +117,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/projects/";
+        String URL = "https://weitblicker.org/rest/projects/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 

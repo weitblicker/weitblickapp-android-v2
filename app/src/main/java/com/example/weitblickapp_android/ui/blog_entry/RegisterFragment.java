@@ -48,7 +48,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
     private String lastItemDate;
     private String lastItemDateCheck = "";
     int limitLoadedBlogs = 20;
-    private String url = "https://new.weitblicker.org/rest/blog?limit=";
+    private String url = "https://weitblicker.org/rest/blog?limit=";
 
 
 

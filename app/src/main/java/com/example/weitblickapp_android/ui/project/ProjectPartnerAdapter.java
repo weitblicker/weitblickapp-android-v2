@@ -1,11 +1,14 @@
 package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.fragment.app.FragmentManager;
 import com.example.weitblickapp_android.R;
 
@@ -25,7 +28,6 @@ public class ProjectPartnerAdapter extends ArrayAdapter<ProjectPartnerViewModel>
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragManager = fragManager;
     }
-
 
     @Override
     public int getCount() {
@@ -59,5 +61,6 @@ public class ProjectPartnerAdapter extends ArrayAdapter<ProjectPartnerViewModel>
 
         return view;
     }
+
 }
 

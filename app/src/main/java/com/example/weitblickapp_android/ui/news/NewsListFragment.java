@@ -43,7 +43,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private NewsListAdapter adapter;
     private String lastItemDate;
     private String lastItemDateCheck = "";
-    private String url = "https://new.weitblicker.org/rest/news?limit=5";
+    private String url = "https://weitblicker.org/rest/news?limit=5";
 
 
     public void onCreate(Bundle savedInstanceState) {

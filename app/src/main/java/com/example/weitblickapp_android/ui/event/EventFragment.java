@@ -76,7 +76,7 @@ public class EventFragment extends Fragment {
     }
 
     public void loadEvents(){
-        String URL = "https://new.weitblicker.org/rest/events/?limit=3&search=Benin";
+        String URL = "https://weitblicker.org/rest/events/?limit=3&search=Benin";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 

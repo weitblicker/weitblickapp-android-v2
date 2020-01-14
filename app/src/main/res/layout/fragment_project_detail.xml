@@ -572,21 +572,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:fontFamily="@font/opensansbold"
-                    android:text="Projektpartner"
+                    android:text="Blog"
                     android:textColor="@color/wb_grey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintHorizontal_bias="0.101"
                     app:layout_constraintStart_toEndOf="@+id/imageView16"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_projectpartner" />
+                    app:layout_constraintTop_toBottomOf="@+id/orange_blog" />
 
                 <ListView
                     android:id="@+id/blog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_blog"></ListView>
+                    app:layout_constraintTop_toBottomOf="@+id/textView_blog"></ListView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -646,9 +647,11 @@
                     android:id="@+id/events"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_event">
+                    app:layout_constraintTop_toBottomOf="@+id/imageView15">
 
                 </ListView>
 
@@ -700,8 +703,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_news">
+                    app:layout_constraintTop_toBottomOf="@+id/imageView14">
 
                 </ListView>
 
@@ -769,7 +773,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sponsorContainer">
+                app:layout_constraintTop_toBottomOf="@id/sponsorContainer"
+                android:background="@drawable/ic_green">
 
                 <TextView
                     android:id="@+id/orange_milenstone"
@@ -822,6 +827,7 @@
                 android:id="@+id/projectPartnerContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/donationGoalContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/map">
@@ -839,6 +845,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"

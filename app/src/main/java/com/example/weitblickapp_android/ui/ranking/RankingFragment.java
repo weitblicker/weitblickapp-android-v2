@@ -116,9 +116,9 @@ public class RankingFragment extends ListFragment{
 
         String url = null;
         if(km == true){
-            url = "https://new.weitblicker.org/rest/cycle/ranking/";
+            url = "https://weitblicker.org/rest/cycle/ranking/";
         }else{
-            url = "https://new.weitblicker.org/rest/cycle/ranking/";
+            url = "https://weitblicker.org/rest/cycle/ranking/";
         }
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
