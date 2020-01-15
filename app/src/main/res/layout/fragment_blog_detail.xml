@@ -60,16 +60,21 @@
 
             <ImageView
                 android:id="@+id/imageView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="26dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="19dp"
                 android:layout_marginLeft="19dp"
                 android:layout_marginTop="3dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:maxWidth="42dp"
+                android:maxHeight="42dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/weitblick_icon_round"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.063"
                 app:layout_constraintStart_toEndOf="@+id/location"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager"
-                app:srcCompat="@drawable/logo_bildmarke" />
+                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
             <TextView
                 android:id="@+id/detail_text"
@@ -122,16 +127,21 @@
 
             <ImageView
                 android:id="@+id/imageView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="33dp"
+                android:layout_height="28dp"
                 android:layout_marginStart="11dp"
                 android:layout_marginLeft="11dp"
                 android:layout_marginTop="4dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:maxWidth="42dp"
+                android:maxHeight="42dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/icon_marker_foreground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager"
-                app:srcCompat="@drawable/logo_location" />
+                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
             <TextView
                 android:id="@+id/partner"

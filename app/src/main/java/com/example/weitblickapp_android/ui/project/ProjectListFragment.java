@@ -63,7 +63,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         mMap = googleMap;
         for(int i = 0; i < projectList.size(); i++){
             LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
-            Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)).title(projectList.get(i).getName()));
+            Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_marker_foreground)).title(projectList.get(i).getName()));
             allMarkersMap.put(marker, i);
         }
 

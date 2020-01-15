@@ -1,42 +1,40 @@
-package com.example.weitblickapp_android.ui.project;
+package com.example.weitblickapp_android.ui.sponsor;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.fragment.app.FragmentManager;
 import com.example.weitblickapp_android.R;
 
 import java.util.ArrayList;
 
-public class ProjectPartnerAdapter extends ArrayAdapter<ProjectPartnerViewModel> {
+public class SponsorAdapter extends ArrayAdapter<SponsorViewModel> {
     private Context mContext;
     private LayoutInflater mInflater;
-    private ArrayList<ProjectPartnerViewModel> partner;
+    private ArrayList<SponsorViewModel> sponsor;
     private FragmentManager fragManager;
     String PREF_NAME = "DefaultSponsor";
 
-    public ProjectPartnerAdapter(Context mContext, ArrayList<ProjectPartnerViewModel> mDataSource, FragmentManager fragManager) {
-        super(mContext, R.layout.fragment_projectpartner, mDataSource);
+    public SponsorAdapter(Context mContext, ArrayList<SponsorViewModel> mDataSource, FragmentManager fragManager) {
+        super(mContext, R.layout.fragment_sponsor, mDataSource);
         this.mContext = mContext;
-        this.partner = mDataSource;
+        this.sponsor = mDataSource;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragManager = fragManager;
     }
 
+
     @Override
     public int getCount() {
-        return partner.size();
+        return sponsor.size();
     }
 
     @Override
-    public ProjectPartnerViewModel getItem(int position) {
-        return partner.get(position);
+    public SponsorViewModel getItem(int position) {
+        return sponsor.get(position);
     }
 
     @Override
@@ -47,20 +45,21 @@ public class ProjectPartnerAdapter extends ArrayAdapter<ProjectPartnerViewModel>
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        view = mInflater.inflate(R.layout.fragment_projectpartner, null);
+        view = mInflater.inflate(R.layout.fragment_sponsor, null);
 
         TextView description = (TextView) view.findViewById(R.id.description);
         TextView weblink = (TextView) view.findViewById(R.id.weblink);
         TextView name = (TextView) view.findViewById(R.id.name);
+        TextView donation = (TextView) view.findViewById(R.id.donation);
 
-        final ProjectPartnerViewModel partner = (ProjectPartnerViewModel) getItem(position);
+        final SponsorViewModel sponsor = (SponsorViewModel) getItem(position);
 
-        description.setText(partner.getDescription());
-        name.setText(partner.name);
-        weblink.setText(partner.getWeblink());
+        description.setText(sponsor.getDescription());
+        name.setText(sponsor.name);
+        weblink.setText(sponsor.getWeblink());
+        donation.setText(sponsor.getDonation());
 
         return view;
     }
-
 }
 

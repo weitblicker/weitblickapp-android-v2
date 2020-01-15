@@ -224,6 +224,7 @@
                 android:background="@drawable/ic_yellow"
                 app:layout_constraintBottom_toTopOf="@+id/statsContainer"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/projectPartnerContainer">
 
@@ -379,13 +380,18 @@
                     android:id="@+id/imageView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_star_foreground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    map:srcCompat="@android:drawable/star_big_off" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -485,29 +491,39 @@
 
                 <ImageView
                     android:id="@+id/logo_location2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_marker_foreground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_text"
-                    map:srcCompat="@drawable/logo_location" />
+                    app:layout_constraintTop_toBottomOf="@+id/detail_text" />
 
                 <ImageView
                     android:id="@+id/logo_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="28dp"
+                    android:layout_height="26dp"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/weitblick_icon_round"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    map:srcCompat="@drawable/logo_bildmarke" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/detail_location"
@@ -527,16 +543,21 @@
 
                 <ImageView
                     android:id="@+id/logo_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_marker_foreground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_title"
-                    map:srcCompat="@drawable/logo_location" />
+                    app:layout_constraintTop_toBottomOf="@+id/detail_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -557,26 +578,30 @@
 
                 <ImageView
                     android:id="@+id/imageView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="54dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_blog_foreground"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_blog"
-                    map:srcCompat="@drawable/ic_menu_manage" />
+                    app:layout_constraintTop_toBottomOf="@+id/orange_blog" />
 
                 <TextView
                     android:id="@+id/textView_blog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Blog"
                     android:textColor="@color/wb_grey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.101"
+                    app:layout_constraintHorizontal_bias="0.067"
                     app:layout_constraintStart_toEndOf="@+id/imageView16"
                     app:layout_constraintTop_toBottomOf="@+id/orange_blog" />
 
@@ -675,26 +700,30 @@
 
                 <ImageView
                     android:id="@+id/imageView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="56dp"
+                    android:layout_height="41dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_news_foreground"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_news"
-                    map:srcCompat="@drawable/ic_menu_manage" />
+                    app:layout_constraintTop_toBottomOf="@+id/orange_news" />
 
                 <TextView
                     android:id="@+id/textView_news"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Neuheiten"
                     android:textColor="@color/wb_grey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintHorizontal_bias="0.073"
                     app:layout_constraintStart_toEndOf="@+id/imageView14"
                     app:layout_constraintTop_toBottomOf="@+id/orange_news" />
 
@@ -735,10 +764,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
-                    android:layout_marginTop="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_sponsor_foreground"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    map:srcCompat="@drawable/ic_menu_manage" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView_sponsor"
@@ -786,26 +819,29 @@
 
                 <ImageView
                     android:id="@+id/imageView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_milenstone_foreground"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_milenstone"
-                    map:srcCompat="@drawable/ic_menu_manage" />
+                    app:layout_constraintTop_toBottomOf="@+id/orange_milenstone" />
 
                 <TextView
                     android:id="@+id/textView_milenstone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Meilenstein"
                     android:textColor="@color/wb_grey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintHorizontal_bias="0.072"
                     app:layout_constraintStart_toEndOf="@+id/imageView12"
                     app:layout_constraintTop_toBottomOf="@+id/orange_milenstone" />
 
@@ -855,26 +891,28 @@
 
                 <ImageView
                     android:id="@+id/imageView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="62dp"
+                    android:layout_height="46dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_partner_foreground"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orange_projectpartner"
-                    map:srcCompat="@drawable/ic_menu_manage" />
+                    app:layout_constraintTop_toBottomOf="@+id/orange_projectpartner" />
 
                 <TextView
                     android:id="@+id/textView_projectPartner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Projektpartner"
                     android:textColor="@color/wb_grey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/imageView11"
                     app:layout_constraintTop_toBottomOf="@+id/orange_projectpartner" />
 

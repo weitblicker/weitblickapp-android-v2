@@ -71,7 +71,7 @@ public class FaqListFragment extends ListFragment {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/faq/";
+        String URL = "https://weitblicker.org/rest/faq/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 

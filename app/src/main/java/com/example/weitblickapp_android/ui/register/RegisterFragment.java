@@ -24,7 +24,7 @@ public class RegisterFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_agb, container, false);
 
 
-        agbTextView = root.findViewById(R.id.agbTextView);
+        agbTextView = root.findViewById(R.id.text);
         agbTextView.setText(getAgbString());
         //agbTextView.setMovementMethod(new ScrollingMovementMethod());
 
