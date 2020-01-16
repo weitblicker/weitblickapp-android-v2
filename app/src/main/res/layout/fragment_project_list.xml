@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffff">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/image"
@@ -31,7 +31,7 @@
         android:layout_marginLeft="7dp"
         android:layout_marginTop="14dp"
         android:fontFamily="@font/breeserif"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.064"

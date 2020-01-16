@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="@color/white">
 
     <ImageButton
         android:id="@+id/back"
@@ -35,7 +35,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff">
+            android:background="@color/white">
             <!-- ViewPager-Container to add slider-items into-->
 
             <androidx.viewpager.widget.ViewPager
@@ -55,7 +55,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="176dp"
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:rotation="-45"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.175"
@@ -79,7 +79,7 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginRight="11dp"
                     android:fontFamily="@font/breeserif"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.089"
@@ -162,7 +162,7 @@
                     android:layout_marginTop="16dp"
                     android:text="Viktoria von Hassell"
                     android:textSize="12dp"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/authorpicture"
@@ -179,7 +179,7 @@
                     android:layout_marginRight="11dp"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/open_sans"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

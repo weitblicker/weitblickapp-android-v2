@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="@color/white">
 
     <ImageButton
         android:id="@+id/back"
@@ -37,7 +37,7 @@
             android:layout_marginRight="11dp"
             android:fontFamily="@font/open_sans"
             android:text="AGB Text"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="14dp" />
     </ScrollView>
 
@@ -49,7 +49,7 @@
         android:layout_marginRight="233dp"
         android:fontFamily="@font/opensansbold"
         android:text="AGB"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView17"

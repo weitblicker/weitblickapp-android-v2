@@ -9,7 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    android:background="#ffffff">
+    android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fragment_container"
@@ -42,7 +42,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="FAQ"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="22dp"
                     app:layout_constraintStart_toEndOf="@+id/imageView17"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -88,7 +88,7 @@
                     android:layout_marginRight="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Fragen und Antworten"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +105,7 @@
                     android:layout_marginRight="11dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Hier findest Du häufig gestellt Fragen an Weitblick!"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
