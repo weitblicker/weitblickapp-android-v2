@@ -41,7 +41,7 @@ public class RankingFragment extends ListFragment{
     ArrayList<RankingViewModel> bestRankings = new ArrayList<RankingViewModel>();
     ArrayList<RankingViewModel> userFieldRankings = new ArrayList<RankingViewModel>();
     private boolean km_donation = false;
-    private boolean km = true;
+    private boolean km = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

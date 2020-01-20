@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="120dp">
 
     <ImageView
         android:id="@+id/image"
@@ -70,24 +70,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginRight="11dp"
-        android:text="TextView"
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        android:fontFamily="@font/open_sans"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toBottomOf="@+id/teaser" />
-
-    <TextView
         android:id="@+id/teaser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,10 +78,30 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="11dp"
         android:layout_marginRight="11dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/open_sans"
         android:text="TextView"
         android:textColor="@color/black"
-        android:fontFamily="@font/open_sans"
         android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/titel" />
+
+    <TextView
+        android:id="@+id/titel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:fontFamily="@font/open_sans"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />

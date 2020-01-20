@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-         session = new SessionManager(getApplicationContext());
-
+        session = new SessionManager(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
