@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,7 +48,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
             view = mInflater.inflate(R.layout.fragment_news_list, null);
 
@@ -86,18 +85,6 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
                     ft.commit();
                 }
             });
-
-            /*ImageButton detail = (ImageButton) view.findViewById(R.id.news_more_btn);
-            detail.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-            });*/
 
         return view;
     }

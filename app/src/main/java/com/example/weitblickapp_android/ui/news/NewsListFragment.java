@@ -103,7 +103,8 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
-                        String date = responseObject.getString("published");
+                        //String date = responseObject.getString("published");
+                        String date = "2009-09-26T14:48:36Z";
 
                         //Get Date of last Item loaded in List loading more news starting at that date
                         try {
@@ -130,7 +131,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         }
 
                         //Get inline-Urls from Text, then extract them
-                       // imageUrls = getImageUrls(text);
+                        // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);

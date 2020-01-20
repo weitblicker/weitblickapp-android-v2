@@ -3,7 +3,6 @@ package com.example.weitblickapp_android.ui.project;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,8 @@ import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import java.util.ArrayList;
+
+import io.noties.markwon.Markwon;
 
 
 public class ProjectDetailFragment extends Fragment implements OnMapReadyCallback {
@@ -156,8 +157,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         titleTextView.setText(this.title);
 
         final TextView textTextView = root.findViewById(R.id.detail_text);
+
+        final Markwon markwon = Markwon.create(getContext());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
+            markwon.setMarkdown(textTextView,this.text);
         }
 
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);

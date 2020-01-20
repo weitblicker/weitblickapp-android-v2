@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -129,13 +130,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         this.gpsIsEnabled = isLocationEnabled();
         loadProject(projectId);
 
         View root = inflater.inflate(R.layout.fragment_location, container, false);
+
 
         session = new SessionManager(getActivity().getApplicationContext());
         this.token = session.getKey();
@@ -171,14 +173,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (!paused) {
                     pause.setImageResource(R.mipmap.ic_play_foreground);
                     paused = true;
-                   // sendSegment();
+                    sendSegment();
                     resetLocations();
                 } else {
                     pause.setImageResource(R.mipmap.ic_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
                     getCurrentLocation();
-                    //sendSegment();
                 }
             }
         });
@@ -251,18 +252,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
-                    currentLocation = location;
-                    if (!load) {
-                        setUpMapIfNeeded();
-                    }
-                }
-                /*if (location != null) {
-                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        if(mMap != null) {
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                        }
-
-                    Log.e("LOCATIONACCURAY:", location.getAccuracy() +"");
+                    Log.e("LOCATIONACCURAY:", location.getAccuracy() + "");
                     if (location.getAccuracy() < 20) {
                         currentLocation = location;
                         currentTour.getLocations().add(location);
@@ -271,12 +261,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                 }
-                if (!load) {
-                    setUpMapIfNeeded();
-                }*/
+
             }
         });
-        checkKm();
+        if(checkSpeedAndAcceleration()) {
+            checkKm();
+        }
     }
 
     private void askGpsPermission(){
@@ -304,14 +294,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }, segmentSendDelay);
     }
 
-    /*@Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.mMap = googleMap;
-        if (isLocationEnabled()){
-            mMap.setMyLocationEnabled(true);
-        }
-    }*/
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         //LatLng latLng = new LatLng( -33.865143, 151.209900);
@@ -325,10 +307,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-
-
     private void checkKm() {
-        if(paused == false){
             if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
                 km += dis;
@@ -338,21 +317,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 distance.setText(distanceTotal);
                 donation.setText(donationTotal);
             }
-        }else{
-            if (lastLocation != null) {
-                double dis = currentLocation.distanceTo(lastLocation)/1000;
-                km += dis;
-                don = currentTour.getEurosTotal() / 100;
-                String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
-                String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
-                distance.setText(distanceTotal);
-                donation.setText(donationTotal);
-            }
-            //startFetchLocation();
-        }
         lastLocation = currentLocation;
     }
 
+    private boolean checkSpeedAndAcceleration(){
+        if(currentLocation != null) {
+            if (currentLocation.hasSpeed()) {
+                float currentSpeedInKmh = (currentLocation.getSpeed() * 3.6f);
+                if (currentSpeedInKmh > 20.0f) {
+                    Log.e("currentSpeed:", currentLocation.getSpeed() + "");
+                    Toast toast= Toast.makeText(getContext(),"Slow down! Speed: " + currentSpeedInKmh ,Toast. LENGTH_SHORT);
+                    toast. setMargin(50,50);
+                    toast. show();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResult) {
         switch (requestCode) {
