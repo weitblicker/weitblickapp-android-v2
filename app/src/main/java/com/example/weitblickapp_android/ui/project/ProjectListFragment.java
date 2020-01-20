@@ -1,6 +1,9 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -46,12 +49,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProjectListFragment extends Fragment implements OnMapReadyCallback {
-    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
+    static ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
     private ProjectListAdapter adapter;
-    private GoogleMap mMap;
-    SupportMapFragment mapFrag;
+    static private GoogleMap mMap;
+    static SupportMapFragment mapFrag;
     ListView list;
-    private Map<Marker, Integer> allMarkersMap = new HashMap<Marker, Integer>();
+    static private Map<Marker, Integer> allMarkersMap = new HashMap<Marker, Integer>();
+    static Bitmap smallMarker;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +67,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         mMap = googleMap;
         for(int i = 0; i < projectList.size(); i++){
             LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
-            Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_marker_foreground)).title(projectList.get(i).getName()));
+            Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(projectList.get(i).getName()));
             allMarkersMap.put(marker, i);
         }
 
@@ -87,7 +91,8 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
         View view = inflater.inflate(R.layout.fragment_project, container, false);
 
-
+        Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
+        smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
         list = (ListView) view.findViewById(R.id.liste);
         adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
         list.setAdapter(adapter);

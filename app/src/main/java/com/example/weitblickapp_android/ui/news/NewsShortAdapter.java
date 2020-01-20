@@ -54,7 +54,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
         view = mInflater.inflate(R.layout.fragment_news_blog, null);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        TextView textView_title = (TextView) view.findViewById(R.id.title);
+        TextView textView_title = (TextView) view.findViewById(R.id.titel);
         TextView textView_teaser = (TextView) view.findViewById(R.id.teaser);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
 

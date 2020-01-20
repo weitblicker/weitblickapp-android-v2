@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="120dp">
 
     <ImageView
         android:id="@+id/logo"
@@ -44,10 +44,12 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="11dp"
         android:layout_marginRight="11dp"
+        android:layout_marginBottom="3dp"
         android:fontFamily="@font/open_sans"
         android:text="Dies ist die Beschreibung des Sponsoren"
         android:textColor="@color/black"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/weblink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
@@ -61,12 +63,10 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="11dp"
         android:layout_marginRight="11dp"
-        android:layout_marginBottom="5dp"
         android:fontFamily="@font/opensansbold"
         android:text="www.weihnachten.de"
         android:textColor="@color/black"
         android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />

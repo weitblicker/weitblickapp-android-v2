@@ -56,7 +56,7 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         view = mInflater.inflate(R.layout.fragment_news_blog, null);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        TextView textView_title = (TextView) view.findViewById(R.id.title);
+        TextView textView_title = (TextView) view.findViewById(R.id.titel);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
         TextView teaser = (TextView) view.findViewById(R.id.teaser);
 

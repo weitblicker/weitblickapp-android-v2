@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,6 +100,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
 
+
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer newsId = responseObject.getInt("id");
@@ -107,8 +109,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         //String date = responseObject.getString("published");
                         String date = "2009-09-26T14:48:36Z";
 
-                        //Get Date of last Item loaded in List loading more news starting at that date
-                        try {
+                        try{
                             Date ItemDate = formatterRead.parse(date);
                             lastItemDate = formatterWrite.format(ItemDate);
                         } catch (ParseException e) {
@@ -127,8 +128,9 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                                 String url = image.getString("url");
                                 imageUrls.add(url);
                             }
+
                         }catch(JSONException e){
-                           // Log.e("Keine Gallery", "für" + title);
+
                         }
 
                         //Get inline-Urls from Text, then extract them

@@ -294,7 +294,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
             listviewElementsheight += mView.getMeasuredHeight();
         }
-        return listviewElementsheight + 200;
+        listviewElementsheight += list.getDividerHeight()*3;
+        return listviewElementsheight;
     }
 
 
