@@ -1,15 +1,22 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
@@ -21,6 +28,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,50 +48,80 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProjectListFragment extends ListFragment {
-    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
+public class ProjectListFragment extends Fragment implements OnMapReadyCallback {
+    static ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
     private ProjectListAdapter adapter;
-
+    static private GoogleMap mMap;
+    static SupportMapFragment mapFrag;
+    ListView list;
+    static private Map<Marker, Integer> allMarkersMap = new HashMap<Marker, Integer>();
+    static Bitmap smallMarker;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadProjects();
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        for(int i = 0; i < projectList.size(); i++){
+            LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
+            Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(projectList.get(i).getName()));
+            allMarkersMap.put(marker, i);
+        }
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                int index = allMarkersMap.get(marker);
+                list.setSelection(index);
+                adapter.select(index);
+                CameraUpdate cu = CameraUpdateFactory.newLatLng(marker.getPosition());
+                mMap.animateCamera(cu);
+                int height = list.getHeight();
+                list.smoothScrollToPositionFromTop(index, height/6);
+                return true;
+
+            }
+        });
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_project, container, false);
 
+        Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
+        smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
+        list = (ListView) view.findViewById(R.id.liste);
         adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
-        this.setListAdapter(adapter);
+        list.setAdapter(adapter);
+
+        adapter.setOnItemClickedListener(
+                new ProjectListAdapter.OnItemClicked(){
+                    @Override
+                    public void onClick(int position) {
+                        ProjectViewModel pro = adapter.getItem(position);
+                        LatLng posLatLng = new LatLng(pro.getLat(),pro.getLng());
+                        CameraUpdate cu = CameraUpdateFactory.newLatLng(posLatLng);
+                        mMap.animateCamera(cu);
+                        adapter.select(position);
+                        int height = list.getHeight();
+                        list.smoothScrollToPositionFromTop(position,height/6);
+                    }
+                });
+
+        mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
 
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
-    @Override
-    public void onListItemClick(ListView l, View v, final int position, long id) {
-        ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-    }
     public void loadProjects(){
 
         // Talk to Rest API
-
-        String URL = "https://new.weitblicker.org/rest/projects/";
+        String URL = "https://weitblicker.org/rest/projects/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 

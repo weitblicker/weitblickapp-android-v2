@@ -2,12 +2,11 @@ package com.example.weitblickapp_android.ui.news;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +17,8 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 
 import java.util.ArrayList;
+
+import io.noties.markwon.Markwon;
 
 public class NewsDetailFragment extends Fragment {
     static final String urlWeitblick = "https://new.weitblicker.org";
@@ -59,29 +60,16 @@ public class NewsDetailFragment extends Fragment {
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
 
+        final ImageView image = root.findViewById(R.id.image);
+
         //Parse HTML in TextView
 
-        Spannable html;
-/*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            html = (Spannable) Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT);
-            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
-        }else {
-            html = (Spannable) Html.fromHtml(this.text);
-        }
-        textTextView.setText((html));
-
-*/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
-        }
-        /*
+        final Markwon markwon = Markwon.create(getContext());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textTextView.setText(this.text);
+            markwon.setMarkdown(textTextView,this.text);
         }
 
-*/
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         dateTextView.setText(this.date);
 

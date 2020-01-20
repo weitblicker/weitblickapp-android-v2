@@ -60,7 +60,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, final int position, long id) {
-        ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
+        /*ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +69,7 @@ public class ProjectCycleListFragment extends ListFragment {
                 ft.addToBackStack(null);
                 ft.commit();
             }
-        });
+        });*/
     }
     public void loadProjects(){
 

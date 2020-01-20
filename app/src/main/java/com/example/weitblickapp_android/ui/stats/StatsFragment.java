@@ -91,7 +91,7 @@ public class StatsFragment extends ListFragment {
 
         // Talk to Rest API
 
-        String URL = "https://new.weitblicker.org/rest/cycle/tours/";
+        String URL = "https://weitblicker.org/rest/cycle/tours/";
 
         JSONObject jsonBody = new JSONObject();
         try {

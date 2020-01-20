@@ -158,8 +158,6 @@ public class EndFragment extends Fragment {
                 view = getLayoutInflater().inflate(R.layout.fragment_end_list,null);
 
                 TextView textView_sponsor = (TextView)view.findViewById(R.id.sponsor);
-
-                textView_sponsor.setText("Weihnachtsmann & CO. KG");
             }
             return view;
         }

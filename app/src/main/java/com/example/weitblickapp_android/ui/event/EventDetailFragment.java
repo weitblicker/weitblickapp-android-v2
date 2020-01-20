@@ -12,18 +12,34 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.weitblickapp_android.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class EventDetailFragment extends Fragment {
+public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
     String location;
     String title;
     String date;
     String text;
+
+    private GoogleMap mMap;
+    SupportMapFragment mapFrag;
 
     EventDetailFragment(String location, String title, String date, String text){
         this.location=location;
         this.title=title;
         this.date=date;
         this.text=text;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        LatLng location = new LatLng(2342134,657543);
+        mMap.addMarker(new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)));
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,6 +57,9 @@ public class EventDetailFragment extends Fragment {
         titleTextView.setText(this.title);
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         dateTextView.setText(this.date);
+
+        mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
 
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 

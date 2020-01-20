@@ -16,7 +16,7 @@
         android:background="#ffffff">
 
         <ImageView
-            android:id="@+id/blog"
+            android:id="@+id/news"
             android:layout_width="50dp"
             android:layout_height="45dp"
             app:layout_constraintBottom_toBottomOf="parent"

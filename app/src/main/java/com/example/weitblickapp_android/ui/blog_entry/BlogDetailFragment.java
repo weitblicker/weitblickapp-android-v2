@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,8 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 
 import java.util.ArrayList;
+
+import io.noties.markwon.Markwon;
 
 public class BlogDetailFragment extends Fragment {
     static final String urlWeitblick = "https://new.weitblicker.org";
@@ -62,8 +63,10 @@ public class BlogDetailFragment extends Fragment {
         final TextView textTextView = root.findViewById(R.id.detail_text);
 
         //Parse HTML in TextView
+        final Markwon markwon = Markwon.create(getContext());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
+            markwon.setMarkdown(textTextView,this.text);
         }
 
         final TextView dateTextView = root.findViewById(R.id.detail_date);

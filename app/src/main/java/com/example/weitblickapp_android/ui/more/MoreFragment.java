@@ -33,7 +33,7 @@ public class MoreFragment extends Fragment {
         ImageButton contactButton = (ImageButton) root.findViewById(R.id.contactButton);
 
         ImageView faq = (ImageView) root.findViewById(R.id.faq);
-        ImageView blog = (ImageView) root.findViewById(R.id.blog);
+        ImageView blog = (ImageView) root.findViewById(R.id.news);
         ImageView contact = (ImageView) root.findViewById(R.id.contact);
 
         TextView faqText = (TextView) root.findViewById(R.id.faqtext);

@@ -44,10 +44,10 @@ public class EventFragment extends Fragment {
     ArrayList<EventViewModel> events = new ArrayList<EventViewModel>();
 
 
-    String[] title = {"Wöchentliche Veranstaltung", "Spendensammel Aktion", "Kleidertausch"};
-    String[] location = {"Osnabrück", "Münster", "Osnabrück"};
-    String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009"};
-    String[] text = {"Heute ist es wieder soweit für unser wöchentliches Weitblick-Treffen! Wir freuen uns hier all die neuen Gesichter begrüßen zu dürfen... ", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf"};
+    String[] title = {"Wöchentliche Veranstaltung", "Spendensammel Aktion", "Kleidertausch","Spenden"};
+    String[] location = {"Osnabrück", "Münster", "Osnabrück", "Osnabrück"};
+    String[] date = {"06.11.2019" , "17.04.2018", "25.08.2009", "17.04.2018"};
+    String[] text = {"Heute ist es wieder soweit für unser wöchentliches Weitblick-Treffen! Wir freuen uns hier all die neuen Gesichter begrüßen zu dürfen... ", "hsvjhb srrgvjsbvoc wowvuw wrgber", "h viwhf wiveriv irfgvwrfi wfwo fowe fwo ow fhf","ouizgzbjklihzgukjhlkizgtufkhvgjlutfgjlukzj"};
 
 
     @Override
@@ -76,7 +76,7 @@ public class EventFragment extends Fragment {
     }
 
     public void loadEvents(){
-        String URL = "https://new.weitblicker.org/rest/events/?limit=3&search=Benin";
+        String URL = "https://weitblicker.org/rest/events/?limit=3&search=Benin";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -166,8 +166,6 @@ public class EventFragment extends Fragment {
                 textView_date.setText(date[position]);
 
 
-
-            ImageButton detail = (ImageButton) view.findViewById(R.id.event_more_btn);
             view.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -179,6 +177,7 @@ public class EventFragment extends Fragment {
                 }
             });
 
+            /*
             detail.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -188,7 +187,7 @@ public class EventFragment extends Fragment {
                     ft.addToBackStack(null);
                     ft.commit();
                 }
-            });
+            });*/
 
             view.setOnClickListener(new View.OnClickListener() {
 
