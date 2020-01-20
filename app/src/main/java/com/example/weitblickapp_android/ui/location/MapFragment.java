@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -66,6 +68,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
+    private SensorManager sensorManager;
+    private Sensor sensor;
+
+
     private GoogleMap mMap;
     private Tour currentTour;
     private Location currentLocation;
@@ -118,9 +124,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         askGpsPermission();
         setUpGpsReceiver();
         registerGpsReceiver();
+        initAccelerometer();
         initializeTour();
         startFetchLocation();
         sendRouteSegments();
+    }
+
+    private void initAccelerometer(){
+        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
     }
 
     private String getFormattedDate(){
@@ -137,7 +149,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         loadProject(projectId);
 
         View root = inflater.inflate(R.layout.fragment_location, container, false);
-
 
         session = new SessionManager(getActivity().getApplicationContext());
         this.token = session.getKey();
