@@ -21,7 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,8 +105,8 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
-                        //String date = responseObject.getString("published");
-                        String date = "2009-09-26T14:48:36Z";
+                        String date = responseObject.getString("published");
+                       // String date = "2009-09-26T14:48:36Z";
 
                         try{
                             Date ItemDate = formatterRead.parse(date);
