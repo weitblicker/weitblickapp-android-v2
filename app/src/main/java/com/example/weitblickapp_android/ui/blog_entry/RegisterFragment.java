@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 
 public class RegisterFragment extends ListFragment implements AbsListView.OnScrollListener {
 
-    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
 
     ArrayList<BlogEntryViewModel> blogEntries = new ArrayList<BlogEntryViewModel>();
