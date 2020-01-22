@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class EventViewModel extends ViewModel {
@@ -12,13 +13,14 @@ public class EventViewModel extends ViewModel {
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
 
-    int id;
-    String title;
-    int location_id;
-    Date eventDateStart;
-    Date eventDateEnd;
-    String time;
-    String text;
+    private int id;
+    private String title;
+    private EventLocation location;
+    private Date eventDateStart;
+    private Date eventDateEnd;
+    private String time;
+    private String text;
+    private ArrayList<String> imageUrls;
 
 
     public EventViewModel(int id, String title) {
@@ -27,19 +29,32 @@ public class EventViewModel extends ViewModel {
     }
 
 
-    public EventViewModel(int id, String title, String description, String startDate, String endDate, int location_id) {
+    public EventViewModel(int id, String title, String description, String startDate, String endDate, EventLocation location, ArrayList<String> imageUrls) {
         this.id = id;
         this.title = title;
         this.text = description;
         this.time = time;
-        this.location_id = location_id;
+        this.location = location;
         try {
             this.eventDateStart = formatterRead.parse(startDate);
             this.eventDateEnd = formatterRead.parse(endDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        this.imageUrls = imageUrls;
     }
+
+    public EventLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(EventLocation location) {
+        this.location = location;
+    }
+
+    public ArrayList<String> getImageUrls() { return imageUrls; }
+
+    public void setImageUrls(ArrayList<String> imageUrls) { this.imageUrls = imageUrls; }
 
     public int getId() {
         return id;
@@ -57,13 +72,6 @@ public class EventViewModel extends ViewModel {
         this.title = name;
     }
 
-    public int getLocation() {
-        return location_id;
-    }
-
-    public void setLocation(int location) {
-        this.location_id = location;
-    }
 
     public String getEventStartDate() {
         return formatterWrite.format(eventDateStart);
@@ -100,11 +108,12 @@ public class EventViewModel extends ViewModel {
         return "EventViewModel{" +
                 ", id=" + id +
                 ", title='" + title + '\'' +
-                ", location='" + location_id + '\'' +
+                ", location='" + location + '\'' +
                 ", eventStartDate=" + eventDateStart +
                 ", eventEndDate='" + eventDateEnd + '\'' +
                 ", time='" + time + '\'' +
                 ", text='" + text + '\'' +
+                ", images='" + imageUrls + '\'' +
                 '}';
     }
 }

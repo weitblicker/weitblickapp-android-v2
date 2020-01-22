@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.event;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -70,14 +71,29 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     JSONObject responseObject = null;
 
                     ArrayList<String> imageUrls = new ArrayList<String>();
+                    Location eventLocation;
                     JSONArray images = null;
                     JSONObject image = null;
+
+                    JSONObject locationObject = null;
+                    EventLocation location = null;
+                    String name;
+                    String address;
+                    long lat;
+                    long lng;
+
 
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
-                        Integer locationId = responseObject.getInt("location");
+
+                        locationObject = responseObject.getJSONObject("location");
+                        name = locationObject.getString("name");
+                        address = locationObject.getString("address");
+                        lat = locationObject.getLong("lat");
+                        lng = locationObject.getLong("lng");
+
                         String description = responseObject.getString("description");
                         String startDate = responseObject.getString("start");
                         String endDate = responseObject.getString("end");
@@ -98,15 +114,17 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         // imageUrls = getImageUrls(text);
                         description = extractImageUrls(description);
 
-                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate,locationId);
+                        location = new EventLocation(name, address, lat, lng);
+
+
+
+                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate,location, imageUrls);
                         events.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-
                 for(EventViewModel event:events){
                     Log.e("Event",event.toString());
                 }

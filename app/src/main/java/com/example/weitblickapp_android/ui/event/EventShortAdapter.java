@@ -62,7 +62,7 @@ public class EventShortAdapter extends ArrayAdapter<EventViewModel> {
         textView_title.setText(event.getTitle());
         text.setText(event.getText());
         time.setText(event.getTime());
-        location.setText(event.getLocation());
+        location.setText(event.getLocation().getAddress());
         textView_date.setText(event.getEventStartDate());
 
         return view;

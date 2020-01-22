@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,8 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
+        String weitblickUrl = "https://weitblicker.org";
+
         view = mInflater.inflate(R.layout.fragment_event_list,null);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
@@ -58,9 +61,16 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         final EventViewModel event = (EventViewModel) getItem(position);
 
 
-        imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
+        if(event.getImageUrls().size()>0) {
+            weitblickUrl = weitblickUrl.concat(event.getImageUrls().get(0));
+        }
+
+        Picasso.get().load(weitblickUrl).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+
         textView_title.setText(event.getTitle());
-        textView_location.setText(Integer.toString(event.getLocation()));
+        textView_location.setText(event.getLocation().getAddress());
         textView_date.setText(event.getEventStartDate());
 
 
