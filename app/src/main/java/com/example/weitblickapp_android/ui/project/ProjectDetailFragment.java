@@ -20,7 +20,7 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
-import com.example.weitblickapp_android.ui.event.EventListAdapter;
+import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
@@ -234,13 +234,13 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(eventsID != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
-            EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
-            EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
-            EventListAdapter adapterEvent = new EventListAdapter(getActivity(), eventList, getFragmentManager());
+           // EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
+          //  EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
+            EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
-            eventList.add(test1);
-            eventList.add(test2);
-            eventList.add(test2);
+           // eventList.add(test1);
+          //  eventList.add(test2);
+           // eventList.add(test2);
             ViewGroup.LayoutParams lp = listEvent.getLayoutParams();
             lp.height = loadHeight(listEvent);
             listEvent.setLayoutParams(lp);

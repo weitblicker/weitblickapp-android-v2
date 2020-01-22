@@ -5,24 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
 import java.util.ArrayList;
 
-public class EventListAdapter extends ArrayAdapter<EventViewModel> {
+public class EventShortAdapter extends ArrayAdapter<EventViewModel> {
 
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<EventViewModel> events;
     private FragmentManager fragManager;
 
-    public EventListAdapter(Context mContext, ArrayList<EventViewModel> mDataSource, FragmentManager fragManager) {
+    public EventShortAdapter(Context mContext, ArrayList<EventViewModel> mDataSource, FragmentManager fragManager) {
         super(mContext, R.layout.fragment_event_short, mDataSource);
         this.mContext = mContext;
         this.events = mDataSource;
@@ -48,33 +46,24 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        view = mInflater.inflate(R.layout.fragment_event_list,null);
+        String weitblickUrl = "https://new.weitblicker.org";
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        TextView textView_title = (TextView)view.findViewById(R.id.title);
-        TextView textView_location = (TextView)view.findViewById(R.id.location);
-        TextView textView_date = (TextView)view.findViewById(R.id.date);
+        view = mInflater.inflate(R.layout.fragment_event_short, null);
+
+        TextView textView_title = (TextView) view.findViewById(R.id.title);
+        TextView textView_date = (TextView) view.findViewById(R.id.date);
+        TextView text = (TextView) view.findViewById(R.id.description);
+        TextView time = (TextView) view.findViewById(R.id.time);
+        TextView location = (TextView) view.findViewById(R.id.location);
 
         final EventViewModel event = (EventViewModel) getItem(position);
 
-
-        imageView.setImageResource(R.drawable.ic_wbcd_logo_standard_svg2);
+        //Set title for BlogEntries
         textView_title.setText(event.getTitle());
-        textView_location.setText(Integer.toString(event.getLocation()));
+        text.setText(event.getText());
+        time.setText(event.getTime());
+        location.setText(event.getLocation());
         textView_date.setText(event.getEventStartDate());
-
-
-        view.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new EventDetailFragment(event));
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-
 
         return view;
     }

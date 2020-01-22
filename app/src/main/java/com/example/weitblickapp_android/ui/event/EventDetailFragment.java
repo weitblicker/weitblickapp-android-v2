@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
     String location;
+    int location_id;
     String title;
     String date;
     String text;
@@ -28,11 +29,11 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private GoogleMap mMap;
     SupportMapFragment mapFrag;
 
-    EventDetailFragment(String location, String title, String date, String text){
-        this.location=location;
-        this.title=title;
-        this.date=date;
-        this.text=text;
+    EventDetailFragment(EventViewModel event){
+        this.location_id = event.getLocation();
+        this.title = event.getTitle();
+        this.text = event.getText();
+        this.date = event.getEventStartDate();
     }
 
     @Override
