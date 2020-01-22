@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +95,15 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
         setUpMapIfNeeded();
         return root;
     }
+/*
+    public void onStart(){
+        super.onStart();
+        if(fragment != null) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+            ft.commit();
+        }
+    }
 
     public void onResume(){
         super.onResume();
@@ -106,7 +114,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
             Log.e("FRAGMENTTEST:","MAPFRAGMENT EXISTIERT");
         }
     }
-
+*/
     private void checkDefault(){
         SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
         if(settings.contains("projectid")){
