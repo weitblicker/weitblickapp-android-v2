@@ -1,6 +1,7 @@
 package com.example.weitblickapp_android.ui.event;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -25,6 +28,9 @@ import java.util.ArrayList;
 import io.noties.markwon.Markwon;
 
 public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
+
+    static final String urlWeitblick = "https://weitblicker.org";
+
     private EventLocation location;
     private String title;
     private String date;
@@ -40,14 +46,30 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         this.title = event.getTitle();
         this.text = event.getText();
         this.date = event.getEventStartDate();
-        this.imageUrls = event.getImageUrls();
+
+        for(int i = 0; i < event.getImageUrls().size(); i++){
+            this.imageUrls.add(i, urlWeitblick.concat(event.getImageUrls().get(i)));
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng location = new LatLng(2342134,657543);
-        mMap.addMarker(new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)));
+        Log.e("LOCATIONVALUES:", this.location.getLat() +"  " +  this.location.getLng());
+        LatLng location = new LatLng(this.location.getLat(),this.location.getLng());
+
+        MarkerOptions marker = new MarkerOptions().position(location).title(this.location.getAddress());
+
+        marker.icon(BitmapDescriptorFactory
+                .fromResource(R.drawable.logo_location));
+        googleMap.addMarker(marker);
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(location).zoom(13).build();
+        googleMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(cameraPosition));
+
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

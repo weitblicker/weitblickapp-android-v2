@@ -4,11 +4,11 @@ public class EventLocation {
 
     private String name;
     private String address;
-    private long lat;
-    private long lng;
+    private double lat;
+    private double lng;
 
 
-    public EventLocation(String name, String address, long lat, long lng) {
+    public EventLocation(String name, String address, double lat, double lng) {
         this.name = name;
         this.address = address;
         this.lat = lat;
@@ -31,15 +31,13 @@ public class EventLocation {
         this.address = address;
     }
 
-    public long getLat() {
-        return lat;
-    }
+    public double getLat() { return lat; }
 
     public void setLat(long lat) {
         this.lat = lat;
     }
 
-    public long getLng() {
+    public double getLng() {
         return lng;
     }
 

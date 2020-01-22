@@ -79,8 +79,8 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     EventLocation location = null;
                     String name;
                     String address;
-                    long lat;
-                    long lng;
+                    double lat;
+                    double lng;
 
 
                     try {
@@ -91,8 +91,8 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         locationObject = responseObject.getJSONObject("location");
                         name = locationObject.getString("name");
                         address = locationObject.getString("address");
-                        lat = locationObject.getLong("lat");
-                        lng = locationObject.getLong("lng");
+                        lat = locationObject.getDouble("lat");
+                        lng = locationObject.getDouble("lng");
 
                         String description = responseObject.getString("description");
                         String startDate = responseObject.getString("start");
@@ -116,9 +116,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
                         location = new EventLocation(name, address, lat, lng);
 
-
-
-                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate,location, imageUrls);
+                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, location, imageUrls);
                         events.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
