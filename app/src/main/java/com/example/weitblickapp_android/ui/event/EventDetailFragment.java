@@ -35,6 +35,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private String title;
     private String date;
     private String text;
+    private String hostName;
     private ArrayList<String> imageUrls = new ArrayList<String>();
 
     private GoogleMap mMap;
@@ -46,6 +47,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         this.title = event.getTitle();
         this.text = event.getText();
         this.date = event.getEventStartDate();
+        this.hostName = event.getHostName();
 
         for(int i = 0; i < event.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick.concat(event.getImageUrls().get(i)));
@@ -93,15 +95,17 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         final TextView textTextView = root.findViewById(R.id.detail_text);
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         final TextView locationTextView = root.findViewById(R.id.detail_location);
-
-
-        locationTextView.setText(this.location.getAddress());
+        final TextView hostTextView = root.findViewById(R.id.partner);
 
         //markdown description Text
         markwon.setMarkdown(textTextView,this.text);
         titleTextView.setText(this.title);
 
         dateTextView.setText(this.date);
+
+        locationTextView.setText(this.location.getAddress());
+
+        hostTextView.setText(this.hostName);
 
         mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
