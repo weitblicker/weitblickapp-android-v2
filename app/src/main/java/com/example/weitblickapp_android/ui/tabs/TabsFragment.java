@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ViewPageAdapter;
-import com.example.weitblickapp_android.ui.event.EventFragment;
+import com.example.weitblickapp_android.ui.event.EventListFragment;
 import com.example.weitblickapp_android.ui.news.NewsListFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -29,7 +29,7 @@ public class TabsFragment extends Fragment {
 
         ViewPageAdapter adapter = new ViewPageAdapter(getChildFragmentManager());
         adapter.AddFragment(new NewsListFragment(), "Neuigkeiten");
-        adapter.AddFragment(new EventFragment(), "Veranstaltungen");
+        adapter.AddFragment(new EventListFragment(), "Veranstaltungen");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

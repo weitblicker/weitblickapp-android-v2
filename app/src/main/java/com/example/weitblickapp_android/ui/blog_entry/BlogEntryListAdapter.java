@@ -91,17 +91,6 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
             }
         });
         // onClick Listener for Button-element -->redirect to DetailsPage
-        ImageButton detail = (ImageButton) view.findViewById(R.id.blog_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
         return view;
     }
 }

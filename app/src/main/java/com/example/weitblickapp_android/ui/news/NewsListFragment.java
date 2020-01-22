@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +34,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class NewsListFragment extends ListFragment implements AbsListView.OnScrollListener {
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
@@ -43,7 +43,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private NewsListAdapter adapter;
     private String lastItemDate;
     private String lastItemDateCheck = "";
-    private String url = "https://new.weitblicker.org/rest/news?limit=5";
+    private String url = "https://weitblicker.org/rest/news?limit=5";
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
         adapter = new NewsListAdapter(getActivity(), newsList, getFragmentManager());
         this.setListAdapter(adapter);
-
-        ListView listView = (ListView) view.findViewById(R.id.list);
 
         return view;
     }
@@ -98,15 +96,16 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
 
+
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
+                       // String date = "2009-09-26T14:48:36Z";
 
-                        //Get Date of last Item loaded in List loading more news starting at that date
-                        try {
+                        try{
                             Date ItemDate = formatterRead.parse(date);
                             lastItemDate = formatterWrite.format(ItemDate);
                         } catch (ParseException e) {
@@ -125,12 +124,13 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                                 String url = image.getString("url");
                                 imageUrls.add(url);
                             }
+
                         }catch(JSONException e){
-                           // Log.e("Keine Gallery", "für" + title);
+
                         }
 
                         //Get inline-Urls from Text, then extract them
-                       // imageUrls = getImageUrls(text);
+                        // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);

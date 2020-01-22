@@ -2,6 +2,7 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -26,6 +29,14 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private ArrayList<ProjectViewModel> projects;
     private FragmentManager fragManager;
     String PREF_NAME = "DefaultProject";
+    private OnItemClicked onItemClickedListener;
+    int selectedPosition = -1;
+
+    public void select(int position){
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
 
     public ProjectListAdapter(Context mContext, ArrayList<ProjectViewModel> mDataSource, FragmentManager fragManager) {
         super(mContext, R.layout.fragment_project_list, mDataSource);
@@ -34,6 +45,16 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragManager = fragManager;
     }
+
+    public interface OnItemClicked{
+        public void onClick(int position);
+    }
+
+    public void setOnItemClickedListener(OnItemClicked listener){
+        onItemClickedListener = listener;
+    }
+
+
     @Override
     public int getCount() {
         return projects.size();
@@ -56,6 +77,11 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
              view = mInflater.inflate(R.layout.fragment_project_list, null);
 
+        if(selectedPosition == position){
+            view.setSelected(true);
+            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.wb_green));
+        }
+
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_address = (TextView) view.findViewById(R.id.location);
@@ -64,8 +90,17 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             //TextView textView_date = (TextView) view.findViewById(R.id.date);
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClickedListener != null){
+                    onItemClickedListener.onClick(position);
+                }
+            }
+        });
 
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
+
 
             if(project.getCycle_id() == 0){
                 maps.setVisibility(View.GONE);
@@ -87,6 +122,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                 });
             }
 
+
         try {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
         }catch(IndexOutOfBoundsException e){
@@ -106,18 +142,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             //Set Button-Listener and redirect to Details-Page
             ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
-            view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-            });
             detail.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = fragManager.beginTransaction();
@@ -129,6 +154,5 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         return view;
     }
-
 }
 

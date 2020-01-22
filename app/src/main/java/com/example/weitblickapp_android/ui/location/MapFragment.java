@@ -8,11 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,12 +63,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static android.content.Context.POWER_SERVICE;
-
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    private SensorManager sensorManager;
+    private Sensor sensor;
+
 
     private GoogleMap mMap;
     private Tour currentTour;
@@ -102,18 +106,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView donation;
 
     //get ration for
-    private double betrag = 0.10;
     static private double don = 0;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
     RequestQueue requestQueue;
+    private Context mContext;
 
     LocationManager locationManager;
 
     MapFragment(int projectid){
         this.projectId = projectid;
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -122,9 +131,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         askGpsPermission();
         setUpGpsReceiver();
         registerGpsReceiver();
+        initAccelerometer();
         initializeTour();
         startFetchLocation();
         sendRouteSegments();
+    }
+
+    private void initAccelerometer(){
+        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
     }
 
     private String getFormattedDate(){
@@ -134,6 +149,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         this.gpsIsEnabled = isLocationEnabled();
         loadProject(projectId);
 
@@ -182,7 +199,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
                     getCurrentLocation();
-                    sendSegment();
                 }
             }
         });
@@ -207,6 +223,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         currentLocation = null;
         lastLocation = null;
     }
+    private void resetTour(){
+        km = 0.0;
+        kmTotal = 0.0;
+        don = 0.0;
+    }
 
     private void initializeTour(){
         currentTour = new Tour(projectId);
@@ -219,6 +240,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void run() {
                 if(!paused && gpsIsEnabled) {
                     fetchLastLocation();
+                }else{
+                    return;
                 }
                 handler.postDelayed(this, fetchLocationDelay);
             }
@@ -237,6 +260,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
+        startFetchLocation();
     }
 
     //Fetches last GPS-Location and calculates resulting km
@@ -252,12 +276,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
-                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        if(mMap != null) {
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                        }
-
-                    Log.e("LOCATIONACCURAY:", location.getAccuracy() +"");
+                    Log.e("LOCATIONACCURAY:", location.getAccuracy() + "");
                     if (location.getAccuracy() < 20) {
                         currentLocation = location;
                         currentTour.getLocations().add(location);
@@ -266,12 +285,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                 }
-                if (!load) {
-                    setUpMapIfNeeded();
-                }
+
             }
         });
-        checkKm();
+        if(checkSpeedAndAcceleration()) {
+            checkKm();
+        }
     }
 
     private void askGpsPermission(){
@@ -301,16 +320,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        //LatLng latLng = new LatLng( -33.865143, 151.209900);
         this.mMap = googleMap;
-        if (isLocationEnabled()){
-            mMap.setMyLocationEnabled(true);
+        if (isLocationEnabled()) {
+            if (currentLocation != null) {
+                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mMap.setMyLocationEnabled(true);
+            }
         }
     }
 
-
-
     private void checkKm() {
-        if(paused == false){
             if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
                 km += dis;
@@ -320,21 +341,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 distance.setText(distanceTotal);
                 donation.setText(donationTotal);
             }
-        }else{
-            if (lastLocation != null) {
-                double dis = currentLocation.distanceTo(lastLocation)/1000;
-                km += dis;
-                don = currentTour.getEurosTotal() / 100;
-                String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
-                String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
-                distance.setText(distanceTotal);
-                donation.setText(donationTotal);
-            }
-            //startFetchLocation();
-        }
         lastLocation = currentLocation;
     }
 
+    private boolean checkSpeedAndAcceleration(){
+        if(currentLocation != null) {
+            if (currentLocation.hasSpeed()) {
+                float currentSpeedInKmh = (currentLocation.getSpeed() * 3.6f);
+                if (currentSpeedInKmh < 20.0f) {
+                    Log.e("currentSpeed:", currentLocation.getSpeed() + "");
+                    Toast toast= Toast.makeText(getContext(),"Slow down! Speed: " + currentSpeedInKmh ,Toast. LENGTH_SHORT);
+                    toast.show();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResult) {
         switch (requestCode) {
@@ -506,6 +531,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         Log.e("JSON:", jsonBody.toString());
 
+            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
                 @Override

@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class BlogEntryViewModel extends ViewModel {
 
-    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
     private int id;
