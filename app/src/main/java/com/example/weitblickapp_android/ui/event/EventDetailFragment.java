@@ -77,6 +77,11 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         View root = inflater.inflate(R.layout.fragment_event_detail, container, false);
 
+
+        //Add False URL so ViewPager tries to instatiate Item which returns Default-Image in Error-Case
+        if(imageUrls.isEmpty()){
+            imageUrls.add("FALSEURL");
+        }
         //Set Image-Slider Adapter
         mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
