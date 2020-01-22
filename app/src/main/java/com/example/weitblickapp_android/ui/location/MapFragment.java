@@ -111,10 +111,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
+    private Context mContext;
+
     LocationManager locationManager;
 
     MapFragment(int projectid){
         this.projectId = projectid;
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -521,7 +528,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         Log.e("JSON:", jsonBody.toString());
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
                 @Override
