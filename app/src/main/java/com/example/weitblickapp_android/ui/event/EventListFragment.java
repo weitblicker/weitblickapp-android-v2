@@ -39,6 +39,11 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
     private EventListAdapter adapter;
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadEvents();
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +58,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadEvents();
+        //loadEvents();
         //getListView().setOnScrollListener(this);
     }
 
