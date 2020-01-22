@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     private float lat;
     private float lng;
     private ProjectViewModel project = null;
+
 
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
@@ -91,6 +93,14 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
         });
         setUpMapIfNeeded();
         return root;
+    }
+
+    public void onResume(){
+        super.onResume();
+        Fragment mFragment = getChildFragmentManager().findFragmentById(R.id.fragment_container);
+        if (mFragment instanceof MapFragment) {
+            Log.e("FRAGMENTTEST:","MAPFRAGMENT EXISTIERT");
+        }
     }
 
     private void checkDefault(){

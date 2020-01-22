@@ -106,7 +106,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView donation;
 
     //get ration for
-    private double betrag = 0.10;
     static private double don = 0;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -214,6 +213,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void resetLocations(){
         currentLocation = null;
         lastLocation = null;
+    }
+    private void resetTour(){
+        km = 0.0;
+        kmTotal = 0.0;
+        don = 0.0;
     }
 
     private void initializeTour(){
