@@ -14,7 +14,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,8 +63,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static android.content.Context.POWER_SERVICE;
-
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
@@ -109,18 +106,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView donation;
 
     //get ration for
-    private double betrag = 0.10;
     static private double don = 0;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
     RequestQueue requestQueue;
+    private Context mContext;
 
     LocationManager locationManager;
 
     MapFragment(int projectid){
         this.projectId = projectid;
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -220,6 +222,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void resetLocations(){
         currentLocation = null;
         lastLocation = null;
+    }
+    private void resetTour(){
+        km = 0.0;
+        kmTotal = 0.0;
+        don = 0.0;
     }
 
     private void initializeTour(){
@@ -341,11 +348,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
                 float currentSpeedInKmh = (currentLocation.getSpeed() * 3.6f);
-                if (currentSpeedInKmh > 20.0f) {
+                if (currentSpeedInKmh < 20.0f) {
                     Log.e("currentSpeed:", currentLocation.getSpeed() + "");
                     Toast toast= Toast.makeText(getContext(),"Slow down! Speed: " + currentSpeedInKmh ,Toast. LENGTH_SHORT);
-                    toast. setMargin(50,50);
-                    toast. show();
+                    toast.show();
                     return false;
                 } else {
                     return true;
@@ -525,6 +531,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         Log.e("JSON:", jsonBody.toString());
 
+            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
                 @Override

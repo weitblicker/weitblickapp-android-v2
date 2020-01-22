@@ -23,12 +23,12 @@ import io.noties.markwon.Markwon;
 public class NewsDetailFragment extends Fragment {
     static final String urlWeitblick = "https://new.weitblicker.org";
 
-    String location;
-    String title;
-    String text;
-    String date;
-    ArrayList<String> imageUrls = new ArrayList<String>();
-    ViewPager mViewPager;
+    private String location;
+    private String title;
+    private String text;
+    private String date;
+    private ArrayList<String> imageUrls = new ArrayList<String>();
+    private ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
 

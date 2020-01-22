@@ -1,50 +1,60 @@
 package com.example.weitblickapp_android.ui.event;
 
-import android.location.Location;
-import java.util.Date;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class EventViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
-    int id;
-    String name;
-    String location;
-    Date eventDate;
-    String date;
-    String time;
-    String text;
 
-    public EventViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is maps fragment");
-    }
+    private int id;
+    private String title;
+    private EventLocation location;
+    private Date eventDateStart;
+    private Date eventDateEnd;
+    private String time;
+    private String text;
+    private ArrayList<String> imageUrls;
+
 
     public EventViewModel(int id, String title) {
         this.id = id;
-        this.name = title;
+        this.title = title;
     }
 
 
-    public EventViewModel(int id, String title, String description, String time, String date, String location) {
+    public EventViewModel(int id, String title, String description, String startDate, String endDate, EventLocation location, ArrayList<String> imageUrls) {
         this.id = id;
-        this.name = title;
+        this.title = title;
         this.text = description;
-        this.date = date;
         this.time = time;
+        this.location = location;
+        try {
+            this.eventDateStart = formatterRead.parse(startDate);
+            this.eventDateEnd = formatterRead.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.imageUrls = imageUrls;
+    }
+
+    public EventLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(EventLocation location) {
         this.location = location;
     }
 
-    public MutableLiveData<String> getmText() {
-        return mText;
-    }
+    public ArrayList<String> getImageUrls() { return imageUrls; }
 
-    public void setmText(MutableLiveData<String> mText) {
-        this.mText = mText;
-    }
+    public void setImageUrls(ArrayList<String> imageUrls) { this.imageUrls = imageUrls; }
 
     public int getId() {
         return id;
@@ -54,36 +64,27 @@ public class EventViewModel extends ViewModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
-    public String getLocation() {
-        return location;
+
+    public String getEventStartDate() {
+        return formatterWrite.format(eventDateStart);
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setEventStartDate(Date date) { this.eventDateStart = date; }
+
+    public String getEventEndDate() {
+        return formatterWrite.format(eventDateStart);
     }
 
-    public Date getEventDate() {
-        return eventDate;
-    }
-
-    public void setEventDate(Date eventDate) {
-        this.eventDate = eventDate;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setEventEndDate(Date date) {
+        this.eventDateEnd = date;
     }
 
     public String getTime() {
@@ -100,5 +101,19 @@ public class EventViewModel extends ViewModel {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "EventViewModel{" +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", location='" + location + '\'' +
+                ", eventStartDate=" + eventDateStart +
+                ", eventEndDate='" + eventDateEnd + '\'' +
+                ", time='" + time + '\'' +
+                ", text='" + text + '\'' +
+                ", images='" + imageUrls + '\'' +
+                '}';
     }
 }
