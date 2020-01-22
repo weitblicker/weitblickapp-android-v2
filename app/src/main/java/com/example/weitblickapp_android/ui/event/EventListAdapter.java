@@ -54,6 +54,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         view = mInflater.inflate(R.layout.fragment_event_list,null);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
+        TextView textView_host = (TextView) view.findViewById(R.id.partner);
         TextView textView_title = (TextView)view.findViewById(R.id.title);
         TextView textView_location = (TextView)view.findViewById(R.id.location);
         TextView textView_date = (TextView)view.findViewById(R.id.date);
@@ -72,6 +73,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         textView_title.setText(event.getTitle());
         textView_location.setText(event.getLocation().getAddress());
         textView_date.setText(event.getEventStartDate());
+        textView_host.setText(event.getHostName());
 
 
         view.setOnClickListener(new View.OnClickListener() {

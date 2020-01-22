@@ -77,16 +77,22 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
                     JSONObject locationObject = null;
                     EventLocation location = null;
+
                     String name;
                     String address;
                     double lat;
                     double lng;
 
+                    JSONObject hostObject = null;
+                    String hostName;
 
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
+                        String description = responseObject.getString("description");
+                        String startDate = responseObject.getString("start");
+                        String endDate = responseObject.getString("end");
 
                         locationObject = responseObject.getJSONObject("location");
                         name = locationObject.getString("name");
@@ -94,9 +100,10 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         lat = locationObject.getDouble("lat");
                         lng = locationObject.getDouble("lng");
 
-                        String description = responseObject.getString("description");
-                        String startDate = responseObject.getString("start");
-                        String endDate = responseObject.getString("end");
+                        hostObject = responseObject.getJSONObject("host");
+                        hostName = hostObject.getString("name");
+
+
 
                         try {
                             images = responseObject.getJSONArray("photos");
@@ -116,7 +123,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
                         location = new EventLocation(name, address, lat, lng);
 
-                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, location, imageUrls);
+                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
                         events.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {

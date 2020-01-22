@@ -20,6 +20,7 @@ public class EventViewModel extends ViewModel {
     private Date eventDateEnd;
     private String time;
     private String text;
+    private String hostName;
     private ArrayList<String> imageUrls;
 
 
@@ -29,10 +30,11 @@ public class EventViewModel extends ViewModel {
     }
 
 
-    public EventViewModel(int id, String title, String description, String startDate, String endDate, EventLocation location, ArrayList<String> imageUrls) {
+    public EventViewModel(int id, String title, String description, String startDate, String endDate, String hostName, EventLocation location, ArrayList<String> imageUrls) {
         this.id = id;
         this.title = title;
         this.text = description;
+        this.hostName = hostName;
         this.time = time;
         this.location = location;
         try {
@@ -44,13 +46,13 @@ public class EventViewModel extends ViewModel {
         this.imageUrls = imageUrls;
     }
 
-    public EventLocation getLocation() {
-        return location;
-    }
+    public EventLocation getLocation() { return location; }
 
-    public void setLocation(EventLocation location) {
-        this.location = location;
-    }
+    public void setLocation(EventLocation location) { this.location = location; }
+
+    public String getHostName() { return hostName; }
+
+    public void setHostName(String hostName) { this.hostName = hostName; }
 
     public ArrayList<String> getImageUrls() { return imageUrls; }
 
