@@ -178,9 +178,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             sponsorList.add(test1);
             sponsorList.add(test2);
             sponsorList.add(test1);
-            ViewGroup.LayoutParams lp = listViewSponsor.getLayoutParams();
-            lp.height = loadHeight(listViewSponsor);
-            listViewSponsor.setLayoutParams(lp);
+            setListViewHeightBasedOnChildren(listViewSponsor);
         }else{
             ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
             stats.setVisibility(View.GONE);
@@ -205,9 +203,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             newsList.add(test1);
             newsList.add(test2);
             newsList.add(test2);
-            ViewGroup.LayoutParams lp = listNews.getLayoutParams();
-            lp.height = loadHeight(listNews);
-            listNews.setLayoutParams(lp);
+            setListViewHeightBasedOnChildren(listNews);
         }else{
             ConstraintLayout news = (ConstraintLayout) root.findViewById(R.id.newsContainer);
             news.setVisibility(View.GONE);
@@ -221,9 +217,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             blogList.add(test1);
             blogList.add(test2);
             blogList.add(test2);
-            ViewGroup.LayoutParams lp = listblog.getLayoutParams();
-            lp.height = loadHeight(listblog);
-            listblog.setLayoutParams(lp);
+            setListViewHeightBasedOnChildren(listblog);
         }else{
             ConstraintLayout blog = (ConstraintLayout) root.findViewById(R.id.blogContainer);
             blog.setVisibility(View.GONE);
@@ -237,9 +231,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             eventList.add(test1);
             eventList.add(test2);
             eventList.add(test2);
-            ViewGroup.LayoutParams lp = listEvent.getLayoutParams();
-            lp.height = loadHeight(listEvent);
-            listEvent.setLayoutParams(lp);
+            setListViewHeightBasedOnChildren(listEvent);
         }else{
             ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
             event.setVisibility(View.GONE);
@@ -253,9 +245,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             partnerList.add(test2);
             partnerList.add(test2);
             partnerList.add(test2);
-            ViewGroup.LayoutParams lp = listPartner.getLayoutParams();
-            lp.height = loadHeight(listPartner);
-            listPartner.setLayoutParams(lp);
+            setListViewHeightBasedOnChildren(listPartner);
         }else{
             ConstraintLayout projectPartner = (ConstraintLayout) root.findViewById(R.id.projectPartnerContainer);
             projectPartner.setVisibility(View.GONE);
@@ -269,14 +259,42 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             milenstoneList.add(test2);
             milenstoneList.add(test2);
             milenstoneList.add(test2);
-            ViewGroup.LayoutParams lp = listMilenstone.getLayoutParams();
-            lp.height = loadHeight(listMilenstone);
-            listMilenstone.setLayoutParams(lp);
+            setListViewHeightBasedOnChildren(listMilenstone);
         }else{
             ConstraintLayout mile = (ConstraintLayout) root.findViewById(R.id.milenstoneContainer);
             mile.setVisibility(View.GONE);
         }
         return root;
+    }
+
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter != null) {
+
+            int numberOfItems = listAdapter.getCount();
+
+            // Get total height of all items.
+            int totalItemsHeight = 0;
+            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+                View item = listAdapter.getView(itemPos, null, listView);
+                float px = 400 * (listView.getResources().getDisplayMetrics().density);
+                item.measure(
+                        View.MeasureSpec.makeMeasureSpec((int)px, View.MeasureSpec.AT_MOST),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                int height = item.getMeasuredHeight();
+                totalItemsHeight += height;
+            }
+
+            // Get total height of all item dividers.
+            int totalDividersHeight = listView.getDividerHeight() * (numberOfItems - 1);
+
+            // Set list height.
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalItemsHeight + totalDividersHeight;
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+        }
     }
 
     public int  loadHeight(ListView list){
