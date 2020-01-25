@@ -36,7 +36,7 @@
                 android:fontFamily="@font/opensansbold"
                 android:gravity="center"
                 android:text="Button"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#000000"
                 map:layout_constraintBottom_toBottomOf="parent"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintStart_toStartOf="parent"

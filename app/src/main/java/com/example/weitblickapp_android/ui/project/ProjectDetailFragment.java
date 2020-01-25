@@ -3,7 +3,6 @@ package com.example.weitblickapp_android.ui.project;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
-import com.example.weitblickapp_android.ui.event.EventListAdapter;
+import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
@@ -43,6 +42,8 @@ import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import java.util.ArrayList;
+
+import io.noties.markwon.Markwon;
 
 
 public class ProjectDetailFragment extends Fragment implements OnMapReadyCallback {
@@ -114,6 +115,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
         root = inflater.inflate(R.layout.fragment_project_detail, container, false);
 
+
+        //Add False URL so ViewPager tries to instatiate Item which returns Default-Image in Error-Case
+        if(imageUrls.isEmpty()){
+            imageUrls.add("FALSEURL");
+        }
         //Set Image-Slider Adapter
         mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
@@ -156,8 +162,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         titleTextView.setText(this.title);
 
         final TextView textTextView = root.findViewById(R.id.detail_text);
+
+        final Markwon markwon = Markwon.create(getContext());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textTextView.setText(Html.fromHtml(this.text, Html.FROM_HTML_MODE_COMPACT));
+            markwon.setMarkdown(textTextView,this.text);
         }
 
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -224,9 +233,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(eventsID != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
-            EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
-            EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
-            EventListAdapter adapterEvent = new EventListAdapter(getActivity(), eventList, getFragmentManager());
+           // EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
+          //  EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
+            EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
             eventList.add(test1);
             eventList.add(test2);

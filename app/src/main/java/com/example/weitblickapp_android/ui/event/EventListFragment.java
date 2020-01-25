@@ -1,5 +1,6 @@
-package com.example.weitblickapp_android.ui.news;
+package com.example.weitblickapp_android.ui.event;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -25,57 +26,44 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
-public class NewsListFragment extends ListFragment implements AbsListView.OnScrollListener {
+public class EventListFragment extends ListFragment implements AbsListView.OnScrollListener {
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
+    ArrayList<EventViewModel> events = new ArrayList<EventViewModel>();
 
-    ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
-    private NewsListAdapter adapter;
-    private String lastItemDate;
-    private String lastItemDateCheck = "";
-    private String url = "https://weitblicker.org/rest/news?limit=5";
-
+    private EventListAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadEvents();
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+            ViewGroup container, Bundle savedInstanceState) {
 
-        adapter = new NewsListAdapter(getActivity(), newsList, getFragmentManager());
+        View view = inflater.inflate(R.layout.fragment_event, container, false);
+
+        adapter = new EventListAdapter(getActivity(), events, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadNews(url);
-        getListView().setOnScrollListener(this);
+        //loadEvents();
+        //getListView().setOnScrollListener(this);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
-    private void loadNews(String URL){
-
-        // Talk to Rest API
+    public void loadEvents(){
+        String URL = "https://weitblicker.org/rest/events/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -83,40 +71,45 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
             @Override
             public void onResponse(JSONArray response) {
-                //Save Data into Model
-                String jsonData = response.toString();
-
-                //Parse the JSON response array by iterating over it
+                //Parse the JSON response array by iterating over it & Save Data into Model
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
 
-                    JSONObject imageObject = null;
-                    JSONObject galleryObject = null;
-                    JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
+                    Location eventLocation;
                     JSONArray images = null;
+                    JSONObject image = null;
 
+                    JSONObject locationObject = null;
+                    EventLocation location = null;
+
+                    String name;
+                    String address;
+                    double lat;
+                    double lng;
+
+                    JSONObject hostObject = null;
+                    String hostName;
 
                     try {
                         responseObject = response.getJSONObject(i);
-                        Integer newsId = responseObject.getInt("id");
+                        Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
-                        String text = responseObject.getString("text");
-                        String date = responseObject.getString("published");
-                       // String date = "2009-09-26T14:48:36Z";
+                        String description = responseObject.getString("description");
+                        String startDate = responseObject.getString("start");
+                        String endDate = responseObject.getString("end");
 
-                        try{
-                            Date ItemDate = formatterRead.parse(date);
-                            lastItemDate = formatterWrite.format(ItemDate);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        locationObject = responseObject.getJSONObject("location");
+                        name = locationObject.getString("name");
+                        address = locationObject.getString("address");
+                        lat = locationObject.getDouble("lat");
+                        lng = locationObject.getDouble("lng");
 
-                        String teaser = responseObject.getString("teaser");
+                        hostObject = responseObject.getJSONObject("host");
+                        hostName = hostObject.getString("name");
 
-                        text.trim();
 
-                        //Get all image-Urls from Gallery
+
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -131,16 +124,21 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                         //Get inline-Urls from Text, then extract them
                         // imageUrls = getImageUrls(text);
-                        text = extractImageUrls(text);
+                        description = extractImageUrls(description);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
-                        newsList.add(temp);
+                        location = new EventLocation(name, address, lat, lng);
+
+                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
+                        events.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
+                for(EventViewModel event:events){
+                    Log.e("Event",event.toString());
+                }
+
             }
 
         }, new Response.ErrorListener() {
@@ -165,6 +163,11 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
         requestQueue.add(objectRequest);
     }
 
+    public String extractImageUrls(String text){
+        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
+        return text;
+    }
+
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
@@ -172,30 +175,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if(totalItemCount > 0) {
-            final int lastItem = firstVisibleItem + visibleItemCount;
-            if (lastItem == totalItemCount && !lastItemDateCheck.equals(lastItemDate)) {
-                url = url.concat(("&end=" + lastItemDate));
-                loadNews(url);
-                lastItemDateCheck = lastItemDate;
-            }
-        }
+
     }
 
-    public ArrayList <String> getImageUrls(String text){
-        //Find image-tag markdowns and extract
-        ArrayList <String> imageUrls = new ArrayList<>();
-        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
-                .matcher(text);
-        while (m.find()) {
-            imageUrls.add(m.group(2));
-        }
-        return imageUrls;
-    }
-
-    public String extractImageUrls(String text){
-        text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
-        return text;
-    }
 }
-

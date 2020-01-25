@@ -221,6 +221,7 @@
                 android:id="@+id/donationGoalContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:background="@drawable/ic_yellow"
                 app:layout_constraintBottom_toTopOf="@+id/statsContainer"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -804,6 +805,7 @@
                 android:id="@+id/milenstoneContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sponsorContainer"

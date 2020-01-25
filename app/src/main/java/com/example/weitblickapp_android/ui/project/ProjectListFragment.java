@@ -121,7 +121,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
     public void loadProjects(){
 
         // Talk to Rest API
-
         String URL = "https://weitblicker.org/rest/projects/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
