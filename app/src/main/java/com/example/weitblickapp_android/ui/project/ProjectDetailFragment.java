@@ -78,7 +78,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     private int milenstoneID = 1;
     private int newsID = 1;
     private int blogsID = 1;
-    private int eventsID = 1;
+    private int eventsID = 0;
 
     private static final int UNBOUNDED = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
@@ -233,13 +233,13 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(eventsID != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
-           // EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
-          //  EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
+            //EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
+            //EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
             EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
-            eventList.add(test1);
+            /*eventList.add(test1);
             eventList.add(test2);
-            eventList.add(test2);
+            eventList.add(test2);*/
             setListViewHeightBasedOnChildren(listEvent);
         }else{
             ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
