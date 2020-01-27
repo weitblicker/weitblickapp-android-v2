@@ -436,7 +436,7 @@ public class LoginData{
         }
     }
 
-    //TODO: Write the getUsterData() Function and replace placeholder data with real data.
+    //TODO: Write the getUsterData() Function and reeplace placeholder data with real data.
     public void getUserData(){
         
     }
