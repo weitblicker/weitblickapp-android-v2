@@ -4,82 +4,158 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
-
-    <TextView
-        android:id="@+id/teaser"
-        android:layout_width="278dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginLeft="34dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginRight="42dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/open_sans"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/news_more_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+    android:background="@color/white">
 
     <ImageView
-        android:id="@+id/image"
-        android:layout_width="344dp"
-        android:layout_height="182dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginLeft="27dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginRight="27dp"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="344dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginLeft="34dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="33dp"
-        android:layout_marginRight="33dp"
-        android:fontFamily="@font/breeserif"
-        android:textColor="@color/wb_orange"
-        app:layout_constraintBottom_toTopOf="@+id/teaser"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
-
-    <ImageButton
-        android:id="@+id/news_more_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="33dp"
-        android:layout_marginRight="33dp"
+        android:id="@+id/imageView4"
+        android:layout_width="32dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="3dp"
+        android:adjustViewBounds="true"
         android:background="@null"
-        android:focusable="true"
-        android:src="@drawable/icon_more"
+        android:maxWidth="42dp"
+        android:maxHeight="42dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/weitblick_icon_round"
+        app:layout_constraintBottom_toTopOf="@+id/frameText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/teaser"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frame" />
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="183dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frame">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/breeserif"
+            android:text="Dies ist ein Titel..."
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:layout_gravity="left"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameTeaser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameText">
+
+        <TextView
+            android:id="@+id/teaser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Dies ist ein Teasertext..."
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameText" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="344dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginLeft="34dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="33dp"
-        android:layout_marginRight="33dp"
-        android:fontFamily="@font/open_sans"
+        android:layout_width="78dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginBottom="3dp"
+        android:background="@color/white"
+        android:fontFamily="@font/opensansbold"
         android:gravity="end"
-        app:layout_constraintBottom_toTopOf="@+id/title"
+        android:text="02.11.2016"
+        android:textColor="@color/wb_grey"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/frameText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/city"
+        app:layout_constraintTop_toBottomOf="@+id/frame" />
+
+    <TextView
+        android:id="@+id/whiteTriangle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="176dp"
+        android:background="@color/white"
+        android:rotation="-45"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/partner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="3dp"
+        android:fontFamily="@font/opensansbold"
+        android:text="Osnabrück, Münster, Berlin"
+        android:textColor="@color/wb_grey"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/frameText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/frame" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 
 import java.util.ArrayList;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 
 public class FaqListAdapter extends ArrayAdapter<FaqViewModel> {
@@ -48,12 +50,21 @@ public class FaqListAdapter extends ArrayAdapter<FaqViewModel> {
         view = mInflater.inflate(R.layout.fragment_faq_list, null);
 
         TextView textView_question = (TextView) view.findViewById(R.id.question);
-        TextView textView_answer = (TextView) view.findViewById(R.id.answer);
 
         final FaqViewModel article = (FaqViewModel) getItem(position);
 
         textView_question.setText(article.getQuestion());
-        textView_answer.setText(article.getAnswer());
+
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new FagDetailFragment(article));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         return view;
     }

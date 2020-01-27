@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="@color/white">
 
     <ImageButton
         android:id="@+id/back"
@@ -31,70 +31,177 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
-                android:layout_width="344dp"
+                android:layout_width="match_parent"
                 android:layout_height="182dp"
-                android:layout_marginStart="27dp"
-                android:layout_marginLeft="27dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="27dp"
-                android:layout_marginRight="27dp"
                 android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/detail_date"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.viewpager.widget.ViewPager>
+
+            <TextView
+                android:id="@+id/whiteTriangle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="176dp"
+                android:background="@color/white"
+                android:rotation="-45"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.175"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="26dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="3dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:maxWidth="42dp"
+                android:maxHeight="42dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/weitblick_icon_round"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.063"
+                app:layout_constraintStart_toEndOf="@+id/location"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+
+            <TextView
+                android:id="@+id/detail_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:fontFamily="@font/open_sans"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/authorpicture" />
+
             <TextView
                 android:id="@+id/detail_date"
-                android:layout_width="344dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/open_sans"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:fontFamily="@font/opensansbold"
                 android:gravity="end"
-                android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/detail_text"
+                android:text="12.11.2034"
+                android:textSize="12dp"
+                android:textColor="@color/wb_grey"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.961"
+                app:layout_constraintStart_toEndOf="@+id/authorname"
+                app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+            <TextView
+                android:id="@+id/authorname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="16dp"
+                android:text="Viktoria von Hassell"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.023"
+                app:layout_constraintStart_toEndOf="@+id/authorpicture"
+                app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="33dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="4dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:maxWidth="42dp"
+                android:maxHeight="42dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/icon_marker_foreground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
             <TextView
-                android:id="@+id/detail_title"
-                android:layout_width="344dp"
+                android:id="@+id/partner"
+                android:layout_width="135dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/breeserif"
-                android:textColor="@color/wb_orange"
-                android:gravity="start"
-                android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/detail_text"
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/opensansbold"
+                android:text="Münster"
+                android:textColor="@color/wb_grey"
+                android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.522"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_date" />
+                app:layout_constraintHorizontal_bias="0.685"
+                app:layout_constraintStart_toEndOf="@+id/imageView8"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
             <TextView
-                android:id="@+id/detail_text"
-                android:layout_width="342dp"
+                android:id="@+id/detail_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="34dp"
-                android:layout_marginLeft="34dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="33dp"
-                android:layout_marginRight="33dp"
-                android:layout_marginBottom="20dp"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:fontFamily="@font/breeserif"
+                android:textColor="@color/black"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_date" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
 
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/authorpicture"
+                android:layout_width="50dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_title"
+                tools:srcCompat="@drawable/ic_launcher_background" />
 
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="7dp"
+                android:text="Indien"
+                android:textColor="@color/wb_grey"
+                android:textSize="12dp"
+                android:fontFamily="@font/opensansbold"
+                app:layout_constraintStart_toEndOf="@+id/imageView9"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

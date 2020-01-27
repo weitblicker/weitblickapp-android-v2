@@ -16,7 +16,7 @@
         android:background="#ffffff">
 
         <ImageView
-            android:id="@+id/blog"
+            android:id="@+id/news"
             android:layout_width="50dp"
             android:layout_height="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -65,6 +65,7 @@
             android:fontFamily="@font/opensansbold"
             android:text="AGB"
             android:textSize="30dp"
+            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.381"
@@ -79,6 +80,7 @@
             android:fontFamily="@font/opensansbold"
             android:text="FAQ"
             android:textSize="30dp"
+            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.377"
@@ -93,6 +95,7 @@
             android:fontFamily="@font/opensansbold"
             android:text="Kontakt"
             android:textSize="30dp"
+            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.455"
@@ -139,8 +142,6 @@
             app:layout_constraintVertical_bias="0.161"
             app:srcCompat="@drawable/icon_more"
             tools:ignore="VectorDrawableCompat" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

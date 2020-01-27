@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 
 public class BlogEntryListFragment extends ListFragment implements AbsListView.OnScrollListener {
 
-    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
 
     ArrayList<BlogEntryViewModel> blogEntries = new ArrayList<BlogEntryViewModel>();
@@ -48,7 +48,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
     private String lastItemDate;
     private String lastItemDateCheck = "";
     int limitLoadedBlogs = 20;
-    private String url = "https://new.weitblicker.org/rest/blog?limit=";
+    private String url = "https://weitblicker.org/rest/blog?limit=";
 
 
 

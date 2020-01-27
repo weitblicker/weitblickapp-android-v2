@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_map"
-    android:background="#ffffff"
+    android:background="@color/white"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,11 +32,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:alpha="0.85"
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:fontFamily="@font/opensansbold"
                 android:gravity="center"
                 android:text="Button"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#000000"
                 map:layout_constraintBottom_toBottomOf="parent"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintStart_toStartOf="parent"

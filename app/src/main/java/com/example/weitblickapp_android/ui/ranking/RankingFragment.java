@@ -41,7 +41,7 @@ public class RankingFragment extends ListFragment{
     ArrayList<RankingViewModel> bestRankings = new ArrayList<RankingViewModel>();
     ArrayList<RankingViewModel> userFieldRankings = new ArrayList<RankingViewModel>();
     private boolean km_donation = false;
-    private boolean km = true;
+    private boolean km = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -116,9 +116,9 @@ public class RankingFragment extends ListFragment{
 
         String url = null;
         if(km == true){
-            url = "https://new.weitblicker.org/rest/cycle/ranking/";
+            url = "https://weitblicker.org/rest/cycle/ranking/";
         }else{
-            url = "https://new.weitblicker.org/rest/cycle/ranking/";
+            url = "https://weitblicker.org/rest/cycle/ranking/";
         }
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
