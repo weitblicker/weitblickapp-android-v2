@@ -48,7 +48,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
     private String lastItemDate;
     private String lastItemDateCheck = "";
     int limitLoadedBlogs = 20;
-    private String url = "https://weitblicker.org/rest/blog?limit=";
+    private String url = "https://weitblicker.org/rest/blog?limit=5";
 
 
 
@@ -96,10 +96,9 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
 
         // Talk to Rest API
 
-        String requestUrl = url.concat(Integer.toString(limitLoadedBlogs));
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
@@ -143,7 +142,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         //Get Date of last Item loaded in List loading more news starting at that date
                         try {
                             Date ItemDate = formatterRead.parse(published);
-                            lastItemDate = formatterWrite.format(ItemDate);
+                            lastItemDate = formatterRead.format(ItemDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -208,11 +207,11 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if(totalItemCount > 0) {
             final int lastItem = firstVisibleItem + visibleItemCount;
-            if (lastItem == totalItemCount) {
-                /*limitLoadedBlogs +=5;
-                loadBlogs(url);
-                lastItemDateCheck = lastItemDate;
-                */
+            if (lastItem == totalItemCount && !lastItemDateCheck.equals(lastItemDate)) {
+               url = url.concat(("&end=" + lastItemDate));
+               loadBlogs(url);
+               lastItemDateCheck = lastItemDate;
+
 
             }
         }

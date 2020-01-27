@@ -3,6 +3,8 @@ package com.example.weitblickapp_android.ui.project;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,11 +39,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.tabs.TabLayout;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.noties.markwon.Markwon;
 
@@ -92,6 +97,12 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     private LayoutInflater mLayoutInflator;
     ViewPager mViewPager;
 
+    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
+
+    private int currentPage = 0;
+    private Timer timer;
+
     public ProjectDetailFragment() {
     }
 
@@ -124,6 +135,33 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
+
+        //SET Tab-Indicator-Dots for ViewPager
+        TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mViewPager, true);
+
+        //Initiate Runnable for automatic Image-Slide
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                Log.e("currentPage:", currentPage +"");
+                Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
+                if (currentPage == mViewPager.getAdapter().getCount()){
+                    Log.e("LASTPAGE", "!!!");
+                    currentPage = 0;
+                }
+                mViewPager.setCurrentItem(currentPage, true);
+                currentPage ++;
+            }
+        };
+        timer = new Timer(); // This will create a new Thread
+        timer.schedule(new TimerTask() { // task to be scheduled
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
+
 
         //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
 
@@ -347,5 +385,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
+    }
+
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
     }
 }
