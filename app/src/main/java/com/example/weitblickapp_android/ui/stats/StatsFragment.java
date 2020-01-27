@@ -100,7 +100,7 @@ public class StatsFragment extends ListFragment {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONArray>() {
+        MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.GET, URL, jsonBody, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
