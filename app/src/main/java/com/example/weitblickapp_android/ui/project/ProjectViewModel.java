@@ -1,5 +1,9 @@
 package com.example.weitblickapp_android.ui.project;
 
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.news.NewsViewModel;
+import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
+
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -12,7 +16,9 @@ public class ProjectViewModel extends ViewModel {
     private String description;
     private int locationId;
     private ArrayList <String> imageUrls;
-    private ArrayList <Integer> partner_ids;
+    private ArrayList <ProjectPartnerViewModel> partner_ids;
+    private ArrayList <NewsViewModel> new_ids;
+    private ArrayList <BlogEntryViewModel> blog_ids;
     private float Lat;
     private float Lng;
     private String locationName;
@@ -23,7 +29,7 @@ public class ProjectViewModel extends ViewModel {
     private String address;
     private float goal_amount;
 
-    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount, ArrayList<String>imageUrls) {
+    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id) {
         this.id = projectId;
         this.name = title;
         this.description = text;
@@ -37,6 +43,9 @@ public class ProjectViewModel extends ViewModel {
         this.address = address;
         this.goal_amount = goal_amount;
         this.imageUrls = imageUrls;
+        this.partner_ids = partner_ids;
+        this.new_ids = news_id;
+        this.blog_ids = blog_id;
     }
     public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount) {
         this.id = projectId;
@@ -181,7 +190,7 @@ public class ProjectViewModel extends ViewModel {
 
     public void setLocation(int locationId) { this.locationId = locationId; }
 
-    public ArrayList<Integer> getPartner_ids() {
+    public ArrayList<ProjectPartnerViewModel> getPartner_ids() {
         return partner_ids;
     }
 
@@ -191,10 +200,25 @@ public class ProjectViewModel extends ViewModel {
         this.imageUrls = imageUrls;
     }
 
-    public void setPartner_ids(ArrayList<Integer> partner_ids) {
+    public void setPartner_ids(ArrayList<ProjectPartnerViewModel> partner_ids) {
         this.partner_ids = partner_ids;
     }
 
+    public ArrayList<NewsViewModel> getNew_ids() {
+        return new_ids;
+    }
+
+    public void setNew_ids(ArrayList<NewsViewModel> new_ids) {
+        this.new_ids = new_ids;
+    }
+
+    public ArrayList<BlogEntryViewModel> getBlog_ids() {
+        return blog_ids;
+    }
+
+    public void setBlog_ids(ArrayList<BlogEntryViewModel> blog_ids) {
+        this.blog_ids = blog_ids;
+    }
 
     @Override
     public String toString() {

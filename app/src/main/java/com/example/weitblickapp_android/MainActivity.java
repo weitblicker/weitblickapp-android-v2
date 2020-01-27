@@ -79,21 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
             }
-            if(id == item.getItemId() && start == false){
-                MapOverviewFragment fragment = new MapOverviewFragment();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }else{
-                SharedPreferences settings = getApplicationContext().getSharedPreferences(PREF_NAME, 0);
-                MapFragment fragment = new MapFragment(settings.getInt("projectid", -1));
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-
             return super.onOptionsItemSelected(item);
         }
     }

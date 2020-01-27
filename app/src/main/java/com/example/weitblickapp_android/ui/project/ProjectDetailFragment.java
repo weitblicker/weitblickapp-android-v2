@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
@@ -58,7 +59,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     float lat;
     float current_amount;
     float goal_amount;
+    int cycleID;
     ArrayList <String> imageUrls = new ArrayList<String>();
+    ArrayList <NewsViewModel> newsId = new ArrayList<NewsViewModel>();
+    ArrayList <BlogEntryViewModel> blogId = new ArrayList<BlogEntryViewModel>();
+    ArrayList <ProjectPartnerViewModel> partnerId = new ArrayList<ProjectPartnerViewModel>();
     Boolean favorite = false;
     View root;
     private GoogleMap mMap;
@@ -71,14 +76,10 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     private int blogsID = 0;
     private int eventsID = 0;*/
 
-    private int cycleID = 1;
     private int donationGoalID = 1;
-    private int projectPartnerID = 1;
     private int statsID = 1;
     private int milenstoneID = 1;
-    private int newsID = 1;
-    private int blogsID = 1;
-    private int eventsID = 0;
+    private int eventsID = 1;
 
     private static final int UNBOUNDED = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
@@ -104,6 +105,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.current_amount = project.getCurrent_amount();
         this.goal_amount = project.getGoal_amount();
         this.cycleID = project.getCycle_id();
+        this.newsId = project.getNew_ids();
+        this.blogId = project.getBlog_ids();
+        this.partnerId = project.getPartner_ids();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
         for(int i = 0; i < project.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
@@ -175,7 +179,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
         final TextView amountTextView = root.findViewById(R.id.amountNumber);
 
-        if(cycleID == 0){
+        if( cycleID != 0){
             drawPie(true);
             goalTextView.setText((this.goal_amount - this.current_amount) + " €");
             amountTextView.setText(current_amount + " €");
@@ -203,29 +207,25 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ConstraintLayout donation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
             donation.setVisibility(View.GONE);
         }
-        if(newsID != 0){
+        if(newsId.size() != 0){
             ListView listNews = (ListView) root.findViewById(R.id.news);
-            NewsViewModel test1 = new NewsViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "jebuwfhilksbvwiu wlkhbvowubv ilw wilh sfbisufsv","Vor 3 Tagen", imageUrls);
-            NewsViewModel test2 = new NewsViewModel(2, "Test","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "jvduhsbhijaobv av avh aojk vahdi vbaojk vahfbvuhaodubvhajnvhib uajobduhagsfcholjbav0peihfcbvd", "13.06.19", imageUrls);
             NewsShortAdapter adapterNews = new NewsShortAdapter(getActivity(), newsList, getFragmentManager());
             listNews.setAdapter(adapterNews);
-            newsList.add(test1);
-            newsList.add(test2);
-            newsList.add(test2);
+            for(int i = 0; i < newsId.size(); i++){
+                newsList.add(newsId.get(i));
+            }
             setListViewHeightBasedOnChildren(listNews);
         }else{
             ConstraintLayout news = (ConstraintLayout) root.findViewById(R.id.newsContainer);
             news.setVisibility(View.GONE);
         }
-        if(blogsID != 0){
+        if(blogId.size() != 0){
             ListView listblog = (ListView) root.findViewById(R.id.blog);
-            BlogEntryViewModel test1 = new BlogEntryViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "jebuwfhilksbvwiu wlkhbvowubv ilw wilh sfbisufsv","Vor 3 Tagen", imageUrls);
-            BlogEntryViewModel test2 = new BlogEntryViewModel(2, "Test","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "jvduhsbhijaobv av avh aojk vahdi vbaojk vahfbvuhaodubvhajnvhib uajobduhagsfcholjbav0peihfcbvd", "13.06.19", imageUrls);
             BlogEntryListAdapterShort adapterBlog = new BlogEntryListAdapterShort(getActivity(), blogList, getFragmentManager());
             listblog.setAdapter(adapterBlog);
-            blogList.add(test1);
-            blogList.add(test2);
-            blogList.add(test2);
+            for(int i = 0; i< blogId.size(); i++){
+                blogList.add(blogId.get(i));
+            }
             setListViewHeightBasedOnChildren(listblog);
         }else{
             ConstraintLayout blog = (ConstraintLayout) root.findViewById(R.id.blogContainer);
@@ -245,7 +245,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
             event.setVisibility(View.GONE);
         }
-        if(projectPartnerID != 0){
+        if(partnerId.size() != 0){
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
             ProjectPartnerViewModel test1 = new ProjectPartnerViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
             ProjectPartnerViewModel test2 = new ProjectPartnerViewModel("Test2", "oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
