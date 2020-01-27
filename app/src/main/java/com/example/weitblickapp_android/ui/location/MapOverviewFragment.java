@@ -102,10 +102,12 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     public void onResume(){
         super.onResume();
         if (fragment != null) {
+            Log.e("MAPFRAGMENT:",fragment.toString());
+            Log.e("FRAGMENTTEST:","MAPFRAGMENT EXISTIERT");
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
             ft.commit();
-            Log.e("FRAGMENTTEST:","MAPFRAGMENT EXISTIERT");
+
         }
     }
 

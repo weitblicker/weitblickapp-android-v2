@@ -2,16 +2,13 @@ package com.example.weitblickapp_android.ui.stats;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
@@ -23,7 +20,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
-import com.example.weitblickapp_android.ui.location.MapFragment;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
 
 import org.json.JSONArray;
@@ -47,6 +43,20 @@ public class StatsFragment extends ListFragment {
         super.onCreate(savedInstanceState);
     }
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+
+        View view = inflater.inflate(R.layout.fragment_stats, container, false);
+        adapter = new StatsListAdapter(getActivity(), statsList, getFragmentManager());
+        this.setListAdapter(adapter);
+
+        session = new SessionManager(getActivity().getApplicationContext());
+        this.token = session.getKey();
+
+        return view;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -61,24 +71,11 @@ public class StatsFragment extends ListFragment {
             this.token = session.getKey();
             loadStats();
         }
-
-
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
-
-        View view = inflater.inflate(R.layout.fragment_stats, container, false);
-        adapter = new StatsListAdapter(getActivity(), statsList, getFragmentManager());
-        this.setListAdapter(adapter);
-
-        session = new SessionManager(getActivity().getApplicationContext());
-
-
-
-
-        return view;
+    private String getToken(){
+        return this.token;
     }
 
     @Override
@@ -103,7 +100,7 @@ public class StatsFragment extends ListFragment {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONArray>() {
+        MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.GET, URL, jsonBody, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
@@ -148,11 +145,8 @@ public class StatsFragment extends ListFragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", auth);
+                headers.put("Media-Type", "application/json");
+                headers.put("Authorization", "Token " + getToken());
                 return headers;
             }
         };

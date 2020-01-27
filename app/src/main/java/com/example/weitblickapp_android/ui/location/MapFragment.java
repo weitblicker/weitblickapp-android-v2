@@ -207,7 +207,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 paused = true;
-                EndFragment fragment = new EndFragment(currentTour);
+                EndFragment fragment = new EndFragment(currentTour, project);
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
                 ft.addToBackStack(null);
@@ -483,7 +483,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-            MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONArray>() {
+            MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.GET, URL, jsonBody, new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {
@@ -501,11 +501,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
+                    headers.put("Media-Type", "application/json");
+                    headers.put("Authorization", "Token " + getToken());
                     return headers;
                 }
             };
@@ -561,11 +558,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Media-Type", "application/json");
-                    headers.put("Authorization", auth);
+                    headers.put("Authorization", "Token " + getToken());
                     return headers;
                 }
             };
@@ -632,6 +626,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public String extractImageUrls(String text){
         text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
         return text;
+    }
+
+    private String getToken(){
+        return this.token;
     }
 }
 
