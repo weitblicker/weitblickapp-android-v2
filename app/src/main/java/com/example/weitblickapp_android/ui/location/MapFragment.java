@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -206,7 +207,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 paused = true;
-                EndFragment fragment = new EndFragment(currentTour);
+                EndFragment fragment = new EndFragment(currentTour, project);
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
                 ft.addToBackStack(null);
@@ -457,8 +458,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Media-Type", "application/json");
-                headers.put("Authorization", "Token " + getToken());
+                String credentials = "surfer:hangloose";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
                 return headers;
             }
         };
@@ -479,7 +483,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-            MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONArray>() {
+            MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.GET, URL, jsonBody, new Response.Listener<JSONArray>() {
 
                 @Override
                 public void onResponse(JSONArray response) {
