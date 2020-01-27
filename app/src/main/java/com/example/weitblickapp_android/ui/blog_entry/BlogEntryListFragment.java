@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegisterFragment extends ListFragment implements AbsListView.OnScrollListener {
+public class BlogEntryListFragment extends ListFragment implements AbsListView.OnScrollListener {
 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
