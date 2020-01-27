@@ -355,10 +355,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
                 float currentSpeedInKmh = (currentLocation.getSpeed() * 3.6f);
-                if (currentSpeedInKmh < 20.0f) {
-                    Log.e("currentSpeed:", currentLocation.getSpeed() + "");
-                    Toast toast= Toast.makeText(mContext,"Slow down! Speed: " + currentSpeedInKmh ,Toast. LENGTH_SHORT);
-                    toast.show();
+                Toast toast= Toast.makeText(mContext,"Speed: " + currentSpeedInKmh + "km/h" ,Toast. LENGTH_SHORT);
+                toast.show();
+                if (currentSpeedInKmh > 60.0f) {
                     return false;
                 } else {
                     return true;
