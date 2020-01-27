@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,12 +17,16 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.location.MapFragment;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private SessionManager session;
+    public static boolean start = false;
+    private String PREF_NAME = "DefaultProject";
 
     private AppBarConfiguration mAppBarConfiguration;
     @Override
@@ -74,6 +79,20 @@ public class MainActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
             }
+            if(id == item.getItemId() && start == false){
+                MapOverviewFragment fragment = new MapOverviewFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }else{
+                SharedPreferences settings = getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                MapFragment fragment = new MapFragment(settings.getInt("projectid", -1));
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
 
             return super.onOptionsItemSelected(item);
         }
@@ -103,6 +122,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
 }

@@ -116,7 +116,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
-    MapFragment(int projectid){
+    public MapFragment(int projectid){
         this.projectId = projectid;
     }
     @Override
