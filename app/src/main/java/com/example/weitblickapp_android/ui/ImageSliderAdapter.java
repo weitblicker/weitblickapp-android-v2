@@ -1,7 +1,6 @@
 package com.example.weitblickapp_android.ui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,18 +51,14 @@ public class ImageSliderAdapter extends PagerAdapter {
         View itemView = inflater.inflate(R.layout.image_slider_item, container, false);
         ImageView imageView = itemView.findViewById(R.id.image_pager_item_image);
 
+            Picasso.get()
+                    .load(images.get(position))
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2)
+                    .into(imageView);
 
-            Log.e("!!!!!!!!!!!!!!!!!", images.get(0));
-
-
-
-        Picasso.get()
-                .load(images.get(position))
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2)
-                .into(imageView);
 
         ((ViewPager) container).addView(itemView);
 
