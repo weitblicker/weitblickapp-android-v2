@@ -433,11 +433,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", auth);
+                headers.put("Media-Type", "application/json");
+                headers.put("Authorization", "Token " + getToken());
                 return headers;
             }
         };
@@ -476,11 +473,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
+                    headers.put("Media-Type", "application/json");
+                    headers.put("Authorization", "Token " + getToken());
                     return headers;
                 }
             };
@@ -535,11 +529,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Media-Type", "application/json");
-                    headers.put("Authorization", auth);
+                    headers.put("Authorization", "Token " + getToken());
                     return headers;
                 }
             };
@@ -606,6 +597,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public String extractImageUrls(String text){
         text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
         return text;
+    }
+
+    private String getToken(){
+        return this.token;
     }
 }
 
