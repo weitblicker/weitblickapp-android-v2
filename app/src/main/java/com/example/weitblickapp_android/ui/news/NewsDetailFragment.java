@@ -129,4 +129,10 @@ public class NewsDetailFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
+    }
+
 }
