@@ -52,16 +52,17 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_project_cycle_list, null);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView_title = (TextView) view.findViewById(R.id.title);
-        TextView textView_address = (TextView) view.findViewById(R.id.location);
+        TextView textView_address = (TextView) view.findViewById(R.id.city);
 
-
-        weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+        if(!project.getImageUrls().isEmpty()) {
+            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+        }
 
         Picasso.get()
                 .load(weitblickUrl)

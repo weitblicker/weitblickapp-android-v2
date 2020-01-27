@@ -44,8 +44,8 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
 
     private MapFragment fragment = null;
 
-
     FusedLocationProviderClient fusedLocationProviderClient;
+
     private static final int REQUEST_CODE = 101;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
