@@ -44,6 +44,8 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
 
     private MapFragment fragment = null;
 
+    private boolean pending = false;
+
     FusedLocationProviderClient fusedLocationProviderClient;
 
     private static final int REQUEST_CODE = 101;
@@ -82,6 +84,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                 else{
                     SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
                     if(settings.contains("projectid")) {
+                        pending = true;
                         fragment = new MapFragment(projectID);
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
@@ -99,6 +102,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
 
     public void onResume(){
         super.onResume();
+        Log.e("PENDING: ", pending +"");
         if (fragment != null) {
             Log.e("MAPFRAGMENT:",fragment.toString());
             Log.e("FRAGMENTTEST:","MAPFRAGMENT EXISTIERT");

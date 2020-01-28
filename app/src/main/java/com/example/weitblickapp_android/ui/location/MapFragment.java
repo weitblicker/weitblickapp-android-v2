@@ -98,6 +98,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
+    private Runnable locationRunnable;
+
     private final Handler segmentHandler = new Handler();
     private final int fetchLocationDelay = 1000; //milliseconds
     private final int segmentSendDelay = 30000; //milliseconds
@@ -116,14 +118,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
-    MapFragment(int projectid){
-        this.projectId = projectid;
+    MapFragment(int projectId){
+        this.projectId = projectId;
     }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -135,16 +138,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         initializeTour();
         startFetchLocation();
         sendRouteSegments();
-    }
-
-    private void initAccelerometer(){
-        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-    }
-
-    private String getFormattedDate(){
-        Date date = new Date();
-        return formatter.format(date);
+        startFetchLocation();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -206,6 +200,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                handler.removeCallbacks(locationRunnable);
                 paused = true;
                 EndFragment fragment = new EndFragment(currentTour, project);
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
@@ -214,6 +209,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 ft.commit();
                 sendSegment();
                 kmTotal = 0;
+
             }
         });
         return root;
@@ -236,12 +232,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     //Checks every Second if GPS is enabled, if so -> fetchLastLocation
     private void startFetchLocation() {
-        handler.postDelayed(new Runnable() {
+        handler.postDelayed(locationRunnable = new Runnable() {
             public void run() {
                 if(!paused && gpsIsEnabled) {
                     fetchLastLocation();
-                }else{
-                    return;
                 }
                 handler.postDelayed(this, fetchLocationDelay);
             }
@@ -256,11 +250,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if(location != null){
                     lastLocation = location;
                     currentLocation = location;
-                    checkKm();
                 }
             }
         });
-        startFetchLocation();
     }
 
     //Fetches last GPS-Location and calculates resulting km
@@ -276,7 +268,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
-                    Log.e("LOCATIONACCURAY:", location.getAccuracy() + "");
                     if (location.getAccuracy() < 20) {
                         currentLocation = location;
                         currentTour.getLocations().add(location);
@@ -579,6 +570,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     if (isGpsEnabled || isNetworkEnabled) {
                         gpsIsEnabled = true;
+                        //startFetchLocation();
                     } else {
                         gpsIsEnabled = false;
                         buildAlertMessageNoGps();
@@ -629,6 +621,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private String getToken(){
         return this.token;
+    }
+
+    private void initAccelerometer(){
+        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+    }
+
+    //Gets actual Date of TODAY in Format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    private String getFormattedDate(){
+        Date date = new Date();
+        return formatter.format(date);
     }
 }
 
