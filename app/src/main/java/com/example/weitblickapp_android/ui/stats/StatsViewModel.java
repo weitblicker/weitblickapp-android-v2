@@ -13,6 +13,7 @@ public class StatsViewModel extends ViewModel {
     private double distance;
     private double donation;
     private int duration;
+    private int durationSeconds;
     private Date date;
 
     public StatsViewModel(){
@@ -25,12 +26,32 @@ public class StatsViewModel extends ViewModel {
         this.distance = distance;
         this.donation = donation;
         this.duration = (duration/60);
+        this.durationSeconds = (duration%60);
 
         try {
             this.date = formatterRead.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getDurationSeconds() {
+        return durationSeconds;
+    }
+
+    public String getSecondsAsString(){
+        if(this.durationSeconds < 10){
+            return "0"+ Integer.toString(this.durationSeconds);
+        }else{
+            return Integer.toString(this.durationSeconds);
+        }
+    }
+    public String getDurationAsString(){
+        return getDuration() + ":" + getSecondsAsString() + " min";
+    }
+
+    public void setDurationSeconds(int durationSeconds) {
+        this.durationSeconds = durationSeconds;
     }
 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

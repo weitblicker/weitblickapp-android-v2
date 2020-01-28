@@ -52,18 +52,15 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
         TextView textView_date = (TextView) view.findViewById(R.id.date);
         TextView textView_donation = (TextView) view.findViewById(R.id.donation);
 
-
-
         final StatsViewModel tour = (StatsViewModel) getItem(position);
-
-
+        
         String donation = String.format("%.2f", tour.getDonation()).concat(" €");
         String distance = String.format("%.2f", tour.getDistance()).concat(" km");
 
         textView_donation.setText(donation);
         textView_distance.setText(distance);
         textView_date.setText(tour.getDate());
-        textView_duration.setText(Integer.toString(tour.getDuration()).concat(" min"));
+        textView_duration.setText(tour.getDurationAsString());
         return view;
     }
 }
