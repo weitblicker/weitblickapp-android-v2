@@ -122,13 +122,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         this.projectId = projectId;
     }
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -162,7 +155,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
+        //Retrieves Amount of Tours of User to increment Tour-IDs
         getAmountTours();
+
+        //Loads cycle-Project to display in Endfragment
         loadProject(projectId);
 
         final ImageView pause = root.findViewById(R.id.pause);
@@ -288,7 +284,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
         if(checkSpeedAndAcceleration()) {
-            checkKm();
+            calculateKm();
         }
     }
 
@@ -330,7 +326,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void checkKm() {
+    private void calculateKm() {
             if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
                 kmSegment += dis;
@@ -351,7 +347,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
                 float currentSpeedInKmh = (currentLocation.getSpeed() * 3.6f);
-                Toast toast= Toast.makeText(mContext,"Speed: " + currentSpeedInKmh + "km/h" ,Toast. LENGTH_SHORT);
+                Toast toast= Toast.makeText(mContext,"Speed: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
                 toast.show();
                 if (currentSpeedInKmh > 60.0f) {
                     return false;

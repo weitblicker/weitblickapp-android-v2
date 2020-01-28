@@ -24,6 +24,7 @@ public class EndFragment extends Fragment {
 
     String distanceTotal;
     String eurosTotal;
+    String projectName;
 
     private ProjectViewModel project;
 
@@ -31,6 +32,7 @@ public class EndFragment extends Fragment {
         this.project = project;
         this.distanceTotal = String.format("%.2f", currentTour.getDistanceTotal()).concat(" km");
         this.eurosTotal = String.format("%.2f", currentTour.getEurosTotal()).concat(" €");
+        this.projectName = project.getName();
      }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,6 +45,9 @@ public class EndFragment extends Fragment {
 
         TextView eurosText = root.findViewById(R.id.donation);
         eurosText.setText(eurosTotal);
+
+        TextView projectNameText = root.findViewById(R.id.project);
+        projectNameText.setText(projectName);
 
 
         ListView listview = (ListView) root.findViewById(R.id.list);

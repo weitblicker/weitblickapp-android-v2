@@ -90,7 +90,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                         FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
                         ft.commit();
                     }else{
-                        Toast.makeText(getActivity(), "Du hast noch kein Projekt zum Spenden ausgewählt.",
+                        Toast.makeText(getActivity(), "Bitte wählen Sie zunächst ein Projekt zum Spenden aus!",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
