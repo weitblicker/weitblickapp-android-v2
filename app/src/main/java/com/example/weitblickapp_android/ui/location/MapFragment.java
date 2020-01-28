@@ -101,7 +101,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Runnable locationRunnable;
 
     private final Handler segmentHandler = new Handler();
-    private final int fetchLocationDelay = 1000; //milliseconds
+    private Runnable segmentSendRunnable;
+
+    private final int fetchLocationDelay = 3000; //milliseconds
     private final int segmentSendDelay = 30000; //milliseconds
 
     private TextView distance;
@@ -128,6 +130,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mContext = context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -139,7 +145,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         initializeTour();
         startFetchLocation();
         sendRouteSegments();
-        startFetchLocation();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -204,7 +209,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.removeCallbacks(locationRunnable);
                 paused = true;
                 EndFragment fragment = new EndFragment(currentTour, project);
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
@@ -239,7 +243,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         handler.postDelayed(locationRunnable = new Runnable() {
             public void run() {
                 if(!paused && gpsIsEnabled) {
-                    Log.e("FETCHING LOCATION", "!");
+                    Log.e("FETCHING LOCATION", "!!!");
                     fetchLastLocation();
                 }
                 handler.postDelayed(this, fetchLocationDelay);
@@ -273,12 +277,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
+                    Log.e("ACCURACY", location.getAccuracy() +"");
                     if (location.getAccuracy() < 20) {
                         currentLocation = location;
                         currentTour.getLocations().add(location);
-                        if (!load) {
-                            setUpMapIfNeeded();
-                        }
+                    }
+                    if (!load) {
+                        setUpMapIfNeeded();
                     }
                 }
             }
@@ -301,11 +306,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void sendRouteSegments() {
         segmentStartTime = getFormattedDate();
 
-        segmentHandler.postDelayed(new Runnable() {
+        segmentHandler.postDelayed(segmentSendRunnable = new Runnable() {
             @Override
             public void run() {
                 //Send Segment here
                 if ((!paused) && gpsIsEnabled) {
+                    Log.e("SEGMENT SENT", "!!!");
                     sendSegment();
                 }
                 segmentHandler.postDelayed(this, segmentSendDelay);
@@ -637,6 +643,66 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Date date = new Date();
         return formatter.format(date);
     }
+
+
+    public boolean onBackPressed() {
+       boolean leave;
+       leave = confirmBackPressedMessage();
+       return leave;
+    }
+
+    public boolean confirmBackPressedMessage(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final boolean[] answer = new boolean[1];
+        builder.setMessage("Wollen Sie die Tour wirklich beenden?")
+                .setCancelable(false)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        answer[0] = true;
+                        dialog.cancel();
+
+                    }
+                })
+                .setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        answer[0] = false;
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+        return answer[0];
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("RESUMED", "!!!!!!");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("STOPPED", "!!!!!!!");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        paused = true;
+        sendSegment();
+       // confirmBackPressedMessage();
+
+        Log.e("PAUSED", "!!!!!");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("STARTED", "!!!!!");
+    }
+
+
 }
 
 

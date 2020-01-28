@@ -2,23 +2,15 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -199,7 +191,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                 }
 
                 for(ProjectViewModel newsArticle:projectList){
-                    Log.e("Projects",newsArticle.toString());
+                   // Log.e("Projects",newsArticle.toString());
                 }
 
             }
@@ -232,7 +224,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\)")
                 .matcher(text);
         while (m.find()) {
-            Log.e("ImageUrl", m.group(2));
+           // Log.e("ImageUrl", m.group(2));
 
             imageUrls.add(m.group(2));
         }

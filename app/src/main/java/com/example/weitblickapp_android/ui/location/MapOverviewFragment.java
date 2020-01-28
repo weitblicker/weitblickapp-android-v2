@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.ui.location;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
 import com.example.weitblickapp_android.ui.project.ProjectCycleListFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,7 +30,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapOverviewFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    Location currentLocation;
     private SessionManager session;
     private SharedPreferences defaultProjects;
     private String PREF_NAME = "DefaultProject";
@@ -46,70 +43,61 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
 
     private boolean pending = false;
 
-    FusedLocationProviderClient fusedLocationProviderClient;
-
-    private static final int REQUEST_CODE = 101;
+    private final static String TAG_FRAGMENT = "MAP_FRAGMENT";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
-        defaultProjects = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
-        checkDefault();
+            View root = inflater.inflate(R.layout.fragment_map, container, false);
+            defaultProjects = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+            checkDefault();
 
-        Button defaultProject = root.findViewById(R.id.defaultProject);
-        defaultProject.setText(defaultproject);
+            Button defaultProject = root.findViewById(R.id.defaultProject);
+            defaultProject.setText(defaultproject);
 
-        session = new SessionManager(getActivity().getApplicationContext());
+            session = new SessionManager(getActivity().getApplicationContext());
 
-        defaultProject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProjectCycleListFragment fragment = new ProjectCycleListFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-
-        ImageView img = root.findViewById(R.id.play);
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!session.isLoggedIn()){
-                    Intent redirect= new Intent(getActivity(), Login_Activity.class);
-                    getActivity().startActivity(redirect);
+            defaultProject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProjectCycleListFragment fragment = new ProjectCycleListFragment();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
                 }
-                else{
-                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
-                    if(settings.contains("projectid")) {
-                        pending = true;
-                        fragment = new MapFragment(projectID);
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-                        ft.commit();
-                    }else{
-                        Toast.makeText(getActivity(), "Bitte wählen Sie zunächst ein Projekt zum Spenden aus!",
-                                Toast.LENGTH_LONG).show();
+            });
+
+            ImageView img = root.findViewById(R.id.play);
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!session.isLoggedIn()) {
+                        Intent redirect = new Intent(getActivity(), Login_Activity.class);
+                        getActivity().startActivity(redirect);
+                    } else {
+                        SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                        if (settings.contains("projectid")) {
+                            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                            fragment = new MapFragment(projectID);
+                            ft.add(R.id.fragment_container, fragment, TAG_FRAGMENT);
+                            ft.commit();
+                        } else {
+                            Toast.makeText(getActivity(), "Bitte wählen Sie ein Projekt zum Spenden aus!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
-            }
-        });
-        setUpMapIfNeeded();
+            });
+            setUpMapIfNeeded();
         return root;
     }
 
-    public void onResume(){
+    @Override
+    public void onResume() {
         super.onResume();
-        Log.e("PENDING: ", pending +"");
-        if (fragment != null) {
-            Log.e("MAPFRAGMENT:",fragment.toString());
-            Log.e("FRAGMENTTEST:","MAPFRAGMENT EXISTIERT");
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-            ft.commit();
-
+        if(pending){
+            Log.e("TOURPENDING", "PENDING");
         }
     }
 
