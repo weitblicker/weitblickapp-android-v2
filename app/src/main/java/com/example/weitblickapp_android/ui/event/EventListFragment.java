@@ -136,7 +136,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     }
                 }
                 for(EventViewModel event:events){
-                    Log.e("Event",event.toString());
+                   // Log.e("Event",event.toString());
                 }
 
             }

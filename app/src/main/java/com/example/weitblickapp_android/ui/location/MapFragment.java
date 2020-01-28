@@ -87,7 +87,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private boolean projectFinished;
 
     //Segment-Information
-    static private double km = 0;
+    static private double kmSegment = 0;
     static private double kmTotal = 0;
     private String segmentStartTime;
     private String segmentEndTime;
@@ -121,6 +121,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     MapFragment(int projectId){
         this.projectId = projectId;
     }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -146,7 +154,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         this.gpsIsEnabled = isLocationEnabled();
-        loadProject(projectId);
 
         View root = inflater.inflate(R.layout.fragment_location, container, false);
 
@@ -156,6 +163,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         getAmountTours();
+        loadProject(projectId);
 
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
@@ -220,7 +228,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         lastLocation = null;
     }
     private void resetTour(){
-        km = 0.0;
+        kmSegment = 0.0;
         kmTotal = 0.0;
         don = 0.0;
     }
@@ -235,6 +243,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         handler.postDelayed(locationRunnable = new Runnable() {
             public void run() {
                 if(!paused && gpsIsEnabled) {
+                    Log.e("FETCHING LOCATION", "!");
                     fetchLastLocation();
                 }
                 handler.postDelayed(this, fetchLocationDelay);
@@ -276,7 +285,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                 }
-
             }
         });
         if(checkSpeedAndAcceleration()) {
@@ -325,12 +333,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void checkKm() {
             if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
-                km += dis;
+                kmSegment += dis;
+
                 don = currentTour.getEurosTotal() / 100;
                 String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
                 String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
+
                 distance.setText(distanceTotal);
                 donation.setText(donationTotal);
+
+                currentTour.setDistanceTotal(kmTotal);
             }
         lastLocation = currentLocation;
     }
@@ -350,6 +362,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         return false;
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResult) {
         switch (requestCode) {
@@ -383,8 +396,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void loadProject(int projectID){
 
         String URL = "https://new.weitblicker.org/rest/projects/" + projectID + "/";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
@@ -456,7 +467,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return headers;
             }
         };
-        requestQueue.add(objectRequest);
+        this.requestQueue.add(objectRequest);
     }
     //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
     private void getAmountTours(){
@@ -470,8 +481,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             } catch (JSONException e) {
                 Log.e("TourJsonException:", e.toString());
             }
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
             MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.GET, URL, jsonBody, new Response.Listener<JSONArray>() {
 
@@ -496,19 +505,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
 
     private void sendSegment() {
 
         segmentEndTime = getFormattedDate();
-        kmTotal += km;
+        kmTotal += kmSegment;
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("start", segmentStartTime);
             jsonBody.put("end", segmentEndTime);
-            jsonBody.put("distance", km);
+            jsonBody.put("distance", kmSegment);
             jsonBody.put("project", projectId);
             jsonBody.put("tour", tourId);
             jsonBody.put("token", token);
@@ -518,7 +527,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         Log.e("JSON:", jsonBody.toString());
 
-            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
                 @Override
@@ -556,7 +564,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             this.requestQueue.add(objectRequest);
             //Reset Km-Counter for Segment
             segmentStartTime = segmentEndTime;
-            km = 0;
+            kmSegment = 0;
     }
 
     private void setUpGpsReceiver(){
