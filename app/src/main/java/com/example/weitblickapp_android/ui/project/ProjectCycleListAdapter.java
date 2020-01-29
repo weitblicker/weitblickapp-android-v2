@@ -59,7 +59,7 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView_title = (TextView) view.findViewById(R.id.title);
-        TextView textView_address = (TextView) view.findViewById(R.id.city);
+        TextView textView_address = (TextView) view.findViewById(R.id.location);
 
         if(project.getImageUrls().size() != 0){
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
