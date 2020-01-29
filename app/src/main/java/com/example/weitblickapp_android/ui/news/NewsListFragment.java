@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.news;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -44,6 +45,9 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private String lastItemDate;
     private String lastItemDateCheck = "";
     private String url = "https://weitblicker.org/rest/news?limit=5";
+
+    private SharedPreferences cachedNews;
+    private String PREF_NAME = "NewsList";
 
 
     public void onCreate(Bundle savedInstanceState) {
