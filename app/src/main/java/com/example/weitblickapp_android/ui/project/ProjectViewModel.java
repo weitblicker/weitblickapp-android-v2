@@ -1,8 +1,10 @@
 package com.example.weitblickapp_android.ui.project;
 
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
+import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
 
 import androidx.lifecycle.ViewModel;
 
@@ -19,59 +21,38 @@ public class ProjectViewModel extends ViewModel {
     private ArrayList <ProjectPartnerViewModel> partner_ids;
     private ArrayList <NewsViewModel> new_ids;
     private ArrayList <BlogEntryViewModel> blog_ids;
+    private ArrayList <SponsorViewModel> sponsor_ids;
     private float Lat;
     private float Lng;
     private String locationName;
-    private float current_amount;
-    private float cycle_donation;
-    private boolean finished;
-    private int cycle_id;
     private String address;
-    private float goal_amount;
+    private CycleViewModel cycle;
+    float donationGoal;
+    float currentAmount;
+    String goalDescription;
 
-    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id) {
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, float currentAmount, float donationGoal, String goalDescription, ArrayList<String> allHosts) {
         this.id = projectId;
         this.name = title;
         this.description = text;
         this.Lng = lng;
         this.Lat = lat;
         this.locationName = name;
-        this.current_amount = current_amount;
-        this.cycle_donation = cycle_donation;
-        this.cycle_id = cycle_id;
-        this.finished = finished;
+        this.cycle = cycle;
         this.address = address;
-        this.goal_amount = goal_amount;
         this.imageUrls = imageUrls;
         this.partner_ids = partner_ids;
         this.new_ids = news_id;
         this.blog_ids = blog_id;
-    }
-    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount) {
-        this.id = projectId;
-        this.name = title;
-        this.description = text;
-        this.Lng = lng;
-        this.Lat = lat;
-        this.locationName = name;
-        this.current_amount = current_amount;
-        this.cycle_donation = cycle_donation;
-        this.cycle_id = cycle_id;
-        this.finished = finished;
-        this.address = address;
-        this.goal_amount = goal_amount;
+        this.donationGoal = donationGoal;
+        this.currentAmount = currentAmount;
+        this.sponsor_ids = sponsor_id;
+        this.goalDescription = goalDescription;
+        this.hosts = allHosts;
     }
 
     public ProjectViewModel(){
 
-    }
-
-    public float getGoal_amount() {
-        return goal_amount;
-    }
-
-    public void setGoal_amount(float goal_amount) {
-        this.goal_amount = goal_amount;
     }
 
     public String getAddress() {
@@ -94,38 +75,6 @@ public class ProjectViewModel extends ViewModel {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
-    }
-
-    public float getCurrent_amount() {
-        return current_amount;
-    }
-
-    public void setCurrent_amount(float current_amount) {
-        this.current_amount = current_amount;
-    }
-
-    public float getCycle_donation() {
-        return cycle_donation;
-    }
-
-    public void setCycle_donation(float cycle_donation) {
-        this.cycle_donation = cycle_donation;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public int getCycle_id() {
-        return cycle_id;
-    }
-
-    public void setCycle_id(int cycle_id) {
-        this.cycle_id = cycle_id;
     }
 
     public int getLocationId() {
@@ -218,6 +167,46 @@ public class ProjectViewModel extends ViewModel {
 
     public void setBlog_ids(ArrayList<BlogEntryViewModel> blog_ids) {
         this.blog_ids = blog_ids;
+    }
+
+    public CycleViewModel getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(CycleViewModel cycle) {
+        this.cycle = cycle;
+    }
+
+    public float getDonationGoal() {
+        return donationGoal;
+    }
+
+    public void setDonationGoal(float donationGoal) {
+        this.donationGoal = donationGoal;
+    }
+
+    public float getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(float currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
+    public ArrayList<SponsorViewModel> getSponsor_ids() {
+        return sponsor_ids;
+    }
+
+    public void setSponsor_ids(ArrayList<SponsorViewModel> sponsor_ids) {
+        this.sponsor_ids = sponsor_ids;
+    }
+
+    public String getGoalDescription() {
+        return goalDescription;
+    }
+
+    public void setGoalDescription(String goalDescription) {
+        this.goalDescription = goalDescription;
     }
 
     @Override

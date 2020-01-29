@@ -2,6 +2,7 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,20 +61,22 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
         TextView textView_title = (TextView) view.findViewById(R.id.title);
         TextView textView_address = (TextView) view.findViewById(R.id.location);
 
+        if(project.getImageUrls().size() != 0){
+            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
-        weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
-
-        Picasso.get()
-                .load(weitblickUrl)
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+            Picasso.get()
+                    .load(weitblickUrl)
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }
 
         textView_title.setText(project.getName());
         textView_address.setText(project.getAddress());
-        //textView_title.setText(project.g);
 
+        if(project.getPartner_ids().size() == 0)
+        Log.e("PARTNER" , "Nicht da");
         //Set Button-Listener and redirect to Details-Page
         ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
         view.setOnClickListener(new View.OnClickListener() {

@@ -86,6 +86,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_address = (TextView) view.findViewById(R.id.location);
             ImageButton maps = (ImageButton) view.findViewById(R.id.project_maps_btn);
+            TextView partner = (TextView) view.findViewById(R.id.partner);
 
 
             //TextView textView_date = (TextView) view.findViewById(R.id.date);
@@ -102,7 +103,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
 
-            if(project.getCycle_id() == 0){
+            if(project.getCycle() == null){
                 maps.setVisibility(View.GONE);
             }else{
                 maps.setOnClickListener(new View.OnClickListener() {
@@ -121,8 +122,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     }
                 });
             }
-
-
         try {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
         }catch(IndexOutOfBoundsException e){
@@ -138,6 +137,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
+            partner.setText("Test");
             //textView_title.setText(project.g);
 
             //Set Button-Listener and redirect to Details-Page

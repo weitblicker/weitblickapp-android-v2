@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import com.example.weitblickapp_android.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,12 +53,24 @@ public class ProjectPartnerAdapter extends ArrayAdapter<ProjectPartnerViewModel>
         TextView description = (TextView) view.findViewById(R.id.description);
         TextView weblink = (TextView) view.findViewById(R.id.weblink);
         TextView name = (TextView) view.findViewById(R.id.name);
+        ImageView logo = (ImageView) view.findViewById(R.id.logo);
 
         final ProjectPartnerViewModel partner = (ProjectPartnerViewModel) getItem(position);
 
         description.setText(partner.getDescription());
         name.setText(partner.name);
         weblink.setText(partner.getWeblink());
+
+        String weitblickUrl = "https://new.weitblicker.org";
+
+        weitblickUrl = weitblickUrl.concat(partner.getLogo());
+
+            Picasso.get()
+                    .load(weitblickUrl)
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(logo);
 
         return view;
     }

@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,6 +22,7 @@ import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
@@ -59,27 +61,20 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     float lat;
     float current_amount;
     float goal_amount;
-    int cycleID;
+    String goalDescription;
+    CycleViewModel cycle;
     ArrayList <String> imageUrls = new ArrayList<String>();
     ArrayList <NewsViewModel> newsId = new ArrayList<NewsViewModel>();
     ArrayList <BlogEntryViewModel> blogId = new ArrayList<BlogEntryViewModel>();
     ArrayList <ProjectPartnerViewModel> partnerId = new ArrayList<ProjectPartnerViewModel>();
+    ArrayList <SponsorViewModel> sponsorId = new ArrayList<SponsorViewModel>();
     Boolean favorite = false;
     View root;
     private GoogleMap mMap;
-    /*private int cycleID = 0;
-    private int donationGoalID = 0;
-    private int projectPartnerID = 0;
-    private int statsID = 0;
-    private int milenstoneID = 0;
-    private int newsID = 0;
-    private int blogsID = 0;
-    private int eventsID = 0;*/
 
-    private int donationGoalID = 1;
     private int statsID = 1;
     private int milenstoneID = 1;
-    private int eventsID = 1;
+    private int eventsID = 0;
 
     private static final int UNBOUNDED = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
@@ -102,12 +97,14 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.location = project.getAddress();
         this.lat = project.getLat();
         this.lng = project.getLng();
-        this.current_amount = project.getCurrent_amount();
-        this.goal_amount = project.getGoal_amount();
-        this.cycleID = project.getCycle_id();
+        this.current_amount = project.getCurrentAmount();
+        this.goal_amount = project.getDonationGoal();
+        this.cycle = project.getCycle();
         this.newsId = project.getNew_ids();
         this.blogId = project.getBlog_ids();
         this.partnerId = project.getPartner_ids();
+        this.sponsorId = project.getSponsor_ids();
+        this.goalDescription = project.getGoalDescription();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
         for(int i = 0; i < project.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
@@ -129,25 +126,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
 
-        //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
-
-        /*changeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!favorite){
-                    changeImage.setImageResource(R.drawable.ic_heart_filled);
-                    favorite=true;
-                }else{
-                    changeImage.setImageResource(R.drawable.ic_heart_outline);
-                    favorite=false;
-                }
-
-            }
-        });*/
 
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
@@ -165,7 +145,12 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
 
+
         final TextView textTextView = root.findViewById(R.id.detail_text);
+        final TextView currentNumber = root.findViewById(R.id.currentNumber);
+        final TextView goalNumber = root.findViewById(R.id.goalnumber);
+        final TextView goalDesc = root.findViewById(R.id.donationgoaldescription);
+
 
         final Markwon markwon = Markwon.create(getContext());
 
@@ -179,33 +164,34 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
         final TextView amountTextView = root.findViewById(R.id.amountNumber);
 
-        if( cycleID != 0){
+        //DonationGoal
+        goalTextView.setText(goal_amount + " €");
+        amountTextView.setText(current_amount + " €");
+        goalDesc.setText(goalDescription);
+
+        if( cycle != null){
             drawPie(true);
-            goalTextView.setText((this.goal_amount - this.current_amount) + " €");
-            amountTextView.setText(current_amount + " €");
+            //Sponsor
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
-            SponsorViewModel test1 = new SponsorViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de", "nbhvjsmnvobs kevj hsl");
-            SponsorViewModel test2 = new SponsorViewModel("Test2", "oi09uh jhwsbv wjbv wlkbv , hw  wh luefv wwe fwf wjweb", "www.dhejvhebvkrv-vevee.com", "fhubvdacnlkdjfoeihvs");
             SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
             listViewSponsor.setAdapter(adapterSponsor);
-            sponsorList.add(test1);
-            sponsorList.add(test2);
-            sponsorList.add(test1);
+            if(sponsorId != null){
+                for(int i = 0; i < sponsorId.size(); i++){
+                    sponsorList.add(sponsorId.get(i));
+                }
+            }
             setListViewHeightBasedOnChildren(listViewSponsor);
+
+            //Stats
+            currentNumber.setText(this.cycle.getCurrentAmount() + " €");
+            goalNumber.setText(this.cycle.getCycleDonation() + " €");
+
         }else{
             ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
             stats.setVisibility(View.GONE);
             ConstraintLayout sponsor = (ConstraintLayout) root.findViewById(R.id.sponsorContainer);
             sponsor.setVisibility(View.GONE);
-            goalTextView.setVisibility(View.GONE);
-            amountTextView.setVisibility(View.GONE);
             drawPie(false);
-        }
-        if(donationGoalID != 0){
-
-        }else{
-            ConstraintLayout donation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
-            donation.setVisibility(View.GONE);
         }
         if(newsId.size() != 0){
             ListView listNews = (ListView) root.findViewById(R.id.news);
@@ -247,13 +233,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(partnerId.size() != 0){
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
-            ProjectPartnerViewModel test1 = new ProjectPartnerViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
-            ProjectPartnerViewModel test2 = new ProjectPartnerViewModel("Test2", "oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
             ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
             listPartner.setAdapter(adapterPartner);
-            partnerList.add(test2);
-            partnerList.add(test2);
-            partnerList.add(test2);
+            for(int i = 0; i < partnerId.size(); i++){
+                partnerList.add(partnerId.get(i));
+            }
             setListViewHeightBasedOnChildren(listPartner);
         }else{
             ConstraintLayout projectPartner = (ConstraintLayout) root.findViewById(R.id.projectPartnerContainer);
@@ -287,7 +271,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             int totalItemsHeight = 0;
             for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
                 View item = listAdapter.getView(itemPos, null, listView);
-                float px = 400 * (listView.getResources().getDisplayMetrics().density);
+                float px = 350 * (listView.getResources().getDisplayMetrics().density);
                 item.measure(
                         View.MeasureSpec.makeMeasureSpec((int)px, View.MeasureSpec.AT_MOST),
                         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));

@@ -7,15 +7,17 @@ public class SponsorViewModel extends ViewModel {
     String description;
     String name;
     String weblink;
-    String donation;
+    String logo;
+    float rateProKm;
     int id;
 
     public SponsorViewModel(){};
 
-    public SponsorViewModel(String name, String dec, String weblink, String donation){
+    public SponsorViewModel(String name, String dec, String weblink, String logo, float rateProKm){
         this.description = dec;
         this.name = name;
         this.weblink = weblink;
+        this.rateProKm = rateProKm;
     }
 
     public String getDescription() {
@@ -50,11 +52,19 @@ public class SponsorViewModel extends ViewModel {
         this.id = id;
     }
 
-    public String getDonation() {
-        return donation;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setDonation(String donation) {
-        this.donation = donation;
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public float getRateProKm() {
+        return rateProKm;
+    }
+
+    public void setRateProKm(float rateProKm) {
+        this.rateProKm = rateProKm;
     }
 }

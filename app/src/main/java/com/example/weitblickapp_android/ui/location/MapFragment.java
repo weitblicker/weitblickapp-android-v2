@@ -41,10 +41,12 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -425,12 +427,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     ArrayList<NewsViewModel> newsArr = new ArrayList<NewsViewModel>();
                     ArrayList<ProjectPartnerViewModel> partnerArr = new ArrayList<ProjectPartnerViewModel>();
                     ArrayList<Integer> partnerIds = new ArrayList<Integer>();
+                    ArrayList<SponsorViewModel> sponsorArr = new ArrayList<SponsorViewModel>();
                     JSONObject newPost = null;
                     JSONObject blog = null;
                     JSONArray images = null;
                     JSONArray news = null;
                     JSONArray blogs = null;
                     JSONArray partners = null;
+                    CycleViewModel cycle = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
@@ -485,6 +489,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         float lng = locationObject.getLong("lng");
                         String name = locationObject.getString("name");
                         String address = locationObject.getString("address");
+                        String goal_description = responseObject.getString("goal_description");
+
+                        float currentAmountDonationGoal = 0;
+                        float donationGoalDonationGoal = 0;
+
+                        currentAmountDonationGoal = responseObject.getLong("donation_current");
+                        donationGoalDonationGoal = responseObject.getLong("donation_goal");
+
 
                         cycleJSONObject = responseObject.getJSONArray("cycle");
 
@@ -501,11 +513,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             finished = cycleObject.getBoolean("finished");
                             cycle_id = cycleObject.getInt("cycle_donation");
                             goal_amount = cycleObject.getLong("goal_amount");
+                            cycle = new CycleViewModel(current_amount, cycle_donation, finished, cycle_id, goal_amount);
                         }
 
                         text.trim();
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls, partnerArr, newsArr, blogsArr);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, null);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
