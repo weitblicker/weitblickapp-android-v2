@@ -42,6 +42,9 @@ import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -292,6 +295,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         setUpMapIfNeeded();
                     }
                 }else{
+                    // Update Background Location fpr Fused-Location-Provider
+                    RequestLocationUpdate();
                     Log.e("LOCATION IS NULL", "!!!");
                 }
             }
@@ -661,7 +666,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
        return leave;
     }
 
-    public boolean confirmBackPressedMessage(){
+
+    //Prevent user from leaving fragment
+    private boolean confirmBackPressedMessage(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final boolean[] answer = new boolean[1];
         builder.setMessage("Wollen Sie die Tour wirklich beenden?")
@@ -682,6 +689,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         final AlertDialog alert = builder.create();
         alert.show();
         return answer[0];
+    }
+
+    // FAKE LOCATION UPDATE REQUEST FOR FUSED LOCATION PROVIDER
+    private void RequestLocationUpdate(){
+        LocationRequest mLocationRequest = LocationRequest.create();
+        mLocationRequest.setInterval(60000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationCallback mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        //TODO: UI updates.
+                    }
+                }
+            }
+        };
+        fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
     @Override
