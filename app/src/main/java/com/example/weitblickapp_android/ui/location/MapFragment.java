@@ -105,7 +105,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Runnable locationRunnable;
     private Runnable segmentSendRunnable;
 
-    private final int fetchLocationDelay = 3000; //milliseconds
+    private final int fetchLocationDelay = 1000; //milliseconds
     private final int segmentSendDelay = 30000; //milliseconds
 
     private TextView distance;
@@ -744,6 +744,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onDestroy();
         sendSegment();
         handler.removeCallbacksAndMessages(null);
+        getActivity().unregisterReceiver(locationSwitchStateReceiver);
         Log.e("DESTROYED", "!!!!");
     }
 
