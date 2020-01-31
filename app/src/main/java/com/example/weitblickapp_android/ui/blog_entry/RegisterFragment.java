@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -144,7 +143,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         String date = responseObject.getString("published");
                         try{
                             Date ItemDate = formatterRead.parse(date);
-                            lastItemDate = formatterWrite.format(ItemDate);
+                            lastItemDate = formatterRead.format(ItemDate);
 
                         } catch (ParseException e) {
                             e.printStackTrace();
