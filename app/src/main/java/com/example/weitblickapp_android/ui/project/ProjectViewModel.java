@@ -1,12 +1,12 @@
 package com.example.weitblickapp_android.ui.project;
 
+import androidx.lifecycle.ViewModel;
+
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
-
-import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
@@ -50,10 +50,19 @@ public class ProjectViewModel extends ViewModel {
         this.goalDescription = goalDescription;
         this.hosts = allHosts;
     }
+    public ProjectViewModel(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+    public ProjectViewModel(String title){
+        this.name = title;
+    }
 
     public ProjectViewModel(){
 
     }
+
 
     public String getAddress() {
         return address;
@@ -63,11 +72,7 @@ public class ProjectViewModel extends ViewModel {
         this.address = address;
     }
 
-    public ProjectViewModel(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
+
 
     public String getLocationName() {
         return locationName;
