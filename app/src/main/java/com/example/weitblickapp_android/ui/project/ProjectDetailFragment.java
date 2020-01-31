@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     ArrayList <BlogEntryViewModel> blogId = new ArrayList<BlogEntryViewModel>();
     ArrayList <ProjectPartnerViewModel> partnerId = new ArrayList<ProjectPartnerViewModel>();
     ArrayList <SponsorViewModel> sponsorId = new ArrayList<SponsorViewModel>();
+    ArrayList <String> hosts = new ArrayList<String>();
     Boolean favorite = false;
     View root;
     private GoogleMap mMap;
@@ -109,6 +111,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         for(int i = 0; i < project.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
         }
+        this.hosts = project.getHosts();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -142,10 +145,23 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
+        final TextView locationTextView2 = root.findViewById(R.id.detail_location2);
+        locationTextView2.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
-
-
+        final TextView partner = root.findViewById(R.id.partner);
+        ImageView logo_icon = root.findViewById(R.id.logo_icon);
+        if(hosts.isEmpty()){
+            partner.setVisibility(View.GONE);
+            logo_icon.setVisibility(View.GONE);
+        }else{
+            StringBuilder b = new StringBuilder();
+            for(String s : hosts){
+                b.append(s);
+                b.append(" ");
+            }
+            partner.setText(b.toString());
+        }
         final TextView textTextView = root.findViewById(R.id.detail_text);
         final TextView currentNumber = root.findViewById(R.id.currentNumber);
         final TextView goalNumber = root.findViewById(R.id.goalnumber);

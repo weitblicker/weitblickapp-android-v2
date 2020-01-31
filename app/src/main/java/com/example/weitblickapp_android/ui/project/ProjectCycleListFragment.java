@@ -287,6 +287,7 @@ public class ProjectCycleListFragment extends ListFragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    adapter.notifyDataSetChanged();
                 }
             }, new Response.ErrorListener() {
                 @Override

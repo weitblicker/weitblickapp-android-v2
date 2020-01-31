@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,7 +96,6 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
     public void loadBlogs(String URL){
 
         // Talk to Rest API
-
         String requestUrl = url.concat(Integer.toString(limitLoadedBlogs));
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -109,20 +109,21 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
                     JSONObject imageObject = null;
-                    BlogEntryViewModel temp = null;
                     JSONObject galleryObject = null;
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
+
                     try {
                         responseObject = response.getJSONObject(i);
                         Integer blogId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
-                        text = text.trim();
-                        text = text.replaceAll("\n{2,}", "\n");
-                        String published = responseObject.getString("published");
                         String teaser = responseObject.getString("teaser");
+
+                        /*text = text.trim();
+                        text = text.replaceAll("\n{2,}", "\n");*/
+
                         imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
                         //Get all imageUrls from Gallery
@@ -139,26 +140,23 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         }catch(JSONException e){
 
                         }
-                        //TODO: Check if picture exists
-                        //Get Date of last Item loaded in List loading more news starting at that date
-                        try {
-                            Date ItemDate = formatterRead.parse(published);
+
+                        String date = responseObject.getString("published");
+                        try{
+                            Date ItemDate = formatterRead.parse(date);
                             lastItemDate = formatterWrite.format(ItemDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        temp = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls);
 
+                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls);
                         blogEntries.add(temp);
-
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
-
-
             }
 
         }, new Response.ErrorListener() {

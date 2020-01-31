@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -22,6 +23,7 @@ import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
@@ -137,7 +139,14 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
-            partner.setText("Test");
+
+            StringBuilder b = new StringBuilder();
+            for(String s : project.getHosts()){
+                b.append(s);
+                b.append(" ");
+            }
+            partner.setText(b.toString());
+
             //textView_title.setText(project.g);
 
             //Set Button-Listener and redirect to Details-Page

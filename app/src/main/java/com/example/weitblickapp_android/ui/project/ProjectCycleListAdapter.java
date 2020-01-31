@@ -17,6 +17,8 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
@@ -60,6 +62,7 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView_title = (TextView) view.findViewById(R.id.title);
         TextView textView_address = (TextView) view.findViewById(R.id.location);
+        TextView partner = (TextView) view.findViewById(R.id.partner);
 
         if(project.getImageUrls().size() != 0){
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
@@ -75,8 +78,12 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
         textView_title.setText(project.getName());
         textView_address.setText(project.getAddress());
 
-        if(project.getPartner_ids().size() == 0)
-        Log.e("PARTNER" , "Nicht da");
+        StringBuilder b = new StringBuilder();
+        for(String s : project.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
         //Set Button-Listener and redirect to Details-Page
         ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
         view.setOnClickListener(new View.OnClickListener() {

@@ -327,11 +327,11 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
                     try {
                         String name =  responseObject.getString("name");
-
                         hosts.add(name);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    adapter.notifyDataSetChanged();
                 }
             }, new Response.ErrorListener() {
                 @Override
