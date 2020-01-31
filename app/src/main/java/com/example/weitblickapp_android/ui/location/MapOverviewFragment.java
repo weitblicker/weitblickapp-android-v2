@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
@@ -67,7 +66,6 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     ft.addToBackStack(null);
                     ft.commit();
                 }
-
             });
 
             ImageView img = root.findViewById(R.id.play);

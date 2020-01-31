@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -61,29 +58,23 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView_title = (TextView) view.findViewById(R.id.title);
-        TextView textView_address = (TextView) view.findViewById(R.id.location);
-        TextView partner = (TextView) view.findViewById(R.id.partner);
+        TextView textView_address = (TextView) view.findViewById(R.id.city);
 
-        if(project.getImageUrls().size() != 0){
+        if(!project.getImageUrls().isEmpty()) {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
-
-            Picasso.get()
-                    .load(weitblickUrl)
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
         }
+
+        Picasso.get()
+                .load(weitblickUrl)
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
         textView_title.setText(project.getName());
         textView_address.setText(project.getAddress());
+        //textView_title.setText(project.g);
 
-        StringBuilder b = new StringBuilder();
-        for(String s : project.getHosts()){
-            b.append(s);
-            b.append(" ");
-        }
-        partner.setText(b.toString());
         //Set Button-Listener and redirect to Details-Page
         ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
         view.setOnClickListener(new View.OnClickListener() {

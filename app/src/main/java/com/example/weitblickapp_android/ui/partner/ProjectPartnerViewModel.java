@@ -7,16 +7,14 @@ public class ProjectPartnerViewModel extends ViewModel {
     String description;
     String name;
     String weblink;
-    String logo;
     int id;
 
     public ProjectPartnerViewModel(){};
 
-    public ProjectPartnerViewModel(String name, String dec, String weblink, String logo){
+    public ProjectPartnerViewModel(String name, String dec, String weblink){
         this.description = dec;
         this.name = name;
         this.weblink = weblink;
-        this.logo = logo;
     }
 
     public String getDescription() {
@@ -49,13 +47,5 @@ public class ProjectPartnerViewModel extends ViewModel {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
     }
 }

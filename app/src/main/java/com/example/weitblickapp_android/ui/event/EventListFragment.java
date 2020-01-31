@@ -109,6 +109,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         hostName = hostObject.getString("name");
 
 
+
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {

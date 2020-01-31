@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -23,7 +22,6 @@ import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
@@ -88,7 +86,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_address = (TextView) view.findViewById(R.id.location);
             ImageButton maps = (ImageButton) view.findViewById(R.id.project_maps_btn);
-            TextView partner = (TextView) view.findViewById(R.id.partner);
 
 
             //TextView textView_date = (TextView) view.findViewById(R.id.date);
@@ -105,7 +102,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
 
-            if(project.getCycle() == null){
+            if(project.getCycle_id() == 0){
                 maps.setVisibility(View.GONE);
             }else{
                 maps.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +121,8 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     }
                 });
             }
+
+
         try {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
         }catch(IndexOutOfBoundsException e){
@@ -139,14 +138,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
-
-            StringBuilder b = new StringBuilder();
-            for(String s : project.getHosts()){
-                b.append(s);
-                b.append(" ");
-            }
-            partner.setText(b.toString());
-
             //textView_title.setText(project.g);
 
             //Set Button-Listener and redirect to Details-Page

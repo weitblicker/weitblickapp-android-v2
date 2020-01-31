@@ -74,6 +74,7 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         //Set title for BlogEntries
         textView_title.setText(blog.getTitle());
         teaser.setText(blog.getTeaser());
+
         textView_date.setText(blog.getPublished());
 
         return view;
