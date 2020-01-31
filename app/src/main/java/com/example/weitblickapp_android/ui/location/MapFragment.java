@@ -34,13 +34,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.news.NewsViewModel;
+import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -58,6 +64,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,6 +80,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private SensorManager sensorManager;
     private Sensor sensor;
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
 
     private GoogleMap mMap;
@@ -123,8 +132,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
-    MapFragment(int projectId){
-        this.projectId = projectId;
+
+    public MapFragment(int projectid){
+        this.projectId = projectid;
     }
 
     @Override
@@ -416,82 +426,63 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return enabled;
     }
 
-    private void loadProject(int projectID){
+        private void loadProject(int projectID){
 
-        String URL = "https://new.weitblicker.org/rest/projects/" + projectID + "/";
+            String URL = "https://new.weitblicker.org/rest/projects/" + projectID + "/";
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                String jsonData = response.toString();
-                //Parse the JSON response array by iterating over it
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject responseObject = null;
-                    JSONObject locationObject = null;
-                    JSONArray cycleJSONObject = null;
-                    JSONObject cycleObject = null;
-                    ArrayList<String> imageUrls = new ArrayList<String>();
-                    try {
-                        int projectId = response.getInt("id");
-                        String title = response.getString("name");
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    String jsonData = response.toString();
+                    //Parse the JSON response array by iterating over it
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject responseObject = null;
+                        JSONObject locationObject = null;
+                        JSONArray cycleJSONObject = null;
+                        JSONObject cycleObject = null;
+                        ArrayList<String> imageUrls = new ArrayList<String>();
+                        try {
+                            int projectId = response.getInt("id");
+                            String title = response.getString("name");
 
-                        String text = response.getString("description");
-                        locationObject = response.getJSONObject("location");
+                            String text = response.getString("description");
+                            locationObject = response.getJSONObject("location");
 
-                        float lat = locationObject.getLong("lat");
-                        float lng = locationObject.getLong("lng");
-                        String name = locationObject.getString("name");
-                        String address = locationObject.getString("address");
+                            float lat = locationObject.getLong("lat");
+                            float lng = locationObject.getLong("lng");
+                            String name = locationObject.getString("name");
+                            String address = locationObject.getString("address");
 
-                        cycleJSONObject = response.getJSONArray("cycle");
-
-                        float current_amount = 0;
-                        float cycle_donation = 0;
-                        boolean finished = false;
-                        int cycle_id = 0;
-                        float goal_amount = 0;
-
-                        for (int x = 0; x < cycleJSONObject.length(); x++) {
-                            cycleObject = cycleJSONObject.getJSONObject(x);
-                            current_amount = cycleObject.getLong("current_amount");
-                            cycle_donation = cycleObject.getLong("goal_amount");
-                            finished = cycleObject.getBoolean("finished");
-                            cycle_id = cycleObject.getInt("cycle_donation");
-                            goal_amount = cycleObject.getLong("goal_amount");
+                            text.trim();
+                            project = new ProjectViewModel(title);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
-                        imageUrls = getImageUrls(text);
-                        text = extractImageUrls(text);
-
-                        text.trim();
-                        project = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
-            }
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Display Error Message
-                Log.e("Rest Response", error.toString());
-            }
-        }){
-            //Override getHeaders() to set Credentials for REST-Authentication
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
-        this.requestQueue.add(objectRequest);
-    }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Display Error Message
+                    Log.e("Rest Response", error.toString());
+                }
+            }){
+                //Override getHeaders() to set Credentials for REST-Authentication
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "surfer:hangloose";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+            };
+            this.requestQueue.add(objectRequest);
+        }
+
     //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
     private void getAmountTours(){
             // Talk to Rest API
