@@ -211,7 +211,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 ft.commit();
                 sendSegment();
                 kmTotal = 0;
-
             }
         });
         return root;
@@ -283,7 +282,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Location location) {
                // Log.e("LOCATION", location.toString());
-                if (location != null) {
+                if (location != null && location != currentLocation) {
                     Log.e("ACCURACY", location.getAccuracy() +"");
                     if (location.getAccuracy() < 20) {
                         Log.e("LOCATION-LAT", location.getLatitude()+"");
@@ -353,7 +352,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
                 kmSegment += dis;
-                kmTotal += kmSegment;
+                kmTotal += dis;
                 Log.e("KMSEGMENT:", kmSegment +"");
                 Log.e("KMTOTAL:", kmTotal +"");
               //  Log.e("EUROSTOTAL:", currentTour.getEurosTotal()+"");
@@ -709,7 +708,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
-                        //TODO: UI updates.
+                        //Log.e("location-LAT", location.getLatitude()+"");
                     }
                 }
             }
@@ -757,6 +756,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onDetach();
         Log.e("DETACHED", "!!!!!");
     }
+
+
 }
 
 
