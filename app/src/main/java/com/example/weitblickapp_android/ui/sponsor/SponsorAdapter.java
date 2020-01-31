@@ -57,7 +57,7 @@ public class SponsorAdapter extends ArrayAdapter<SponsorViewModel> {
         description.setText(sponsor.getDescription());
         name.setText(sponsor.name);
         weblink.setText(sponsor.getWeblink());
-        donation.setText(sponsor.getDonation());
+        donation.setText("Dieser Spender spendet pro Kilometer " + sponsor.getRateProKm() + " €");
 
         return view;
     }

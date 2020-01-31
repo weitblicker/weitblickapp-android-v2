@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,14 +17,19 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.location.MapFragment;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private SessionManager session;
+    public static boolean start = false;
+    private String PREF_NAME = "DefaultProject";
 
     private AppBarConfiguration mAppBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(bottomNav, navController);
-        }
+    }
 
 
     @Override
@@ -62,10 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(!session.checkLogin()){
+        if (!session.checkLogin()) {
             return false;
-        }
-        else {
+        } else {
             int id = item.getItemId();
             if (id == R.id.nav_profil) {
                 ProfilFragment fragment = new ProfilFragment();
@@ -74,12 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
             }
-
             return super.onOptionsItemSelected(item);
         }
     }
 
-    public void setActionBarTitle(String title){
+    public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
 
@@ -89,6 +93,27 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
+  /*  @Override
+    public void onBackPressed() {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        final Fragment fragment = getSupportFragmentManager().findFragmentByTag("MAP_FRAGMENT");
+
+        Log.e("FRAGMENT: ", fragment.toString());
+
+        if(count == 0 && fragment != null) {
+            super.onBackPressed();
+        }else if (fragment == null || (MapFragment)fragment.onBackPressed()){
+            getSupportFragmentManager().popBackStack();
+        }
+
+    }
+
+*/
+
 
     @Override
     public void onBackPressed() {
@@ -103,6 +128,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
 }

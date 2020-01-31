@@ -8,7 +8,8 @@
     android:background="@color/white"
     android:id="@+id/fragment_location"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:keepScreenOn="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_container"

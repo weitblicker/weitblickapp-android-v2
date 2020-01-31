@@ -2,6 +2,8 @@ package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.noties.markwon.Markwon;
 
@@ -30,6 +35,12 @@ public class BlogDetailFragment extends Fragment {
     ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
+
+    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
+
+    private int currentPage = 0;
+    private Timer timer;
 
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
@@ -63,6 +74,33 @@ public class BlogDetailFragment extends Fragment {
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
 
+        //SET Tab-Indicator-Dots for ViewPager
+        TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mViewPager, true);
+
+
+        //Initiate Runnable for automatic Image-Slide
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                Log.e("currentPage:", currentPage +"");
+                Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
+                if (currentPage == mViewPager.getAdapter().getCount()){
+                    Log.e("LASTPAGE", "!!!");
+                    currentPage = 0;
+                }
+                mViewPager.setCurrentItem(currentPage, true);
+                currentPage ++;
+            }
+        };
+        timer = new Timer(); // This will create a new Thread
+        timer.schedule(new TimerTask() { // task to be scheduled
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
+
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
@@ -89,6 +127,12 @@ public class BlogDetailFragment extends Fragment {
 
 
         return root;
+    }
+
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
     }
 
 }

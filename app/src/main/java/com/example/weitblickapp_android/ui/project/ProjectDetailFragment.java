@@ -3,13 +3,17 @@ package com.example.weitblickapp_android.ui.project;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,8 +22,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
@@ -37,11 +43,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.tabs.TabLayout;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.noties.markwon.Markwon;
 
@@ -58,27 +67,21 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     float lat;
     float current_amount;
     float goal_amount;
+    String goalDescription;
+    CycleViewModel cycle;
     ArrayList <String> imageUrls = new ArrayList<String>();
+    ArrayList <NewsViewModel> newsId = new ArrayList<NewsViewModel>();
+    ArrayList <BlogEntryViewModel> blogId = new ArrayList<BlogEntryViewModel>();
+    ArrayList <ProjectPartnerViewModel> partnerId = new ArrayList<ProjectPartnerViewModel>();
+    ArrayList <SponsorViewModel> sponsorId = new ArrayList<SponsorViewModel>();
+    ArrayList <String> hosts = new ArrayList<String>();
     Boolean favorite = false;
     View root;
     private GoogleMap mMap;
-    /*private int cycleID = 0;
-    private int donationGoalID = 0;
-    private int projectPartnerID = 0;
-    private int statsID = 0;
-    private int milenstoneID = 0;
-    private int newsID = 0;
-    private int blogsID = 0;
-    private int eventsID = 0;*/
 
-    private int cycleID = 1;
-    private int donationGoalID = 1;
-    private int projectPartnerID = 1;
     private int statsID = 1;
     private int milenstoneID = 1;
-    private int newsID = 1;
-    private int blogsID = 1;
-    private int eventsID = 1;
+    private int eventsID = 0;
 
     private static final int UNBOUNDED = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
@@ -92,6 +95,12 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     private LayoutInflater mLayoutInflator;
     ViewPager mViewPager;
 
+    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
+
+    private int currentPage = 0;
+    private Timer timer;
+
     public ProjectDetailFragment() {
     }
 
@@ -101,13 +110,19 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.location = project.getAddress();
         this.lat = project.getLat();
         this.lng = project.getLng();
-        this.current_amount = project.getCurrent_amount();
-        this.goal_amount = project.getGoal_amount();
-        this.cycleID = project.getCycle_id();
+        this.current_amount = project.getCurrentAmount();
+        this.goal_amount = project.getDonationGoal();
+        this.cycle = project.getCycle();
+        this.newsId = project.getNew_ids();
+        this.blogId = project.getBlog_ids();
+        this.partnerId = project.getPartner_ids();
+        this.sponsorId = project.getSponsor_ids();
+        this.goalDescription = project.getGoalDescription();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
         for(int i = 0; i < project.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
         }
+        this.hosts = project.getHosts();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -125,25 +140,36 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
 
-        //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
+        //SET Tab-Indicator-Dots for ViewPager
+        TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mViewPager, true);
 
+        //Initiate Runnable for automatic Image-Slide
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                Log.e("currentPage:", currentPage +"");
+                Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
+                if (currentPage == mViewPager.getAdapter().getCount()){
+                    Log.e("LASTPAGE", "!!!");
+                    currentPage = 0;
+                }
+                mViewPager.setCurrentItem(currentPage, true);
+                currentPage ++;
+            }
+        };
+        timer = new Timer(); // This will create a new Thread
+        timer.schedule(new TimerTask() { // task to be scheduled
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
+
+
+        //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
-
-        /*changeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!favorite){
-                    changeImage.setImageResource(R.drawable.ic_heart_filled);
-                    favorite=true;
-                }else{
-                    changeImage.setImageResource(R.drawable.ic_heart_outline);
-                    favorite=false;
-                }
-
-            }
-        });*/
 
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
@@ -158,10 +184,28 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
+        final TextView locationTextView2 = root.findViewById(R.id.detail_location2);
+        locationTextView2.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
-
+        final TextView partner = root.findViewById(R.id.partner);
+        ImageView logo_icon = root.findViewById(R.id.logo_icon);
+        if(hosts.isEmpty()){
+            partner.setVisibility(View.GONE);
+            logo_icon.setVisibility(View.GONE);
+        }else{
+            StringBuilder b = new StringBuilder();
+            for(String s : hosts){
+                b.append(s);
+                b.append(" ");
+            }
+            partner.setText(b.toString());
+        }
         final TextView textTextView = root.findViewById(R.id.detail_text);
+        final TextView currentNumber = root.findViewById(R.id.currentNumber);
+        final TextView goalNumber = root.findViewById(R.id.goalnumber);
+        final TextView goalDesc = root.findViewById(R.id.donationgoaldescription);
+
 
         final Markwon markwon = Markwon.create(getContext());
 
@@ -175,96 +219,81 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
         final TextView amountTextView = root.findViewById(R.id.amountNumber);
 
-        if(cycleID == 0){
+        //DonationGoal
+        goalTextView.setText(goal_amount + " €");
+        amountTextView.setText(current_amount + " €");
+        goalDesc.setText(goalDescription);
+
+        if( cycle != null){
             drawPie(true);
-            goalTextView.setText((this.goal_amount - this.current_amount) + " €");
-            amountTextView.setText(current_amount + " €");
+            //Sponsor
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
-            SponsorViewModel test1 = new SponsorViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de", "nbhvjsmnvobs kevj hsl");
-            SponsorViewModel test2 = new SponsorViewModel("Test2", "oi09uh jhwsbv wjbv wlkbv , hw  wh luefv wwe fwf wjweb", "www.dhejvhebvkrv-vevee.com", "fhubvdacnlkdjfoeihvs");
             SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
             listViewSponsor.setAdapter(adapterSponsor);
-            sponsorList.add(test1);
-            sponsorList.add(test2);
-            sponsorList.add(test1);
-            ViewGroup.LayoutParams lp = listViewSponsor.getLayoutParams();
-            lp.height = loadHeight(listViewSponsor);
-            listViewSponsor.setLayoutParams(lp);
+            if(sponsorId != null){
+                for(int i = 0; i < sponsorId.size(); i++){
+                    sponsorList.add(sponsorId.get(i));
+                }
+            }
+            setListViewHeightBasedOnChildren(listViewSponsor);
+
+            //Stats
+            currentNumber.setText(this.cycle.getCurrentAmount() + " €");
+            goalNumber.setText(this.cycle.getCycleDonation() + " €");
+
         }else{
             ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
             stats.setVisibility(View.GONE);
             ConstraintLayout sponsor = (ConstraintLayout) root.findViewById(R.id.sponsorContainer);
             sponsor.setVisibility(View.GONE);
-            goalTextView.setVisibility(View.GONE);
-            amountTextView.setVisibility(View.GONE);
             drawPie(false);
         }
-        if(donationGoalID != 0){
-
-        }else{
-            ConstraintLayout donation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
-            donation.setVisibility(View.GONE);
-        }
-        if(newsID != 0){
+        if(newsId.size() != 0){
             ListView listNews = (ListView) root.findViewById(R.id.news);
-            NewsViewModel test1 = new NewsViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "jebuwfhilksbvwiu wlkhbvowubv ilw wilh sfbisufsv","Vor 3 Tagen", imageUrls);
-            NewsViewModel test2 = new NewsViewModel(2, "Test","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "jvduhsbhijaobv av avh aojk vahdi vbaojk vahfbvuhaodubvhajnvhib uajobduhagsfcholjbav0peihfcbvd", "13.06.19", imageUrls);
             NewsShortAdapter adapterNews = new NewsShortAdapter(getActivity(), newsList, getFragmentManager());
             listNews.setAdapter(adapterNews);
-            newsList.add(test1);
-            newsList.add(test2);
-            newsList.add(test2);
-            ViewGroup.LayoutParams lp = listNews.getLayoutParams();
-            lp.height = loadHeight(listNews);
-            listNews.setLayoutParams(lp);
+            for(int i = 0; i < newsId.size(); i++){
+                newsList.add(newsId.get(i));
+            }
+            setListViewHeightBasedOnChildren(listNews);
         }else{
             ConstraintLayout news = (ConstraintLayout) root.findViewById(R.id.newsContainer);
             news.setVisibility(View.GONE);
         }
-        if(blogsID != 0){
+        if(blogId.size() != 0){
             ListView listblog = (ListView) root.findViewById(R.id.blog);
-            BlogEntryViewModel test1 = new BlogEntryViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "jebuwfhilksbvwiu wlkhbvowubv ilw wilh sfbisufsv","Vor 3 Tagen", imageUrls);
-            BlogEntryViewModel test2 = new BlogEntryViewModel(2, "Test","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "jvduhsbhijaobv av avh aojk vahdi vbaojk vahfbvuhaodubvhajnvhib uajobduhagsfcholjbav0peihfcbvd", "13.06.19", imageUrls);
             BlogEntryListAdapterShort adapterBlog = new BlogEntryListAdapterShort(getActivity(), blogList, getFragmentManager());
             listblog.setAdapter(adapterBlog);
-            blogList.add(test1);
-            blogList.add(test2);
-            blogList.add(test2);
-            ViewGroup.LayoutParams lp = listblog.getLayoutParams();
-            lp.height = loadHeight(listblog);
-            listblog.setLayoutParams(lp);
+            for(int i = 0; i< blogId.size(); i++){
+                blogList.add(blogId.get(i));
+            }
+            setListViewHeightBasedOnChildren(listblog);
         }else{
             ConstraintLayout blog = (ConstraintLayout) root.findViewById(R.id.blogContainer);
             blog.setVisibility(View.GONE);
         }
         if(eventsID != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
-           // EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
-          //  EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
+            //EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
+            //EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
             EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
-           // eventList.add(test1);
-          //  eventList.add(test2);
-           // eventList.add(test2);
-            ViewGroup.LayoutParams lp = listEvent.getLayoutParams();
-            lp.height = loadHeight(listEvent);
-            listEvent.setLayoutParams(lp);
+            /*eventList.add(test1);
+            eventList.add(test2);
+            eventList.add(test2);*/
+            setListViewHeightBasedOnChildren(listEvent);
         }else{
             ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
             event.setVisibility(View.GONE);
         }
-        if(projectPartnerID != 0){
+        if(partnerId.size() != 0){
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
-            ProjectPartnerViewModel test1 = new ProjectPartnerViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
-            ProjectPartnerViewModel test2 = new ProjectPartnerViewModel("Test2", "oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
             ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
             listPartner.setAdapter(adapterPartner);
-            partnerList.add(test2);
-            partnerList.add(test2);
-            partnerList.add(test2);
-            ViewGroup.LayoutParams lp = listPartner.getLayoutParams();
-            lp.height = loadHeight(listPartner);
-            listPartner.setLayoutParams(lp);
+            for(int i = 0; i < partnerId.size(); i++){
+                partnerList.add(partnerId.get(i));
+            }
+            setListViewHeightBasedOnChildren(listPartner);
         }else{
             ConstraintLayout projectPartner = (ConstraintLayout) root.findViewById(R.id.projectPartnerContainer);
             projectPartner.setVisibility(View.GONE);
@@ -278,14 +307,42 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             milenstoneList.add(test2);
             milenstoneList.add(test2);
             milenstoneList.add(test2);
-            ViewGroup.LayoutParams lp = listMilenstone.getLayoutParams();
-            lp.height = loadHeight(listMilenstone);
-            listMilenstone.setLayoutParams(lp);
+            setListViewHeightBasedOnChildren(listMilenstone);
         }else{
             ConstraintLayout mile = (ConstraintLayout) root.findViewById(R.id.milenstoneContainer);
             mile.setVisibility(View.GONE);
         }
         return root;
+    }
+
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter != null) {
+
+            int numberOfItems = listAdapter.getCount();
+
+            // Get total height of all items.
+            int totalItemsHeight = 0;
+            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+                View item = listAdapter.getView(itemPos, null, listView);
+                float px = 350 * (listView.getResources().getDisplayMetrics().density);
+                item.measure(
+                        View.MeasureSpec.makeMeasureSpec((int)px, View.MeasureSpec.AT_MOST),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                int height = item.getMeasuredHeight();
+                totalItemsHeight += height;
+            }
+
+            // Get total height of all item dividers.
+            int totalDividersHeight = listView.getDividerHeight() * (numberOfItems - 1);
+
+            // Set list height.
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalItemsHeight + totalDividersHeight;
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+        }
     }
 
     public int  loadHeight(ListView list){
@@ -329,5 +386,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
+    }
+
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
     }
 }
