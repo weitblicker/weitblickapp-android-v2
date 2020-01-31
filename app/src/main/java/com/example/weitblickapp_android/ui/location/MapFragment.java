@@ -91,8 +91,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private boolean projectFinished;
 
     //Segment-Information
-    static private double kmSegment = 0;
-    static private double kmTotal = 0;
+    static private double kmSegment;
+    static private double kmTotal;
     private String segmentStartTime;
     private String segmentEndTime;
     private String token;
@@ -286,6 +286,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (location != null) {
                     Log.e("ACCURACY", location.getAccuracy() +"");
                     if (location.getAccuracy() < 20) {
+                        Log.e("LOCATION-LAT", location.getLatitude()+"");
                         currentLocation = location;
                         currentTour.addLocationToTour(location);
                     }else{
@@ -352,7 +353,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
                 kmSegment += dis;
-                Log.e("EUROSTOTAL:", currentTour.getEurosTotal()+"");
+                kmTotal += kmSegment;
+                Log.e("KMSEGMENT:", kmSegment +"");
+                Log.e("KMTOTAL:", kmTotal +"");
+              //  Log.e("EUROSTOTAL:", currentTour.getEurosTotal()+"");
 
                 don = currentTour.getEurosTotal();
 
@@ -743,7 +747,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onDestroy() {
         super.onDestroy();
         sendSegment();
-        handler.removeCallbacksAndMessages(null);
+        //handler.removeCallbacksAndMessages(null);
         getActivity().unregisterReceiver(locationSwitchStateReceiver);
         Log.e("DESTROYED", "!!!!");
     }

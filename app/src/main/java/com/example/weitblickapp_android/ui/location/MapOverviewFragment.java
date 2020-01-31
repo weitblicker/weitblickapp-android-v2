@@ -78,7 +78,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     } else {
                         SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
                         if (settings.contains("projectid")) {
-                            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
                             fragment = new MapFragment(projectID);
                             ft.add(R.id.fragment_container, fragment, TAG_FRAGMENT);
                             ft.commit();
