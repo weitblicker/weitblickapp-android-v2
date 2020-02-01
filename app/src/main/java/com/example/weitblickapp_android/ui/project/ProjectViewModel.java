@@ -27,11 +27,14 @@ public class ProjectViewModel extends ViewModel {
     private String locationName;
     private String address;
     private CycleViewModel cycle;
-    float donationGoal;
-    float currentAmount;
+    String donationGoal;
+    String currentAmount;
     String goalDescription;
+    String bankName;
+    String bic;
+    String iban;
 
-    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, float currentAmount, float donationGoal, String goalDescription, ArrayList<String> allHosts) {
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, String currentAmount, String donationGoal, String goalDescription, ArrayList<String> allHosts, String bankName, String iban, String bic) {
         this.id = projectId;
         this.name = title;
         this.description = text;
@@ -49,6 +52,20 @@ public class ProjectViewModel extends ViewModel {
         this.sponsor_ids = sponsor_id;
         this.goalDescription = goalDescription;
         this.hosts = allHosts;
+        this.bankName = bankName;
+        this.iban = iban;
+        this.bic = bic;
+    }
+
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls){
+        this.name = title;
+        this.description = text;
+        this.Lng = lng;
+        this.Lat = lat;
+        this.locationName = name;
+        this.cycle = cycle;
+        this.address = address;
+        this.imageUrls = imageUrls;
     }
 
     public ProjectViewModel(int id, String name, String description) {
@@ -182,19 +199,19 @@ public class ProjectViewModel extends ViewModel {
         this.cycle = cycle;
     }
 
-    public float getDonationGoal() {
+    public String getDonationGoal() {
         return donationGoal;
     }
 
-    public void setDonationGoal(float donationGoal) {
+    public void setDonationGoal(String donationGoal) {
         this.donationGoal = donationGoal;
     }
 
-    public float getCurrentAmount() {
+    public String getCurrentAmount() {
         return currentAmount;
     }
 
-    public void setCurrentAmount(float currentAmount) {
+    public void setCurrentAmount(String currentAmount) {
         this.currentAmount = currentAmount;
     }
 
@@ -212,6 +229,30 @@ public class ProjectViewModel extends ViewModel {
 
     public void setGoalDescription(String goalDescription) {
         this.goalDescription = goalDescription;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
     }
 
     @Override

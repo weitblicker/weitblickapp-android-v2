@@ -148,7 +148,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     ArrayList<Integer> newsIds = new ArrayList<Integer>();
                     ArrayList<Integer> blogIds = new ArrayList<Integer>();
                     ArrayList<Integer> sponsorenid = new ArrayList<Integer>();
-                    ArrayList<String> hostsId = new ArrayList<String>();
                     ArrayList<BlogEntryViewModel> blogsArr = new ArrayList<BlogEntryViewModel>();
                     ArrayList<NewsViewModel> newsArr = new ArrayList<NewsViewModel>();
                     ArrayList<ProjectPartnerViewModel> partnerArr = new ArrayList<ProjectPartnerViewModel>();
@@ -159,6 +158,8 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     JSONArray blogs = null;
                     JSONArray hosts = null;
                     CycleViewModel cycle = null;
+                    JSONObject host = null;
+                    JSONObject bankAccount = null;
                     ArrayList<String> allHosts = new ArrayList<String>();
                     try {
                         responseObject = response.getJSONObject(i);
@@ -168,14 +169,12 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String text = responseObject.getString("description");
                         String goal_description = responseObject.getString("goal_description");
 
-                        float currentAmountDonationGoal = 0;
-                        float donationGoalDonationGoal = 0;
+                        String currentAmountDonationGoal = null;
+                        String donationGoalDonationGoal = null;
 
-                       // currentAmountDonationGoal = responseObject.getLong("donation_current");
-                       // donationGoalDonationGoal = responseObject.getLong("donation_goal");
+                        currentAmountDonationGoal = responseObject.getString("donation_current");
+                        donationGoalDonationGoal = responseObject.getString("donation_goal");
 
-                        currentAmountDonationGoal = 1250.30f;
-                        donationGoalDonationGoal = 20000;
 
                         imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
@@ -200,7 +199,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }catch(JSONException e){
 
                         }
-                            try {
+                        try {
                             blogs = responseObject.getJSONArray("blog");
                             for (int x = 0; x < blogs.length(); x++) {
                                 blogIds.add(blogs.getInt(x));
@@ -209,18 +208,22 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }catch(JSONException e){
 
                         }
-                        try {
-                            hosts = responseObject.getJSONArray("hosts");
-                            for (int x = 0; x < hosts.length(); x++) {
-                                hostsId.add(hosts.getString(x));
-                            }
-                            allHosts = loadHosts(hostsId);
-                        }catch(JSONException e){
 
+                        hosts = responseObject.getJSONArray("hosts");
+                        String bankname = null;
+                        String iban = null;
+                        String bic = null;
+
+                        for(int x = 0; x < hosts.length(); x++){
+                            host = hosts.getJSONObject(x);
+                            allHosts.add(host.getString("name"));
+                            /*if( host.getJSONObject("bank_account")!=  null){
+                                bankAccount = host.getJSONObject("bank_account");
+                                bankname = bankAccount.getString("account_holder");
+                                iban = bankAccount.getString("iban");
+                                bic = bankAccount.getString("bic");
+                            }*/
                         }
-                        Toast toast= Toast. makeText(getContext(),allHosts.toString(),Toast. LENGTH_SHORT);
-                        toast. setMargin(50,50);
-                        toast. show();
 
 
                         locationObject = responseObject.getJSONObject("location");
@@ -233,21 +236,20 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         cycleJSONObject = responseObject.getJSONArray("cycle");
                         partnerJSONObject = responseObject.getJSONArray("partners");
 
-                        float current_amount = 0;
-                        float cycle_donation = 0;
+                        String current_amount = null;
+                        String cycle_donation = null;
                         boolean finished = false;
                         int cycle_id = 0;
-                        float goal_amount = 0;
-                        float rateProKm = 0;
+                        String goal_amount = null;
 
 
                         for (int x = 0; x < cycleJSONObject.length(); x++) {
                             cycleObject = cycleJSONObject.getJSONObject(x);
-                             current_amount = cycleObject.getLong("current_amount");
-                             cycle_donation = cycleObject.getLong("goal_amount");
+                             current_amount = cycleObject.getString("current_amount");
+                             cycle_donation = cycleObject.getString("goal_amount");
                              finished = cycleObject.getBoolean("finished");
                              cycle_id = cycleObject.getInt("cycle_donation");
-                             goal_amount = cycleObject.getLong("goal_amount");
+                             goal_amount = cycleObject.getString("goal_amount");
                              cycle = new CycleViewModel(current_amount, cycle_donation, finished, cycle_id, goal_amount);
                              sponsorenid.add(cycle_id);
                         }
@@ -269,7 +271,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             partnerArr.add(new ProjectPartnerViewModel(partnerName,description,weblink,logo));
                         }
                         text.trim();
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname,iban, bic);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -304,48 +306,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         requestQueue.add(objectRequest);
     }
 
-    public ArrayList<String> loadHosts(ArrayList<String> hostId){
-        ArrayList <String> hosts = new ArrayList<String>();
-
-        for(int i = 0; i < hostId.size(); i++){
-            String url = "https://weitblicker.org/rest/unions/" + hostId.get(i);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject responseObject) {
-
-                    try {
-                        String name =  responseObject.getString("name");
-                        hosts.add(name);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //Display Error Message
-                    Log.e("Rest Response", error.toString());
-                }
-            }){
-                //Override getHeaders() to set Credentials for REST-Authentication
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
-                    return headers;
-                }
-            };
-            requestQueue.add(objectRequest);
-        }
-        return hosts;
-    }
 
     public ArrayList<SponsorViewModel> loadSponsor(ArrayList<Integer> sponsorenId){
         ArrayList <SponsorViewModel> sponsoren = new ArrayList<SponsorViewModel>();
@@ -367,10 +327,11 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String name =  partner.getString("name");
                         String desc = partner.getString("description");
                         String logo = partner.getString("logo");
-                        float rateProKm = responseObject.getLong("rate_euro_km");
+                        String rateProKm = responseObject.getString("rate_euro_km");
+                        String goal_amount_Sponsor = responseObject.getString("goal_amount");
                         String address = partner.getString("link");
 
-                        temp = new SponsorViewModel(name, desc, address, logo, rateProKm);
+                        temp = new SponsorViewModel(name, desc, address, logo, rateProKm, goal_amount_Sponsor);
                         sponsoren.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();

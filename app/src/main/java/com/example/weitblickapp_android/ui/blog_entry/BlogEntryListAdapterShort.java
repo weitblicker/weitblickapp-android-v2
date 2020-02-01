@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -75,6 +76,17 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         textView_title.setText(blog.getTitle());
         teaser.setText(blog.getTeaser());
         textView_date.setText(blog.getPublished());
+
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         return view;
     }

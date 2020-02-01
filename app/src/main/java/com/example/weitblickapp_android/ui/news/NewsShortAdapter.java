@@ -74,6 +74,17 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
         textView_teaser.setText(article.getTeaser());
         textView_date.setText(article.getDate());
 
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
         return view;
     }
 }

@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel;
 
 public class CycleViewModel extends ViewModel {
 
-    float currentAmount;
-    float cycleDonation;
+    String currentAmount;
+    String cycleDonation;
     boolean finished;
     int donationID;
-    float goalAmount;
+    String goalAmount;
 
-    public CycleViewModel(float currentAmount, float cycleDonation, boolean finished, int donationID, float goalAmount){
+    public CycleViewModel(String currentAmount, String cycleDonation, boolean finished, int donationID, String goalAmount){
         this.currentAmount = currentAmount;
         this.cycleDonation = cycleDonation;
         this.finished = finished;
@@ -18,19 +18,19 @@ public class CycleViewModel extends ViewModel {
         this.goalAmount = goalAmount;
     }
 
-    public float getCurrentAmount() {
+    public String getCurrentAmount() {
         return currentAmount;
     }
 
-    public void setCurrentAmount(float currentAmount) {
+    public void setCurrentAmount(String currentAmount) {
         this.currentAmount = currentAmount;
     }
 
-    public float getCycleDonation() {
+    public String getCycleDonation() {
         return cycleDonation;
     }
 
-    public void setCycleDonation(float cycleDonation) {
+    public void setCycleDonation(String cycleDonation) {
         this.cycleDonation = cycleDonation;
     }
 
@@ -50,11 +50,11 @@ public class CycleViewModel extends ViewModel {
         this.donationID = donationID;
     }
 
-    public float getGoalAmount() {
+    public String getGoalAmount() {
         return goalAmount;
     }
 
-    public void setGoalAmount(float goalAmount) {
+    public void setGoalAmount(String goalAmount) {
         this.goalAmount = goalAmount;
     }
 }
