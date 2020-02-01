@@ -1,15 +1,23 @@
 package com.example.weitblickapp_android;
 
-import android.content.SharedPreferences;
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,10 +25,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.weitblickapp_android.data.Session.SessionManager;
-import com.example.weitblickapp_android.ui.location.MapFragment;
-import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+
+import mad.location.manager.lib.Services.KalmanLocationService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,10 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        startService(new Intent(this, KalmanLocationService.class));
 
         session = new SessionManager(getApplicationContext());
         setContentView(R.layout.activity_main);
@@ -57,6 +70,54 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+Log.e(" REQUEST PERMISSIONS", "!");
+        initActivity();
+    }
+
+    private void initActivity(){
+
+        String[] interestedPermissions;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            interestedPermissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            };
+        } else {
+            interestedPermissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+        }
+
+        ArrayList<String> lstPermissions = new ArrayList<>(interestedPermissions.length);
+        for (String perm : interestedPermissions) {
+            if (ActivityCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                lstPermissions.add(perm);
+            }
+        }
+
+        if (!lstPermissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this, lstPermissions.toArray(new String[0]),
+                    100);
+        }
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (sensorManager == null || locationManager == null) {
+            System.exit(1);
+        }
+    }
+
 
 
     @Override

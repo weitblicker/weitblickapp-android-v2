@@ -34,19 +34,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
-import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
-import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
-import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -64,7 +57,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,7 +65,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+import mad.location.manager.lib.Commons.Utils;
+import mad.location.manager.lib.Interfaces.ILogger;
+import mad.location.manager.lib.Interfaces.LocationServiceInterface;
+import mad.location.manager.lib.Interfaces.LocationServiceStatusInterface;
+import mad.location.manager.lib.Services.KalmanLocationService;
+import mad.location.manager.lib.Services.ServicesHelper;
+
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationServiceInterface, LocationServiceStatusInterface {
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -131,10 +130,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Context mContext;
 
     LocationManager locationManager;
+    KalmanLocationService kalmanService;
 
 
     public MapFragment(int projectid){
         this.projectId = projectid;
+        ServicesHelper.addLocationServiceInterface(this);
     }
 
     @Override
@@ -143,16 +144,43 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mContext = context;
     }
 
+
+    private void initKalman(){
+
+        ServicesHelper.getLocationService(getActivity(), value -> {
+            if (value.IsRunning()) {
+                Log.e("Is running", "!");
+                return;
+            }
+            value.stop();
+            KalmanLocationService.Settings settings = new KalmanLocationService.Settings(Utils.ACCELEROMETER_DEFAULT_DEVIATION,
+                    0,
+                    1000,
+                    8,
+                    2,
+                    10,
+                    (ILogger) null,
+                    true,
+                    Utils.DEFAULT_VEL_FACTOR,
+                    Utils.DEFAULT_POS_FACTOR);
+            value.reset(settings); //warning!! here you can adjust your filter behavior
+            value.start();
+        });
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().startService(new Intent(mContext, KalmanLocationService.class));
+        initKalman();
+
         Log.e("ONCREATE", "!!!!");
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Log.e("ONCREATEVIEW", "!!!!");
-        
+
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         this.gpsIsEnabled = isLocationEnabled();
 
@@ -163,8 +191,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
+        createNewTour();
+
         //Retrieves Amount of Tours of User to increment Tour-IDs
-       // getAmountTours();
+
+
+
 
         //Loads cycle-Project to display in Endfragment
         loadProject(projectId);
@@ -230,12 +262,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         askGpsPermission();
-        setUpGpsReceiver();
-        registerGpsReceiver();
-        initAccelerometer();
-        initializeTour();
-        startFetchLocation();
-        sendRouteSegments();
+        // setUpGpsReceiver();
+        //registerGpsReceiver();
+        //initAccelerometer();
+        //initializeTour();
+        //startFetchLocation();
+        //sendRouteSegments();
+
     }
 
     private void resetLocations(){
@@ -284,6 +317,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (getContext() != null && getActivity() != null) {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+
                 return;
             }
         }
@@ -295,7 +329,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 if (location != null && location != currentLocation) {
                     Log.e("ACCURACY", location.getAccuracy() +"");
                     if (location.getAccuracy() < 20) {
-                        Log.e("LOCATION-LAT", location.getLatitude()+"");
+                       // Log.e("LOCATION-LAT", location.getLatitude()+"");
                         currentLocation = location;
                         currentTour.addLocationToTour(location);
                     }else{
@@ -307,7 +341,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }else{
                     // Update Background Location fpr Fused-Location-Provider
                     RequestLocationUpdate();
-                    Log.e("LOCATION IS NULL", "!!!");
+                 //   Log.e("LOCATION IS NULL", "!!!");
                 }
             }
         });
@@ -363,8 +397,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
                 kmSegment += dis;
                 kmTotal += dis;
-                Log.e("KMSEGMENT:", kmSegment +"");
-                Log.e("KMTOTAL:", kmTotal +"");
+               // Log.e("KMSEGMENT:", kmSegment +"");
+              ////Log.e("KMTOTAL:", kmTotal +"");
               //  Log.e("EUROSTOTAL:", currentTour.getEurosTotal()+"");
 
                 don = currentTour.getEurosTotal();
@@ -484,29 +518,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
     //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
-    private void getAmountTours(){
+    private void createNewTour(){
             // Talk to Rest API
+            Log.e("CREATETOUR", "!");
+            String URL = "https://new.weitblicker.org/rest/cycle/tours/new";
 
-            String URL = "https://new.weitblicker.org/rest/cycle/tours/";
-
-            JSONObject jsonBody = new JSONObject();
-            try {
-                jsonBody.put("token", this.token);
-            } catch (JSONException e) {
-                Log.e("TourJsonException:", e.toString());
-            }
-
-            MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.GET, URL, jsonBody, new Response.Listener<JSONArray>() {
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
 
                 @Override
-                public void onResponse(JSONArray response) {
-                    tourId = (response.length() + 1);
+                public void onResponse(JSONObject response) {
+                    Log.e("RESPONSE",response.toString());
+                    try {
+                        tourId = response.getInt("tour_index");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //Display Error Message
                     Log.e("TourError Response", error.toString());
                 }
             }) {
@@ -653,14 +684,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return formatter.format(date);
     }
 
-
-    public boolean onBackPressed() {
-       boolean leave;
-       leave = confirmBackPressedMessage();
-       return leave;
-    }
-
-
     //Prevent user from leaving fragment
     private boolean confirmBackPressedMessage(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -739,6 +762,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         sendSegment();
         //handler.removeCallbacksAndMessages(null);
         getActivity().unregisterReceiver(locationSwitchStateReceiver);
+        mContext.stopService(new Intent(mContext,KalmanLocationService.class));
+        kalmanService.stop();
         Log.e("DESTROYED", "!!!!");
     }
 
@@ -748,7 +773,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.e("DETACHED", "!!!!!");
     }
 
+    @Override
+    public void locationChanged(Location location) {
 
+
+    }
+
+    @Override
+    public void serviceStatusChanged(KalmanLocationService.ServiceStatus serviceStatus) {
+
+    }
+
+    @Override
+    public void GPSStatusChanged(int i) {
+
+    }
+
+    @Override
+    public void GPSEnabledChanged(boolean b) {
+
+    }
+
+    @Override
+    public void lastLocationAccuracyChanged(float v) {
+
+    }
 }
 
 
