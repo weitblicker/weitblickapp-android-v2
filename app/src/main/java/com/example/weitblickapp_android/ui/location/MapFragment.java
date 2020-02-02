@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -168,6 +169,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         //Loads cycle-Project to display in Endfragment
         loadProject(projectId);
+
+        TextView partner = (TextView) root.findViewById(R.id.partner);
+        TextView titel = (TextView) root.findViewById(R.id.titel);
+        TextView location = (TextView) root.findViewById(R.id.location);
+
+        SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("DefaultProject", 0);
+        location.setText(settings.getString("location", ""));
+        titel.setText(settings.getString("projectname", ""));
+        partner.setText(settings.getString("hosts", ""));
 
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
