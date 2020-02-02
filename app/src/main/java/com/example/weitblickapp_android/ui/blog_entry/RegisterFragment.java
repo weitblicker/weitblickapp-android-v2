@@ -112,6 +112,10 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
+                    JSONObject author = null;
+                    JSONObject hosts = null;
+                    JSONObject host = null;
+                    ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
                         responseObject = response.getJSONObject(i);
@@ -139,7 +143,15 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         }catch(JSONException e){
 
                         }
-                        
+
+                        hosts = responseObject.getJSONObject("host");
+                        allHosts.add(hosts.getString("name"));
+
+                        author = responseObject.getJSONObject("author");
+                        String name = author.getString("name");
+                        String profilPic = author.getString("image");
+
+
                         String date = responseObject.getString("published");
                         try{
                             Date ItemDate = formatterRead.parse(date);
@@ -149,7 +161,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                             e.printStackTrace();
                         }
 
-                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls);
+                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {

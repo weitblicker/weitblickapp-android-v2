@@ -58,8 +58,17 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
         TextView textView_teaser = (TextView) view.findViewById(R.id.teaser);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
 
+        TextView partner = (TextView) view.findViewById(R.id.partner);
+
 
         final NewsViewModel article = (NewsViewModel) getItem(position);
+
+        StringBuilder b = new StringBuilder();
+        for(String s : article.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
 
         if(article.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));

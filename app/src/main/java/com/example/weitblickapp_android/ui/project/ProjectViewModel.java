@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.event.EventViewModel;
+import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
@@ -22,6 +24,8 @@ public class ProjectViewModel extends ViewModel {
     private ArrayList <NewsViewModel> new_ids;
     private ArrayList <BlogEntryViewModel> blog_ids;
     private ArrayList <SponsorViewModel> sponsor_ids;
+    private ArrayList <MilenstoneViewModel> mileStones;
+    private ArrayList <EventViewModel> event_ids;
     private float Lat;
     private float Lng;
     private String locationName;
@@ -34,7 +38,7 @@ public class ProjectViewModel extends ViewModel {
     String bic;
     String iban;
 
-    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, String currentAmount, String donationGoal, String goalDescription, ArrayList<String> allHosts, String bankName, String iban, String bic) {
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, String currentAmount, String donationGoal, String goalDescription, ArrayList<String> allHosts, String bankName, String iban, String bic, ArrayList<MilenstoneViewModel> mileStones, ArrayList<EventViewModel> event_ids) {
         this.id = projectId;
         this.name = title;
         this.description = text;
@@ -55,6 +59,8 @@ public class ProjectViewModel extends ViewModel {
         this.bankName = bankName;
         this.iban = iban;
         this.bic = bic;
+        this.mileStones = mileStones;
+        this.event_ids = event_ids;
     }
 
     public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls){
@@ -253,6 +259,22 @@ public class ProjectViewModel extends ViewModel {
 
     public void setIban(String iban) {
         this.iban = iban;
+    }
+
+    public ArrayList<MilenstoneViewModel> getMileStones() {
+        return mileStones;
+    }
+
+    public void setMileStones(ArrayList<MilenstoneViewModel> mileStones) {
+        this.mileStones = mileStones;
+    }
+
+    public ArrayList<EventViewModel> getEvent_ids() {
+        return event_ids;
+    }
+
+    public void setEvent_ids(ArrayList<EventViewModel> event_ids) {
+        this.event_ids = event_ids;
     }
 
     @Override

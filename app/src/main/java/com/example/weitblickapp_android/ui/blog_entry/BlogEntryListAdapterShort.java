@@ -60,6 +60,7 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         TextView textView_title = (TextView) view.findViewById(R.id.titel);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
         TextView teaser = (TextView) view.findViewById(R.id.teaser);
+        TextView partner = (TextView) view.findViewById(R.id.partner);
 
         final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
 
@@ -76,6 +77,13 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         textView_title.setText(blog.getTitle());
         teaser.setText(blog.getTeaser());
         textView_date.setText(blog.getPublished());
+
+        StringBuilder b = new StringBuilder();
+        for(String s : blog.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
 
         view.setOnClickListener(new View.OnClickListener() {
 

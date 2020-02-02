@@ -23,16 +23,22 @@ public class NewsViewModel extends ViewModel {
     private Date published;
     private Location location;
     private ArrayList<String> imageUrls;
+    private ArrayList<String> hosts;
+    String name;
+    String image;
 
     public NewsViewModel() {
     }
 
-    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls) {
+    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls, String name,String image, ArrayList<String> hosts) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.teaser = teaser;
         this.imageUrls = imageUrls;
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
 
         try {
             this.published = formatterRead.parse(date);
@@ -100,6 +106,30 @@ public class NewsViewModel extends ViewModel {
     public ArrayList<String> getImageUrls() { return imageUrls; }
 
     public void setImageUrls(ArrayList<String> imageUrl) { this.imageUrls = imageUrl; }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public ArrayList<String> getHosts() {
+        return hosts;
+    }
+
+    public void setHosts(ArrayList<String> hosts) {
+        this.hosts = hosts;
+    }
 
     @Override
     public String toString() {

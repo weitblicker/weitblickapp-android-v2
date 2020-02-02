@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
@@ -121,6 +122,9 @@ public class ProjectCycleListFragment extends ListFragment {
                     JSONObject host = null;
                     JSONObject bankAccount = null;
                     ArrayList<String> allHosts = new ArrayList<String>();
+                    JSONArray mileStoneArray = null;
+                    JSONObject mileStone = null;
+                    ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
                     try {
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
@@ -230,9 +234,31 @@ public class ProjectCycleListFragment extends ListFragment {
                             partnerArr.add(new ProjectPartnerViewModel(partnerName,description,weblink,logo));
                         }
                         text.trim();
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname,iban, bic);
-                        projectList.add(temp);
-                        adapter.notifyDataSetChanged();
+
+                        String nameMile;
+                        String descr;
+                        String date;
+                        boolean reached;
+
+                        try {
+                            mileStoneArray = responseObject.getJSONArray("milestones");
+                            for (int x = 0; x < mileStoneArray.length(); x++) {
+                                mileStone = mileStoneArray.getJSONObject(x);
+                                nameMile = mileStone.getString("name");
+                                descr = mileStone.getString("description");
+                                date = mileStone.getString("date");
+                                reached = mileStone.getBoolean("reached");
+                                allMilestone.add(new MilenstoneViewModel(nameMile, date, descr, reached));
+                            }
+                        }catch(JSONException e){
+
+                        }
+
+                        if(cycle != null) {
+                            ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, null);
+                            projectList.add(temp);
+                            adapter.notifyDataSetChanged();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -345,6 +371,10 @@ public class ProjectCycleListFragment extends ListFragment {
                         JSONObject image = null;
                         ArrayList<String> imageUrls = new ArrayList<String>();
                         JSONArray images = null;
+                        JSONObject author = null;
+                        JSONObject hosts = null;
+                        JSONObject host = null;
+                        ArrayList<String> allHosts = new ArrayList<String>();
                         try {
                             responseObject = response.getJSONObject(i);
                             Integer blogId = responseObject.getInt("id");
@@ -370,6 +400,12 @@ public class ProjectCycleListFragment extends ListFragment {
                             }catch(JSONException e){
 
                             }
+                            hosts = responseObject.getJSONObject("host");
+                            allHosts.add(hosts.getString("name"));
+
+                            author = responseObject.getJSONObject("author");
+                            String name = author.getString("name");
+                            String profilPic = author.getString("image");
                             //TODO: Check if picture exists
                             //Get Date of last Item loaded in List loading more news starting at that date
                             try {
@@ -377,7 +413,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            BlogEntryViewModel blog = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls);
+                            BlogEntryViewModel blog = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls, name,profilPic,allHosts);
 
                             blogs.add(blog);
                         } catch (JSONException e) {
@@ -431,6 +467,11 @@ public class ProjectCycleListFragment extends ListFragment {
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
+                    JSONObject author = null;
+                    JSONObject hosts = null;
+                    JSONObject host = null;
+                    ArrayList<String> allHosts = new ArrayList<String>();
+
                     try {
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
@@ -448,6 +489,10 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         text.trim();
 
+                        author = responseObject.getJSONObject("author");
+                        String name = author.getString("name");
+                        String profilPic = author.getString("image");
+
                         //Get all image-Urls from Gallery
                         try {
                             images = responseObject.getJSONArray("photos");
@@ -461,11 +506,14 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         }
 
+                        hosts = responseObject.getJSONObject("host");
+                        allHosts.add(hosts.getString("name"));
+
                         //Get inline-Urls from Text, then extract them
                         // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
                         news.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();

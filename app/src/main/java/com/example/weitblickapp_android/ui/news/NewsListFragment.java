@@ -99,7 +99,10 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
-
+                    JSONObject author = null;
+                    JSONObject hosts = null;
+                    JSONObject host = null;
+                    ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
                         responseObject = response.getJSONObject(i);
@@ -133,11 +136,20 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                         }
 
+                        hosts = responseObject.getJSONObject("host");
+                        allHosts.add(hosts.getString("name"));
+
+                        author = responseObject.getJSONObject("author");
+                        String name = author.getString("name");
+                        String profilPic = author.getString("image");
+
+
+
                         //Get inline-Urls from Text, then extract them
                         // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
                         newsList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {

@@ -2,6 +2,7 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -24,6 +25,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.event.EventLocation;
+import com.example.weitblickapp_android.ui.event.EventViewModel;
+import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
@@ -36,6 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -149,22 +154,29 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     ArrayList<Integer> blogIds = new ArrayList<Integer>();
                     ArrayList<Integer> sponsorenid = new ArrayList<Integer>();
                     ArrayList<BlogEntryViewModel> blogsArr = new ArrayList<BlogEntryViewModel>();
+                    ArrayList<EventViewModel> eventArr = new ArrayList<EventViewModel>();
                     ArrayList<NewsViewModel> newsArr = new ArrayList<NewsViewModel>();
                     ArrayList<ProjectPartnerViewModel> partnerArr = new ArrayList<ProjectPartnerViewModel>();
                     ArrayList<SponsorViewModel> sponsorArr = new ArrayList<SponsorViewModel>();
                     ArrayList<Integer> partnerIds = new ArrayList<Integer>();
+                    ArrayList<Integer> eventIds = new ArrayList<Integer>();
                     JSONArray images = null;
                     JSONArray news = null;
                     JSONArray blogs = null;
+                    JSONArray events = null;
                     JSONArray hosts = null;
                     CycleViewModel cycle = null;
                     JSONObject host = null;
                     JSONObject bankAccount = null;
                     ArrayList<String> allHosts = new ArrayList<String>();
+                    JSONArray mileStoneArray = null;
+                    JSONObject mileStone = null;
+                    ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
                     try {
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
                         String title = responseObject.getString("name");
+                        MilenstoneViewModel mile = null;
 
                         String text = responseObject.getString("description");
                         String goal_description = responseObject.getString("goal_description");
@@ -205,6 +217,35 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                                 blogIds.add(blogs.getInt(x));
                             }
                             blogsArr = loadBlog(blogIds);
+                        }catch(JSONException e){
+
+                        }
+                        try {
+                            events = responseObject.getJSONArray("events");
+                            for (int x = 0; x < events.length(); x++) {
+                                eventIds.add(events.getInt(x));
+                            }
+                            eventArr = loadEvents(eventIds);
+                        }catch(JSONException e){
+
+                        }
+
+                        String nameMile;
+                        String descr;
+                        String date;
+                        boolean reached;
+
+                        try {
+                            mileStoneArray = responseObject.getJSONArray("milestones");
+                            for (int x = 0; x < mileStoneArray.length(); x++) {
+                                mileStone = mileStoneArray.getJSONObject(x);
+
+                                nameMile = mileStone.getString("name");
+                                descr = mileStone.getString("description");
+                                date = mileStone.getString("date");
+                                reached = mileStone.getBoolean("reached");
+                                allMilestone.add(new MilenstoneViewModel(nameMile, date, descr, reached));
+                            }
                         }catch(JSONException e){
 
                         }
@@ -271,7 +312,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             partnerArr.add(new ProjectPartnerViewModel(partnerName,description,weblink,logo));
                         }
                         text.trim();
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname,iban, bic);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname,iban, bic, allMilestone, eventArr);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -304,6 +345,98 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
             }
         };
         requestQueue.add(objectRequest);
+    }
+
+    public ArrayList<EventViewModel> loadEvents(ArrayList<Integer> eventId){
+        ArrayList <EventViewModel> events = new ArrayList<EventViewModel>();
+        for(int i = 0; i < eventId.size(); i++) {
+            String URL = "https://weitblicker.org/rest/events/" + eventId.get(i);
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject responseObject) {
+                    ArrayList<String> imageUrls = new ArrayList<String>();
+                    Location eventLocation;
+                    JSONArray images = null;
+                    JSONObject image = null;
+
+                    JSONObject locationObject = null;
+                    EventLocation location = null;
+
+                    String name;
+                    String address;
+                    double lat;
+                    double lng;
+
+                    JSONObject hostObject = null;
+                    String hostName;
+
+                    try {
+                        Integer eventId = responseObject.getInt("id");
+                        String title = responseObject.getString("title");
+                        String description = responseObject.getString("description");
+                        String startDate = responseObject.getString("start");
+                        String endDate = responseObject.getString("end");
+
+                        locationObject = responseObject.getJSONObject("location");
+                        name = locationObject.getString("name");
+                        address = locationObject.getString("address");
+                        lat = locationObject.getDouble("lat");
+                        lng = locationObject.getDouble("lng");
+
+                        hostObject = responseObject.getJSONObject("host");
+                        hostName = hostObject.getString("name");
+
+
+                        try {
+                            images = responseObject.getJSONArray("photos");
+                            for (int x = 0; x < images.length(); x++) {
+                                image = images.getJSONObject(x);
+                                String url = image.getString("url");
+                                imageUrls.add(url);
+                            }
+
+                        } catch (JSONException e) {
+
+                        }
+
+                        //Get inline-Urls from Text, then extract them
+                        // imageUrls = getImageUrls(text);
+                        description = extractImageUrls(description);
+
+                        location = new EventLocation(name, address, lat, lng);
+
+                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
+                        events.add(temp);
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Display Error Message
+                    Log.e("Rest Response", error.toString());
+                }
+            }) {
+                //Override getHeaders() to set Credentials for REST-Authentication
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "surfer:hangloose";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+            };
+            requestQueue.add(objectRequest);
+        }
+        return events;
     }
 
 
@@ -381,6 +514,10 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
+                    JSONObject author = null;
+                    JSONObject hosts = null;
+                    JSONObject host = null;
+                    ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
                         Integer blogId = responseObject.getInt("id");
@@ -405,6 +542,13 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         } catch (JSONException e) {
 
                         }
+
+                        hosts = responseObject.getJSONObject("host");
+                        allHosts.add(hosts.getString("name"));
+
+                        author = responseObject.getJSONObject("author");
+                        String name = author.getString("name");
+                        String profilPic = author.getString("image");
                         //TODO: Check if picture exists
                         //Get Date of last Item loaded in List loading more news starting at that date
                         try {
@@ -412,7 +556,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        tempBLog = new BlogEntryViewModel(blogId, title, text, teaser, published, imageUrls);
+                        tempBLog = new BlogEntryViewModel(blogId, title, text, teaser, published, imageUrls, name, profilPic, allHosts);
                         blogs.add(tempBLog);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -461,12 +605,26 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
+                    JSONObject author = null;
+                    JSONArray hosts = null;
+                    JSONObject host = null;
+                    ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
+                        author = responseObject.getJSONObject("author");
+                        String name = author.getString("name");
+                        String profilPic = author.getString("image");
+
+
+
+                        host = responseObject.getJSONObject("host");
+                        allHosts.add(host.getString("name"));
+
+
                         // String date = "2009-09-26T14:48:36Z";
 
                         try{
@@ -496,7 +654,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
                         news.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
@@ -60,10 +61,23 @@ public class EventShortAdapter extends ArrayAdapter<EventViewModel> {
 
         //Set title for BlogEntries
         textView_title.setText(event.getTitle());
-        text.setText(event.getText());
+        //text.setText(event.getText());
         time.setText(event.getTime());
         location.setText(event.getLocation().getAddress());
         textView_date.setText(event.getEventStartDate());
+
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new EventDetailFragment(event));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+
 
         return view;
     }

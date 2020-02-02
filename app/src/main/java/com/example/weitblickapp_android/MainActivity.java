@@ -3,6 +3,7 @@ package com.example.weitblickapp_android;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -10,6 +11,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-  /*  @Override
+    /* @Override
     public void onBackPressed() {
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
@@ -104,18 +106,16 @@ public class MainActivity extends AppCompatActivity {
 
         Log.e("FRAGMENT: ", fragment.toString());
 
-        if(count == 0 && fragment != null) {
+        if(count == 0) {
             super.onBackPressed();
-        }else if (fragment == null || (MapFragment)fragment.onBackPressed()){
+        }else if (fragment == null || ((MapFragment)fragment).onBackPressed()){
             getSupportFragmentManager().popBackStack();
         }
 
-    }
-
-*/
+    }*/
 
 
-    @Override
+   @Override
     public void onBackPressed() {
 
         int count = getSupportFragmentManager().getBackStackEntryCount();

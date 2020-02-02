@@ -28,8 +28,10 @@ import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListDetailFragment;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.event.EventListDetailFragment;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
+import com.example.weitblickapp_android.ui.milenstone.MilenstoneDetailListFragment;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsListDetailFragment;
@@ -76,6 +78,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     CycleViewModel cycle;
     ArrayList <String> imageUrls = new ArrayList<String>();
     ArrayList <NewsViewModel> newsId = new ArrayList<NewsViewModel>();
+    ArrayList <EventViewModel> eventId = new ArrayList<EventViewModel>();
     ArrayList <BlogEntryViewModel> blogId = new ArrayList<BlogEntryViewModel>();
     ArrayList <ProjectPartnerViewModel> partnerId = new ArrayList<ProjectPartnerViewModel>();
     ArrayList <SponsorViewModel> sponsorId = new ArrayList<SponsorViewModel>();
@@ -87,10 +90,6 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     String bic;
     String iban;
 
-    private int statsID = 1;
-    private int milenstoneID = 1;
-    private int eventsID = 0;
-
     private static final int UNBOUNDED = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
     ArrayList<SponsorViewModel> sponsorList = new ArrayList<SponsorViewModel>();
@@ -98,6 +97,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
     ArrayList<BlogEntryViewModel> blogList = new ArrayList<BlogEntryViewModel>();
     ArrayList<EventViewModel> eventList = new ArrayList<EventViewModel>();
+    ArrayList<MilenstoneViewModel> mileList = new ArrayList<MilenstoneViewModel>();
     ListView listNews = null;
 
     public ImageSliderAdapter imageSlider;
@@ -132,6 +132,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
         }
         this.hosts = project.getHosts();
+        this.mileList = project.getMileStones();
+        this.eventId = project.getEvent_ids();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -354,15 +356,30 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ConstraintLayout blog = (ConstraintLayout) root.findViewById(R.id.blogContainer);
             blog.setVisibility(View.GONE);
         }
-        if(eventsID != 0){
+        if(eventId.size() != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
-            //EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
-            //EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
             EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
-            /*eventList.add(test1);
-            eventList.add(test2);
-            eventList.add(test2);*/
+            if(eventId.size() <= 3){
+                for(int i = 0; i < eventId.size(); i++){
+                    eventList.add(eventId.get(i));
+                }
+                eventsMore.setVisibility(View.GONE);
+            }else{
+                for(int i = 0; i < 3; i++){
+                    eventList.add(eventId.get(i));
+                }
+                eventsMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventListDetailFragment fragment = new EventListDetailFragment(eventId);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+                });
+            }
             setListViewHeightBasedOnChildren(listEvent);
         }else{
             ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
@@ -397,15 +414,30 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ConstraintLayout projectPartner = (ConstraintLayout) root.findViewById(R.id.projectPartnerContainer);
             projectPartner.setVisibility(View.GONE);
         }
-        if(milenstoneID != 0){
+        if(mileList.size() != 0){
             ListView listMilenstone = (ListView) root.findViewById(R.id.milenstone);
-            MilenstoneViewModel test1 = new MilenstoneViewModel("Test1","Heute", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh");
-            MilenstoneViewModel test2 = new MilenstoneViewModel("Test2", "13.06.19","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh");
             MilenstoneListAdapter adapterMilenstone = new MilenstoneListAdapter(getActivity(), milenstoneList, getFragmentManager());
             listMilenstone.setAdapter(adapterMilenstone);
-            milenstoneList.add(test2);
-            milenstoneList.add(test2);
-            milenstoneList.add(test2);
+            if(mileList.size() <= 3){
+                for(int i = 0; i < mileList.size(); i++){
+                    milenstoneList.add(mileList.get(i));
+                }
+                milenstoneMore.setVisibility(View.GONE);
+            }else{
+                for(int i = 0; i < 3; i++){
+                    milenstoneList.add(mileList.get(i));
+                }
+                milenstoneMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MilenstoneDetailListFragment fragment = new MilenstoneDetailListFragment(mileList);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+                });
+            }
             setListViewHeightBasedOnChildren(listMilenstone);
         }else{
             ConstraintLayout mile = (ConstraintLayout) root.findViewById(R.id.milenstoneContainer);

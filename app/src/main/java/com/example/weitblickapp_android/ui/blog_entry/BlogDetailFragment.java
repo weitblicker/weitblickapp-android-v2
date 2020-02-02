@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -31,6 +33,7 @@ public class BlogDetailFragment extends Fragment {
     String text;
     ArrayList<String> imageUrls = new ArrayList<>();
     String date;
+    ArrayList<String> host = new ArrayList<String>();
 
     ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
@@ -42,6 +45,9 @@ public class BlogDetailFragment extends Fragment {
     private int currentPage = 0;
     private Timer timer;
 
+    String name;
+    String picture;
+
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();
@@ -50,6 +56,9 @@ public class BlogDetailFragment extends Fragment {
             this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
         }
         this.date = blogEntry.getPublished();
+        this.host = blogEntry.getHosts();
+        this.name = blogEntry.getName();
+        this.picture = blogEntry.getImage();
     }
 
     BlogDetailFragment(String title, String text, String date){
@@ -93,6 +102,23 @@ public class BlogDetailFragment extends Fragment {
                 currentPage ++;
             }
         };
+
+        final TextView authorName = root.findViewById(R.id.authorname);
+        final ImageView authorImages = root.findViewById(R.id.authorpicture);
+
+        String url = urlWeitblick + this.picture;
+        authorName.setText(this.name);
+        Picasso.get().load(url).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
+
+        final TextView partner = root.findViewById(R.id.partner);
+        StringBuilder b = new StringBuilder();
+        for(String s : this.host){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
         timer = new Timer(); // This will create a new Thread
         timer.schedule(new TimerTask() { // task to be scheduled
             @Override

@@ -20,9 +20,12 @@ public class BlogEntryViewModel extends ViewModel {
     private ArrayList<String> imageUrls;
     Date published;
     private int location_id;
+    String name;
+    String image;
+    ArrayList<String> hosts;
 
 
-    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls) {
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls, String name, String image, ArrayList<String> hosts) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -34,7 +37,9 @@ public class BlogEntryViewModel extends ViewModel {
         }
         this.imageUrls = imageUrls;
         this.teaser = teaser;
-
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
     }
 
     public BlogEntryViewModel(int id, String title, String text, String published) {
@@ -110,6 +115,30 @@ public class BlogEntryViewModel extends ViewModel {
 
     public void setLocation_id(int location_id) {
         this.location_id = location_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public ArrayList<String> getHosts() {
+        return hosts;
+    }
+
+    public void setHosts(ArrayList<String> hosts) {
+        this.hosts = hosts;
     }
 
     @Override

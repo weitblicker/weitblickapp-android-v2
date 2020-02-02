@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -32,6 +33,9 @@ public class NewsDetailFragment extends Fragment {
     private String title;
     private String text;
     private String date;
+    String name;
+    String picture;
+    ArrayList<String> hosts = new ArrayList<String>();
     private ArrayList<String> imageUrls = new ArrayList<String>();
     private ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
@@ -48,6 +52,9 @@ public class NewsDetailFragment extends Fragment {
         this.title = article.getTitle();
         this.text = article.getText();
         this.date = article.getDate();
+        this.name = article.getName();
+        this.picture = article.getImage();
+        this.hosts = article.getHosts();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
 
         for(int i = 0; i < article.getImageUrls().size(); i++){
@@ -100,10 +107,28 @@ public class NewsDetailFragment extends Fragment {
         }, DELAY_MS, PERIOD_MS);
 
         final TextView titleTextView = root.findViewById(R.id.detail_title);
+        final TextView authorName = root.findViewById(R.id.authorname);
+        final ImageView authorImages = root.findViewById(R.id.authorpicture);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
+        final TextView partner = root.findViewById(R.id.partner);
 
         final ImageView image = root.findViewById(R.id.image);
+
+
+
+        StringBuilder b = new StringBuilder();
+        for(String s : hosts){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
+
+        String url = urlWeitblick + this.picture;
+        authorName.setText(this.name);
+        Picasso.get().load(url).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
 
         //Parse HTML in TextView
 
