@@ -1,5 +1,7 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+
 import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
@@ -24,6 +26,7 @@ public class BlogEntryViewModel extends ViewModel {
     String image;
     ArrayList<String> hosts;
     String location;
+    ArrayList<ProjectViewModel> project;
 
 
     public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls, String name, String image, ArrayList<String> hosts, String location) {
@@ -44,6 +47,25 @@ public class BlogEntryViewModel extends ViewModel {
         this.location = location;
     }
 
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls, String name, String image, ArrayList<String> hosts, String location, ArrayList<ProjectViewModel> project) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        try {
+            this.published = formatterRead.parse(published);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            this.published = new Date();
+        }
+        this.imageUrls = imageUrls;
+        this.teaser = teaser;
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
+        this.location = location;
+        this.project = project;
+    }
+
     public BlogEntryViewModel(int id, String title, String text, String published) {
         this.id = id;
         this.title = title;
@@ -55,6 +77,15 @@ public class BlogEntryViewModel extends ViewModel {
             e.printStackTrace();
         }
         this.location_id = location_id;
+    }
+
+
+    public ArrayList<ProjectViewModel> getProject() {
+        return project;
+    }
+
+    public void setProject(ArrayList<ProjectViewModel> project) {
+        this.project = project;
     }
 
     public String getTeaser() {

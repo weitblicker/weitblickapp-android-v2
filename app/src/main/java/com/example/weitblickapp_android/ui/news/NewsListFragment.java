@@ -56,8 +56,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private String lastItemDate;
     private String lastItemDateCheck = "";
     private String url = "https://weitblicker.org/rest/news?limit=5";
-    private BlogEntryViewModel tempBLog = null;
-    private ProjectViewModel tempProject = null;
     private SharedPreferences cachedNews;
     private String PREF_NAME = "NewsList";
 

@@ -246,6 +246,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView bikeText = root.findViewById(R.id.bikeText2);
         final TextView locationDescription = root.findViewById(R.id.detail_location3);
         locationDescription.setText(this.descriptionLocation);
+        ImageButton bike = root.findViewById(R.id.bike);
+        ImageButton bike2 = root.findViewById(R.id.bike2);
 
         //DonationGoal
         goalTextView.setText(goal_amount + " €");
@@ -290,9 +292,6 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             currentRound = currentRound / 100.0f;
 
             bikeText.setText("Für jeden mit dem Fahrrad gefahrenen Kilometer spenden unsere Sponsoren für das Projekt " + currentRound + "€");
-
-            ImageButton bike = root.findViewById(R.id.bike);
-            ImageButton bike2 = root.findViewById(R.id.bike2);
 
             StringBuilder b = new StringBuilder();
             for(String s : hosts){
@@ -355,6 +354,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ConstraintLayout sponsor = (ConstraintLayout) root.findViewById(R.id.sponsorContainer);
             sponsor.setVisibility(View.GONE);
             drawPie(false);
+            bike.setVisibility(View.GONE);
         }
         if(newsId.size() != 0){
             listNews = (ListView) root.findViewById(R.id.news);

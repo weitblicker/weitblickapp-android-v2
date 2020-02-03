@@ -9,14 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
@@ -48,6 +52,9 @@ public class BlogDetailFragment extends Fragment {
     String name;
     String picture;
     String location;
+    ArrayList<ProjectViewModel> projectArr = new ArrayList<ProjectViewModel>();
+    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
+
 
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
@@ -61,6 +68,7 @@ public class BlogDetailFragment extends Fragment {
         this.name = blogEntry.getName();
         this.picture = blogEntry.getImage();
         this.location = blogEntry.getLocation();
+        this.projectArr = blogEntry.getProject();
     }
 
     BlogDetailFragment(String title, String text, String date){
@@ -156,6 +164,17 @@ public class BlogDetailFragment extends Fragment {
             }
         });
 
+        if(projectArr != null && projectArr.size() != 0){
+            ListView listProject = (ListView) root.findViewById(R.id.projectList);
+            ProjectListAdapter adapterProject = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+            listProject.setAdapter(adapterProject);
+            for(int i = 0; i < projectArr.size(); i++){
+                projectList.add(projectArr.get(0));
+            }
+        }else{
+            ConstraintLayout projectCon = (ConstraintLayout) root.findViewById(R.id.projectContainer);
+            projectCon.setVisibility(View.GONE);
+        }
 
         return root;
     }

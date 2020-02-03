@@ -22,10 +22,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerAdapter;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerListFragment;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
-import com.example.weitblickapp_android.ui.project.ProjectAdapterShort;
 import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
