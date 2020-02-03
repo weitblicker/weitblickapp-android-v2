@@ -9,15 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
@@ -60,7 +57,7 @@ public class NewsDetailFragment extends Fragment {
     public NewsDetailFragment(NewsViewModel article){
         this.title = article.getTitle();
         this.text = article.getText();
-        this.date = article.getDate();
+//        this.date = article.getDate();
         this.name = article.getName();
         this.picture = article.getImage();
         this.hosts = article.getHosts();

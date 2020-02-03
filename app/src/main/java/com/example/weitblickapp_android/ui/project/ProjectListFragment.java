@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -40,7 +39,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -661,7 +659,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser, date, imageUrls, name, profilPic, allHosts);
 
                         news.add(temp);
                     } catch (JSONException e) {

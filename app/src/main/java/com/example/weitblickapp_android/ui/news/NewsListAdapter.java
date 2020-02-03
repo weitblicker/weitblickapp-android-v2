@@ -14,8 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.weitblickapp_android.R;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
@@ -81,7 +79,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
             textView_title.setText(article.getTitle());
             textView_teaser.setText(article.getTeaser());
-            textView_date.setText(article.getDate());
+        //    textView_date.setText(article.getDate());
 
             //Set View-Listener and redirect to Details-Page onClick
 

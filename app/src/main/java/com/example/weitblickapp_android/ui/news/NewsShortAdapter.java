@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -81,7 +80,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
 
         textView_title.setText(article.getTitle());
         textView_teaser.setText(article.getTeaser());
-        textView_date.setText(article.getDate());
+//        textView_date.setText(article.getDate());
 
         view.setOnClickListener(new View.OnClickListener() {
 
