@@ -104,6 +104,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
         View view = inflater.inflate(R.layout.fragment_project, container, false);
         list = (ListView) view.findViewById(R.id.liste);
+        projectList.clear();
         adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
         list.setAdapter(adapter);
 
@@ -128,7 +129,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
     }
 
     public void loadProjects(){
-
         // Talk to Rest API
         String URL = "https://weitblicker.org/rest/projects/";
 

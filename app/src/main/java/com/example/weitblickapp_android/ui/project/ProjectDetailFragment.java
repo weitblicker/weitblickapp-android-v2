@@ -260,6 +260,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         if(this.sponsorId.size() > 0){
             drawPie(true);
             //Sponsor
+            sponsorList.clear();
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
             SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
             listViewSponsor.setAdapter(adapterSponsor);
@@ -358,6 +359,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(newsId.size() != 0){
             listNews = (ListView) root.findViewById(R.id.news);
+            newsList.clear();
             NewsShortAdapter adapterNews = new NewsShortAdapter(getActivity(), newsList, getFragmentManager());
             listNews.setAdapter(adapterNews);
             if(newsId.size() <= 3){
@@ -387,6 +389,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(blogId.size() != 0){
             ListView listblog = (ListView) root.findViewById(R.id.blog);
+            blogList.clear();
             BlogEntryListAdapterShort adapterBlog = new BlogEntryListAdapterShort(getActivity(), blogList, getFragmentManager());
             listblog.setAdapter(adapterBlog);
             if(blogId.size() <= 3){
@@ -416,6 +419,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(eventId.size() != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
+            eventList.clear();
             EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
             if(eventId.size() <= 3){
@@ -444,6 +448,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             event.setVisibility(View.GONE);
         }
         if(partnerId.size() != 0){
+            partnerList.clear();
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
             ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
             listPartner.setAdapter(adapterPartner);
@@ -473,6 +478,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             projectPartner.setVisibility(View.GONE);
         }
         if(mileList.size() != 0){
+            milenstoneList.clear();
             ListView listMilenstone = (ListView) root.findViewById(R.id.milenstone);
             MilenstoneListAdapter adapterMilenstone = new MilenstoneListAdapter(getActivity(), milenstoneList, getFragmentManager());
             listMilenstone.setAdapter(adapterMilenstone);
