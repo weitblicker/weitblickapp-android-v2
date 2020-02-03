@@ -2,6 +2,8 @@ package com.example.weitblickapp_android.ui.news;
 
 import android.location.Location;
 
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+
 import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
@@ -26,8 +28,27 @@ public class NewsViewModel extends ViewModel {
     private ArrayList<String> hosts;
     String name;
     String image;
+    ArrayList<ProjectViewModel> project;
 
     public NewsViewModel() {
+    }
+
+    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls, String name,String image, ArrayList<String> hosts, ArrayList<ProjectViewModel> project) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.teaser = teaser;
+        this.imageUrls = imageUrls;
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
+        this.project = project;
+
+        try {
+            this.published = formatterRead.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls, String name,String image, ArrayList<String> hosts) {
@@ -51,6 +72,22 @@ public class NewsViewModel extends ViewModel {
         this.id = id;
         this.title = title;
         this.text = text;
+    }
+
+    public Date getPublished() {
+        return published;
+    }
+
+    public void setPublished(Date published) {
+        this.published = published;
+    }
+
+    public ArrayList<ProjectViewModel> getProject() {
+        return project;
+    }
+
+    public void setProject(ArrayList<ProjectViewModel> project) {
+        this.project = project;
     }
 
     public int getId() {

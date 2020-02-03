@@ -102,7 +102,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             }
         });
 
-            final ProjectViewModel project = (ProjectViewModel) getItem(position);
+        final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
 
         StringBuilder b = new StringBuilder();

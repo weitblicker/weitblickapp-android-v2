@@ -9,14 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.partner.ProjectPartnerAdapter;
+import com.example.weitblickapp_android.ui.partner.ProjectPartnerListFragment;
+import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
+import com.example.weitblickapp_android.ui.project.ProjectAdapterShort;
+import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +51,8 @@ public class NewsDetailFragment extends Fragment {
     private ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
+    ArrayList<ProjectViewModel> projectArr = new ArrayList<ProjectViewModel>();
+    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
 
 
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
@@ -56,6 +69,7 @@ public class NewsDetailFragment extends Fragment {
         this.picture = article.getImage();
         this.hosts = article.getHosts();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
+        this.projectArr = article.getProject();
 
         for(int i = 0; i < article.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + article.getImageUrls().get(i));
@@ -151,6 +165,17 @@ public class NewsDetailFragment extends Fragment {
                 }
             }
         });
+        if(projectArr != null && projectArr.size() != 0){
+            ListView listProject = (ListView) root.findViewById(R.id.projectList);
+            ProjectListAdapter adapterProject = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+            listProject.setAdapter(adapterProject);
+            for(int i = 0; i < projectArr.size(); i++){
+                projectList.add(projectArr.get(0));
+            }
+        }else{
+            ConstraintLayout projectCon = (ConstraintLayout) root.findViewById(R.id.projectContainer);
+            projectCon.setVisibility(View.GONE);
+        }
         return root;
     }
 

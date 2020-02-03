@@ -47,6 +47,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
+                <ListView
+                    android:id="@+id/project"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp">
+
+                </ListView>
             </androidx.viewpager.widget.ViewPager>
 
             <com.google.android.material.tabs.TabLayout
@@ -74,6 +83,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,8 +117,8 @@
                     android:fontFamily="@font/opensansbold"
                     android:gravity="end"
                     android:text="12.11.2034"
-                    android:textSize="12dp"
                     android:textColor="@color/wb_grey"
+                    android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.961"
                     app:layout_constraintStart_toEndOf="@+id/authorname"
@@ -124,10 +134,10 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="11dp"
                     android:layout_marginRight="11dp"
+                    android:fontFamily="@font/opensansbold"
                     android:text="Münster"
                     android:textColor="@color/wb_grey"
                     android:textSize="12dp"
-                    android:fontFamily="@font/opensansbold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.009"
                     app:layout_constraintStart_toEndOf="@+id/imageView8"
@@ -158,11 +168,11 @@
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="3dp"
+                    android:src="@drawable/ic_launcher_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.014"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_title"
-                    android:src="@drawable/ic_launcher_background" />
+                    app:layout_constraintTop_toBottomOf="@+id/detail_title" />
 
                 <TextView
                     android:id="@+id/authorname"
@@ -172,8 +182,8 @@
                     android:layout_marginLeft="7dp"
                     android:layout_marginTop="16dp"
                     android:text="Viktoria von Hassell"
-                    android:textSize="12dp"
                     android:textColor="@color/black"
+                    android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/authorpicture"
@@ -197,6 +207,66 @@
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/authorpicture" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/projectContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+
+                <TextView
+                    android:id="@+id/orange_event"
+                    android:layout_width="179dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="232dp"
+                    android:layout_marginRight="232dp"
+                    android:background="@color/wb_orange"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="6dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/orange_event" />
+
+                <TextView
+                    android:id="@+id/projectText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="Projekt"
+                    android:textColor="@color/wb_grey"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/moreEvents"
+                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintStart_toEndOf="@+id/imageView15"
+                    app:layout_constraintTop_toBottomOf="@+id/orange_event"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <ListView
+                    android:id="@+id/projectList"
+                    android:layout_width="match_parent"
+                    android:layout_height="126dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/projectText">
+
+                </ListView>
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
