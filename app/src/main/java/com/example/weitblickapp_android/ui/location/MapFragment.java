@@ -84,7 +84,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private Sensor sensor;
     private float[] gravity = new float[3];
     private float[] linear_acceleration = new float[3];
-    float expectedAcceleration = 2.0f;
+    float expectedAcceleration = 2.5f;
 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
@@ -102,6 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     private boolean paused = false;
     private boolean load = false;
+    private boolean toSpeedyForBike = false;
     private boolean gpsIsEnabled;
     private boolean projectFinished;
 
@@ -179,7 +180,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().startService(new Intent(mContext, KalmanLocationService.class));
+       // getActivity().startService(new Intent(mContext, KalmanLocationService.class));
        // initKalman();
 
         Log.e("ONCREATE", "!!!!");
@@ -198,9 +199,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         this.token = session.getKey();
 
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        createNewTour();
-
+        if(tourId == 0) {
+            Log.e("TOURID == 0", "!");
+            createNewTour();
+        }
         //Loads cycle-Project to display in Endfragment
         loadProject(projectId);
 
@@ -351,9 +353,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                         setUpMapIfNeeded();
                     }
                 }else{
-                    // Update Background Location fpr Fused-Location-Provider
                     RequestLocationUpdate();
-                 //   Log.e("LOCATION IS NULL", "!!!");
                 }
             }
         });
@@ -427,9 +427,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
                 float currentSpeedInKmh = Math. round((currentLocation.getSpeed() * 3.6f) * 100)/100;
-                Toast toast= Toast.makeText(mContext,"Speed: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
-                toast.show();
-                if (currentSpeedInKmh > 60.0f) {
+                if (currentSpeedInKmh > 60.0f || toSpeedyForBike) {
+                    Toast toast= Toast.makeText(mContext,"Geschwindigkeit: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
+                    toast.show();
                     return false;
                 } else {
                     return true;
@@ -755,8 +755,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onPause() {
         super.onPause();
-       // confirmBackPressedMessage();
-
         Log.e("PAUSED", "!!!!!");
     }
 
@@ -770,10 +768,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onDestroy() {
         super.onDestroy();
         sendSegment();
-        //handler.removeCallbacksAndMessages(null);
+        handler.removeCallbacksAndMessages(null);
         getActivity().unregisterReceiver(locationSwitchStateReceiver);
-        mContext.stopService(new Intent(mContext,KalmanLocationService.class));
-        kalmanService.stop();
+        sensorManager.unregisterListener(this);
+
+        //mContext.stopService(new Intent(mContext,KalmanLocationService.class));
+        //kalmanService.stop();
+
         Log.e("DESTROYED", "!!!!");
     }
 
@@ -821,12 +822,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         linear_acceleration[1] = event.values[1] - gravity[1];
         linear_acceleration[2] = event.values[2] - gravity[2];
 
-        if(Math.abs(linear_acceleration[0]) > 0.2)
-        Log.e("ACCELERATION VALUES", linear_acceleration[0] +"");
+
+        if(checkAccelerationToHigh()){
+            Toast toast= Toast.makeText(mContext,"toSpeedy! " + linear_acceleration[0] + " m/s" ,Toast. LENGTH_SHORT);
+            toast.show();
+            this.toSpeedyForBike = true;
+        }else{
+            this.toSpeedyForBike = false;
+        }
     }
 
-    public boolean checkAcceleration(){
-        return (Math.abs(linear_acceleration[0]) < expectedAcceleration || Math.abs(linear_acceleration [1]) < expectedAcceleration || Math.abs(linear_acceleration [2]) < expectedAcceleration);
+    public boolean checkAccelerationToHigh(){
+        return (Math.abs(linear_acceleration[0]) > expectedAcceleration || Math.abs(linear_acceleration [1]) > expectedAcceleration || Math.abs(linear_acceleration [2]) > expectedAcceleration);
     }
 
     @Override

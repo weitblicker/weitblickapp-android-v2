@@ -2,9 +2,9 @@ package com.example.weitblickapp_android.ui.news;
 
 import android.location.Location;
 
-import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-
 import androidx.lifecycle.ViewModel;
+
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +27,7 @@ public class NewsViewModel extends ViewModel {
     private String author;
     private String author_image;
     private int image_id;
-    private String published;
+    private Date published;
     private Location location;
     private ArrayList<String> imageUrls;
     private ArrayList<String> hosts;
@@ -68,7 +68,6 @@ public class NewsViewModel extends ViewModel {
 
         try {
             Date temp = formatterRead.parse(date);
-            this.published = formatterWrite.format(temp);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -126,7 +125,7 @@ public class NewsViewModel extends ViewModel {
         this.image_id = image_id;
     }
 
-    public String getDate() { return published; }
+    public String getDate() { return formatterWrite.format(published); }
 
     public Location getLocation() {
         return location;
