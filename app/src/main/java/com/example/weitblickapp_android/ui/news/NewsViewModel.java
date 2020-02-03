@@ -9,18 +9,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+//@Entity(tableName = "news")
 public class NewsViewModel extends ViewModel {
-
+ //   @Ignore
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+   // @Ignore
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
-
+    //@PrimaryKey
     private int id;
+
     private String title;
     private String text;
     private String teaser;
+    private String author;
+    private String author_image;
     private int image_id;
-    private Date published;
+    private String published;
     private Location location;
     private ArrayList<String> imageUrls;
 
@@ -35,7 +40,8 @@ public class NewsViewModel extends ViewModel {
         this.imageUrls = imageUrls;
 
         try {
-            this.published = formatterRead.parse(date);
+            Date temp = formatterRead.parse(date);
+            this.published = formatterWrite.format(temp);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -77,9 +83,7 @@ public class NewsViewModel extends ViewModel {
         this.image_id = image_id;
     }
 
-    public String getDate() {
-        return formatterWrite.format(published);
-    }
+    public String getDate() { return published; }
 
     public Location getLocation() {
         return location;

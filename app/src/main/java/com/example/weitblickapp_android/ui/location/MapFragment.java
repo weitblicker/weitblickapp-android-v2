@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -72,13 +74,17 @@ import mad.location.manager.lib.Interfaces.LocationServiceStatusInterface;
 import mad.location.manager.lib.Services.KalmanLocationService;
 import mad.location.manager.lib.Services.ServicesHelper;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, LocationServiceInterface, LocationServiceStatusInterface {
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationServiceInterface, LocationServiceStatusInterface, SensorEventListener {
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     private SensorManager sensorManager;
     private Sensor sensor;
+    private float[] gravity = new float[3];
+    private float[] linear_acceleration = new float[3];
+    float expectedAcceleration = 2.0f;
+
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -165,6 +171,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                     Utils.DEFAULT_POS_FACTOR);
             value.reset(settings); //warning!! here you can adjust your filter behavior
             value.start();
+
         });
     }
 
@@ -172,7 +179,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().startService(new Intent(mContext, KalmanLocationService.class));
-        initKalman();
+       // initKalman();
 
         Log.e("ONCREATE", "!!!!");
     }
@@ -192,11 +199,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         createNewTour();
-
-        //Retrieves Amount of Tours of User to increment Tour-IDs
-
-
-
 
         //Loads cycle-Project to display in Endfragment
         loadProject(projectId);
@@ -262,12 +264,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         askGpsPermission();
-        // setUpGpsReceiver();
-        //registerGpsReceiver();
-        //initAccelerometer();
-        //initializeTour();
-        //startFetchLocation();
-        //sendRouteSegments();
+        setUpGpsReceiver();
+        registerGpsReceiver();
+        initAccelerometer();
+        initializeTour();
+        startFetchLocation();
+        sendRouteSegments();
 
     }
 
@@ -397,9 +399,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
                 kmSegment += dis;
                 kmTotal += dis;
-               // Log.e("KMSEGMENT:", kmSegment +"");
-              ////Log.e("KMTOTAL:", kmTotal +"");
-              //  Log.e("EUROSTOTAL:", currentTour.getEurosTotal()+"");
 
                 don = currentTour.getEurosTotal();
 
@@ -417,7 +416,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private boolean checkSpeedAndAcceleration(){
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
-                float currentSpeedInKmh = (currentLocation.getSpeed() * 3.6f);
+                float currentSpeedInKmh = Math. round((currentLocation.getSpeed() * 3.6f) * 100)/100;
                 Toast toast= Toast.makeText(mContext,"Speed: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
                 toast.show();
                 if (currentSpeedInKmh > 60.0f) {
@@ -676,6 +675,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private void initAccelerometer(){
         sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     //Gets actual Date of TODAY in Format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
@@ -796,6 +796,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     @Override
     public void lastLocationAccuracyChanged(float v) {
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        final float alpha = 0.8f;
+
+        gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+        gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+        gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+
+        linear_acceleration[0] = event.values[0] - gravity[0];
+        linear_acceleration[1] = event.values[1] - gravity[1];
+        linear_acceleration[2] = event.values[2] - gravity[2];
+
+        if(Math.abs(linear_acceleration[0]) > 0.2)
+        Log.e("ACCELERATION VALUES", linear_acceleration[0] +"");
+    }
+
+    public boolean checkAcceleration(){
+        return (Math.abs(linear_acceleration[0]) < expectedAcceleration || Math.abs(linear_acceleration [1]) < expectedAcceleration || Math.abs(linear_acceleration [2]) < expectedAcceleration);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 }
