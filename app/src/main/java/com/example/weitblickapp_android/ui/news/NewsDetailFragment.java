@@ -57,7 +57,7 @@ public class NewsDetailFragment extends Fragment {
     public NewsDetailFragment(NewsViewModel article){
         this.title = article.getTitle();
         this.text = article.getText();
-//        this.date = article.getDate();
+        this.date = article.getDate();
         this.name = article.getName();
         this.picture = article.getImage();
         this.hosts = article.getHosts();

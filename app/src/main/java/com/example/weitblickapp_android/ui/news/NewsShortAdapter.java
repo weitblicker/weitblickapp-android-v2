@@ -80,7 +80,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
 
         textView_title.setText(article.getTitle());
         textView_teaser.setText(article.getTeaser());
-//        textView_date.setText(article.getDate());
+        textView_date.setText(article.getDate());
 
         view.setOnClickListener(new View.OnClickListener() {
 
