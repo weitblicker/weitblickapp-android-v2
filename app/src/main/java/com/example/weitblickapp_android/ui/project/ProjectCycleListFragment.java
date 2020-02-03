@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
@@ -85,7 +86,6 @@ public class ProjectCycleListFragment extends ListFragment {
     public void loadProjects(){
 
         // Talk to Rest API
-
         String URL = "https://weitblicker.org/rest/projects/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -109,7 +109,6 @@ public class ProjectCycleListFragment extends ListFragment {
                     ArrayList<Integer> newsIds = new ArrayList<Integer>();
                     ArrayList<Integer> blogIds = new ArrayList<Integer>();
                     ArrayList<Integer> sponsorenid = new ArrayList<Integer>();
-                    ArrayList<String> hostsId = new ArrayList<String>();
                     ArrayList<BlogEntryViewModel> blogsArr = new ArrayList<BlogEntryViewModel>();
                     ArrayList<NewsViewModel> newsArr = new ArrayList<NewsViewModel>();
                     ArrayList<ProjectPartnerViewModel> partnerArr = new ArrayList<ProjectPartnerViewModel>();
@@ -120,7 +119,14 @@ public class ProjectCycleListFragment extends ListFragment {
                     JSONArray blogs = null;
                     JSONArray hosts = null;
                     CycleViewModel cycle = null;
+                    JSONObject host = null;
+                    JSONObject bankAccount = null;
                     ArrayList<String> allHosts = new ArrayList<String>();
+                    JSONArray mileStoneArray = null;
+                    JSONObject mileStone = null;
+                    ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
+                    JSONArray donations = null;
+                    JSONObject donation = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
@@ -129,14 +135,12 @@ public class ProjectCycleListFragment extends ListFragment {
                         String text = responseObject.getString("description");
                         String goal_description = responseObject.getString("goal_description");
 
-                        float currentAmountDonationGoal = 0;
-                        float donationGoalDonationGoal = 0;
+                        String currentAmountDonationGoal = null;
+                        String donationGoalDonationGoal = null;
 
-                        // currentAmountDonationGoal = responseObject.getLong("donation_current");
-                        // donationGoalDonationGoal = responseObject.getLong("donation_goal");
+                        currentAmountDonationGoal = responseObject.getString("donation_current");
+                        donationGoalDonationGoal = responseObject.getString("donation_goal");
 
-                        currentAmountDonationGoal = 1250.30f;
-                        donationGoalDonationGoal = 20000;
 
                         imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
@@ -170,18 +174,22 @@ public class ProjectCycleListFragment extends ListFragment {
                         }catch(JSONException e){
 
                         }
-                        try {
-                            hosts = responseObject.getJSONArray("hosts");
-                            for (int x = 0; x < hosts.length(); x++) {
-                                hostsId.add(hosts.getString(x));
-                            }
-                            allHosts = loadHosts(hostsId);
-                        }catch(JSONException e){
 
+                        hosts = responseObject.getJSONArray("hosts");
+                        String bankname = null;
+                        String iban = null;
+                        String bic = null;
+
+                        for(int x = 0; x < hosts.length(); x++){
+                            host = hosts.getJSONObject(x);
+                            allHosts.add(host.getString("name"));
+                            /*if( host.getJSONObject("bank_account")!=  null){
+                                bankAccount = host.getJSONObject("bank_account");
+                                bankname = bankAccount.getString("account_holder");
+                                iban = bankAccount.getString("iban");
+                                bic = bankAccount.getString("bic");
+                            }*/
                         }
-                        Toast toast=Toast. makeText(getContext(),allHosts.toString(),Toast. LENGTH_SHORT);
-                        toast. setMargin(50,50);
-                        toast. show();
 
 
                         locationObject = responseObject.getJSONObject("location");
@@ -190,29 +198,30 @@ public class ProjectCycleListFragment extends ListFragment {
                         float lng = locationObject.getLong("lng");
                         String name = locationObject.getString("name");
                         String address = locationObject.getString("address");
-
-                        cycleJSONObject = responseObject.getJSONArray("cycle");
+                        String descriptionLocation = locationObject.getString("description");
                         partnerJSONObject = responseObject.getJSONArray("partners");
 
-                        float current_amount = 0;
-                        float cycle_donation = 0;
-                        boolean finished = false;
-                        int cycle_id = 0;
-                        float goal_amount = 0;
-                        float rateProKm = 0;
+
+                        String current_amount = null;
+                        String cycle_donation = null;
+                        int cyclist = 0;
+                        String km_sum = null;
 
 
-                        for (int x = 0; x < cycleJSONObject.length(); x++) {
-                            cycleObject = cycleJSONObject.getJSONObject(x);
-                            current_amount = cycleObject.getLong("current_amount");
-                            cycle_donation = cycleObject.getLong("goal_amount");
-                            finished = cycleObject.getBoolean("finished");
-                            cycle_id = cycleObject.getInt("cycle_donation");
-                            goal_amount = cycleObject.getLong("goal_amount");
-                            cycle = new CycleViewModel(current_amount, cycle_donation, finished, cycle_id, goal_amount);
-                            sponsorenid.add(cycle_id);
+                        cycleObject = responseObject.getJSONObject("new_cycle");
+
+
+                        current_amount = cycleObject.getString("euro_sum");
+                        cycle_donation = cycleObject.getString("euro_goal");
+                        cyclist = cycleObject.getInt("cyclists");
+                        km_sum = cycleObject.getString("km_sum");
+                        donations = cycleObject.getJSONArray("donations");
+                        for(int y = 0; y < donations.length(); y++){
+                            donation = donations.getJSONObject(y);
+                            sponsorenid.add(donation.getInt("id"));
                         }
-                        if(cycle != null){
+                        cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
+                        if(donations.length() > 0){
                             sponsorArr = loadSponsor(sponsorenid);
                         }
 
@@ -230,8 +239,28 @@ public class ProjectCycleListFragment extends ListFragment {
                             partnerArr.add(new ProjectPartnerViewModel(partnerName,description,weblink,logo));
                         }
                         text.trim();
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts);
-                        if(cycle != null){
+
+                        String nameMile;
+                        String descr;
+                        String date;
+                        boolean reached;
+
+                        try {
+                            mileStoneArray = responseObject.getJSONArray("milestones");
+                            for (int x = 0; x < mileStoneArray.length(); x++) {
+                                mileStone = mileStoneArray.getJSONObject(x);
+                                nameMile = mileStone.getString("name");
+                                descr = mileStone.getString("description");
+                                date = mileStone.getString("date");
+                                reached = mileStone.getBoolean("reached");
+                                allMilestone.add(new MilenstoneViewModel(nameMile, date, descr, reached));
+                            }
+                        }catch(JSONException e){
+
+                        }
+
+                        if(sponsorArr.size() > 0) {
+                            ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, null);
                             projectList.add(temp);
                             adapter.notifyDataSetChanged();
                         }
@@ -240,7 +269,7 @@ public class ProjectCycleListFragment extends ListFragment {
                     }
                 }
                 for(ProjectViewModel newsArticle:projectList){
-                    Log.e("Projects",newsArticle.toString());
+                    // Log.e("Projects",newsArticle.toString());
                 }
 
             }
@@ -267,51 +296,6 @@ public class ProjectCycleListFragment extends ListFragment {
         requestQueue.add(objectRequest);
     }
 
-    public ArrayList<String> loadHosts(ArrayList<String> hostsId){
-        ArrayList <String> allHosts = new ArrayList<String>();
-
-        for(int i = 0; i < hostsId.size(); i++){
-            String url = "https://weitblicker.org/rest/unions/" + hostsId.get(i);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject responseObject) {
-                    //Save Data into Model
-                    //Parse the JSON response array by iterating over it
-                    JSONObject host = null;
-
-                    try {
-                        String name =  responseObject.getString("name");
-                        allHosts.add(name);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //Display Error Message
-                    Log.e("Rest Response", error.toString());
-                }
-            }){
-                //Override getHeaders() to set Credentials for REST-Authentication
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
-                    return headers;
-                }
-            };
-            requestQueue.add(objectRequest);
-        }
-        return allHosts;
-    }
 
     public ArrayList<SponsorViewModel> loadSponsor(ArrayList<Integer> sponsorenId){
         ArrayList <SponsorViewModel> sponsoren = new ArrayList<SponsorViewModel>();
@@ -333,10 +317,11 @@ public class ProjectCycleListFragment extends ListFragment {
                         String name =  partner.getString("name");
                         String desc = partner.getString("description");
                         String logo = partner.getString("logo");
-                        float rateProKm = responseObject.getLong("rate_euro_km");
+                        String rateProKm = responseObject.getString("rate_euro_km");
+                        String goal_amount_Sponsor = responseObject.getString("goal_amount");
                         String address = partner.getString("link");
 
-                        temp = new SponsorViewModel(name, desc, address, logo, rateProKm);
+                        temp = new SponsorViewModel(name, desc, address, logo, rateProKm, goal_amount_Sponsor);
                         sponsoren.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -391,6 +376,10 @@ public class ProjectCycleListFragment extends ListFragment {
                         JSONObject image = null;
                         ArrayList<String> imageUrls = new ArrayList<String>();
                         JSONArray images = null;
+                        JSONObject author = null;
+                        JSONObject hosts = null;
+                        JSONObject host = null;
+                        ArrayList<String> allHosts = new ArrayList<String>();
                         try {
                             responseObject = response.getJSONObject(i);
                             Integer blogId = responseObject.getInt("id");
@@ -402,6 +391,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             String teaser = responseObject.getString("teaser");
                             imageUrls = getImageUrls(text);
                             text = extractImageUrls(text);
+                            String location = responseObject.getString("location");
                             //Get all imageUrls from Gallery
                             try {
                                 galleryObject = responseObject.getJSONObject("gallery");
@@ -416,6 +406,12 @@ public class ProjectCycleListFragment extends ListFragment {
                             }catch(JSONException e){
 
                             }
+                            hosts = responseObject.getJSONObject("host");
+                            allHosts.add(hosts.getString("name"));
+
+                            author = responseObject.getJSONObject("author");
+                            String name = author.getString("name");
+                            String profilPic = author.getString("image");
                             //TODO: Check if picture exists
                             //Get Date of last Item loaded in List loading more news starting at that date
                             try {
@@ -423,7 +419,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            BlogEntryViewModel blog = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls);
+                            BlogEntryViewModel blog = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls, name,profilPic,allHosts, location);
 
                             blogs.add(blog);
                         } catch (JSONException e) {
@@ -431,8 +427,6 @@ public class ProjectCycleListFragment extends ListFragment {
                         }
 
                     }
-
-
                 }
 
             }, new Response.ErrorListener() {
@@ -477,6 +471,11 @@ public class ProjectCycleListFragment extends ListFragment {
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
+                    JSONObject author = null;
+                    JSONObject hosts = null;
+                    JSONObject host = null;
+                    ArrayList<String> allHosts = new ArrayList<String>();
+
                     try {
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
@@ -494,6 +493,10 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         text.trim();
 
+                        author = responseObject.getJSONObject("author");
+                        String name = author.getString("name");
+                        String profilPic = author.getString("image");
+
                         //Get all image-Urls from Gallery
                         try {
                             images = responseObject.getJSONArray("photos");
@@ -507,11 +510,14 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         }
 
+                        hosts = responseObject.getJSONObject("host");
+                        allHosts.add(hosts.getString("name"));
+
                         //Get inline-Urls from Text, then extract them
                         // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
                         news.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();

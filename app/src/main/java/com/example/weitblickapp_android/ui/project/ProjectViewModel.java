@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.event.EventViewModel;
+import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
@@ -22,16 +24,22 @@ public class ProjectViewModel extends ViewModel {
     private ArrayList <NewsViewModel> new_ids;
     private ArrayList <BlogEntryViewModel> blog_ids;
     private ArrayList <SponsorViewModel> sponsor_ids;
+    private ArrayList <MilenstoneViewModel> mileStones;
+    private ArrayList <EventViewModel> event_ids;
     private float Lat;
     private float Lng;
     private String locationName;
     private String address;
     private CycleViewModel cycle;
-    float donationGoal;
-    float currentAmount;
+    String donationGoal;
+    String currentAmount;
     String goalDescription;
+    String bankName;
+    String bic;
+    String iban;
+    String descriptionLocation;
 
-    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, float currentAmount, float donationGoal, String goalDescription, ArrayList<String> allHosts) {
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String descriptionLocation, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, String currentAmount, String donationGoal, String goalDescription, ArrayList<String> allHosts, String bankName, String iban, String bic, ArrayList<MilenstoneViewModel> mileStones, ArrayList<EventViewModel> event_ids) {
         this.id = projectId;
         this.name = title;
         this.description = text;
@@ -49,6 +57,23 @@ public class ProjectViewModel extends ViewModel {
         this.sponsor_ids = sponsor_id;
         this.goalDescription = goalDescription;
         this.hosts = allHosts;
+        this.bankName = bankName;
+        this.iban = iban;
+        this.bic = bic;
+        this.mileStones = mileStones;
+        this.event_ids = event_ids;
+        this.descriptionLocation = descriptionLocation;
+    }
+
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls){
+        this.name = title;
+        this.description = text;
+        this.Lng = lng;
+        this.Lat = lat;
+        this.locationName = name;
+        this.cycle = cycle;
+        this.address = address;
+        this.imageUrls = imageUrls;
     }
 
     public ProjectViewModel(int id, String name, String description) {
@@ -72,7 +97,13 @@ public class ProjectViewModel extends ViewModel {
         this.address = address;
     }
 
+    public String getDescriptionLocation() {
+        return descriptionLocation;
+    }
 
+    public void setDescriptionLocation(String descriptionLocation) {
+        this.descriptionLocation = descriptionLocation;
+    }
 
     public String getLocationName() {
         return locationName;
@@ -182,19 +213,19 @@ public class ProjectViewModel extends ViewModel {
         this.cycle = cycle;
     }
 
-    public float getDonationGoal() {
+    public String getDonationGoal() {
         return donationGoal;
     }
 
-    public void setDonationGoal(float donationGoal) {
+    public void setDonationGoal(String donationGoal) {
         this.donationGoal = donationGoal;
     }
 
-    public float getCurrentAmount() {
+    public String getCurrentAmount() {
         return currentAmount;
     }
 
-    public void setCurrentAmount(float currentAmount) {
+    public void setCurrentAmount(String currentAmount) {
         this.currentAmount = currentAmount;
     }
 
@@ -212,6 +243,46 @@ public class ProjectViewModel extends ViewModel {
 
     public void setGoalDescription(String goalDescription) {
         this.goalDescription = goalDescription;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public ArrayList<MilenstoneViewModel> getMileStones() {
+        return mileStones;
+    }
+
+    public void setMileStones(ArrayList<MilenstoneViewModel> mileStones) {
+        this.mileStones = mileStones;
+    }
+
+    public ArrayList<EventViewModel> getEvent_ids() {
+        return event_ids;
+    }
+
+    public void setEvent_ids(ArrayList<EventViewModel> event_ids) {
+        this.event_ids = event_ids;
     }
 
     @Override

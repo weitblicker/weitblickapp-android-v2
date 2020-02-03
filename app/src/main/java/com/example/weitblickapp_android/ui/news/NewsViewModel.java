@@ -2,6 +2,8 @@ package com.example.weitblickapp_android.ui.news;
 
 import android.location.Location;
 
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+
 import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
@@ -28,16 +30,41 @@ public class NewsViewModel extends ViewModel {
     private String published;
     private Location location;
     private ArrayList<String> imageUrls;
+    private ArrayList<String> hosts;
+    String name;
+    String image;
+    ArrayList<ProjectViewModel> project;
 
     public NewsViewModel() {
     }
 
-    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls) {
+    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls, String name,String image, ArrayList<String> hosts, ArrayList<ProjectViewModel> project) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.teaser = teaser;
         this.imageUrls = imageUrls;
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
+        this.project = project;
+
+        try {
+            this.published = formatterRead.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public NewsViewModel(int id, String title, String text, String teaser,String date, ArrayList <String> imageUrls, String name,String image, ArrayList<String> hosts) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.teaser = teaser;
+        this.imageUrls = imageUrls;
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
 
         try {
             Date temp = formatterRead.parse(date);
@@ -51,6 +78,22 @@ public class NewsViewModel extends ViewModel {
         this.id = id;
         this.title = title;
         this.text = text;
+    }
+
+    public Date getPublished() {
+        return published;
+    }
+
+    public void setPublished(Date published) {
+        this.published = published;
+    }
+
+    public ArrayList<ProjectViewModel> getProject() {
+        return project;
+    }
+
+    public void setProject(ArrayList<ProjectViewModel> project) {
+        this.project = project;
     }
 
     public int getId() {
@@ -104,6 +147,30 @@ public class NewsViewModel extends ViewModel {
     public ArrayList<String> getImageUrls() { return imageUrls; }
 
     public void setImageUrls(ArrayList<String> imageUrl) { this.imageUrls = imageUrl; }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public ArrayList<String> getHosts() {
+        return hosts;
+    }
+
+    public void setHosts(ArrayList<String> hosts) {
+        this.hosts = hosts;
+    }
 
     @Override
     public String toString() {

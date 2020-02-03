@@ -63,7 +63,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                 public void onClick(View v) {
                     ProjectCycleListFragment fragment = new ProjectCycleListFragment();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment, "Map");
                     ft.addToBackStack(null);
                     ft.commit();
                 }

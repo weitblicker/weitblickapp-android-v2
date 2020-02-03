@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -156,7 +157,7 @@ Log.e(" REQUEST PERMISSIONS", "!");
     }
 
 
-  /*  @Override
+    /* @Override
     public void onBackPressed() {
 
         int count = getSupportFragmentManager().getBackStackEntryCount();
@@ -165,18 +166,16 @@ Log.e(" REQUEST PERMISSIONS", "!");
 
         Log.e("FRAGMENT: ", fragment.toString());
 
-        if(count == 0 && fragment != null) {
+        if(count == 0) {
             super.onBackPressed();
-        }else if (fragment == null || (MapFragment)fragment.onBackPressed()){
+        }else if (fragment == null || ((MapFragment)fragment).onBackPressed()){
             getSupportFragmentManager().popBackStack();
         }
 
-    }
-
-*/
+    }*/
 
 
-    @Override
+   @Override
     public void onBackPressed() {
 
         int count = getSupportFragmentManager().getBackStackEntryCount();

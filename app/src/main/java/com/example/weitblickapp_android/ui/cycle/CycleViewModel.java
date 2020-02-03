@@ -4,57 +4,47 @@ import androidx.lifecycle.ViewModel;
 
 public class CycleViewModel extends ViewModel {
 
-    float currentAmount;
-    float cycleDonation;
-    boolean finished;
-    int donationID;
-    float goalAmount;
+    String currentAmount;
+    String cycleDonation;
+    int cyclist;
+    String km_sum;
 
-    public CycleViewModel(float currentAmount, float cycleDonation, boolean finished, int donationID, float goalAmount){
+    public CycleViewModel(String currentAmount, String cycleDonation, int cyclist, String km_sum){
         this.currentAmount = currentAmount;
         this.cycleDonation = cycleDonation;
-        this.finished = finished;
-        this.donationID = donationID;
-        this.goalAmount = goalAmount;
+        this.cyclist = cyclist;
+        this.km_sum = km_sum;
     }
 
-    public float getCurrentAmount() {
+    public String getCurrentAmount() {
         return currentAmount;
     }
 
-    public void setCurrentAmount(float currentAmount) {
+    public void setCurrentAmount(String currentAmount) {
         this.currentAmount = currentAmount;
     }
 
-    public float getCycleDonation() {
+    public String getCycleDonation() {
         return cycleDonation;
     }
 
-    public void setCycleDonation(float cycleDonation) {
+    public void setCycleDonation(String cycleDonation) {
         this.cycleDonation = cycleDonation;
     }
 
-    public boolean isFinished() {
-        return finished;
+    public int getCyclist() {
+        return cyclist;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
+    public void setCyclist(int cyclist) {
+        this.cyclist = cyclist;
     }
 
-    public int getDonationID() {
-        return donationID;
+    public String getKm_sum() {
+        return km_sum;
     }
 
-    public void setDonationID(int donationID) {
-        this.donationID = donationID;
-    }
-
-    public float getGoalAmount() {
-        return goalAmount;
-    }
-
-    public void setGoalAmount(float goalAmount) {
-        this.goalAmount = goalAmount;
+    public void setKm_sum(String km_sum) {
+        this.km_sum = km_sum;
     }
 }
