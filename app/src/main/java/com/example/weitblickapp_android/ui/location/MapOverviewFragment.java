@@ -63,7 +63,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                 public void onClick(View v) {
                     ProjectCycleListFragment fragment = new ProjectCycleListFragment();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment, "Map");
                     ft.addToBackStack(null);
                     ft.commit();
                 }
@@ -80,7 +80,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     } else {
                         SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
                         if (settings.contains("projectid")) {
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                             fragment = new MapFragment(projectID);
                             ft.add(R.id.fragment_container, fragment, TAG_FRAGMENT);
                             ft.commit();

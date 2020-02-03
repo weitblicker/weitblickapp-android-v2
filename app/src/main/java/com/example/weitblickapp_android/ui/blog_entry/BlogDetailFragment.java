@@ -8,15 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -31,6 +37,7 @@ public class BlogDetailFragment extends Fragment {
     String text;
     ArrayList<String> imageUrls = new ArrayList<>();
     String date;
+    ArrayList<String> host = new ArrayList<String>();
 
     ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
@@ -42,6 +49,13 @@ public class BlogDetailFragment extends Fragment {
     private int currentPage = 0;
     private Timer timer;
 
+    String name;
+    String picture;
+    String location;
+    ArrayList<ProjectViewModel> projectArr = new ArrayList<ProjectViewModel>();
+    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
+
+
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();
@@ -50,6 +64,11 @@ public class BlogDetailFragment extends Fragment {
             this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
         }
         this.date = blogEntry.getPublished();
+        this.host = blogEntry.getHosts();
+        this.name = blogEntry.getName();
+        this.picture = blogEntry.getImage();
+        this.location = blogEntry.getLocation();
+        this.projectArr = blogEntry.getProject();
     }
 
     BlogDetailFragment(String title, String text, String date){
@@ -93,6 +112,26 @@ public class BlogDetailFragment extends Fragment {
                 currentPage ++;
             }
         };
+
+        final TextView authorName = root.findViewById(R.id.authorname);
+        final TextView location = root.findViewById(R.id.location);
+        final ImageView authorImages = root.findViewById(R.id.authorpicture);
+
+        location.setText(this.location);
+
+        String url = urlWeitblick + this.picture;
+        authorName.setText(this.name);
+        Picasso.get().load(url).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
+
+        final TextView partner = root.findViewById(R.id.partner);
+        StringBuilder b = new StringBuilder();
+        for(String s : this.host){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
         timer = new Timer(); // This will create a new Thread
         timer.schedule(new TimerTask() { // task to be scheduled
             @Override
@@ -125,6 +164,17 @@ public class BlogDetailFragment extends Fragment {
             }
         });
 
+        if(projectArr != null && projectArr.size() != 0){
+            ListView listProject = (ListView) root.findViewById(R.id.projectList);
+            ProjectListAdapter adapterProject = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+            listProject.setAdapter(adapterProject);
+            for(int i = 0; i < projectArr.size(); i++){
+                projectList.add(projectArr.get(0));
+            }
+        }else{
+            ConstraintLayout projectCon = (ConstraintLayout) root.findViewById(R.id.projectContainer);
+            projectCon.setVisibility(View.GONE);
+        }
 
         return root;
     }

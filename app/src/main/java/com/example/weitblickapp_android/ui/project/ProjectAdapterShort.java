@@ -1,44 +1,45 @@
-package com.example.weitblickapp_android.ui.news;
+package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
+import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private ArrayList<NewsViewModel> news;
+    private ArrayList<ProjectViewModel> projects;
     private FragmentManager fragManager;
 
-    public NewsShortAdapter(Context mContext, ArrayList<NewsViewModel> mDataSource, FragmentManager fragManager) {
-        super(mContext, R.layout.fragment_news_list, mDataSource);
+    public ProjectAdapterShort(Context mContext, ArrayList<ProjectViewModel> mDataSource, FragmentManager fragManager) {
+        super(mContext, R.layout.fragment_project_list, mDataSource);
         this.mContext = mContext;
-        this.news = mDataSource;
+        this.projects = mDataSource;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragManager = fragManager;
     }
     @Override
     public int getCount() {
-        return news.size();
+        return projects.size();
     }
 
     @Override
-    public NewsViewModel getItem(int position) {
-        return news.get(position);
+    public ProjectViewModel getItem(int position) {
+        return projects.get(position);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
 
         String weitblickUrl = "https://new.weitblicker.org";
 
-        view = mInflater.inflate(R.layout.fragment_news_blog, null);
+        view = mInflater.inflate(R.layout.fragment_project_list, null);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView_title = (TextView) view.findViewById(R.id.titel);
@@ -61,7 +62,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
         TextView partner = (TextView) view.findViewById(R.id.partner);
 
 
-        final NewsViewModel article = (NewsViewModel) getItem(position);
+        final ProjectViewModel article = (ProjectViewModel) getItem(position);
 
         StringBuilder b = new StringBuilder();
         for(String s : article.getHosts()){
@@ -79,16 +80,15 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
 
-        textView_title.setText(article.getTitle());
-        textView_teaser.setText(article.getTeaser());
-        textView_date.setText(article.getDate());
+        textView_title.setText(article.getName());
+
 
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
+                ft.replace(R.id.fragment_container, new ProjectDetailFragment(article));
                 ft.addToBackStack(null);
                 ft.commit();
             }

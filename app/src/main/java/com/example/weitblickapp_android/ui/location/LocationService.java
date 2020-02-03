@@ -1,158 +1,43 @@
 package com.example.weitblickapp_android.ui.location;
 
-import android.Manifest;
-import android.app.Service;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import mad.location.manager.lib.Interfaces.LocationServiceInterface;
+import mad.location.manager.lib.Interfaces.LocationServiceStatusInterface;
+import mad.location.manager.lib.Services.KalmanLocationService;
+import mad.location.manager.lib.Services.ServicesHelper;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class LocationService extends Service implements LocationListener {
-
-    boolean isGPSEnable = false;
-    boolean isNetworkEnable = false;
-    double latitude, longitude;
-    LocationManager locationManager;
-    Location location;
-    private Handler mHandler = new Handler();
-    private Timer mTimer = null;
-    long notify_interval = 1000;
-    public static String str_receiver = "servicetutorial.service.receiver";
-    Intent intent;
+public class LocationService extends KalmanLocationService implements LocationServiceInterface, LocationServiceStatusInterface  {
 
 
-    public LocationService() {
-
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public LocationService(){
+        ServicesHelper.addLocationServiceInterface(this);
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-/*
-        mTimer = new Timer();
-        mTimer.schedule(new TimerTaskToGetLocation(), 5, notify_interval);
-        intent = new Intent(str_receiver);
-        */
-
-     fn_getlocation();
+    public void locationChanged(Location location) {
+        Log.e("KAAAAAAAALMAN!!!!", location.getLatitude() +"");
     }
 
+
     @Override
-    public void onLocationChanged(Location location) {
+    public void serviceStatusChanged(KalmanLocationService.ServiceStatus serviceStatus) {
 
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
+    public void GPSStatusChanged(int i) {
 
     }
 
     @Override
-    public void onProviderEnabled(String provider) {
+    public void GPSEnabledChanged(boolean b) {
 
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void lastLocationAccuracyChanged(float v) {
 
     }
-
-    private void fn_getlocation() {
-        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        isNetworkEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        if (!isGPSEnable && !isNetworkEnable) {
-
-        } else {
-
-            if (isNetworkEnable) {
-                location = null;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    Activity#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for Activity#requestPermissions for more details.
-                        return;
-                    }
-                }
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
-                if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if (location != null) {
-
-                        Log.e("latitude", location.getLatitude() + "");
-                        Log.e("longitude", location.getLongitude() + "");
-
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        fn_update(location);
-                    }
-                }
-
-            }
-
-
-            if (isGPSEnable) {
-                location = null;
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-                if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (location != null) {
-                        Log.e("latitude", location.getLatitude() + "");
-                        Log.e("longitude", location.getLongitude() + "");
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        fn_update(location);
-                    }
-                }
-            }
-
-
-        }
-
-    }
-
-    private class TimerTaskToGetLocation extends TimerTask {
-        @Override
-        public void run() {
-
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    fn_getlocation();
-                }
-            });
-
-        }
-    }
-
-    private void fn_update(Location location) {
-
-        intent.putExtra("latutide", location.getLatitude() + "");
-        intent.putExtra("longitude", location.getLongitude() + "");
-        sendBroadcast(intent);
-    }
-
 }
