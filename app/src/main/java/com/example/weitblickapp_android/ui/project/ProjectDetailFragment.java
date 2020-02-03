@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.event.EventListDetailFragment;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneDetailListFragment;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
@@ -66,7 +68,7 @@ import io.noties.markwon.Markwon;
 public class ProjectDetailFragment extends Fragment implements OnMapReadyCallback {
 
     static final String urlWeitblick = "https://new.weitblicker.org";
-
+    String PREF_NAME = "DefaultProject";
     String location;
     String title;
     String text;
@@ -89,6 +91,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     String bankname;
     String bic;
     String iban;
+    String descriptionLocation;
+    int projectId;
 
     private static final int UNBOUNDED = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
@@ -134,6 +138,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.hosts = project.getHosts();
         this.mileList = project.getMileStones();
         this.eventId = project.getEvent_ids();
+        this.descriptionLocation = project.getDescriptionLocation();
+        this.projectId = project.getId();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -238,6 +244,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
         final TextView amountTextView = root.findViewById(R.id.amountNumber);
         final TextView bikeText = root.findViewById(R.id.bikeText2);
+        final TextView locationDescription = root.findViewById(R.id.detail_location3);
+        locationDescription.setText(this.descriptionLocation);
 
         //DonationGoal
         goalTextView.setText(goal_amount + " €");
@@ -247,7 +255,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         bankName.setText(bankname);
         BIC.setText(bic);
 
-        if(cycle != null){
+        if(this.sponsorId.size() > 0){
             drawPie(true);
             //Sponsor
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
@@ -283,6 +291,51 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
             bikeText.setText("Für jeden mit dem Fahrrad gefahrenen Kilometer spenden unsere Sponsoren für das Projekt " + currentRound + "€");
 
+            ImageButton bike = root.findViewById(R.id.bike);
+            ImageButton bike2 = root.findViewById(R.id.bike2);
+
+            StringBuilder b = new StringBuilder();
+            for(String s : hosts){
+                b.append(s);
+                b.append(" ");
+            }
+            partner.setText(b.toString());
+
+            bike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("projectid", projectId);
+                    editor.putString("projectname", title);
+                    editor.putFloat("lat", lat);
+                    editor.putFloat("lng", lng);
+                    editor.putString("hosts", b.toString());
+                    editor.putString("location", location);
+                    editor.commit();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, new MapOverviewFragment());
+                    ft.commit();
+                }
+            });
+            bike2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("projectid", projectId);
+                    editor.putString("projectname", title);
+                    editor.putFloat("lat", lat);
+                    editor.putFloat("lng", lng);
+                    editor.putString("hosts", b.toString());
+                    editor.putString("location", location);
+                    editor.commit();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, new MapOverviewFragment());
+                    ft.commit();
+                }
+            });
+
             //Stats
             currentRound = Math.round( Float.parseFloat(this.cycle.getCurrentAmount()) *100);
             currentRound = currentRound / 100.0f;
@@ -290,7 +343,12 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             currentRound = Math.round( Float.parseFloat(this.cycle.getCycleDonation()) *100);
             currentRound = currentRound / 100.0f;
             goalNumber.setText(currentRound + " €");
-
+            TextView km = root.findViewById(R.id.reachedNumber);
+            currentRound = Math.round( Float.parseFloat(this.cycle.getKm_sum()) *100);
+            currentRound = currentRound / 100.0f;
+            km.setText(currentRound + " km");
+            TextView cyclist = root.findViewById(R.id.biker);
+            cyclist.setText(String.valueOf(cycle.getCyclist()));
         }else{
             ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
             stats.setVisibility(View.GONE);
@@ -480,7 +538,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     public void drawPie(boolean draw){
         AnimatedPieView mAnimatedPieView = root.findViewById(R.id.pieChart);
         if(draw == true){
-            float current = (100 / Float.parseFloat(cycle.getGoalAmount())) * Float.parseFloat(cycle.getCurrentAmount());
+            float current = (100 / Float.parseFloat(cycle.getCycleDonation())) * Float.parseFloat(cycle.getCurrentAmount());
             AnimatedPieViewConfig config = new AnimatedPieViewConfig();
             config.startAngle(-90)// Starting angle offset
                     .addData(new SimplePieInfo(100 - current, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)

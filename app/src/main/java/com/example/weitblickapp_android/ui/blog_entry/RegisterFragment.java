@@ -123,6 +123,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String teaser = responseObject.getString("teaser");
+                        String location = responseObject.getString("location");
 
                         /*text = text.trim();
                         text = text.replaceAll("\n{2,}", "\n");*/
@@ -161,7 +162,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                             e.printStackTrace();
                         }
 
-                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
+                        BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls, name, profilPic, allHosts, location);
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {

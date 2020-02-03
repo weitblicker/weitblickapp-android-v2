@@ -172,6 +172,8 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     JSONArray mileStoneArray = null;
                     JSONObject mileStone = null;
                     ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
+                    JSONArray donations = null;
+                    JSONObject donation = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
@@ -258,7 +260,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         for(int x = 0; x < hosts.length(); x++){
                             host = hosts.getJSONObject(x);
                             allHosts.add(host.getString("name"));
-                            /*if( host.getJSONObject("bank_account")!=  null){
+                            /*if( host.getJSONObject("bank_account") !=  null){
                                 bankAccount = host.getJSONObject("bank_account");
                                 bankname = bankAccount.getString("account_holder");
                                 iban = bankAccount.getString("iban");
@@ -273,31 +275,30 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         float lng = locationObject.getLong("lng");
                         String name = locationObject.getString("name");
                         String address = locationObject.getString("address");
+                        String descriptionLocation = locationObject.getString("description");
 
-                        cycleJSONObject = responseObject.getJSONArray("cycle");
                         partnerJSONObject = responseObject.getJSONArray("partners");
 
                         String current_amount = null;
                         String cycle_donation = null;
-                        boolean finished = false;
-                        int cycle_id = 0;
-                        String goal_amount = null;
+                        int cyclist = 0;
+                        String km_sum = null;
 
+                        cycleObject = responseObject.getJSONObject("new_cycle");
 
-                        for (int x = 0; x < cycleJSONObject.length(); x++) {
-                            cycleObject = cycleJSONObject.getJSONObject(x);
-                             current_amount = cycleObject.getString("current_amount");
-                             cycle_donation = cycleObject.getString("goal_amount");
-                             finished = cycleObject.getBoolean("finished");
-                             cycle_id = cycleObject.getInt("cycle_donation");
-                             goal_amount = cycleObject.getString("goal_amount");
-                             cycle = new CycleViewModel(current_amount, cycle_donation, finished, cycle_id, goal_amount);
-                             sponsorenid.add(cycle_id);
+                        current_amount = cycleObject.getString("euro_sum");
+                        cycle_donation = cycleObject.getString("euro_goal");
+                        cyclist = cycleObject.getInt("cyclists");
+                        km_sum = cycleObject.getString("km_sum");
+                        donations = cycleObject.getJSONArray("donations");
+                        for(int y = 0; y < donations.length(); y++){
+                            donation = donations.getJSONObject(y);
+                            sponsorenid.add(donation.getInt("id"));
                         }
-                        if(cycle != null){
+                        cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
+                        if(donations.length() > 0){
                             sponsorArr = loadSponsor(sponsorenid);
                         }
-
                         String logo = null;
                         String description = null;
                         String weblink = null;
@@ -312,7 +313,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             partnerArr.add(new ProjectPartnerViewModel(partnerName,description,weblink,logo));
                         }
                         text.trim();
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname,iban, bic, allMilestone, eventArr);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname,iban, bic, allMilestone, eventArr);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -542,9 +543,11 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         } catch (JSONException e) {
 
                         }
+                        String location = null;
 
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("name"));
+                        location = responseObject.getString("location");
 
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
@@ -556,7 +559,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        tempBLog = new BlogEntryViewModel(blogId, title, text, teaser, published, imageUrls, name, profilPic, allHosts);
+                        tempBLog = new BlogEntryViewModel(blogId, title, text, teaser, published, imageUrls, name, profilPic, allHosts, location);
                         blogs.add(tempBLog);
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -6,16 +6,14 @@ public class CycleViewModel extends ViewModel {
 
     String currentAmount;
     String cycleDonation;
-    boolean finished;
-    int donationID;
-    String goalAmount;
+    int cyclist;
+    String km_sum;
 
-    public CycleViewModel(String currentAmount, String cycleDonation, boolean finished, int donationID, String goalAmount){
+    public CycleViewModel(String currentAmount, String cycleDonation, int cyclist, String km_sum){
         this.currentAmount = currentAmount;
         this.cycleDonation = cycleDonation;
-        this.finished = finished;
-        this.donationID = donationID;
-        this.goalAmount = goalAmount;
+        this.cyclist = cyclist;
+        this.km_sum = km_sum;
     }
 
     public String getCurrentAmount() {
@@ -34,27 +32,19 @@ public class CycleViewModel extends ViewModel {
         this.cycleDonation = cycleDonation;
     }
 
-    public boolean isFinished() {
-        return finished;
+    public int getCyclist() {
+        return cyclist;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
+    public void setCyclist(int cyclist) {
+        this.cyclist = cyclist;
     }
 
-    public int getDonationID() {
-        return donationID;
+    public String getKm_sum() {
+        return km_sum;
     }
 
-    public void setDonationID(int donationID) {
-        this.donationID = donationID;
-    }
-
-    public String getGoalAmount() {
-        return goalAmount;
-    }
-
-    public void setGoalAmount(String goalAmount) {
-        this.goalAmount = goalAmount;
+    public void setKm_sum(String km_sum) {
+        this.km_sum = km_sum;
     }
 }

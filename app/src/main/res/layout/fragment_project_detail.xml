@@ -113,8 +113,8 @@
                     android:layout_width="39dp"
                     android:layout_height="32dp"
                     android:layout_marginTop="36dp"
-                    android:layout_marginEnd="74dp"
-                    android:layout_marginRight="74dp"
+                    android:layout_marginEnd="34dp"
+                    android:layout_marginRight="34dp"
                     android:background="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -430,8 +430,8 @@
                     android:layout_marginStart="45dp"
                     android:layout_marginLeft="45dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
+                    android:layout_marginEnd="65dp"
+                    android:layout_marginRight="65dp"
                     android:fontFamily="@font/opensansbold"
                     android:textColor="@color/wb_grey"
                     android:textSize="12dp"
@@ -559,6 +559,23 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+                <ImageButton
+                    android:id="@+id/bike"
+                    android:layout_width="39dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginRight="11dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@null"
+                    android:tint="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/detail_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/partner"
+                    app:layout_constraintTop_toTopOf="parent"
+                    map:srcCompat="@drawable/icon_bike" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -960,7 +977,6 @@
                     android:id="@+id/projectpartner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     app:layout_constraintBottom_toBottomOf="@id/morePartner"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -973,6 +989,7 @@
                     android:id="@+id/morePartner"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/open_sans"
                     android:gravity="center"
                     android:text="Mehr Anzeigen"

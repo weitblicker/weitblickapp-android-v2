@@ -59,6 +59,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
         TextView textView_title = (TextView) view.findViewById(R.id.title);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
         TextView teaser = (TextView) view.findViewById(R.id.teaser);
+        TextView location = (TextView) view.findViewById(R.id.location);
 
         final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
 
@@ -85,6 +86,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
             b.append(" ");
         }
         partner.setText(b.toString());
+        location.setText(blog.getLocation());
 
         // onClick Listener for whole view-element -->redirect to DetailsPage
         view.setOnClickListener(new View.OnClickListener() {

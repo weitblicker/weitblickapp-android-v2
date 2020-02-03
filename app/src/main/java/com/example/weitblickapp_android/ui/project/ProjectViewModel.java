@@ -37,8 +37,9 @@ public class ProjectViewModel extends ViewModel {
     String bankName;
     String bic;
     String iban;
+    String descriptionLocation;
 
-    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, String currentAmount, String donationGoal, String goalDescription, ArrayList<String> allHosts, String bankName, String iban, String bic, ArrayList<MilenstoneViewModel> mileStones, ArrayList<EventViewModel> event_ids) {
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String descriptionLocation, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, String currentAmount, String donationGoal, String goalDescription, ArrayList<String> allHosts, String bankName, String iban, String bic, ArrayList<MilenstoneViewModel> mileStones, ArrayList<EventViewModel> event_ids) {
         this.id = projectId;
         this.name = title;
         this.description = text;
@@ -61,6 +62,7 @@ public class ProjectViewModel extends ViewModel {
         this.bic = bic;
         this.mileStones = mileStones;
         this.event_ids = event_ids;
+        this.descriptionLocation = descriptionLocation;
     }
 
     public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls){
@@ -95,7 +97,13 @@ public class ProjectViewModel extends ViewModel {
         this.address = address;
     }
 
+    public String getDescriptionLocation() {
+        return descriptionLocation;
+    }
 
+    public void setDescriptionLocation(String descriptionLocation) {
+        this.descriptionLocation = descriptionLocation;
+    }
 
     public String getLocationName() {
         return locationName;

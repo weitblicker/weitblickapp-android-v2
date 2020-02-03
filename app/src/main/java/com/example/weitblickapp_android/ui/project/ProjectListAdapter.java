@@ -111,7 +111,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             b.append(" ");
         }
 
-            if(project.getCycle() == null){
+            if(project.getSponsor_ids().size() <= 0){
                 maps.setVisibility(View.GONE);
             }else{
                 maps.setOnClickListener(new View.OnClickListener() {

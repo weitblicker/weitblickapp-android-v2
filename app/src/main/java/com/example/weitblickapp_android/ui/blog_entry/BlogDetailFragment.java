@@ -47,6 +47,7 @@ public class BlogDetailFragment extends Fragment {
 
     String name;
     String picture;
+    String location;
 
     public BlogDetailFragment(BlogEntryViewModel blogEntry) {
         this.title = blogEntry.getTitle();
@@ -59,6 +60,7 @@ public class BlogDetailFragment extends Fragment {
         this.host = blogEntry.getHosts();
         this.name = blogEntry.getName();
         this.picture = blogEntry.getImage();
+        this.location = blogEntry.getLocation();
     }
 
     BlogDetailFragment(String title, String text, String date){
@@ -104,7 +106,10 @@ public class BlogDetailFragment extends Fragment {
         };
 
         final TextView authorName = root.findViewById(R.id.authorname);
+        final TextView location = root.findViewById(R.id.location);
         final ImageView authorImages = root.findViewById(R.id.authorpicture);
+
+        location.setText(this.location);
 
         String url = urlWeitblick + this.picture;
         authorName.setText(this.name);
