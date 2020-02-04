@@ -190,6 +190,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                              ViewGroup container, Bundle savedInstanceState) {
         Log.e("ONCREATEVIEW", "!!!!");
 
+
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         this.gpsIsEnabled = isLocationEnabled();
 
@@ -199,10 +200,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         this.token = session.getKey();
 
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        if(tourId == 0) {
-            Log.e("TOURID == 0", "!");
-            createNewTour();
-        }
+
+        //createNewTour();
+
         //Loads cycle-Project to display in Endfragment
         loadProject(projectId);
 
@@ -266,6 +266,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 ft.addToBackStack(null);
                 ft.commit();
                 sendSegment();
+                handler.removeCallbacksAndMessages(null);
                 kmTotal = 0;
             }
         });
@@ -768,7 +769,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onDestroy() {
         super.onDestroy();
         sendSegment();
-        handler.removeCallbacksAndMessages(null);
+       // handler.removeCallbacksAndMessages(null);
         getActivity().unregisterReceiver(locationSwitchStateReceiver);
         sensorManager.unregisterListener(this);
 

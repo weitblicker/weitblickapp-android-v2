@@ -39,7 +39,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     private float lng;
     private ProjectViewModel project = null;
 
-    private MapFragment fragment = null;
+    private MapFragment fragmentMap = null;
 
     private boolean pending = false;
 
@@ -77,18 +77,19 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                         Intent redirect = new Intent(getActivity(), Login_Activity.class);
                         getActivity().startActivity(redirect);
                     } else {
-                        SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
-                        if (settings.contains("projectid")) {
-                            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                            fragment = new MapFragment(projectID);
-                            ft.add(R.id.fragment_container, fragment, TAG_FRAGMENT);
-                            ft.commit();
-                        } else {
-                            Toast.makeText(getActivity(), "Bitte wählen Sie ein Projekt zum Spenden aus!",
-                                    Toast.LENGTH_LONG).show();
+                            SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                            if (settings.contains("projectid")) {
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                fragmentMap = new MapFragment(projectID);
+                                ft.add(R.id.fragment_container, fragmentMap, TAG_FRAGMENT);
+                                ft.commit();
+                            } else {
+                                Toast.makeText(getActivity(), "Bitte wählen Sie ein Projekt zum Spenden aus!",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
-                }
+
             });
             setUpMapIfNeeded();
         return root;
@@ -97,6 +98,14 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onResume() {
         super.onResume();
+        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
+        if(fragment != null) {
+            Log.e("Fragment ", "existiert!");
+            //FragmentTransaction ft = getFragmentManager().beginTransaction();
+            //ft.replace(R.id.fragment_container, fragmentMap, TAG_FRAGMENT);
+            //ft.commit();
+
+        }
         if(pending){
             Log.e("TOURPENDING", "PENDING");
         }
