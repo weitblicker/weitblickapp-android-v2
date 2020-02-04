@@ -73,6 +73,10 @@ public class Tour {
     return locations;
   }
 
+  public void addLocationToTour(Location location){
+    this.locations.add(location);
+  }
+
   public void setLocations(ArrayList<Location> locations) {
     this.locations = locations;
   }

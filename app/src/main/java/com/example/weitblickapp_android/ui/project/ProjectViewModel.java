@@ -2,6 +2,14 @@ package com.example.weitblickapp_android.ui.project;
 
 import androidx.lifecycle.ViewModel;
 
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.event.EventViewModel;
+import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
+import com.example.weitblickapp_android.ui.news.NewsViewModel;
+import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
+import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
+
 import java.util.ArrayList;
 
 public class ProjectViewModel extends ViewModel {
@@ -12,57 +20,73 @@ public class ProjectViewModel extends ViewModel {
     private String description;
     private int locationId;
     private ArrayList <String> imageUrls;
-    private ArrayList <Integer> partner_ids;
+    private ArrayList <ProjectPartnerViewModel> partner_ids;
+    private ArrayList <NewsViewModel> new_ids;
+    private ArrayList <BlogEntryViewModel> blog_ids;
+    private ArrayList <SponsorViewModel> sponsor_ids;
+    private ArrayList <MilenstoneViewModel> mileStones;
+    private ArrayList <EventViewModel> event_ids;
     private float Lat;
     private float Lng;
     private String locationName;
-    private float current_amount;
-    private float cycle_donation;
-    private boolean finished;
-    private int cycle_id;
     private String address;
-    private float goal_amount;
+    private CycleViewModel cycle;
+    String donationGoal;
+    String currentAmount;
+    String goalDescription;
+    String bankName;
+    String bic;
+    String iban;
+    String descriptionLocation;
 
-    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount, ArrayList<String>imageUrls) {
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String descriptionLocation, String name, CycleViewModel cycle, ArrayList<String>imageUrls, ArrayList <ProjectPartnerViewModel> partner_ids, ArrayList <NewsViewModel> news_id, ArrayList <BlogEntryViewModel> blog_id, ArrayList <SponsorViewModel> sponsor_id, String currentAmount, String donationGoal, String goalDescription, ArrayList<String> allHosts, String bankName, String iban, String bic, ArrayList<MilenstoneViewModel> mileStones, ArrayList<EventViewModel> event_ids) {
         this.id = projectId;
         this.name = title;
         this.description = text;
         this.Lng = lng;
         this.Lat = lat;
         this.locationName = name;
-        this.current_amount = current_amount;
-        this.cycle_donation = cycle_donation;
-        this.cycle_id = cycle_id;
-        this.finished = finished;
+        this.cycle = cycle;
         this.address = address;
-        this.goal_amount = goal_amount;
+        this.imageUrls = imageUrls;
+        this.partner_ids = partner_ids;
+        this.new_ids = news_id;
+        this.blog_ids = blog_id;
+        this.donationGoal = donationGoal;
+        this.currentAmount = currentAmount;
+        this.sponsor_ids = sponsor_id;
+        this.goalDescription = goalDescription;
+        this.hosts = allHosts;
+        this.bankName = bankName;
+        this.iban = iban;
+        this.bic = bic;
+        this.mileStones = mileStones;
+        this.event_ids = event_ids;
+        this.descriptionLocation = descriptionLocation;
+    }
+
+    public ProjectViewModel(int projectId, String title, String text, float lat, float lng, String address, String name, CycleViewModel cycle, ArrayList<String>imageUrls){
+        this.name = title;
+        this.description = text;
+        this.Lng = lng;
+        this.Lat = lat;
+        this.locationName = name;
+        this.cycle = cycle;
+        this.address = address;
         this.imageUrls = imageUrls;
     }
-    public ProjectViewModel(int projectId,String title,String text, float lat,float lng,String address, String name, float current_amount,float cycle_donation, boolean finished, int cycle_id, float goal_amount) {
-        this.id = projectId;
+
+    public ProjectViewModel(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+    public ProjectViewModel(String title){
         this.name = title;
-        this.description = text;
-        this.Lng = lng;
-        this.Lat = lat;
-        this.locationName = name;
-        this.current_amount = current_amount;
-        this.cycle_donation = cycle_donation;
-        this.cycle_id = cycle_id;
-        this.finished = finished;
-        this.address = address;
-        this.goal_amount = goal_amount;
     }
 
     public ProjectViewModel(){
 
-    }
-
-    public float getGoal_amount() {
-        return goal_amount;
-    }
-
-    public void setGoal_amount(float goal_amount) {
-        this.goal_amount = goal_amount;
     }
 
     public String getAddress() {
@@ -73,10 +97,12 @@ public class ProjectViewModel extends ViewModel {
         this.address = address;
     }
 
-    public ProjectViewModel(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
+    public String getDescriptionLocation() {
+        return descriptionLocation;
+    }
+
+    public void setDescriptionLocation(String descriptionLocation) {
+        this.descriptionLocation = descriptionLocation;
     }
 
     public String getLocationName() {
@@ -85,38 +111,6 @@ public class ProjectViewModel extends ViewModel {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
-    }
-
-    public float getCurrent_amount() {
-        return current_amount;
-    }
-
-    public void setCurrent_amount(float current_amount) {
-        this.current_amount = current_amount;
-    }
-
-    public float getCycle_donation() {
-        return cycle_donation;
-    }
-
-    public void setCycle_donation(float cycle_donation) {
-        this.cycle_donation = cycle_donation;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public int getCycle_id() {
-        return cycle_id;
-    }
-
-    public void setCycle_id(int cycle_id) {
-        this.cycle_id = cycle_id;
     }
 
     public int getLocationId() {
@@ -181,7 +175,7 @@ public class ProjectViewModel extends ViewModel {
 
     public void setLocation(int locationId) { this.locationId = locationId; }
 
-    public ArrayList<Integer> getPartner_ids() {
+    public ArrayList<ProjectPartnerViewModel> getPartner_ids() {
         return partner_ids;
     }
 
@@ -191,10 +185,105 @@ public class ProjectViewModel extends ViewModel {
         this.imageUrls = imageUrls;
     }
 
-    public void setPartner_ids(ArrayList<Integer> partner_ids) {
+    public void setPartner_ids(ArrayList<ProjectPartnerViewModel> partner_ids) {
         this.partner_ids = partner_ids;
     }
 
+    public ArrayList<NewsViewModel> getNew_ids() {
+        return new_ids;
+    }
+
+    public void setNew_ids(ArrayList<NewsViewModel> new_ids) {
+        this.new_ids = new_ids;
+    }
+
+    public ArrayList<BlogEntryViewModel> getBlog_ids() {
+        return blog_ids;
+    }
+
+    public void setBlog_ids(ArrayList<BlogEntryViewModel> blog_ids) {
+        this.blog_ids = blog_ids;
+    }
+
+    public CycleViewModel getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(CycleViewModel cycle) {
+        this.cycle = cycle;
+    }
+
+    public String getDonationGoal() {
+        return donationGoal;
+    }
+
+    public void setDonationGoal(String donationGoal) {
+        this.donationGoal = donationGoal;
+    }
+
+    public String getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(String currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
+    public ArrayList<SponsorViewModel> getSponsor_ids() {
+        return sponsor_ids;
+    }
+
+    public void setSponsor_ids(ArrayList<SponsorViewModel> sponsor_ids) {
+        this.sponsor_ids = sponsor_ids;
+    }
+
+    public String getGoalDescription() {
+        return goalDescription;
+    }
+
+    public void setGoalDescription(String goalDescription) {
+        this.goalDescription = goalDescription;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public ArrayList<MilenstoneViewModel> getMileStones() {
+        return mileStones;
+    }
+
+    public void setMileStones(ArrayList<MilenstoneViewModel> mileStones) {
+        this.mileStones = mileStones;
+    }
+
+    public ArrayList<EventViewModel> getEvent_ids() {
+        return event_ids;
+    }
+
+    public void setEvent_ids(ArrayList<EventViewModel> event_ids) {
+        this.event_ids = event_ids;
+    }
 
     @Override
     public String toString() {

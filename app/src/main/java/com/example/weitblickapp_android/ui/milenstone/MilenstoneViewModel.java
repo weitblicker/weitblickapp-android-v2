@@ -7,13 +7,15 @@ public class MilenstoneViewModel extends ViewModel {
     String date;
     String title;
     String description;
+    boolean reached;
 
     public MilenstoneViewModel(){};
 
-    public MilenstoneViewModel(String title, String date, String description){
+    public MilenstoneViewModel(String title, String date, String description, boolean reached){
         this.title = title;
         this.date = date;
         this.description = description;
+        this.reached = reached;
     }
 
     public String getDate() {
@@ -38,5 +40,13 @@ public class MilenstoneViewModel extends ViewModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isReached() {
+        return reached;
+    }
+
+    public void setReached(boolean reached) {
+        this.reached = reached;
     }
 }

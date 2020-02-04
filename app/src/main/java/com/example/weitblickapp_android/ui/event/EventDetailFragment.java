@@ -1,6 +1,7 @@
 package com.example.weitblickapp_android.ui.event;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.noties.markwon.Markwon;
 
@@ -41,6 +45,12 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private GoogleMap mMap;
     SupportMapFragment mapFrag;
     private ViewPager mViewPager;
+
+    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
+
+    private int currentPage = 0;
+    private Timer timer;
 
     EventDetailFragment(EventViewModel event){
         this.location = event.getLocation();
@@ -89,6 +99,30 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
 
+        //SET Tab-Indicator-Dots for ViewPager
+        TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mViewPager, true);
+
+        //Initiate Runnable for automatic Image-Slide
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == mViewPager.getAdapter().getCount()){
+                    currentPage = 0;
+                }
+                mViewPager.setCurrentItem(currentPage, true);
+                currentPage ++;
+            }
+        };
+        timer = new Timer(); // This will create a new Thread
+        timer.schedule(new TimerTask() { // task to be scheduled
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
+
+
         final Markwon markwon = Markwon.create(getContext());
 
         final TextView titleTextView = root.findViewById(R.id.detail_title);
@@ -122,5 +156,11 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         });
 
         return root;
+    }
+
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
     }
 }

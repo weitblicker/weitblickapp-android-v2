@@ -8,10 +8,12 @@ public class FaqViewModel extends ViewModel {
 
     String question;
     String answer;
+    String titel;
 
-    public FaqViewModel(String question, String answer){
+    public FaqViewModel(String question, String answer, String titel){
         this.answer=answer;
         this.question=question;
+        this.titel = titel;
     }
 
     public FaqViewModel(){
@@ -32,5 +34,13 @@ public class FaqViewModel extends ViewModel {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public void setTitel(String titel){
+        this.titel = titel;
+    }
+
+    public String getTitel(){
+        return titel;
     }
 }

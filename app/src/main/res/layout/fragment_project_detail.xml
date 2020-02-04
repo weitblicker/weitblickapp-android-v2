@@ -34,7 +34,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+       >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -60,7 +61,7 @@
                     android:textSize="12dp"
                     app:layout_constraintEnd_toStartOf="@+id/stand"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/erreichtnumber" />
+                    app:layout_constraintTop_toBottomOf="@+id/reachedNumber" />
 
                 <TextView
                     android:id="@+id/stand"
@@ -73,7 +74,7 @@
                     android:textSize="12dp"
                     app:layout_constraintEnd_toStartOf="@+id/goal"
                     app:layout_constraintStart_toEndOf="@+id/gefahren"
-                    app:layout_constraintTop_toBottomOf="@+id/standnumber" />
+                    app:layout_constraintTop_toBottomOf="@+id/currentNumber" />
 
                 <TextView
                     android:id="@+id/goal"
@@ -112,8 +113,8 @@
                     android:layout_width="39dp"
                     android:layout_height="32dp"
                     android:layout_marginTop="36dp"
-                    android:layout_marginEnd="74dp"
-                    android:layout_marginRight="74dp"
+                    android:layout_marginEnd="34dp"
+                    android:layout_marginRight="34dp"
                     android:background="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -162,7 +163,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/bikernumber" />
 
                 <TextView
-                    android:id="@+id/erreichtnumber"
+                    android:id="@+id/reachedNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
@@ -170,7 +171,7 @@
                     android:text="2030km"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
-                    app:layout_constraintEnd_toStartOf="@+id/standnumber"
+                    app:layout_constraintEnd_toStartOf="@+id/currentNumber"
                     app:layout_constraintTop_toBottomOf="@+id/textView4"
                     map:layout_constraintStart_toStartOf="parent" />
 
@@ -184,11 +185,11 @@
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/standnumber"
+                    app:layout_constraintStart_toEndOf="@+id/currentNumber"
                     app:layout_constraintTop_toBottomOf="@+id/bike2" />
 
                 <TextView
-                    android:id="@+id/standnumber"
+                    android:id="@+id/currentNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="101dp"
@@ -197,7 +198,7 @@
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toStartOf="@+id/goalnumber"
-                    app:layout_constraintStart_toEndOf="@+id/erreichtnumber"
+                    app:layout_constraintStart_toEndOf="@+id/reachedNumber"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -429,10 +430,9 @@
                     android:layout_marginStart="45dp"
                     android:layout_marginLeft="45dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
+                    android:layout_marginEnd="65dp"
+                    android:layout_marginRight="65dp"
                     android:fontFamily="@font/opensansbold"
-                    android:gravity="center"
                     android:textColor="@color/wb_grey"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -559,6 +559,23 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+                <ImageButton
+                    android:id="@+id/bike"
+                    android:layout_width="39dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginRight="11dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@null"
+                    android:tint="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/detail_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/partner"
+                    app:layout_constraintTop_toTopOf="parent"
+                    map:srcCompat="@drawable/icon_bike" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -610,10 +627,23 @@
                     android:id="@+id/blog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/moreBlog"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_blog"></ListView>
+
+                <TextView
+                    android:id="@+id/moreBlog"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="center"
+                    android:text="Mehr Anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/blog" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -627,6 +657,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabDots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="140dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/eventsContainer"
@@ -664,10 +705,23 @@
                     android:text="Veranstaltungen"
                     android:textColor="@color/wb_grey"
                     android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/moreEvents"
                     app:layout_constraintHorizontal_bias="0.1"
                     app:layout_constraintStart_toEndOf="@+id/imageView15"
                     app:layout_constraintTop_toBottomOf="@+id/orange_event" />
+
+                <TextView
+                    android:id="@+id/moreEvents"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="center"
+                    android:text="Mehr Anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/events" />
 
                 <ListView
                     android:id="@+id/events"
@@ -724,7 +778,7 @@
                     android:textColor="@color/wb_grey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.073"
+                    app:layout_constraintHorizontal_bias="0.17"
                     app:layout_constraintStart_toEndOf="@+id/imageView14"
                     app:layout_constraintTop_toBottomOf="@+id/orange_news" />
 
@@ -732,12 +786,27 @@
                     android:id="@+id/news"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/moreNews"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView14">
 
                 </ListView>
+
+                <TextView
+                    android:id="@+id/moreNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="center"
+                    android:text="Mehr Anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/news" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -794,10 +863,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/moreSponsor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_sponsor"></ListView>
+
+                <TextView
+                    android:id="@+id/moreSponsor"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="center"
+                    android:text="Mehr Anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sponsorlist" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -852,11 +934,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/moreMilenstone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_milenstone">
 
                 </ListView>
+
+                <TextView
+                    android:id="@+id/moreMilenstone"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="center"
+                    android:text="Mehr Anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/milenstone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -882,14 +977,27 @@
                     android:id="@+id/projectpartner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/morePartner"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView11">
 
                 </ListView>
+
+                <TextView
+                    android:id="@+id/morePartner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="center"
+                    android:text="Mehr Anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/projectpartner" />
 
                 <ImageView
                     android:id="@+id/imageView11"

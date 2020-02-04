@@ -9,15 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -32,10 +37,15 @@ public class NewsDetailFragment extends Fragment {
     private String title;
     private String text;
     private String date;
+    String name;
+    String picture;
+    ArrayList<String> hosts = new ArrayList<String>();
     private ArrayList<String> imageUrls = new ArrayList<String>();
     private ViewPager mViewPager;
     public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
+    ArrayList<ProjectViewModel> projectArr = new ArrayList<ProjectViewModel>();
+    ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
 
 
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
@@ -48,7 +58,11 @@ public class NewsDetailFragment extends Fragment {
         this.title = article.getTitle();
         this.text = article.getText();
         this.date = article.getDate();
+        this.name = article.getName();
+        this.picture = article.getImage();
+        this.hosts = article.getHosts();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
+        this.projectArr = article.getProject();
 
         for(int i = 0; i < article.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + article.getImageUrls().get(i));
@@ -100,10 +114,28 @@ public class NewsDetailFragment extends Fragment {
         }, DELAY_MS, PERIOD_MS);
 
         final TextView titleTextView = root.findViewById(R.id.detail_title);
+        final TextView authorName = root.findViewById(R.id.authorname);
+        final ImageView authorImages = root.findViewById(R.id.authorpicture);
         titleTextView.setText(this.title);
         final TextView textTextView = root.findViewById(R.id.detail_text);
+        final TextView partner = root.findViewById(R.id.partner);
 
         final ImageView image = root.findViewById(R.id.image);
+
+
+
+        StringBuilder b = new StringBuilder();
+        for(String s : hosts){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
+
+        String url = urlWeitblick + this.picture;
+        authorName.setText(this.name);
+        Picasso.get().load(url).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
 
         //Parse HTML in TextView
 
@@ -126,7 +158,23 @@ public class NewsDetailFragment extends Fragment {
                 }
             }
         });
+        if(projectArr != null && projectArr.size() != 0){
+            ListView listProject = (ListView) root.findViewById(R.id.projectList);
+            ProjectListAdapter adapterProject = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+            listProject.setAdapter(adapterProject);
+            for(int i = 0; i < projectArr.size(); i++){
+                projectList.add(projectArr.get(0));
+            }
+        }else{
+            ConstraintLayout projectCon = (ConstraintLayout) root.findViewById(R.id.projectContainer);
+            projectCon.setVisibility(View.GONE);
+        }
         return root;
     }
 
+    @Override
+    public void onPause() {
+        timer.cancel();
+        super.onPause();
+    }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         TextView textView_title = (TextView) view.findViewById(R.id.titel);
         TextView textView_date = (TextView) view.findViewById(R.id.date);
         TextView teaser = (TextView) view.findViewById(R.id.teaser);
+        TextView partner = (TextView) view.findViewById(R.id.partner);
 
         final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
 
@@ -74,8 +76,25 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         //Set title for BlogEntries
         textView_title.setText(blog.getTitle());
         teaser.setText(blog.getTeaser());
-
         textView_date.setText(blog.getPublished());
+
+        StringBuilder b = new StringBuilder();
+        for(String s : blog.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+        partner.setText(b.toString());
+
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new BlogDetailFragment(blog));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         return view;
     }

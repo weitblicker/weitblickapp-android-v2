@@ -34,6 +34,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
+
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
@@ -58,23 +60,100 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="26dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="19dp"
-                android:layout_marginLeft="19dp"
-                android:layout_marginTop="3dp"
-                android:adjustViewBounds="true"
-                android:background="@null"
-                android:maxWidth="42dp"
-                android:maxHeight="42dp"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/weitblick_icon_round"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/detail_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.063"
-                app:layout_constraintStart_toEndOf="@+id/location"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+                app:layout_constraintStart_toEndOf="@+id/Layout1"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager">
+
+                <TextView
+                    android:id="@+id/partner"
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="Münster"
+                    android:textColor="@color/wb_grey"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.058"
+                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="26dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/weitblick_icon_round"
+                    app:layout_constraintEnd_toStartOf="@+id/partner"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/Layout1"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager">
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="Indien"
+                    android:textColor="@color/wb_grey"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView9"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="33dp"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="3dp"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_marker_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabDots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="140dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp" />
 
             <TextView
                 android:id="@+id/detail_text"
@@ -125,40 +204,6 @@
                 app:layout_constraintStart_toEndOf="@+id/authorpicture"
                 app:layout_constraintTop_toBottomOf="@+id/detail_title" />
 
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="33dp"
-                android:layout_height="28dp"
-                android:layout_marginStart="11dp"
-                android:layout_marginLeft="11dp"
-                android:layout_marginTop="4dp"
-                android:adjustViewBounds="true"
-                android:background="@null"
-                android:maxWidth="42dp"
-                android:maxHeight="42dp"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/icon_marker_foreground"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
-
-            <TextView
-                android:id="@+id/partner"
-                android:layout_width="135dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/opensansbold"
-                android:text="Münster"
-                android:textColor="@color/wb_grey"
-                android:textSize="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.685"
-                app:layout_constraintStart_toEndOf="@+id/imageView8"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
-
             <TextView
                 android:id="@+id/detail_title"
                 android:layout_width="match_parent"
@@ -173,7 +218,7 @@
                 android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+                app:layout_constraintTop_toBottomOf="@+id/Layout1" />
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/authorpicture"
@@ -188,19 +233,67 @@
                 app:layout_constraintTop_toBottomOf="@+id/detail_title"
                 tools:srcCompat="@drawable/ic_launcher_background" />
 
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="135dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/projectContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginTop="7dp"
-                android:text="Indien"
-                android:textColor="@color/wb_grey"
-                android:textSize="12dp"
-                android:fontFamily="@font/opensansbold"
-                app:layout_constraintStart_toEndOf="@+id/imageView9"
-                app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+                android:layout_marginTop="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_text">
+
+                <TextView
+                    android:id="@+id/orange_event"
+                    android:layout_width="179dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="232dp"
+                    android:layout_marginRight="232dp"
+                    android:background="@color/wb_orange"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="6dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/orange_event" />
+
+                <TextView
+                    android:id="@+id/projectText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="Projekt"
+                    android:textColor="@color/wb_grey"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/moreEvents"
+                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintStart_toEndOf="@+id/imageView15"
+                    app:layout_constraintTop_toBottomOf="@+id/orange_event"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <ListView
+                    android:id="@+id/projectList"
+                    android:layout_width="match_parent"
+                    android:layout_height="126dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/projectText">
+
+                </ListView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
@@ -19,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,11 +33,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FaqListFragment extends ListFragment {
+public class FaqListFragment extends Fragment {
 
     private FaqViewModel faqViewModel;
     ArrayList<FaqViewModel> faqList = new ArrayList<FaqViewModel>();
+    ArrayList<FaqViewModel> faqList2 = new ArrayList<FaqViewModel>();
     private FaqListAdapter adapter;
+    private  FaqListAdapter adapter2;
+    ListView list1;
+    ListView list2;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +52,14 @@ public class FaqListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_faq, container, false);
+
+        list1 = (ListView) view.findViewById(R.id.listView);
         adapter = new FaqListAdapter(getActivity(), faqList, getFragmentManager());
-        this.setListAdapter(adapter);
+        list1.setAdapter(adapter);
+
+        list2 = (ListView) view.findViewById(R.id.listView2);
+        adapter2 = new FaqListAdapter(getActivity(), faqList2, getFragmentManager());
+        list2.setAdapter(adapter2);
 
         ImageButton back = (ImageButton) view.findViewById(R.id.back);
 
@@ -65,7 +79,6 @@ public class FaqListFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
 
     public void loadStats(){
 
@@ -87,8 +100,11 @@ public class FaqListFragment extends ListFragment {
                     JSONArray faqArrayObject = null;
                     JSONObject faqObject = null;
 
+
                     try {
                         responseObject = response.getJSONObject(i);
+
+                        String titel = responseObject.getString("title");
 
                         faqArrayObject = responseObject.getJSONArray("faqs");
 
@@ -99,9 +115,14 @@ public class FaqListFragment extends ListFragment {
                             faqObject = faqArrayObject.getJSONObject(x);
                             answer = faqObject.getString("answer");
                             question = faqObject.getString("question");
-                            FaqViewModel temp = new FaqViewModel(question, answer);
-                            faqList.add(temp);
-                            adapter.notifyDataSetChanged();
+                            FaqViewModel temp = new FaqViewModel(question, answer, titel);
+                            if(titel.equals("Mitmachen & Spenden")){
+                                faqList.add(temp);
+                                adapter.notifyDataSetChanged();
+                            }else{
+                                faqList2.add(temp);
+                                adapter2.notifyDataSetChanged();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
