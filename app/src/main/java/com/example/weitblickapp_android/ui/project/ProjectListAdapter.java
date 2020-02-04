@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -26,6 +27,14 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private ArrayList<ProjectViewModel> projects;
     private FragmentManager fragManager;
     String PREF_NAME = "DefaultProject";
+    private OnItemClicked onItemClickedListener;
+    int selectedPosition = -1;
+
+    public void select(int position){
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
 
     public ProjectListAdapter(Context mContext, ArrayList<ProjectViewModel> mDataSource, FragmentManager fragManager) {
         super(mContext, R.layout.fragment_project_list, mDataSource);
@@ -34,6 +43,16 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragManager = fragManager;
     }
+
+    public interface OnItemClicked{
+        public void onClick(int position);
+    }
+
+    public void setOnItemClickedListener(OnItemClicked listener){
+        onItemClickedListener = listener;
+    }
+
+
     @Override
     public int getCount() {
         return projects.size();
@@ -56,18 +75,39 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
              view = mInflater.inflate(R.layout.fragment_project_list, null);
 
+        if(selectedPosition == position){
+            view.setSelected(true);
+            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.wb_green));
+        }
+
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_address = (TextView) view.findViewById(R.id.location);
             ImageButton maps = (ImageButton) view.findViewById(R.id.project_maps_btn);
+            TextView partner = (TextView) view.findViewById(R.id.partner);
 
 
             //TextView textView_date = (TextView) view.findViewById(R.id.date);
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClickedListener != null){
+                    onItemClickedListener.onClick(position);
+                }
+            }
+        });
 
-            final ProjectViewModel project = (ProjectViewModel) getItem(position);
+        final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
-            if(project.getCycle_id() == 0){
+
+        StringBuilder b = new StringBuilder();
+        for(String s : project.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+            if(project.getSponsor_ids().size() <= 0){
+
                 maps.setVisibility(View.GONE);
             }else{
                 maps.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +119,8 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                         editor.putString("projectname", project.getName());
                         editor.putFloat("lat", project.getLat());
                         editor.putFloat("lng", project.getLng());
+                        editor.putString("hosts", b.toString());
+                        editor.putString("location", project.getAddress());
                         editor.commit();
                         FragmentTransaction ft = fragManager.beginTransaction();
                         ft.replace(R.id.fragment_container, new MapOverviewFragment());
@@ -86,7 +128,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     }
                 });
             }
-
         try {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
         }catch(IndexOutOfBoundsException e){
@@ -102,22 +143,14 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
+
+            partner.setText(b.toString());
+
             //textView_title.setText(project.g);
 
             //Set Button-Listener and redirect to Details-Page
             ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
-            view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-            });
             detail.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction ft = fragManager.beginTransaction();
@@ -129,6 +162,5 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         return view;
     }
-
 }
 

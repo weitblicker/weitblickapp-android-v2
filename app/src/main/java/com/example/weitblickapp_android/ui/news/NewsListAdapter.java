@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,7 +48,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
             view = mInflater.inflate(R.layout.fragment_news_list, null);
 
@@ -57,9 +56,17 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_teaser = (TextView) view.findViewById(R.id.teaser);
             TextView textView_date = (TextView) view.findViewById(R.id.date);
+            TextView partner = (TextView) view.findViewById(R.id.partner);
 
 
             final NewsViewModel article = (NewsViewModel) getItem(position);
+
+            StringBuilder b = new StringBuilder();
+            for(String s : article.getHosts()){
+                b.append(s);
+                b.append(" ");
+            }
+            partner.setText(b.toString());
 
             if(article.getImageUrls().size()>0) {
                 weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));
@@ -77,18 +84,6 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
             //Set View-Listener and redirect to Details-Page onClick
 
             view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = fragManager.beginTransaction();
-                    ft.replace(R.id.fragment_container, new NewsDetailFragment(article));
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-            });
-
-            ImageButton detail = (ImageButton) view.findViewById(R.id.news_more_btn);
-            detail.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {

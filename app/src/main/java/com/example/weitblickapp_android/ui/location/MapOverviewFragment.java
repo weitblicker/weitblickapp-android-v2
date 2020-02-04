@@ -2,39 +2,25 @@ package com.example.weitblickapp_android.ui.location;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
-import com.example.weitblickapp_android.ui.profil.ProfilViewModel;
 import com.example.weitblickapp_android.ui.project.ProjectCycleListFragment;
-import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,18 +28,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class MapOverviewFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    Location currentLocation;
     private SessionManager session;
     private SharedPreferences defaultProjects;
     private String PREF_NAME = "DefaultProject";
@@ -63,55 +40,67 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     private float lng;
     private ProjectViewModel project = null;
 
-    FusedLocationProviderClient fusedLocationProviderClient;
-    private static final int REQUEST_CODE = 101;
+    private MapFragment fragment = null;
+
+    private boolean pending = false;
+
+    private final static String TAG_FRAGMENT = "MAP_FRAGMENT";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
-        defaultProjects = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
-        checkDefault();
 
-        Button defaultProject = root.findViewById(R.id.defaultProject);
-        defaultProject.setText(defaultproject);
+            View root = inflater.inflate(R.layout.fragment_map, container, false);
+            defaultProjects = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+            checkDefault();
 
-        session = new SessionManager(getActivity().getApplicationContext());
+            Button defaultProject = root.findViewById(R.id.defaultProject);
+            defaultProject.setText(defaultproject);
 
-        defaultProject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProjectCycleListFragment fragment = new ProjectCycleListFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
+            session = new SessionManager(getActivity().getApplicationContext());
 
-        ImageView img = root.findViewById(R.id.play);
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!session.isLoggedIn()){
-                    Intent redirect=new Intent(getActivity(), Login_Activity.class);
-                    getActivity().startActivity(redirect);
+            defaultProject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProjectCycleListFragment fragment = new ProjectCycleListFragment();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment, "Map");
+                    ft.addToBackStack(null);
+                    ft.commit();
                 }
-                else{
-                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
-                    if(settings.contains("projectid")) {
-                        MapFragment fragment = new MapFragment(projectID);
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-                        ft.commit();
-                    }else{
-                        Toast.makeText(getActivity(), "Du hast noch kein Projekt zum Spenden ausgewählt.",
-                                Toast.LENGTH_LONG).show();
+
+            });
+
+            ImageView img = root.findViewById(R.id.play);
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!session.isLoggedIn()) {
+                        Intent redirect = new Intent(getActivity(), Login_Activity.class);
+                        getActivity().startActivity(redirect);
+                    } else {
+                        SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                        if (settings.contains("projectid")) {
+                            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                            fragment = new MapFragment(projectID);
+                            ft.add(R.id.fragment_container, fragment, TAG_FRAGMENT);
+                            ft.commit();
+                        } else {
+                            Toast.makeText(getActivity(), "Bitte wählen Sie ein Projekt zum Spenden aus!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
-            }
-        });
-        setUpMapIfNeeded();
+            });
+            setUpMapIfNeeded();
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(pending){
+            Log.e("TOURPENDING", "PENDING");
+        }
     }
 
     private void checkDefault(){
