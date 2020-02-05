@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -23,7 +20,6 @@ import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
@@ -121,6 +117,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
         }
 
             if(project.getSponsor_ids().size() <= 0){
+
                 maps.setVisibility(View.GONE);
             }else{
                 maps.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +153,6 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
-
 
             partner.setText(B.toString());
 

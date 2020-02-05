@@ -14,8 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.weitblickapp_android.R;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {

@@ -31,6 +31,7 @@ public class ProjectViewModel extends ViewModel {
     private String locationName;
     private String address;
     private CycleViewModel cycle;
+
     String donationGoal;
     String currentAmount;
     String goalDescription;
@@ -81,6 +82,7 @@ public class ProjectViewModel extends ViewModel {
         this.name = name;
         this.description = description;
     }
+
     public ProjectViewModel(String title){
         this.name = title;
     }

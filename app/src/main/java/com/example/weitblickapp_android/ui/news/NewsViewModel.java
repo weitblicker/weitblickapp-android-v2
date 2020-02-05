@@ -68,7 +68,6 @@ public class NewsViewModel extends ViewModel {
 
         try {
             this.published = formatterRead.parse(date);
-            Date temp = formatterRead.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

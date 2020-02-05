@@ -109,6 +109,7 @@ public class ProjectCycleListFragment extends ListFragment {
                     ArrayList<Integer> newsIds = new ArrayList<Integer>();
                     ArrayList<Integer> blogIds = new ArrayList<Integer>();
                     ArrayList<Integer> sponsorenid = new ArrayList<Integer>();
+
                     ArrayList<BlogEntryViewModel> blogsArr = new ArrayList<BlogEntryViewModel>();
                     ArrayList<NewsViewModel> newsArr = new ArrayList<NewsViewModel>();
                     ArrayList<ProjectPartnerViewModel> partnerArr = new ArrayList<ProjectPartnerViewModel>();
@@ -127,6 +128,7 @@ public class ProjectCycleListFragment extends ListFragment {
                     ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
                     JSONArray donations = null;
                     JSONObject donation = null;
+
                     try {
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
@@ -175,6 +177,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         }
 
+
                         hosts = responseObject.getJSONArray("hosts");
                         String bankname = null;
                         String iban = null;
@@ -200,6 +203,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         String address = locationObject.getString("address");
                         String descriptionLocation = locationObject.getString("description");
                         partnerJSONObject = responseObject.getJSONArray("partners");
+
 
 
                         String current_amount = null;
@@ -296,7 +300,6 @@ public class ProjectCycleListFragment extends ListFragment {
         requestQueue.add(objectRequest);
     }
 
-
     public ArrayList<SponsorViewModel> loadSponsor(ArrayList<Integer> sponsorenId){
         ArrayList <SponsorViewModel> sponsoren = new ArrayList<SponsorViewModel>();
 
@@ -322,6 +325,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         String address = partner.getString("link");
 
                         temp = new SponsorViewModel(name, desc, address, logo, rateProKm, goal_amount_Sponsor);
+
                         sponsoren.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -380,6 +384,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         JSONObject hosts = null;
                         JSONObject host = null;
                         ArrayList<String> allHosts = new ArrayList<String>();
+
                         try {
                             responseObject = response.getJSONObject(i);
                             Integer blogId = responseObject.getInt("id");
@@ -392,6 +397,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             imageUrls = getImageUrls(text);
                             text = extractImageUrls(text);
                             String location = responseObject.getString("location");
+
                             //Get all imageUrls from Gallery
                             try {
                                 galleryObject = responseObject.getJSONObject("gallery");
@@ -406,12 +412,14 @@ public class ProjectCycleListFragment extends ListFragment {
                             }catch(JSONException e){
 
                             }
+
                             hosts = responseObject.getJSONObject("host");
                             allHosts.add(hosts.getString("city"));
 
                             author = responseObject.getJSONObject("author");
                             String name = author.getString("name");
                             String profilPic = author.getString("image");
+
                             //TODO: Check if picture exists
                             //Get Date of last Item loaded in List loading more news starting at that date
                             try {
@@ -419,6 +427,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+
                             BlogEntryViewModel blog = new BlogEntryViewModel(blogId, title, text, teaser,published, imageUrls, name,profilPic,allHosts, location);
 
                             blogs.add(blog);
@@ -518,6 +527,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         text = extractImageUrls(text);
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
+
                         news.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();

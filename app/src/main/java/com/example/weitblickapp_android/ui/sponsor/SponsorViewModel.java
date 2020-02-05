@@ -15,6 +15,7 @@ public class SponsorViewModel extends ViewModel {
     public SponsorViewModel(){};
 
     public SponsorViewModel(String name, String dec, String weblink, String logo, String rateProKm, String goal){
+
         this.description = dec;
         this.name = name;
         this.weblink = weblink;

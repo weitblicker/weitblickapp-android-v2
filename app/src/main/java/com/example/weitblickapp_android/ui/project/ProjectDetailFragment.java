@@ -233,6 +233,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView currentNumber = root.findViewById(R.id.currentNumber);
         final TextView goalNumber = root.findViewById(R.id.goalnumber);
         final TextView goalDesc = root.findViewById(R.id.donationgoaldescription);
+
         final TextView bankName = root.findViewById(R.id.bankname);
         final TextView IBAN = root.findViewById(R.id.IBAN);
         final TextView BIC = root.findViewById(R.id.BIC);
@@ -264,6 +265,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         goalTextView.setText(goal_amount + " €");
         amountTextView.setText(current_amount + " €");
         goalDesc.setText(goalDescription);
+
         IBAN.setText(iban);
         bankName.setText(bankname);
         BIC.setText(bic);
@@ -369,6 +371,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             km.setText(currentRound + " km");
             TextView cyclist = root.findViewById(R.id.biker);
             cyclist.setText(String.valueOf(cycle.getCyclist()));
+
         }else{
             ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
             stats.setVisibility(View.GONE);

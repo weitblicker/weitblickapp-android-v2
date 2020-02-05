@@ -163,7 +163,6 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         }catch(JSONException e){
 
                         }
-
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
 
@@ -182,6 +181,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         }
 
                         BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls, name, profilPic, allHosts, location, projectArr);
+
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.location.MapFragment;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

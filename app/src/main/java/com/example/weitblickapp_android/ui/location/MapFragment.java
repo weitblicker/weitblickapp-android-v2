@@ -82,6 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     private SensorManager sensorManager;
     private Sensor sensor;
+
     private float[] gravity = new float[3];
     private float[] linear_acceleration = new float[3];
     float expectedAcceleration = 2.5f;
@@ -143,6 +144,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     public MapFragment(int projectid){
         this.projectId = projectid;
+
         ServicesHelper.addLocationServiceInterface(this);
     }
 
