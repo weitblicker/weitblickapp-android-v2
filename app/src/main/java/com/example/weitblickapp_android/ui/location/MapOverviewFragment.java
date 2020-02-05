@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
@@ -80,7 +79,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     } else {
                         SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
                         if (settings.contains("projectid")) {
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                             fragment = new MapFragment(projectID);
                             ft.add(R.id.fragment_container, fragment, TAG_FRAGMENT);
                             ft.commit();
