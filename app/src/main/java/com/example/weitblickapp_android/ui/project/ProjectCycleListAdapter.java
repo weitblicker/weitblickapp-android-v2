@@ -83,7 +83,16 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
             b.append(s);
             b.append(" ");
         }
-        partner.setText(b.toString());
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        partner.setText(B.toString());
         //Set Button-Listener and redirect to Details-Page
         ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
         view.setOnClickListener(new View.OnClickListener() {

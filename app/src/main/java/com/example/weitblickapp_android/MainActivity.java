@@ -30,7 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-import mad.location.manager.lib.Services.KalmanLocationService;
+//import mad.location.manager.lib.Services.KalmanLocationService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        startService(new Intent(this, KalmanLocationService.class));
+        //startService(new Intent(this, KalmanLocationService.class));
 
         session = new SessionManager(getApplicationContext());
         setContentView(R.layout.activity_main);

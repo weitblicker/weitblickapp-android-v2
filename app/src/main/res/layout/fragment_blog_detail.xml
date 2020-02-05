@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     android:layout_marginLeft="3dp"
-                    android:fontFamily="@font/opensansbold"
+                    android:fontFamily="@font/open_sans"
                     android:text="Münster"
                     android:textColor="@color/wb_grey"
                     android:textSize="12dp"
@@ -161,15 +161,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:layout_marginLeft="11dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginEnd="11dp"
                 android:layout_marginRight="11dp"
                 android:fontFamily="@font/open_sans"
-                android:textSize="14dp"
                 android:textColor="@color/black"
+                android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/authorpicture" />
+                app:layout_constraintTop_toBottomOf="@+id/authorname" />
 
             <TextView
                 android:id="@+id/detail_date"
@@ -195,9 +195,9 @@
                 android:layout_marginStart="7dp"
                 android:layout_marginLeft="7dp"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/open_sans"
                 android:text="Viktoria von Hassell"
                 android:textColor="@color/black"
-                android:fontFamily="@font/open_sans"
                 android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.023"

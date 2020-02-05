@@ -112,7 +112,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
 
     private int currentPage = 0;
-    private Timer timer;
+    private Timer timer = null;
 
     public ProjectDetailFragment() {
     }
@@ -159,29 +159,31 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
         //SET Tab-Indicator-Dots for ViewPager
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(mViewPager, true);
+        if(mViewPager.getAdapter().getCount() > 1){
+            tabLayout.setupWithViewPager(mViewPager, true);
 
-        //Initiate Runnable for automatic Image-Slide
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                Log.e("currentPage:", currentPage +"");
-                Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
-                if (currentPage == mViewPager.getAdapter().getCount()){
-                    Log.e("LASTPAGE", "!!!");
-                    currentPage = 0;
+            //Initiate Runnable for automatic Image-Slide
+            final Handler handler = new Handler();
+            final Runnable Update = new Runnable() {
+                public void run() {
+                    Log.e("currentPage:", currentPage +"");
+                    Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
+                    if (currentPage == mViewPager.getAdapter().getCount()){
+                        Log.e("LASTPAGE", "!!!");
+                        currentPage = 0;
+                    }
+                    mViewPager.setCurrentItem(currentPage, true);
+                    currentPage ++;
                 }
-                mViewPager.setCurrentItem(currentPage, true);
-                currentPage ++;
-            }
-        };
-        timer = new Timer(); // This will create a new Thread
-        timer.schedule(new TimerTask() { // task to be scheduled
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, DELAY_MS, PERIOD_MS);
+            };
+            timer = new Timer(); // This will create a new Thread
+            timer.schedule(new TimerTask() { // task to be scheduled
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
 
 
         //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
@@ -216,7 +218,16 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 b.append(s);
                 b.append(" ");
             }
-            partner.setText(b.toString());
+            StringBuilder B = new StringBuilder();
+            for ( int i = 0; i < b.length(); i++ ) {
+                char c = b.charAt( i );
+                if(Character.isLowerCase(c)){
+                    B.append(Character.toUpperCase(c));
+                }else{
+                    B.append(c);
+                }
+            }
+            partner.setText(B.toString());
         }
         final TextView textTextView = root.findViewById(R.id.detail_text);
         final TextView currentNumber = root.findViewById(R.id.currentNumber);
@@ -299,7 +310,16 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 b.append(s);
                 b.append(" ");
             }
-            partner.setText(b.toString());
+            StringBuilder B = new StringBuilder();
+            for ( int i = 0; i < b.length(); i++ ) {
+                char c = b.charAt( i );
+                if(Character.isLowerCase(c)){
+                    B.append(Character.toUpperCase(c));
+                }else{
+                    B.append(c);
+                }
+            }
+            partner.setText(B.toString());
 
             bike.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -310,7 +330,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     editor.putString("projectname", title);
                     editor.putFloat("lat", lat);
                     editor.putFloat("lng", lng);
-                    editor.putString("hosts", b.toString());
+                    editor.putString("hosts", B.toString());
                     editor.putString("location", location);
                     editor.commit();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -327,7 +347,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     editor.putString("projectname", title);
                     editor.putFloat("lat", lat);
                     editor.putFloat("lng", lng);
-                    editor.putString("hosts", b.toString());
+                    editor.putString("hosts", B.toString());
                     editor.putString("location", location);
                     editor.commit();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -570,6 +590,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
     @Override
     public void onDestroy() {
+        if(timer != null)
         timer.cancel();
         super.onDestroy();
     }

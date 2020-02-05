@@ -182,7 +182,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         for(int x = 0; x < hosts.length(); x++){
                             host = hosts.getJSONObject(x);
-                            allHosts.add(host.getString("name"));
+                            allHosts.add(host.getString("city"));
                             /*if( host.getJSONObject("bank_account")!=  null){
                                 bankAccount = host.getJSONObject("bank_account");
                                 bankname = bankAccount.getString("account_holder");
@@ -407,7 +407,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                             }
                             hosts = responseObject.getJSONObject("host");
-                            allHosts.add(hosts.getString("name"));
+                            allHosts.add(hosts.getString("city"));
 
                             author = responseObject.getJSONObject("author");
                             String name = author.getString("name");
@@ -511,7 +511,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         }
 
                         hosts = responseObject.getJSONObject("host");
-                        allHosts.add(hosts.getString("name"));
+                        allHosts.add(hosts.getString("city"));
 
                         //Get inline-Urls from Text, then extract them
                         // imageUrls = getImageUrls(text);

@@ -106,7 +106,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         lng = locationObject.getDouble("lng");
 
                         hostObject = responseObject.getJSONObject("host");
-                        hostName = hostObject.getString("name");
+                        hostName = hostObject.getString("city");
 
 
                         try {
@@ -124,6 +124,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         //Get inline-Urls from Text, then extract them
                         // imageUrls = getImageUrls(text);
                         description = extractImageUrls(description);
+                        title = extractImageUrls(title);
 
                         location = new EventLocation(name, address, lat, lng);
 

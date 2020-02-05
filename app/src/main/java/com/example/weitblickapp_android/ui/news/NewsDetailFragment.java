@@ -52,7 +52,7 @@ public class NewsDetailFragment extends Fragment {
     final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
 
     private int currentPage = 0;
-    private Timer timer;
+    private Timer timer = null;
 
     public NewsDetailFragment(NewsViewModel article){
         this.title = article.getTitle();
@@ -88,30 +88,31 @@ public class NewsDetailFragment extends Fragment {
 
         //SET Tab-Indicator-Dots for ViewPager
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(mViewPager, true);
 
-
-        //Initiate Runnable for automatic Image-Slide
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                Log.e("currentPage:", currentPage +"");
-                Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
-                if (currentPage == mViewPager.getAdapter().getCount()){
-                    Log.e("LASTPAGE", "!!!");
-                    currentPage = 0;
+        if(mViewPager.getAdapter().getCount() > 1){
+            tabLayout.setupWithViewPager(mViewPager, true);
+            //Initiate Runnable for automatic Image-Slide
+            final Handler handler = new Handler();
+            final Runnable Update = new Runnable() {
+                public void run() {
+                    Log.e("currentPage:", currentPage +"");
+                    Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
+                    if (currentPage == mViewPager.getAdapter().getCount()){
+                        Log.e("LASTPAGE", "!!!");
+                        currentPage = 0;
+                    }
+                    mViewPager.setCurrentItem(currentPage, true);
+                    currentPage ++;
                 }
-                mViewPager.setCurrentItem(currentPage, true);
-                currentPage ++;
-            }
-        };
-        timer = new Timer(); // This will create a new Thread
-        timer.schedule(new TimerTask() { // task to be scheduled
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, DELAY_MS, PERIOD_MS);
+            };
+            timer = new Timer(); // This will create a new Thread
+            timer.schedule(new TimerTask() { // task to be scheduled
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
 
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         final TextView authorName = root.findViewById(R.id.authorname);
@@ -129,13 +130,25 @@ public class NewsDetailFragment extends Fragment {
             b.append(s);
             b.append(" ");
         }
-        partner.setText(b.toString());
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        partner.setText(B.toString());
 
-        String url = urlWeitblick + this.picture;
-        authorName.setText(this.name);
-        Picasso.get().load(url).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
+        if(this.picture.contains("null")){
+            authorImages.setVisibility(View.GONE);
+        }else{
+            String url = urlWeitblick + this.picture;
+            Picasso.get().load(url).fit().centerCrop().
+                    placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
+        }
 
         //Parse HTML in TextView
 
@@ -174,6 +187,7 @@ public class NewsDetailFragment extends Fragment {
 
     @Override
     public void onPause() {
+        if(timer != null)
         timer.cancel();
         super.onPause();
     }

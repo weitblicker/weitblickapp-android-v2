@@ -50,7 +50,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
 
     private int currentPage = 0;
-    private Timer timer;
+    private Timer timer = null;
 
     EventDetailFragment(EventViewModel event){
         this.location = event.getLocation();
@@ -101,27 +101,28 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         //SET Tab-Indicator-Dots for ViewPager
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(mViewPager, true);
 
-        //Initiate Runnable for automatic Image-Slide
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == mViewPager.getAdapter().getCount()){
-                    currentPage = 0;
+        if(mViewPager.getAdapter().getCount() > 1){
+            tabLayout.setupWithViewPager(mViewPager, true);
+            //Initiate Runnable for automatic Image-Slide
+            final Handler handler = new Handler();
+            final Runnable Update = new Runnable() {
+                public void run() {
+                    if (currentPage == mViewPager.getAdapter().getCount()){
+                        currentPage = 0;
+                    }
+                    mViewPager.setCurrentItem(currentPage, true);
+                    currentPage ++;
                 }
-                mViewPager.setCurrentItem(currentPage, true);
-                currentPage ++;
-            }
-        };
-        timer = new Timer(); // This will create a new Thread
-        timer.schedule(new TimerTask() { // task to be scheduled
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, DELAY_MS, PERIOD_MS);
-
+            };
+            timer = new Timer(); // This will create a new Thread
+            timer.schedule(new TimerTask() { // task to be scheduled
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
 
         final Markwon markwon = Markwon.create(getContext());
 
@@ -139,7 +140,16 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         locationTextView.setText(this.location.getAddress());
 
-        hostTextView.setText(this.hostName);
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < hostName.length(); i++ ) {
+            char c = hostName.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        hostTextView.setText(B.toString());
 
         mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
@@ -160,6 +170,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
     @Override
     public void onDestroy() {
+        if(timer != null)
         timer.cancel();
         super.onDestroy();
     }

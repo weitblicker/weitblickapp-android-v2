@@ -159,7 +159,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         }
 
                         hosts = responseObject.getJSONObject("host");
-                        allHosts.add(hosts.getString("name"));
+                        allHosts.add(hosts.getString("city"));
 
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
@@ -291,7 +291,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                             for (int x = 0; x < hosts.length(); x++) {
                                 host = hosts.getJSONObject(x);
-                                allHosts.add(host.getString("name"));
+                                allHosts.add(host.getString("city"));
                             /*if( host.getJSONObject("bank_account") !=  null){
                                 bankAccount = host.getJSONObject("bank_account");
                                 bankname = bankAccount.getString("account_holder");
@@ -316,7 +316,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             int cyclist = 0;
                             String km_sum = null;
 
-                            cycleObject = responseObject.getJSONObject("new_cycle");
+                            cycleObject = responseObject.getJSONObject("cycle");
 
                             current_amount = cycleObject.getString("euro_sum");
                             cycle_donation = cycleObject.getString("euro_goal");

@@ -44,7 +44,7 @@
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
         android:layout_marginBottom="4dp"
-        android:fontFamily="@font/opensansbold"
+        android:fontFamily="@font/open_sans"
         android:text="Osnabrück"
         android:textColor="@color/black"
         android:textSize="12dp"

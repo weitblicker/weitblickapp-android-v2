@@ -259,7 +259,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
                         for(int x = 0; x < hosts.length(); x++){
                             host = hosts.getJSONObject(x);
-                            allHosts.add(host.getString("name"));
+                            allHosts.add(host.getString("city"));
                             /*if( host.getJSONObject("bank_account") !=  null){
                                 bankAccount = host.getJSONObject("bank_account");
                                 bankname = bankAccount.getString("account_holder");
@@ -284,7 +284,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         int cyclist = 0;
                         String km_sum = null;
 
-                        cycleObject = responseObject.getJSONObject("new_cycle");
+                        cycleObject = responseObject.getJSONObject("cycle");
 
                         current_amount = cycleObject.getString("euro_sum");
                         cycle_donation = cycleObject.getString("euro_goal");
@@ -388,7 +388,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         lng = locationObject.getDouble("lng");
 
                         hostObject = responseObject.getJSONObject("host");
-                        hostName = hostObject.getString("name");
+                        hostName = hostObject.getString("city");
 
 
                         try {
@@ -546,7 +546,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String location = null;
 
                         hosts = responseObject.getJSONObject("host");
-                        allHosts.add(hosts.getString("name"));
+                        allHosts.add(hosts.getString("city"));
                         location = responseObject.getString("location");
 
                         author = responseObject.getJSONObject("author");
@@ -625,7 +625,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
 
                         host = responseObject.getJSONObject("host");
-                        allHosts.add(host.getString("name"));
+                        allHosts.add(host.getString("city"));
 
 
                         // String date = "2009-09-26T14:48:36Z";

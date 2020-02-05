@@ -1,6 +1,7 @@
 package com.example.weitblickapp_android.ui.event;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         TextView textView_title = (TextView)view.findViewById(R.id.title);
         TextView textView_location = (TextView)view.findViewById(R.id.location);
         TextView textView_date = (TextView)view.findViewById(R.id.date);
+        TextView textView_lo = (TextView)view.findViewById(R.id.title);
 
         final EventViewModel event = (EventViewModel) getItem(position);
 
@@ -70,10 +72,21 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
-        textView_title.setText(event.getTitle());
+        textView_title.setText(event.getText());
+        textView_lo.setText(event.getTitle());
         textView_location.setText(event.getLocation().getAddress());
         textView_date.setText(event.getEventStartDate());
-        textView_host.setText(event.getHostName());
+
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < event.getHostName().length(); i++ ) {
+            char c = event.getHostName().charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        textView_host.setText(B.toString());
 
 
         view.setOnClickListener(new View.OnClickListener() {

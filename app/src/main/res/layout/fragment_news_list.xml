@@ -61,8 +61,9 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:layout_marginStart="11dp"
             android:layout_marginLeft="11dp"
             android:layout_marginTop="5dp"
@@ -73,7 +74,6 @@
             android:text="Dies ist ein Titel..."
             android:textColor="@color/black"
             android:textSize="18dp"
-            android:layout_gravity="left"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +91,7 @@
 
         <TextView
             android:id="@+id/teaser"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
             android:layout_marginLeft="11dp"
@@ -147,7 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="3dp"
-        android:fontFamily="@font/opensansbold"
+        android:fontFamily="@font/open_sans"
         android:text="Osnabrück, Münster, Berlin"
         android:textColor="@color/wb_grey"
         android:textSize="12dp"

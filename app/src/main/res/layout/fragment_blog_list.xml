@@ -140,7 +140,7 @@
         android:layout_marginTop="6dp"
         android:text="Stadt"
         android:textColor="@color/wb_grey"
-        android:fontFamily="@font/opensansbold"
+        android:fontFamily="@font/open_sans"
         android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.026"

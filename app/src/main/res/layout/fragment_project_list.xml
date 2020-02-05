@@ -45,7 +45,7 @@
         android:layout_marginStart="7dp"
         android:layout_marginLeft="7dp"
         android:layout_marginTop="18dp"
-        android:fontFamily="@font/opensansbold"
+        android:fontFamily="@font/open_sans"
         android:textColor="@color/wb_grey"
         android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"

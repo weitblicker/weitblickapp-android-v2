@@ -110,6 +110,15 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             b.append(s);
             b.append(" ");
         }
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
 
             if(project.getSponsor_ids().size() <= 0){
                 maps.setVisibility(View.GONE);
@@ -123,7 +132,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                         editor.putString("projectname", project.getName());
                         editor.putFloat("lat", project.getLat());
                         editor.putFloat("lng", project.getLng());
-                        editor.putString("hosts", b.toString());
+                        editor.putString("hosts", B.toString());
                         editor.putString("location", project.getAddress());
                         editor.commit();
                         FragmentTransaction ft = fragManager.beginTransaction();
@@ -149,7 +158,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             textView_address.setText(project.getAddress());
 
 
-            partner.setText(b.toString());
+            partner.setText(B.toString());
 
             //textView_title.setText(project.g);
 
