@@ -96,7 +96,16 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
             }
         }
         partner.setText(B.toString());
-        location.setText(blog.getLocation());
+
+        ImageView logo = (ImageView) view.findViewById(R.id.imageView6);
+
+        if(blog.getLocation().contains("null")){
+            location.setVisibility(View.GONE);
+            logo.setVisibility(View.GONE);
+        }else{
+            location.setText(blog.getLocation());
+        }
+
 
         // onClick Listener for whole view-element -->redirect to DetailsPage
         view.setOnClickListener(new View.OnClickListener() {

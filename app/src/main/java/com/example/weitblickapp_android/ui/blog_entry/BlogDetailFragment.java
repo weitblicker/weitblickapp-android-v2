@@ -126,8 +126,16 @@ public class BlogDetailFragment extends Fragment {
         final TextView authorName = root.findViewById(R.id.authorname);
         final TextView location = root.findViewById(R.id.location);
         final ImageView authorImages = root.findViewById(R.id.authorpicture);
+        final ImageView logo = root.findViewById(R.id.imageView9);
 
-        location.setText(this.location);
+        if(this.location.contains("null")){
+            location.setVisibility(View.GONE);
+            logo.setVisibility(View.GONE);
+        }else{
+            location.setText(this.location);
+
+        }
+
 
 
 

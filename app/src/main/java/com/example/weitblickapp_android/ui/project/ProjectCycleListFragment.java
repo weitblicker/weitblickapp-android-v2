@@ -212,7 +212,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         String km_sum = null;
 
 
-                        cycleObject = responseObject.getJSONObject("new_cycle");
+                        cycleObject = responseObject.getJSONObject("cycle");
 
 
                         current_amount = cycleObject.getString("euro_sum");
@@ -263,11 +263,9 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         }
 
-                        if(sponsorArr.size() > 0) {
-                            ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, null);
-                            projectList.add(temp);
-                            adapter.notifyDataSetChanged();
-                        }
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, null);
+                        projectList.add(temp);
+                        adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

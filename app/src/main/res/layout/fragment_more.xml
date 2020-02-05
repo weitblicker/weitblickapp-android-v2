@@ -16,19 +16,19 @@
         android:background="@drawable/ic_green">
 
         <TextView
-            android:id="@+id/agbtext"
+            android:id="@+id/faqtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/opensansbold"
-            android:text="AGB"
+            android:text="FAQ"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.235"
+            app:layout_constraintHorizontal_bias="0.237"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.36" />
+            app:layout_constraintVertical_bias="0.675" />
 
         <ImageView
             android:id="@+id/news"
@@ -38,10 +38,10 @@
             android:tint="#333333"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.359"
+            app:layout_constraintVertical_bias="0.599"
             app:srcCompat="@drawable/ic_menu_manage" />
 
         <ImageView
@@ -52,10 +52,10 @@
             android:tint="#333333"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.433"
+            app:layout_constraintVertical_bias="0.673"
             app:srcCompat="@drawable/ic_menu_manage" />
 
         <ImageView
@@ -66,10 +66,10 @@
             android:tint="#333333"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499"
+            app:layout_constraintVertical_bias="0.738"
             app:srcCompat="@drawable/ic_menu_manage" />
 
         <TextView
@@ -82,34 +82,37 @@
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.264"
+            app:layout_constraintHorizontal_bias="0.267"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.741" />
 
         <TextView
-            android:id="@+id/faqtext"
+            android:id="@+id/agbtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/opensansbold"
-            android:text="FAQ"
+            android:text="AGB"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.235"
+            app:layout_constraintHorizontal_bias="0.238"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.434" />
+            app:layout_constraintVertical_bias="0.6" />
 
         <ImageView
             android:id="@+id/imageView19"
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:layout_alignParentTop="true"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            tools:srcCompat="@drawable/ic_wbcd_logo_standard_black_font" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

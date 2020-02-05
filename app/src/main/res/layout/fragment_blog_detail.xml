@@ -64,7 +64,7 @@
                 android:id="@+id/constraintLayout3"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/detail_title"
+                android:layout_marginTop="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/Layout1"
                 app:layout_constraintTop_toBottomOf="@+id/view_pager">
@@ -74,7 +74,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
-                    android:layout_marginLeft="3dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Münster"
                     android:textColor="@color/wb_grey"
@@ -209,16 +208,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
-                android:layout_marginLeft="11dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="11dp"
-                android:layout_marginRight="11dp"
                 android:fontFamily="@font/breeserif"
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Layout1" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/authorpicture"
