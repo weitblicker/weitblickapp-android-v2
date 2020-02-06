@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
