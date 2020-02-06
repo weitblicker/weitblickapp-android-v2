@@ -658,6 +658,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 })
                 .setNegativeButton("Nein", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                        MapOverviewFragment fragment = new MapOverviewFragment();
+                        ft.add(R.id.fragment_container, fragment);
+                        ft.commit();
                         dialog.cancel();
                     }
                 });

@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
+import com.example.weitblickapp_android.ui.event.EventListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,13 +36,8 @@ import java.util.Map;
 
 public class FaqListFragment extends Fragment {
 
-    private FaqViewModel faqViewModel;
-    ArrayList<FaqViewModel> faqList = new ArrayList<FaqViewModel>();
-    ArrayList<FaqViewModel> faqList2 = new ArrayList<FaqViewModel>();
     private FaqListAdapter adapter;
-    private  FaqListAdapter adapter2;
-    ListView list1;
-    ListView list2;
+    ArrayList<FaqViewModel> allFaqs = new ArrayList<FaqViewModel>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +49,9 @@ public class FaqListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_faq, container, false);
 
-        list1 = (ListView) view.findViewById(R.id.listView);
-        adapter = new FaqListAdapter(getActivity(), faqList, getFragmentManager());
+        ListView list1 = (ListView) view.findViewById(R.id.listView);
+        adapter = new FaqListAdapter(getActivity(), allFaqs, getFragmentManager());
         list1.setAdapter(adapter);
-
-        list2 = (ListView) view.findViewById(R.id.listView2);
-        adapter2 = new FaqListAdapter(getActivity(), faqList2, getFragmentManager());
-        list2.setAdapter(adapter2);
 
         ImageButton back = (ImageButton) view.findViewById(R.id.back);
 
@@ -99,39 +91,27 @@ public class FaqListFragment extends Fragment {
                     JSONObject responseObject = null;
                     JSONArray faqArrayObject = null;
                     JSONObject faqObject = null;
-
-
                     try {
                         responseObject = response.getJSONObject(i);
 
                         String titel = responseObject.getString("title");
-
                         faqArrayObject = responseObject.getJSONArray("faqs");
 
                         String question = null;
                         String answer = null;
-
+                        allFaqs.add(new FaqViewModel(titel, null, null));
                         for (int x = 0; x < faqArrayObject.length(); x++) {
                             faqObject = faqArrayObject.getJSONObject(x);
                             answer = faqObject.getString("answer");
                             question = faqObject.getString("question");
-                            FaqViewModel temp = new FaqViewModel(question, answer, titel);
-                            if(titel.equals("Mitmachen & Spenden")){
-                                faqList.add(temp);
-                                adapter.notifyDataSetChanged();
-                            }else{
-                                faqList2.add(temp);
-                                adapter2.notifyDataSetChanged();
-                            }
+                            allFaqs.add(new FaqViewModel(titel, question, answer));
+                            adapter.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-
             }
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {

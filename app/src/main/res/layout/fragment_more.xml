@@ -19,88 +19,76 @@
             android:id="@+id/faqtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="93dp"
             android:fontFamily="@font/opensansbold"
             android:text="FAQ"
             android:textColor="@color/black"
             android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.237"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.675" />
-
-        <ImageView
-            android:id="@+id/news"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:alpha="0.8"
-            android:tint="#333333"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.599"
-            app:srcCompat="@drawable/ic_menu_manage" />
+            app:layout_constraintStart_toEndOf="@+id/faq"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
 
         <ImageView
             android:id="@+id/faq"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="30dp"
             android:alpha="0.8"
             android:tint="#333333"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.673"
+            app:layout_constraintTop_toBottomOf="@+id/news"
             app:srcCompat="@drawable/ic_menu_manage" />
 
         <ImageView
             android:id="@+id/contact"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="30dp"
             android:alpha="0.8"
             android:tint="#333333"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.738"
+            app:layout_constraintTop_toBottomOf="@+id/faq"
             app:srcCompat="@drawable/ic_menu_manage" />
 
         <TextView
             android:id="@+id/contactext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="153dp"
             android:fontFamily="@font/opensansbold"
             android:text="Kontakt"
             android:textColor="@color/black"
             android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.267"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.741" />
+            app:layout_constraintStart_toEndOf="@+id/contact"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
 
         <TextView
             android:id="@+id/agbtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="33dp"
             android:fontFamily="@font/opensansbold"
             android:text="AGB"
             android:textColor="@color/black"
             android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.238"
+            app:layout_constraintStart_toEndOf="@+id/news"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+
+        <ImageView
+            android:id="@+id/news"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="30dp"
+            android:alpha="0.8"
+            android:tint="#333333"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView19"
+            app:srcCompat="@drawable/ic_menu_manage" />
 
         <ImageView
             android:id="@+id/imageView19"

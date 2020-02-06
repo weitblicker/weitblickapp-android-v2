@@ -281,21 +281,26 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         int cyclist = 0;
                         String km_sum = null;
 
-                        cycleObject = responseObject.getJSONObject("cycle");
+                        if(!responseObject.getString("cycle").contains("null")){
+                            cycleObject = responseObject.getJSONObject("cycle");
+                            current_amount = cycleObject.getString("euro_sum");
+                            cycle_donation = cycleObject.getString("euro_goal");
+                            cyclist = cycleObject.getInt("cyclists");
+                            km_sum = cycleObject.getString("km_sum");
+                            donations = cycleObject.getJSONArray("donations");
+                            for(int y = 0; y < donations.length(); y++){
+                                donation = donations.getJSONObject(y);
+                                sponsorenid.add(donation.getInt("id"));
+                            }
+                            cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
+                            if(donations.length() > 0) {
+                                sponsorArr = loadSponsor(sponsorenid);
+                            }
+                        }else{
+                            cycle = null;
+                        }
 
-                        current_amount = cycleObject.getString("euro_sum");
-                        cycle_donation = cycleObject.getString("euro_goal");
-                        cyclist = cycleObject.getInt("cyclists");
-                        km_sum = cycleObject.getString("km_sum");
-                        donations = cycleObject.getJSONArray("donations");
-                        for(int y = 0; y < donations.length(); y++){
-                            donation = donations.getJSONObject(y);
-                            sponsorenid.add(donation.getInt("id"));
-                        }
-                        cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
-                        if(donations.length() > 0){
-                            sponsorArr = loadSponsor(sponsorenid);
-                        }
+
                         String logo = null;
                         String description = null;
                         String weblink = null;

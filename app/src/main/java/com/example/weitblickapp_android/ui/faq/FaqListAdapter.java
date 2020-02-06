@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
@@ -21,6 +22,7 @@ public class FaqListAdapter extends ArrayAdapter<FaqViewModel> {
     private LayoutInflater mInflater;
     private ArrayList<FaqViewModel> faq;
     private FragmentManager fragManager;
+    static ArrayList<String> titel = new ArrayList<>();
 
     public FaqListAdapter(Context mContext, ArrayList<FaqViewModel> mDataSource, FragmentManager fragManager) {
         super(mContext, R.layout.fragment_faq_list, mDataSource);
@@ -50,22 +52,30 @@ public class FaqListAdapter extends ArrayAdapter<FaqViewModel> {
         view = mInflater.inflate(R.layout.fragment_faq_list, null);
 
         TextView textView_question = (TextView) view.findViewById(R.id.question);
+        TextView title = (TextView) view.findViewById(R.id.titel);
+        ImageView point = (ImageView) view.findViewById(R.id.point);
 
-        final FaqViewModel article = (FaqViewModel) getItem(position);
+        final FaqViewModel faq = (FaqViewModel) getItem(position);
 
-        textView_question.setText(article.getQuestion());
+        if(faq.answer != null && faq.question != null){
+                title.setVisibility(View.GONE);
+                textView_question.setText(faq.getQuestion());
 
-        view.setOnClickListener(new View.OnClickListener() {
+                view.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new FagDetailFragment(article));
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-
+                    @Override
+                    public void onClick(View v) {
+                        FragmentTransaction ft = fragManager.beginTransaction();
+                        ft.replace(R.id.fragment_container, new FagDetailFragment(faq));
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+                });
+        }else{
+            textView_question.setVisibility(View.GONE);
+            point.setVisibility(View.GONE);
+            title.setText(faq.getTitel());
+        }
         return view;
     }
 }
