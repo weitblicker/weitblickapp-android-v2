@@ -87,6 +87,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     String address;
                     double lat;
                     double lng;
+                    String descriptionLocation;
 
                     JSONObject hostObject = null;
                     String hostName;
@@ -104,6 +105,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         address = locationObject.getString("address");
                         lat = locationObject.getDouble("lat");
                         lng = locationObject.getDouble("lng");
+                        descriptionLocation = locationObject.getString("description");
 
                         hostObject = responseObject.getJSONObject("host");
                         hostName = hostObject.getString("city");
@@ -126,7 +128,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         description = extractImageUrls(description);
                         title = extractImageUrls(title);
 
-                        location = new EventLocation(name, address, lat, lng);
+                        location = new EventLocation(name, address, lat, lng, descriptionLocation);
 
                         EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
                         events.add(temp);

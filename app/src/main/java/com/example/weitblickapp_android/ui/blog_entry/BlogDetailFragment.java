@@ -127,10 +127,11 @@ public class BlogDetailFragment extends Fragment {
         final TextView location = root.findViewById(R.id.location);
         final ImageView authorImages = root.findViewById(R.id.authorpicture);
         final ImageView logo = root.findViewById(R.id.imageView9);
-
+        ConstraintLayout layout = root.findViewById(R.id.Layout1);
         if(this.location.contains("null")){
             location.setVisibility(View.GONE);
             logo.setVisibility(View.GONE);
+            layout.setVisibility(View.GONE);
         }else{
             location.setText(this.location);
 

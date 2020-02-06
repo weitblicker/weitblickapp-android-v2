@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -23,6 +24,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.event.EventLocation;
+import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
@@ -128,6 +131,9 @@ public class ProjectCycleListFragment extends ListFragment {
                     ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
                     JSONArray donations = null;
                     JSONObject donation = null;
+                    JSONArray events = null;
+                    ArrayList<Integer> eventIds = new ArrayList<Integer>();
+                    ArrayList<EventViewModel> eventArr = new ArrayList<EventViewModel>();
 
                     try {
                         responseObject = response.getJSONObject(i);
@@ -173,6 +179,15 @@ public class ProjectCycleListFragment extends ListFragment {
                                 blogIds.add(blogs.getInt(x));
                             }
                             blogsArr = loadBlog(blogIds);
+                        }catch(JSONException e){
+
+                        }
+                        try {
+                            events = responseObject.getJSONArray("events");
+                            for (int x = 0; x < events.length(); x++) {
+                                eventIds.add(events.getInt(x));
+                            }
+                            eventArr = loadEvents(eventIds);
                         }catch(JSONException e){
 
                         }
@@ -263,7 +278,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         }
 
-                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, null);
+                        ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, eventArr);
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -296,6 +311,100 @@ public class ProjectCycleListFragment extends ListFragment {
             }
         };
         requestQueue.add(objectRequest);
+    }
+
+    public ArrayList<EventViewModel> loadEvents(ArrayList<Integer> eventId){
+        ArrayList <EventViewModel> events = new ArrayList<EventViewModel>();
+        for(int i = 0; i < eventId.size(); i++) {
+            String URL = "https://weitblicker.org/rest/events/" + eventId.get(i);
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject responseObject) {
+                    ArrayList<String> imageUrls = new ArrayList<String>();
+                    Location eventLocation;
+                    JSONArray images = null;
+                    JSONObject image = null;
+
+                    JSONObject locationObject = null;
+                    EventLocation location = null;
+
+                    String name;
+                    String address;
+                    double lat;
+                    double lng;
+
+                    JSONObject hostObject = null;
+                    String hostName;
+                    String locationDescription;
+
+                    try {
+                        Integer eventId = responseObject.getInt("id");
+                        String title = responseObject.getString("title");
+                        String description = responseObject.getString("description");
+                        String startDate = responseObject.getString("start");
+                        String endDate = responseObject.getString("end");
+
+                        locationObject = responseObject.getJSONObject("location");
+                        name = locationObject.getString("name");
+                        address = locationObject.getString("address");
+                        lat = locationObject.getDouble("lat");
+                        lng = locationObject.getDouble("lng");
+                        locationDescription = locationObject.getString("description");
+
+                        hostObject = responseObject.getJSONObject("host");
+                        hostName = hostObject.getString("city");
+
+
+                        try {
+                            images = responseObject.getJSONArray("photos");
+                            for (int x = 0; x < images.length(); x++) {
+                                image = images.getJSONObject(x);
+                                String url = image.getString("url");
+                                imageUrls.add(url);
+                            }
+
+                        } catch (JSONException e) {
+
+                        }
+
+                        //Get inline-Urls from Text, then extract them
+                        // imageUrls = getImageUrls(text);
+                        description = extractImageUrls(description);
+
+                        location = new EventLocation(name, address, lat, lng, locationDescription);
+
+                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
+                        events.add(temp);
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Display Error Message
+                    Log.e("Rest Response", error.toString());
+                }
+            }) {
+                //Override getHeaders() to set Credentials for REST-Authentication
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String credentials = "surfer:hangloose";
+                    String auth = "Basic "
+                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+            };
+            requestQueue.add(objectRequest);
+        }
+        return events;
     }
 
     public ArrayList<SponsorViewModel> loadSponsor(ArrayList<Integer> sponsorenId){

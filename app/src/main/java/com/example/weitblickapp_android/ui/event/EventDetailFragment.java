@@ -131,14 +131,18 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         final TextView dateTextView = root.findViewById(R.id.detail_date);
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         final TextView hostTextView = root.findViewById(R.id.partner);
+        final TextView location2 = root.findViewById(R.id.detail_location2);
+        final TextView locationDescription = root.findViewById(R.id.description_location);
 
         //markdown description Text
         markwon.setMarkdown(textTextView,this.text);
-        titleTextView.setText(this.title);
+        //titleTextView.setText(this.title);
 
         dateTextView.setText(this.date);
-
+        titleTextView.setText(this.title);
         locationTextView.setText(this.location.getAddress());
+        location2.setText(this.location.getAddress());
+        locationDescription.setText(this.location.getDescription());
 
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < hostName.length(); i++ ) {

@@ -1,9 +1,13 @@
 package com.example.weitblickapp_android.ui.news;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -90,6 +94,14 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
             textView_teaser.setText(article.getTeaser());
             textView_date.setText(article.getDate());
 
+            ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) textView_teaser.getLayoutParams();
+            params.height = getTextViewHeight(textView_teaser);
+            textView_teaser.setLayoutParams(params);
+            ViewGroup.LayoutParams params2 = (ViewGroup.LayoutParams) textView_title.getLayoutParams();
+            params2.height = getTextViewHeight(textView_title);
+            textView_title.setLayoutParams(params2);
+
+
             //Set View-Listener and redirect to Details-Page onClick
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -104,5 +116,26 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
             });
 
         return view;
+    }
+
+    public static int getTextViewHeight(TextView textView) {
+        WindowManager wm =
+                (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+
+        int deviceWidth;
+
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2){
+            Point size = new Point();
+            display.getSize(size);
+            deviceWidth = size.x;
+        } else {
+            deviceWidth = display.getWidth();
+        }
+
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(deviceWidth, View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        textView.measure(widthMeasureSpec, heightMeasureSpec);
+        return textView.getMeasuredHeight();
     }
 }
