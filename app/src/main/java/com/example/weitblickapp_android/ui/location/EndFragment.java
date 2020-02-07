@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
@@ -23,13 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
-import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
-import com.example.weitblickapp_android.ui.event.EventViewModel;
-import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
-import com.example.weitblickapp_android.ui.news.NewsListAdapter;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorAdapter;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
@@ -61,13 +53,14 @@ public class EndFragment extends Fragment {
         this.project = project;
         this.distanceTotal = String.format("%.2f", currentTour.getDistanceTotal()).concat(" km");
         this.eurosTotal = String.format("%.2f", currentTour.getEurosTotal()).concat(" €");
-        this.projectName = project.getName();
+        //this.projectName = project.getName();
      }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         settings = getContext().getApplicationContext().getSharedPreferences("DefaultProject", 0);
         int id = settings.getInt("projectid", 0);
+        this.projectName = settings.getString("projectname", "");
         if(id != 0) loadProject(id);
 
     }

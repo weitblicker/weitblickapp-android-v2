@@ -10,14 +10,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +53,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,7 +71,7 @@ import mad.location.manager.lib.Interfaces.LocationServiceStatusInterface;
 import mad.location.manager.lib.Services.KalmanLocationService;
 import mad.location.manager.lib.Services.ServicesHelper;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, LocationServiceInterface, LocationServiceStatusInterface, SensorEventListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationServiceInterface, LocationServiceStatusInterface {
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -86,9 +82,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private float[] gravity = new float[3];
     private float[] linear_acceleration = new float[3];
     float expectedAcceleration = 2.5f;
-
-    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
 
     private GoogleMap mMap;
@@ -103,7 +96,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     private boolean paused = false;
     private boolean load = false;
-    private boolean toSpeedyForBike = false;
     private boolean gpsIsEnabled;
     private boolean projectFinished;
 
@@ -154,36 +146,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         mContext = context;
     }
 
-
-    private void initKalman(){
-
-        ServicesHelper.getLocationService(getActivity(), value -> {
-            if (value.IsRunning()) {
-                Log.e("Is running", "!");
-                return;
-            }
-            value.stop();
-            KalmanLocationService.Settings settings = new KalmanLocationService.Settings(Utils.ACCELEROMETER_DEFAULT_DEVIATION,
-                    0,
-                    1000,
-                    8,
-                    2,
-                    10,
-                    (ILogger) null,
-                    true,
-                    Utils.DEFAULT_VEL_FACTOR,
-                    Utils.DEFAULT_POS_FACTOR);
-            value.reset(settings); //warning!! here you can adjust your filter behavior
-            value.start();
-
-        });
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // getActivity().startService(new Intent(mContext, KalmanLocationService.class));
        // initKalman();
+        askGpsPermission();
+        setUpGpsStateReceiver();
+        setUpLocationProvider();
+        initializeTour();
+        getCurrentLocation();
+        startFetchLocation();
+        sendRouteSegments();
 
         Log.e("ONCREATE", "!!!!");
     }
@@ -205,9 +179,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         //createNewTour();
 
-        //Loads cycle-Project to display in Endfragment
-        loadProject(projectId);
-
         TextView partner = (TextView) root.findViewById(R.id.partner);
         TextView titel = (TextView) root.findViewById(R.id.titel);
         TextView location = (TextView) root.findViewById(R.id.location);
@@ -222,10 +193,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         ImageView projectDetail = root.findViewById(R.id.projectDetail);
         distance = root.findViewById(R.id.distance);
         donation = root.findViewById(R.id.donation);
-
-        if (getActivity() != null) {
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        }
 
         projectDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,17 +242,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         return root;
     }
 
+    private void setUpLocationProvider(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        askGpsPermission();
-        setUpGpsReceiver();
-        registerGpsReceiver();
-        initAccelerometer();
-        initializeTour();
-        startFetchLocation();
-        sendRouteSegments();
-
     }
 
     private void resetLocations(){
@@ -322,7 +285,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             @Override
             public void onSuccess(Location location) {
                 if(location != null){
-                    lastLocation = location;
                     currentLocation = location;
                 }
             }
@@ -347,8 +309,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                     Log.e("ACCURACY", location.getAccuracy() +"");
                     if (location.getAccuracy() < 20) {
                        // Log.e("LOCATION-LAT", location.getLatitude()+"");
+
+                        lastLocation = currentLocation;
                         currentLocation = location;
                         currentTour.addLocationToTour(location);
+
+                        Log.e("CURRENTLOCATION", currentLocation.getLatitude() +"");
+                        Log.e("LASTLOCATION", lastLocation.getLatitude()+"");
+
+                        if(checkSpeedAndAcceleration()) {
+                            calculateKm();
+                        }
+
                     }else{
                         badLocation = location;
                     }
@@ -360,9 +332,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             }
         });
-        if(checkSpeedAndAcceleration()) {
-            calculateKm();
-        }
+
     }
 
     private void askGpsPermission(){
@@ -408,8 +378,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     }
 
     private void calculateKm() {
-            if (lastLocation != null) {
                 double dis = currentLocation.distanceTo(lastLocation)/1000;
+                Log.e("DISTANCE", dis + "");
                 kmSegment += dis;
                 kmTotal += dis;
 
@@ -422,15 +392,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 donation.setText(donationTotal);
 
                 currentTour.setDistanceTotal(kmTotal);
-            }
-        lastLocation = currentLocation;
     }
 
     private boolean checkSpeedAndAcceleration(){
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
                 float currentSpeedInKmh = Math. round((currentLocation.getSpeed() * 3.6f) * 100)/100;
-                if (currentSpeedInKmh > 60.0f || toSpeedyForBike) {
+                if (currentSpeedInKmh > 60.0f) {
                     Toast toast= Toast.makeText(mContext,"Geschwindigkeit: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
                     toast.show();
                     return false;
@@ -471,63 +439,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
          }
         return enabled;
     }
-
-        private void loadProject(int projectID){
-
-            String URL = "https://new.weitblicker.org/rest/projects/" + projectID + "/";
-
-            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    String jsonData = response.toString();
-                    //Parse the JSON response array by iterating over it
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject responseObject = null;
-                        JSONObject locationObject = null;
-                        JSONArray cycleJSONObject = null;
-                        JSONObject cycleObject = null;
-                        ArrayList<String> imageUrls = new ArrayList<String>();
-                        try {
-                            int projectId = response.getInt("id");
-                            String title = response.getString("name");
-
-                            String text = response.getString("description");
-                            locationObject = response.getJSONObject("location");
-
-                            float lat = locationObject.getLong("lat");
-                            float lng = locationObject.getLong("lng");
-                            String name = locationObject.getString("name");
-                            String address = locationObject.getString("address");
-
-                            text.trim();
-                            project = new ProjectViewModel(title);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //Display Error Message
-                    Log.e("Rest Response", error.toString());
-                }
-            }){
-                //Override getHeaders() to set Credentials for REST-Authentication
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
-                    return headers;
-                }
-            };
-            this.requestQueue.add(objectRequest);
-        }
 
     //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
     private void createNewTour(){
@@ -621,7 +532,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             kmSegment = 0;
     }
 
-    private void setUpGpsReceiver(){
+    private void setUpGpsStateReceiver(){
         locationSwitchStateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -632,7 +543,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                     if (isGpsEnabled || isNetworkEnabled) {
                         gpsIsEnabled = true;
-                        //startFetchLocation();
                     } else {
                         gpsIsEnabled = false;
                         buildAlertMessageNoGps();
@@ -640,11 +550,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             }
         };
+
+        registerGpsReceiver();
+
     }
     private void registerGpsReceiver(){
         IntentFilter filter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
         filter.addAction(Intent.ACTION_PROVIDER_CHANGED);
-        getActivity().registerReceiver(locationSwitchStateReceiver, filter);
+        mContext.registerReceiver(locationSwitchStateReceiver, filter);
     }
 
     private void buildAlertMessageNoGps () {
@@ -689,11 +602,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         return this.token;
     }
 
-    private void initAccelerometer(){
-        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-    }
 
     //Gets actual Date of TODAY in Format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
     private String getFormattedDate(){
@@ -776,9 +684,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         super.onDestroy();
         sendSegment();
        // handler.removeCallbacksAndMessages(null);
-        getActivity().unregisterReceiver(locationSwitchStateReceiver);
-        sensorManager.unregisterListener(this);
-
+        mContext.unregisterReceiver(locationSwitchStateReceiver);
         //mContext.stopService(new Intent(mContext,KalmanLocationService.class));
         //kalmanService.stop();
 
@@ -817,35 +723,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        final float alpha = 0.8f;
 
-        gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-        gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-        gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+    private void initKalman(){
 
-        linear_acceleration[0] = event.values[0] - gravity[0];
-        linear_acceleration[1] = event.values[1] - gravity[1];
-        linear_acceleration[2] = event.values[2] - gravity[2];
+        ServicesHelper.getLocationService(getActivity(), value -> {
+            if (value.IsRunning()) {
+                Log.e("Is running", "!");
+                return;
+            }
+            value.stop();
+            KalmanLocationService.Settings settings = new KalmanLocationService.Settings(Utils.ACCELEROMETER_DEFAULT_DEVIATION,
+                    0,
+                    1000,
+                    8,
+                    2,
+                    10,
+                    (ILogger) null,
+                    true,
+                    Utils.DEFAULT_VEL_FACTOR,
+                    Utils.DEFAULT_POS_FACTOR);
+            value.reset(settings); //warning!! here you can adjust your filter behavior
+            value.start();
 
-
-        if(checkAccelerationToHigh()){
-            Toast toast= Toast.makeText(mContext,"toSpeedy! " + linear_acceleration[0] + " m/s" ,Toast. LENGTH_SHORT);
-            toast.show();
-            this.toSpeedyForBike = true;
-        }else{
-            this.toSpeedyForBike = false;
-        }
-    }
-
-    public boolean checkAccelerationToHigh(){
-        return (Math.abs(linear_acceleration[0]) > expectedAcceleration || Math.abs(linear_acceleration [1]) > expectedAcceleration || Math.abs(linear_acceleration [2]) > expectedAcceleration);
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        });
     }
 }
 
