@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.news;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
@@ -56,9 +57,18 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private SharedPreferences cachedNews;
     private String PREF_NAME = "NewsList";
 
+    private Context mContext;
+    private RequestQueue requestQueue;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestQueue = Volley.newRequestQueue(mContext);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,8 +97,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     private void loadNews(String URL){
 
         // Talk to Rest API
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
 
@@ -193,7 +201,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                 return headers;
             }
         };
-        requestQueue.add(objectRequest);
+        this.requestQueue.add(objectRequest);
     }
 
     public ArrayList<ProjectViewModel> loadProjects(ArrayList<Integer> id){
@@ -201,8 +209,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
         // Talk to Rest API
         for(int i = 0; i < id.size(); i++) {
             String URL = "https://weitblicker.org/rest/projects/" + id.get(i);
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -369,7 +375,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return projects;
     }
@@ -379,7 +385,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
         for(int i = 0; i < sponsorenId.size(); i++){
             String url = "https://weitblicker.org/rest/cycle/donations/" + sponsorenId.get(i);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -423,7 +428,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return sponsoren;
     }

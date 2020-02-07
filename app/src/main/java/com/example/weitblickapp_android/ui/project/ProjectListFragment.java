@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -65,9 +66,18 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
+    Context mContext;
+    RequestQueue requestQueue;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestQueue = Volley.newRequestQueue(mContext);
         loadProjects();
     }
 
@@ -129,8 +139,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
     public void loadProjects(){
         // Talk to Rest API
         String URL = "https://weitblicker.org/rest/projects/";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -349,15 +357,13 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                 return headers;
             }
         };
-        requestQueue.add(objectRequest);
+        this.requestQueue.add(objectRequest);
     }
 
     public ArrayList<EventViewModel> loadEvents(ArrayList<Integer> eventId){
         ArrayList <EventViewModel> events = new ArrayList<EventViewModel>();
         for(int i = 0; i < eventId.size(); i++) {
             String URL = "https://weitblicker.org/rest/events/" + eventId.get(i);
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -441,7 +447,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return events;
     }
@@ -451,7 +457,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
         for(int i = 0; i < sponsorenId.size(); i++){
             String url = "https://weitblicker.org/rest/cycle/donations/" + sponsorenId.get(i);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -496,7 +501,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return sponsoren;
     }
@@ -507,8 +512,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         // Talk to Rest API
         for(int i = 0; i < blogsId.size(); i++){
             String url = "https://weitblicker.org/rest/blog/" + blogsId.get(i);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -592,7 +595,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return blogs;
     }
@@ -603,8 +606,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         // Talk to Rest API
         for(int i = 0; i < newsId.size(); i++){
             String url = "https://weitblicker.org/rest/news/" + newsId.get(i);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -692,7 +693,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return news;
     }

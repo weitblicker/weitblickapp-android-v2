@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,12 +59,24 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
     int limitLoadedBlogs = 20;
     private String url = "https://weitblicker.org/rest/blog?limit=5";
 
+    private Context mContext;
+    private RequestQueue requestQueue;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext = context;
+    }
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestQueue = Volley.newRequestQueue(mContext);
         loadBlogs(url);
+        Log.e("PROJEKTLISTE", "ONCREATED");
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -104,8 +116,6 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
     public void loadBlogs(String URL){
 
         // Talk to Rest API
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
 
@@ -210,7 +220,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                 return headers;
             }
         };
-        requestQueue.add(objectRequest);
+        this.requestQueue.add(objectRequest);
     }
 
     public ArrayList<ProjectViewModel> loadProjects(ArrayList<Integer> id){
@@ -218,8 +228,6 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
         // Talk to Rest API
         for(int i = 0; i < id.size(); i++) {
             String URL = "https://weitblicker.org/rest/projects/" + id.get(i);
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -389,7 +397,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return projects;
     }
@@ -399,7 +407,6 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
 
         for(int i = 0; i < sponsorenId.size(); i++){
             String url = "https://weitblicker.org/rest/cycle/donations/" + sponsorenId.get(i);
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -443,7 +450,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
         return sponsoren;
     }

@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,12 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Set;
 
 public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
@@ -67,6 +64,7 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             if(project.getImageUrls().size() != 0){
                 weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+            }
 
                 Picasso.get()
                         .load(weitblickUrl)
@@ -74,7 +72,7 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
                         .centerCrop()
                         .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                         .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
-            }
+
 
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
