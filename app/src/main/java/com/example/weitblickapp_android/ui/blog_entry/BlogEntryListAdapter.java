@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -85,8 +86,26 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
             b.append(s);
             b.append(" ");
         }
-        partner.setText(b.toString());
-        location.setText(blog.getLocation());
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        partner.setText(B.toString());
+
+        ImageView logo = (ImageView) view.findViewById(R.id.imageView6);
+
+        if(blog.getLocation().contains("null")){
+            location.setVisibility(View.GONE);
+            logo.setVisibility(View.GONE);
+        }else{
+            location.setText(blog.getLocation());
+        }
+
 
         // onClick Listener for whole view-element -->redirect to DetailsPage
         view.setOnClickListener(new View.OnClickListener() {

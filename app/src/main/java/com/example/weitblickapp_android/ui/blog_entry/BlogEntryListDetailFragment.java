@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -64,7 +65,17 @@ public class BlogEntryListDetailFragment extends ListFragment{
 
         ((MainActivity) getActivity()).setActionBarTitle("Blog");
 
-        View view = inflater.inflate(R.layout.fragment_blog, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+        ImageButton back = (ImageButton) view.findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
 
         adapter = new BlogEntryListAdapter(getActivity(), blogEntries, getFragmentManager());
         this.setListAdapter(adapter);

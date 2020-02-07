@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -23,7 +20,6 @@ import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
@@ -110,8 +106,18 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             b.append(s);
             b.append(" ");
         }
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
 
-            if(project.getSponsor_ids().size() <= 0){
+            if(project.getCycle() == null){
+
                 maps.setVisibility(View.GONE);
             }else{
                 maps.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +129,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                         editor.putString("projectname", project.getName());
                         editor.putFloat("lat", project.getLat());
                         editor.putFloat("lng", project.getLng());
-                        editor.putString("hosts", b.toString());
+                        editor.putString("hosts", B.toString());
                         editor.putString("location", project.getAddress());
                         editor.commit();
                         FragmentTransaction ft = fragManager.beginTransaction();
@@ -148,8 +154,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
 
-
-            partner.setText(b.toString());
+            partner.setText(B.toString());
 
             //textView_title.setText(project.g);
 

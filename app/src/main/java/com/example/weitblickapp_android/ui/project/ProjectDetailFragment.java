@@ -112,7 +112,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
 
     private int currentPage = 0;
-    private Timer timer;
+    private Timer timer = null;
 
     public ProjectDetailFragment() {
     }
@@ -159,29 +159,31 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
         //SET Tab-Indicator-Dots for ViewPager
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(mViewPager, true);
+        if(mViewPager.getAdapter().getCount() > 1){
+            tabLayout.setupWithViewPager(mViewPager, true);
 
-        //Initiate Runnable for automatic Image-Slide
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                Log.e("currentPage:", currentPage +"");
-                Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
-                if (currentPage == mViewPager.getAdapter().getCount()){
-                    Log.e("LASTPAGE", "!!!");
-                    currentPage = 0;
+            //Initiate Runnable for automatic Image-Slide
+            final Handler handler = new Handler();
+            final Runnable Update = new Runnable() {
+                public void run() {
+                    Log.e("currentPage:", currentPage +"");
+                    Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
+                    if (currentPage == mViewPager.getAdapter().getCount()){
+                        Log.e("LASTPAGE", "!!!");
+                        currentPage = 0;
+                    }
+                    mViewPager.setCurrentItem(currentPage, true);
+                    currentPage ++;
                 }
-                mViewPager.setCurrentItem(currentPage, true);
-                currentPage ++;
-            }
-        };
-        timer = new Timer(); // This will create a new Thread
-        timer.schedule(new TimerTask() { // task to be scheduled
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, DELAY_MS, PERIOD_MS);
+            };
+            timer = new Timer(); // This will create a new Thread
+            timer.schedule(new TimerTask() { // task to be scheduled
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
 
 
         //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
@@ -216,12 +218,22 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 b.append(s);
                 b.append(" ");
             }
-            partner.setText(b.toString());
+            StringBuilder B = new StringBuilder();
+            for ( int i = 0; i < b.length(); i++ ) {
+                char c = b.charAt( i );
+                if(Character.isLowerCase(c)){
+                    B.append(Character.toUpperCase(c));
+                }else{
+                    B.append(c);
+                }
+            }
+            partner.setText(B.toString());
         }
         final TextView textTextView = root.findViewById(R.id.detail_text);
         final TextView currentNumber = root.findViewById(R.id.currentNumber);
         final TextView goalNumber = root.findViewById(R.id.goalnumber);
         final TextView goalDesc = root.findViewById(R.id.donationgoaldescription);
+
         final TextView bankName = root.findViewById(R.id.bankname);
         final TextView IBAN = root.findViewById(R.id.IBAN);
         final TextView BIC = root.findViewById(R.id.BIC);
@@ -253,6 +265,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         goalTextView.setText(goal_amount + " €");
         amountTextView.setText(current_amount + " €");
         goalDesc.setText(goalDescription);
+
         IBAN.setText(iban);
         bankName.setText(bankname);
         BIC.setText(bic);
@@ -260,6 +273,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         if(this.sponsorId.size() > 0){
             drawPie(true);
             //Sponsor
+            sponsorList.clear();
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
             SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
             listViewSponsor.setAdapter(adapterSponsor);
@@ -298,7 +312,16 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 b.append(s);
                 b.append(" ");
             }
-            partner.setText(b.toString());
+            StringBuilder B = new StringBuilder();
+            for ( int i = 0; i < b.length(); i++ ) {
+                char c = b.charAt( i );
+                if(Character.isLowerCase(c)){
+                    B.append(Character.toUpperCase(c));
+                }else{
+                    B.append(c);
+                }
+            }
+            partner.setText(B.toString());
 
             bike.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -309,7 +332,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     editor.putString("projectname", title);
                     editor.putFloat("lat", lat);
                     editor.putFloat("lng", lng);
-                    editor.putString("hosts", b.toString());
+                    editor.putString("hosts", B.toString());
                     editor.putString("location", location);
                     editor.commit();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -326,7 +349,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     editor.putString("projectname", title);
                     editor.putFloat("lat", lat);
                     editor.putFloat("lng", lng);
-                    editor.putString("hosts", b.toString());
+                    editor.putString("hosts", B.toString());
                     editor.putString("location", location);
                     editor.commit();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -348,6 +371,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             km.setText(currentRound + " km");
             TextView cyclist = root.findViewById(R.id.biker);
             cyclist.setText(String.valueOf(cycle.getCyclist()));
+
         }else{
             ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
             stats.setVisibility(View.GONE);
@@ -358,6 +382,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(newsId.size() != 0){
             listNews = (ListView) root.findViewById(R.id.news);
+            newsList.clear();
             NewsShortAdapter adapterNews = new NewsShortAdapter(getActivity(), newsList, getFragmentManager());
             listNews.setAdapter(adapterNews);
             if(newsId.size() <= 3){
@@ -387,6 +412,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(blogId.size() != 0){
             ListView listblog = (ListView) root.findViewById(R.id.blog);
+            blogList.clear();
             BlogEntryListAdapterShort adapterBlog = new BlogEntryListAdapterShort(getActivity(), blogList, getFragmentManager());
             listblog.setAdapter(adapterBlog);
             if(blogId.size() <= 3){
@@ -416,6 +442,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
         if(eventId.size() != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
+            eventList.clear();
             EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
             if(eventId.size() <= 3){
@@ -444,6 +471,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             event.setVisibility(View.GONE);
         }
         if(partnerId.size() != 0){
+            partnerList.clear();
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
             ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
             listPartner.setAdapter(adapterPartner);
@@ -473,6 +501,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             projectPartner.setVisibility(View.GONE);
         }
         if(mileList.size() != 0){
+            milenstoneList.clear();
             ListView listMilenstone = (ListView) root.findViewById(R.id.milenstone);
             MilenstoneListAdapter adapterMilenstone = new MilenstoneListAdapter(getActivity(), milenstoneList, getFragmentManager());
             listMilenstone.setAdapter(adapterMilenstone);
@@ -564,6 +593,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
     @Override
     public void onDestroy() {
+        if(timer != null)
         timer.cancel();
         super.onDestroy();
     }

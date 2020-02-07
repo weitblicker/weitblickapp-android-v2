@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,12 +26,14 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.location.MapFragment;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-import mad.location.manager.lib.Services.KalmanLocationService;
+//import mad.location.manager.lib.Services.KalmanLocationService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        startService(new Intent(this, KalmanLocationService.class));
+        //startService(new Intent(this, KalmanLocationService.class));
 
         session = new SessionManager(getApplicationContext());
         setContentView(R.layout.activity_main);

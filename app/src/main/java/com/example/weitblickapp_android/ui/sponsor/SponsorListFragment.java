@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerAdapter;
@@ -40,7 +41,17 @@ public class SponsorListFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_sponsor_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+        ImageButton back = (ImageButton) view.findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
 
         adapter = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
         this.setListAdapter(adapter);

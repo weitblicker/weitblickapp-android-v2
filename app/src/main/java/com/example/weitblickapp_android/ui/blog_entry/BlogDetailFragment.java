@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -47,7 +48,7 @@ public class BlogDetailFragment extends Fragment {
     final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
 
     private int currentPage = 0;
-    private Timer timer;
+    private Timer timer = null;
 
     String name;
     String picture;
@@ -95,35 +96,61 @@ public class BlogDetailFragment extends Fragment {
 
         //SET Tab-Indicator-Dots for ViewPager
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(mViewPager, true);
 
 
-        //Initiate Runnable for automatic Image-Slide
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                Log.e("currentPage:", currentPage +"");
-                Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
-                if (currentPage == mViewPager.getAdapter().getCount()){
-                    Log.e("LASTPAGE", "!!!");
-                    currentPage = 0;
+        if(mViewPager.getAdapter().getCount() > 1){
+            tabLayout.setupWithViewPager(mViewPager, true);
+            //Initiate Runnable for automatic Image-Slide
+            final Handler handler = new Handler();
+            final Runnable Update = new Runnable() {
+                public void run() {
+                    Log.e("currentPage:", currentPage +"");
+                    Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
+                    if (currentPage == mViewPager.getAdapter().getCount()){
+                        Log.e("LASTPAGE", "!!!");
+                        currentPage = 0;
+                    }
+                    mViewPager.setCurrentItem(currentPage, true);
+                    currentPage ++;
                 }
-                mViewPager.setCurrentItem(currentPage, true);
-                currentPage ++;
-            }
-        };
+            };
+            timer = new Timer(); // This will create a new Thread
+            timer.schedule(new TimerTask() { // task to be scheduled
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
 
         final TextView authorName = root.findViewById(R.id.authorname);
         final TextView location = root.findViewById(R.id.location);
         final ImageView authorImages = root.findViewById(R.id.authorpicture);
+        final ImageView logo = root.findViewById(R.id.imageView9);
+        ConstraintLayout layout = root.findViewById(R.id.Layout1);
+        if(this.location.contains("null")){
+            location.setVisibility(View.GONE);
+            logo.setVisibility(View.GONE);
+            layout.setVisibility(View.GONE);
+        }else{
+            location.setText(this.location);
 
-        location.setText(this.location);
+        }
 
-        String url = urlWeitblick + this.picture;
+
+
+
         authorName.setText(this.name);
-        Picasso.get().load(url).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
+
+        if(this.picture.contains("null")){
+            authorImages.setVisibility(View.GONE);
+        }else{
+            String url = urlWeitblick + this.picture;
+            Picasso.get().load(url).fit().centerCrop().
+                    placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
+        }
+
 
         final TextView partner = root.findViewById(R.id.partner);
         StringBuilder b = new StringBuilder();
@@ -131,14 +158,16 @@ public class BlogDetailFragment extends Fragment {
             b.append(s);
             b.append(" ");
         }
-        partner.setText(b.toString());
-        timer = new Timer(); // This will create a new Thread
-        timer.schedule(new TimerTask() { // task to be scheduled
-            @Override
-            public void run() {
-                handler.post(Update);
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
             }
-        }, DELAY_MS, PERIOD_MS);
+        }
+        partner.setText(B.toString());
 
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
@@ -181,6 +210,7 @@ public class BlogDetailFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        if(timer != null)
         timer.cancel();
         super.onDestroy();
     }

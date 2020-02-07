@@ -70,10 +70,9 @@ public class EventViewModel extends ViewModel {
         return title;
     }
 
-    public void setTitle(String name) {
-        this.title = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
-
 
     public String getEventStartDate() {
         return formatterWrite.format(eventDateStart);
@@ -104,6 +103,8 @@ public class EventViewModel extends ViewModel {
     public void setText(String text) {
         this.text = text;
     }
+
+
 
     @Override
     public String toString() {

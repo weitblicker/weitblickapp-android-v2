@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -162,9 +163,8 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         }catch(JSONException e){
 
                         }
-
                         hosts = responseObject.getJSONObject("host");
-                        allHosts.add(hosts.getString("name"));
+                        allHosts.add(hosts.getString("city"));
 
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
@@ -181,6 +181,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         }
 
                         BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls, name, profilPic, allHosts, location, projectArr);
+
                         blogEntries.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -304,7 +305,7 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
 
                         for (int x = 0; x < hosts.length(); x++) {
                             host = hosts.getJSONObject(x);
-                            allHosts.add(host.getString("name"));
+                            allHosts.add(host.getString("city"));
                             /*if( host.getJSONObject("bank_account") !=  null){
                                 bankAccount = host.getJSONObject("bank_account");
                                 bankname = bankAccount.getString("account_holder");
@@ -329,20 +330,23 @@ public class RegisterFragment extends ListFragment implements AbsListView.OnScro
                         int cyclist = 0;
                         String km_sum = null;
 
-                        cycleObject = responseObject.getJSONObject("new_cycle");
-
-                        current_amount = cycleObject.getString("euro_sum");
-                        cycle_donation = cycleObject.getString("euro_goal");
-                        cyclist = cycleObject.getInt("cyclists");
-                        km_sum = cycleObject.getString("km_sum");
-                        donations = cycleObject.getJSONArray("donations");
-                        for (int y = 0; y < donations.length(); y++) {
-                            donation = donations.getJSONObject(y);
-                            sponsorenid.add(donation.getInt("id"));
-                        }
-                        cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
-                        if (donations.length() > 0) {
-                            sponsorArr = loadSponsor(sponsorenid);
+                        if(!responseObject.getString("cycle").contains("null")){
+                            cycleObject = responseObject.getJSONObject("cycle");
+                            current_amount = cycleObject.getString("euro_sum");
+                            cycle_donation = cycleObject.getString("euro_goal");
+                            cyclist = cycleObject.getInt("cyclists");
+                            km_sum = cycleObject.getString("km_sum");
+                            donations = cycleObject.getJSONArray("donations");
+                            for(int y = 0; y < donations.length(); y++){
+                                donation = donations.getJSONObject(y);
+                                sponsorenid.add(donation.getInt("id"));
+                            }
+                            cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
+                            if(donations.length() > 0) {
+                                sponsorArr = loadSponsor(sponsorenid);
+                            }
+                        }else{
+                            cycle = null;
                         }
                         String logo = null;
                         String description = null;

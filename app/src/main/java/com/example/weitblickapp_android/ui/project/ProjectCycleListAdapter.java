@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
     private Context mContext;
@@ -59,71 +60,80 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
 
         view = mInflater.inflate(R.layout.fragment_project_cycle_list, null);
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        TextView textView_title = (TextView) view.findViewById(R.id.title);
-        TextView textView_address = (TextView) view.findViewById(R.id.location);
-        TextView partner = (TextView) view.findViewById(R.id.partner);
+            ImageView imageView = (ImageView) view.findViewById(R.id.image);
+            TextView textView_title = (TextView) view.findViewById(R.id.title);
+            TextView textView_address = (TextView) view.findViewById(R.id.location);
+            TextView partner = (TextView) view.findViewById(R.id.partner);
 
-        if(project.getImageUrls().size() != 0){
-            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+            if(project.getImageUrls().size() != 0){
+                weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
-            Picasso.get()
-                    .load(weitblickUrl)
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
-        }
-
-        textView_title.setText(project.getName());
-        textView_address.setText(project.getAddress());
-
-        StringBuilder b = new StringBuilder();
-        for(String s : project.getHosts()){
-            b.append(s);
-            b.append(" ");
-        }
-        partner.setText(b.toString());
-        //Set Button-Listener and redirect to Details-Page
-        ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
-        view.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
-                ft.addToBackStack(null);
-                ft.commit();
+                Picasso.get()
+                        .load(weitblickUrl)
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
             }
-        });
-        detail.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
-                ft.addToBackStack(null);
-                ft.commit();
+            textView_title.setText(project.getName());
+            textView_address.setText(project.getAddress());
+
+            StringBuilder b = new StringBuilder();
+            for(String s : project.getHosts()){
+                b.append(s);
+                b.append(" ");
             }
-        });
-
-        ImageButton defProject = (ImageButton) view.findViewById(R.id.project_maps_btn);
-
-        defProject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("projectid", project.getId());
-                editor.putString("projectname", project.getName());
-                editor.putFloat("lat", project.getLat());
-                editor.putFloat("lng", project.getLng());
-                editor.commit();
-                FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new MapOverviewFragment());
-                ft.commit();
+            StringBuilder B = new StringBuilder();
+            for ( int i = 0; i < b.length(); i++ ) {
+                char c = b.charAt( i );
+                if(Character.isLowerCase(c)){
+                    B.append(Character.toUpperCase(c));
+                }else{
+                    B.append(c);
+                }
             }
-        });
+            partner.setText(B.toString());
+            //Set Button-Listener and redirect to Details-Page
+            ImageButton detail = (ImageButton) view.findViewById(R.id.project_more_btn);
+            view.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+            detail.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+
+            ImageButton defProject = (ImageButton) view.findViewById(R.id.project_maps_btn);
+
+            defProject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("projectid", project.getId());
+                    editor.putString("projectname", project.getName());
+                    editor.putFloat("lat", project.getLat());
+                    editor.putFloat("lng", project.getLng());
+                    editor.commit();
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new MapOverviewFragment());
+                    ft.commit();
+                }
+            });
         return view;
     }
 

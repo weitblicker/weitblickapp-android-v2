@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.news.NewsListAdapter;
@@ -13,6 +14,7 @@ import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.ListFragment;
 
 public class MilenstoneDetailListFragment extends ListFragment {
@@ -39,7 +41,19 @@ public class MilenstoneDetailListFragment extends ListFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+        view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_green));
+
+        ImageButton back = (ImageButton) view.findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
 
         adapter = new MilenstoneListAdapter(getActivity(), mileList, getFragmentManager());
         this.setListAdapter(adapter);

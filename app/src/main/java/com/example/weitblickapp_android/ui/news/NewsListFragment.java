@@ -1,7 +1,6 @@
 package com.example.weitblickapp_android.ui.news;
 
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
-import com.example.weitblickapp_android.ui.event.EventLocation;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
@@ -159,7 +156,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         }
 
                         hosts = responseObject.getJSONObject("host");
-                        allHosts.add(hosts.getString("name"));
+                        allHosts.add(hosts.getString("city"));
 
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
@@ -167,7 +164,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                         text = extractImageUrls(text);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts, projectArr);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser, date, imageUrls, name, profilPic, allHosts, projectArr);
                         newsList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -291,7 +288,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                             for (int x = 0; x < hosts.length(); x++) {
                                 host = hosts.getJSONObject(x);
-                                allHosts.add(host.getString("name"));
+                                allHosts.add(host.getString("city"));
                             /*if( host.getJSONObject("bank_account") !=  null){
                                 bankAccount = host.getJSONObject("bank_account");
                                 bankname = bankAccount.getString("account_holder");
@@ -316,7 +313,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             int cyclist = 0;
                             String km_sum = null;
 
-                            cycleObject = responseObject.getJSONObject("new_cycle");
+                            cycleObject = responseObject.getJSONObject("cycle");
 
                             current_amount = cycleObject.getString("euro_sum");
                             cycle_donation = cycleObject.getString("euro_goal");

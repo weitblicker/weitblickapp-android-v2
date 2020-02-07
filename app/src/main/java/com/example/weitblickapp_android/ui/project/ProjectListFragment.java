@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -40,7 +39,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,6 +102,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
         View view = inflater.inflate(R.layout.fragment_project, container, false);
         list = (ListView) view.findViewById(R.id.liste);
+        projectList.clear();
         adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
         list.setAdapter(adapter);
 
@@ -128,7 +127,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
     }
 
     public void loadProjects(){
-
         // Talk to Rest API
         String URL = "https://weitblicker.org/rest/projects/";
 
@@ -259,7 +257,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
                         for(int x = 0; x < hosts.length(); x++){
                             host = hosts.getJSONObject(x);
-                            allHosts.add(host.getString("name"));
+                            allHosts.add(host.getString("city"));
                             /*if( host.getJSONObject("bank_account") !=  null){
                                 bankAccount = host.getJSONObject("bank_account");
                                 bankname = bankAccount.getString("account_holder");
@@ -267,7 +265,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                                 bic = bankAccount.getString("bic");
                             }*/
                         }
-
 
                         locationObject = responseObject.getJSONObject("location");
 
@@ -284,21 +281,26 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         int cyclist = 0;
                         String km_sum = null;
 
-                        cycleObject = responseObject.getJSONObject("new_cycle");
+                        if(!responseObject.getString("cycle").contains("null")){
+                            cycleObject = responseObject.getJSONObject("cycle");
+                            current_amount = cycleObject.getString("euro_sum");
+                            cycle_donation = cycleObject.getString("euro_goal");
+                            cyclist = cycleObject.getInt("cyclists");
+                            km_sum = cycleObject.getString("km_sum");
+                            donations = cycleObject.getJSONArray("donations");
+                            for(int y = 0; y < donations.length(); y++){
+                                donation = donations.getJSONObject(y);
+                                sponsorenid.add(donation.getInt("id"));
+                            }
+                            cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
+                            if(donations.length() > 0) {
+                                sponsorArr = loadSponsor(sponsorenid);
+                            }
+                        }else{
+                            cycle = null;
+                        }
 
-                        current_amount = cycleObject.getString("euro_sum");
-                        cycle_donation = cycleObject.getString("euro_goal");
-                        cyclist = cycleObject.getInt("cyclists");
-                        km_sum = cycleObject.getString("km_sum");
-                        donations = cycleObject.getJSONArray("donations");
-                        for(int y = 0; y < donations.length(); y++){
-                            donation = donations.getJSONObject(y);
-                            sponsorenid.add(donation.getInt("id"));
-                        }
-                        cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
-                        if(donations.length() > 0){
-                            sponsorArr = loadSponsor(sponsorenid);
-                        }
+
                         String logo = null;
                         String description = null;
                         String weblink = null;
@@ -313,7 +315,9 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             partnerArr.add(new ProjectPartnerViewModel(partnerName,description,weblink,logo));
                         }
                         text.trim();
+
                         ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname,iban, bic, allMilestone, eventArr);
+
                         projectList.add(temp);
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -373,6 +377,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
                     JSONObject hostObject = null;
                     String hostName;
+                    String locationDescription;
 
                     try {
                         Integer eventId = responseObject.getInt("id");
@@ -386,9 +391,10 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         address = locationObject.getString("address");
                         lat = locationObject.getDouble("lat");
                         lng = locationObject.getDouble("lng");
+                        locationDescription = locationObject.getString("description");
 
                         hostObject = responseObject.getJSONObject("host");
-                        hostName = hostObject.getString("name");
+                        hostName = hostObject.getString("city");
 
 
                         try {
@@ -407,7 +413,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         // imageUrls = getImageUrls(text);
                         description = extractImageUrls(description);
 
-                        location = new EventLocation(name, address, lat, lng);
+                        location = new EventLocation(name, address, lat, lng, locationDescription);
 
                         EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
                         events.add(temp);
@@ -440,7 +446,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         return events;
     }
 
-
     public ArrayList<SponsorViewModel> loadSponsor(ArrayList<Integer> sponsorenId){
         ArrayList <SponsorViewModel> sponsoren = new ArrayList<SponsorViewModel>();
 
@@ -466,6 +471,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String address = partner.getString("link");
 
                         temp = new SponsorViewModel(name, desc, address, logo, rateProKm, goal_amount_Sponsor);
+
                         sponsoren.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -546,12 +552,13 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String location = null;
 
                         hosts = responseObject.getJSONObject("host");
-                        allHosts.add(hosts.getString("name"));
+                        allHosts.add(hosts.getString("city"));
                         location = responseObject.getString("location");
 
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
+
                         //TODO: Check if picture exists
                         //Get Date of last Item loaded in List loading more news starting at that date
                         try {
@@ -560,6 +567,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             e.printStackTrace();
                         }
                         tempBLog = new BlogEntryViewModel(blogId, title, text, teaser, published, imageUrls, name, profilPic, allHosts, location);
+
                         blogs.add(tempBLog);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -608,6 +616,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
                     JSONArray images = null;
+
                     JSONObject author = null;
                     JSONArray hosts = null;
                     JSONObject host = null;
@@ -618,6 +627,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
+
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
@@ -625,8 +635,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
 
                         host = responseObject.getJSONObject("host");
-                        allHosts.add(host.getString("name"));
-
+                        allHosts.add(host.getString("city"));
 
                         // String date = "2009-09-26T14:48:36Z";
 
@@ -657,7 +666,8 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
-                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser,date, imageUrls, name, profilPic, allHosts);
+                        NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser, date, imageUrls, name, profilPic, allHosts);
+
                         news.add(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();

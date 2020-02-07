@@ -1,31 +1,32 @@
 package com.example.weitblickapp_android.ui.faq;
 
+import java.util.ArrayList;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class FaqViewModel extends ViewModel {
 
-    String question;
-    String answer;
     String titel;
+    String answer;
+    String question;
 
-    public FaqViewModel(String question, String answer, String titel){
-        this.answer=answer;
-        this.question=question;
+    public FaqViewModel(String titel, String question, String answer){
         this.titel = titel;
+        this.answer = answer;
+        this.question = question;
     }
 
     public FaqViewModel(){
     }
 
-
-    public String getQuestion() {
-        return question;
+    public void setTitel(String titel){
+        this.titel = titel;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public String getTitel(){
+        return titel;
     }
 
     public String getAnswer() {
@@ -36,11 +37,11 @@ public class FaqViewModel extends ViewModel {
         this.answer = answer;
     }
 
-    public void setTitel(String titel){
-        this.titel = titel;
+    public String getQuestion() {
+        return question;
     }
 
-    public String getTitel(){
-        return titel;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 }

@@ -69,7 +69,16 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
             b.append(s);
             b.append(" ");
         }
-        partner.setText(b.toString());
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        partner.setText(B.toString());
 
         if(article.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));

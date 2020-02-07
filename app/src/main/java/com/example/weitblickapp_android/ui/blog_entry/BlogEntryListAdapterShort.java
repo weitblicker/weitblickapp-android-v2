@@ -83,8 +83,17 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
             b.append(s);
             b.append(" ");
         }
-        partner.setText(b.toString());
-
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        partner.setText(B.toString());
+        
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override
