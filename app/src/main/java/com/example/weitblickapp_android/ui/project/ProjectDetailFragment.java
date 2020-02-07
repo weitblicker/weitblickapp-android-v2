@@ -58,6 +58,8 @@ import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -239,10 +241,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView BIC = root.findViewById(R.id.BIC);
         final TextView newsMore = root.findViewById(R.id.moreNews);
         final TextView blogsMore = root.findViewById(R.id.moreBlog);
-        final TextView partnerMore = root.findViewById(R.id.morePartner);
-        final TextView sponsorMore = root.findViewById(R.id.moreSponsor);
         final TextView eventsMore = root.findViewById(R.id.moreEvents);
-        final TextView milenstoneMore = root.findViewById(R.id.moreMilenstone);
 
         final Markwon markwon = Markwon.create(getContext());
 
@@ -262,13 +261,33 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         ImageButton bike2 = root.findViewById(R.id.bike2);
 
         //DonationGoal
-        goalTextView.setText(goal_amount + " €");
-        amountTextView.setText(current_amount + " €");
-        goalDesc.setText(goalDescription);
-
-        IBAN.setText(iban);
-        bankName.setText(bankname);
-        BIC.setText(bic);
+        if(this.goal_amount.contains("null") && this.current_amount.contains("null") && this.goalDescription.length() == 0){
+            ConstraintLayout goalDonation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
+            goalDonation.setVisibility(View.GONE);
+        }else{
+            if(current_amount.contains("null")){
+                TextView text = (TextView) root.findViewById(R.id.amount_goal_text);
+                goalTextView.setVisibility(View.GONE);
+                text.setVisibility(View.GONE);
+            }else{
+                goalTextView.setText(current_amount + " €");
+            }
+            if(goal_amount.contains("null")){
+                TextView text = (TextView) root.findViewById(R.id.amountText);
+                text.setVisibility(View.GONE);
+                amountTextView.setVisibility(View.GONE);
+            }else{
+                amountTextView.setText(goal_amount + " €");
+            }
+            if(goalDescription.length() == 0){
+                goalDesc.setVisibility(View.GONE);
+            }else{
+                goalDesc.setText(goalDescription);
+            }
+            /*IBAN.setText(iban);
+            bankName.setText(bankname);
+            BIC.setText(bic);*/
+        }
 
         if(this.sponsorId.size() > 0){
             drawPie(true);
@@ -277,25 +296,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
             SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
             listViewSponsor.setAdapter(adapterSponsor);
-            if(sponsorId.size() <= 3){
-                for(int i = 0; i < sponsorId.size(); i++){
-                    sponsorList.add(sponsorId.get(i));
-                }
-                sponsorMore.setVisibility(View.GONE);
-            }else{
-                for(int i = 0; i < 3; i++){
-                    sponsorList.add(sponsorId.get(i));
-                }
-                sponsorMore.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SponsorListFragment fragment = new SponsorListFragment(sponsorId);
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
-                    }
-                });
+            for(int i = 0; i < sponsorId.size(); i++){
+                sponsorList.add(sponsorId.get(i));
             }
             setListViewHeightBasedOnChildren(listViewSponsor);
             double rateProKm = 0;
@@ -305,7 +307,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             float currentRound = Math.round( rateProKm * 100);
             currentRound = currentRound / 100.0f;
 
-            bikeText.setText("Für jeden mit dem Fahrrad gefahrenen Kilometer spenden unsere Sponsoren für das Projekt " + currentRound + "€");
+            bikeText.setText("Für jeden mit dem Fahrrad gefahrenen Kilometer spenden unsere Sponsoren für das Projekt.");
 
             StringBuilder b = new StringBuilder();
             for(String s : hosts){
@@ -475,25 +477,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
             ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
             listPartner.setAdapter(adapterPartner);
-            if(partnerId.size() <= 3){
-                for(int i = 0; i < partnerId.size(); i++){
-                    partnerList.add(partnerId.get(i));
-                }
-                partnerMore.setVisibility(View.GONE);
-            }else{
-                for(int i = 0; i < 3; i++){
-                    partnerList.add(partnerId.get(i));
-                }
-                partnerMore.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ProjectPartnerListFragment fragment = new ProjectPartnerListFragment(partnerId);
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
-                    }
-                });
+            for(int i = 0; i < partnerId.size(); i++){
+                partnerList.add(partnerId.get(i));
             }
             setListViewHeightBasedOnChildren(listPartner);
         }else{
@@ -505,25 +490,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ListView listMilenstone = (ListView) root.findViewById(R.id.milenstone);
             MilenstoneListAdapter adapterMilenstone = new MilenstoneListAdapter(getActivity(), milenstoneList, getFragmentManager());
             listMilenstone.setAdapter(adapterMilenstone);
-            if(mileList.size() <= 3){
-                for(int i = 0; i < mileList.size(); i++){
-                    milenstoneList.add(mileList.get(i));
-                }
-                milenstoneMore.setVisibility(View.GONE);
-            }else{
-                for(int i = 0; i < 3; i++){
-                    milenstoneList.add(mileList.get(i));
-                }
-                milenstoneMore.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        MilenstoneDetailListFragment fragment = new MilenstoneDetailListFragment(mileList);
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
-                    }
-                });
+            for(int i = 0; i < mileList.size(); i++){
+                milenstoneList.add(mileList.get(i));
             }
             setListViewHeightBasedOnChildren(listMilenstone);
         }else{

@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
+import com.example.weitblickapp_android.ui.ranking.RoundedCornersTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -93,7 +94,18 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
             }
         }
         partner.setText(B.toString());
-        
+        ImageView authorProfile = (ImageView) view.findViewById(R.id.imageProfil);
+        TextView name = (TextView) view.findViewById(R.id.authorname);
+
+        if(blog.getImage().contains("null")){
+            authorProfile.setVisibility(View.GONE);
+        }else {
+            weitblickUrl = "https://new.weitblicker.org";
+            String url = weitblickUrl.concat(blog.getImage());
+            Picasso.get().load(url).transform(new RoundedCornersTransform()).fit().centerCrop().into(authorProfile);
+        }
+        name.setText(blog.getName());
+
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override

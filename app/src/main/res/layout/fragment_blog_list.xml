@@ -131,7 +131,7 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/opensansbold"
         android:text="Stadt"
         android:textColor="@color/black"

@@ -37,9 +37,10 @@
 
         <TextView
             android:id="@+id/location"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
+            android:layout_marginEnd="100dp"
             android:ellipsize="end"
             android:fontFamily="@font/open_sans"
             android:maxLines="1"
@@ -47,11 +48,12 @@
             android:textColor="@color/black"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:gravity="end"
@@ -59,15 +61,17 @@
             android:textColor="@color/black"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/partner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="7dp"
             android:fontFamily="@font/opensansbold"
+            android:gravity="end"
             android:text="TestText"
             android:textColor="@color/black"
             android:textSize="12dp"

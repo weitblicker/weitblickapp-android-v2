@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.ranking.RoundedCornersTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -86,7 +87,17 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
+        ImageView authorProfile = (ImageView) view.findViewById(R.id.imageProfil);
+        TextView name = (TextView) view.findViewById(R.id.authorname);
 
+        if(article.getImage().contains("null")){
+            authorProfile.setVisibility(View.GONE);
+        }else {
+            weitblickUrl = "https://new.weitblicker.org";
+            String url = weitblickUrl.concat(article.getImage());
+            Picasso.get().load(url).transform(new RoundedCornersTransform()).fit().centerCrop().into(authorProfile);
+        }
+        name.setText(article.getName());
         textView_title.setText(article.getTitle());
         textView_teaser.setText(article.getTeaser());
         textView_date.setText(article.getDate());

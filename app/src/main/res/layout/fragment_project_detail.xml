@@ -45,7 +45,7 @@
                 android:id="@+id/statsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
-                android:background="@color/wb_grey"
+                android:background="@color/wb_darkgrey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/donationGoalContainer">
@@ -54,12 +54,12 @@
                     android:id="@+id/gefahren"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="1dp"
                     android:fontFamily="@font/open_sans"
                     android:text="bereits gefahren"
                     android:textColor="@color/white"
                     android:textSize="12dp"
-                    app:layout_constraintEnd_toStartOf="@+id/stand"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/reachedNumber" />
 
@@ -67,7 +67,6 @@
                     android:id="@+id/stand"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Spendenstand"
                     android:textColor="@color/white"
@@ -80,21 +79,19 @@
                     android:id="@+id/goal"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="11dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Spendenziel"
                     android:textColor="@color/white"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/stand"
                     app:layout_constraintTop_toBottomOf="@+id/goalnumber" />
 
                 <TextView
                     android:id="@+id/bikeText2"
                     android:layout_width="150dp"
                     android:layout_height="69dp"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="13dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/breeserif"
@@ -138,13 +135,12 @@
                     android:id="@+id/bikernumber"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="7dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="320"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.097"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/gefahren" />
 
@@ -152,13 +148,12 @@
                     android:id="@+id/biker"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Radfahrer"
                     android:textColor="@color/white"
                     android:textSize="12dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.097"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bikernumber" />
 
@@ -166,12 +161,12 @@
                     android:id="@+id/reachedNumber"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="32dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="2030km"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
-                    app:layout_constraintEnd_toStartOf="@+id/currentNumber"
                     app:layout_constraintTop_toBottomOf="@+id/textView4"
                     map:layout_constraintStart_toStartOf="parent" />
 
@@ -179,37 +174,36 @@
                     android:id="@+id/goalnumber"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="33dp"
+                    android:layout_marginEnd="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="50 000€"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/currentNumber"
                     app:layout_constraintTop_toBottomOf="@+id/bike2" />
 
                 <TextView
                     android:id="@+id/currentNumber"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="101dp"
+                    android:layout_marginTop="32dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="1732€"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toStartOf="@+id/goalnumber"
                     app:layout_constraintStart_toEndOf="@+id/reachedNumber"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/breeserif"
-                    android:text="Fahrrad fahren und Spenden sammeln"
+                    android:text="Fahrrad fahren &amp; Spenden sammeln"
                     android:textColor="@color/white"
                     android:textSize="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -235,17 +229,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="27dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Spendenkonto"
                     android:textColor="@color/black"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/amount_goal_number" />
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
                 <TextView
                     android:id="@+id/donationgoaldescription"
@@ -261,18 +252,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/donationgoal" />
-
-                <TextView
-                    android:id="@+id/amount_goal_text"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Spendenstand"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toStartOf="@+id/amountText"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription" />
 
                 <TextView
                     android:id="@+id/bankname"
@@ -324,52 +303,12 @@
                     map:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/amount_goal_number"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:fontFamily="@font/opensansbold"
-                    android:text="17 523 €"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    app:layout_constraintEnd_toStartOf="@+id/amountNumber"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/amount_goal_text" />
-
-                <TextView
-                    android:id="@+id/amountText"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Spendenziel"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/amount_goal_text"
-                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription" />
-
-                <TextView
-                    android:id="@+id/amountNumber"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:fontFamily="@font/opensansbold"
-                    android:text="50 000 €"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/amount_goal_number"
-                    app:layout_constraintTop_toBottomOf="@+id/amountText" />
-
-                <TextView
                     android:id="@+id/donationgoal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Spendenziel"
                     android:textColor="@color/black"
@@ -394,6 +333,69 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="11dp"
+                    app:layout_constraintBottom_toTopOf="@+id/donationkonto"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription"
+                    map:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/amountNumber"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="11dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/opensansbold"
+                        android:text="50 000 €"
+                        android:textColor="@color/black"
+                        android:textSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/amountText" />
+
+                    <TextView
+                        android:id="@+id/amount_goal_text"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Spendenstand"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/amount_goal_number"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/opensansbold"
+                        android:text="17 523 €"
+                        android:textColor="@color/black"
+                        android:textSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/amount_goal_text" />
+
+                    <TextView
+                        android:id="@+id/amountText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="11dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Spendenziel"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -426,7 +428,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="14dp"
                     android:layout_marginEnd="65dp"
                     android:fontFamily="@font/opensansbold"
                     android:textColor="@color/black"
@@ -488,7 +490,7 @@
                     android:id="@+id/logo_location2"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="6dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
@@ -536,7 +538,7 @@
                     android:id="@+id/logo_location"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="6dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
@@ -600,7 +602,7 @@
                     android:id="@+id/textView_blog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Blog"
                     android:textColor="@color/wb_grey"
@@ -832,7 +834,7 @@
                     android:id="@+id/textView_sponsor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Sponsoren"
                     android:textColor="@color/wb_grey"
@@ -845,24 +847,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toBottomOf="@id/moreSponsor"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_sponsor"></ListView>
-
-                <TextView
-                    android:id="@+id/moreSponsor"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/open_sans"
-                    android:gravity="center"
-                    android:text="Mehr Anzeigen"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sponsorlist" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -915,24 +903,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/moreMilenstone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_milenstone">
 
                 </ListView>
-
-                <TextView
-                    android:id="@+id/moreMilenstone"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/open_sans"
-                    android:gravity="center"
-                    android:text="Mehr Anzeigen"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/milenstone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -958,27 +934,13 @@
                     android:id="@+id/projectpartner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/morePartner"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView11">
 
                 </ListView>
-
-                <TextView
-                    android:id="@+id/morePartner"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/open_sans"
-                    android:gravity="center"
-                    android:text="Mehr Anzeigen"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/projectpartner" />
 
                 <ImageView
                     android:id="@+id/imageView11"
