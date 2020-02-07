@@ -137,7 +137,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         //markdown description Text
         markwon.setMarkdown(textTextView,this.text);
         //titleTextView.setText(this.title);
-
+        
         dateTextView.setText(this.date);
         titleTextView.setText(this.title);
         locationTextView.setText(this.location.getAddress());

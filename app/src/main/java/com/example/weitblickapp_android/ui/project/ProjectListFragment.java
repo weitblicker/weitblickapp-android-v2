@@ -5,12 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -65,9 +67,11 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
     static Bitmap smallMarker;
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
-
+    private final Handler handler = new Handler();
+    private Runnable marker;
     Context mContext;
     RequestQueue requestQueue;
+    boolean isLoaded = false;
 
     @Override
     public void onAttach(Context context) {
@@ -79,6 +83,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         super.onCreate(savedInstanceState);
         this.requestQueue = Volley.newRequestQueue(mContext);
         loadProjects();
+        checkMarker();
     }
 
     @Override
@@ -86,26 +91,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         mMap = googleMap;
         Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
         smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
-        for(int i = 0; i < projectList.size(); i++){
-            LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
-            Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(projectList.get(i).getName()));
-            allMarkersMap.put(marker, i);
-        }
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                int index = allMarkersMap.get(marker);
-                list.setSelection(index);
-                adapter.select(index);
-                CameraUpdate cu = CameraUpdateFactory.newLatLng(marker.getPosition());
-                mMap.animateCamera(cu);
-                int height = list.getHeight();
-                list.smoothScrollToPositionFromTop(index, height/6);
-                return true;
-
-            }
-        });
+        isLoaded = true;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -134,6 +120,38 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         mapFrag.getMapAsync(this);
 
         return view;
+    }
+
+    public void checkMarker(){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(projectList.size() != 0 && isLoaded == true) {
+                    for(int i = 0; i < projectList.size(); i++){
+                        LatLng location = new LatLng( projectList.get(i).getLat(), projectList.get(i).getLng());
+                        Marker marker = mMap.addMarker( new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(projectList.get(i).getName()));
+                        allMarkersMap.put(marker, i);
+                    }
+
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            int index = allMarkersMap.get(marker);
+                            list.setSelection(index);
+                            adapter.select(index);
+                            CameraUpdate cu = CameraUpdateFactory.newLatLng(marker.getPosition());
+                            mMap.animateCamera(cu);
+                            int height = list.getHeight();
+                            list.smoothScrollToPositionFromTop(index, height/6);
+                            return true;
+
+                        }
+                    });
+                }else{
+                    checkMarker();
+                }
+            }
+        }, 1000);
     }
 
     public void loadProjects(){

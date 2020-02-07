@@ -78,7 +78,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
         textView_location.setText(event.getLocation().getAddress());
-        textView_date.setText(event.getEventStartDate());
+        textView_date.setText("   " + event.getEventStartDate());
         test.setText(event.getTitle());
 
         ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) test.getLayoutParams();
