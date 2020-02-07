@@ -126,6 +126,8 @@ public class ProjectCycleListAdapter extends ArrayAdapter<ProjectViewModel> {
                     editor.putString("projectname", project.getName());
                     editor.putFloat("lat", project.getLat());
                     editor.putFloat("lng", project.getLng());
+                    editor.putString("hosts", B.toString());
+                    editor.putString("location", project.getAddress());
                     editor.commit();
                     FragmentTransaction ft = fragManager.beginTransaction();
                     ft.replace(R.id.fragment_container, new MapOverviewFragment());

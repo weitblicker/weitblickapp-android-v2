@@ -97,6 +97,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
             ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) textView_teaser.getLayoutParams();
             params.height = getTextViewHeight(textView_teaser);
             textView_teaser.setLayoutParams(params);
+
             ViewGroup.LayoutParams params2 = (ViewGroup.LayoutParams) textView_title.getLayoutParams();
             params2.height = getTextViewHeight(textView_title);
             textView_title.setLayoutParams(params2);
