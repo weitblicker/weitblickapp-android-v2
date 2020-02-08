@@ -51,7 +51,7 @@ public class NewsDetailFragment extends Fragment {
 
 
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
+    final long PERIOD_MS = 6000; // time in milliseconds between successive task executions.
 
     private int currentPage = 0;
     private Timer timer = null;
@@ -98,20 +98,18 @@ public class NewsDetailFragment extends Fragment {
         //SET Tab-Indicator-Dots for ViewPager
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
 
+
         if(mViewPager.getAdapter().getCount() > 1){
             tabLayout.setupWithViewPager(mViewPager, true);
             //Initiate Runnable for automatic Image-Slide
             final Handler handler = new Handler();
             final Runnable Update = new Runnable() {
                 public void run() {
-                    Log.e("currentPage:", currentPage +"");
-                    Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
-                    if (currentPage == mViewPager.getAdapter().getCount()){
-                        Log.e("LASTPAGE", "!!!");
-                        currentPage = 0;
+                    if (mViewPager.getCurrentItem() == (mViewPager.getAdapter().getCount()-1)){
+                        mViewPager.setCurrentItem(0, true);
+                    }else {
+                        mViewPager.setCurrentItem((mViewPager.getCurrentItem()+1), true);
                     }
-                    mViewPager.setCurrentItem(currentPage, true);
-                    currentPage ++;
                 }
             };
             timer = new Timer(); // This will create a new Thread
