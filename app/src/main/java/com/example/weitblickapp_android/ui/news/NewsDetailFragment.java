@@ -149,6 +149,7 @@ public class NewsDetailFragment extends Fragment {
                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
         }
+
         authorName.setText(this.name);
 
         //Parse HTML in TextView
@@ -185,6 +186,7 @@ public class NewsDetailFragment extends Fragment {
         }
         return root;
     }
+
 
     @Override
     public void onPause() {
