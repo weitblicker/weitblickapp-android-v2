@@ -99,7 +99,7 @@ public class LoginData{
 
 
                                 if (key != null) {
-
+                                    /*
                                     getUserDetails(new VolleyCallback() {
                                         @Override
                                         public void onSuccess(String result) {
@@ -111,6 +111,7 @@ public class LoginData{
 
                                         }
                                     });
+                                    */
                                     if(user == null) user = new LoggedInUser();
 
                                     user.setEmail(email);
@@ -130,13 +131,13 @@ public class LoginData{
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        String errorMessage = null;
-
+                        String errorMessage = "";
+/*
                         if (error instanceof NetworkError) {
                             errorMessage = "Cannot connect to Internet...Please check your connection!";
                         } else if (error instanceof ServerError) {
                             errorMessage = "The server could not be found. Please try again after some time!!";
-                        } else if (error instanceof AuthFailureError) {
+                        } /*else if (error instanceof AuthFailureError) {
                             errorMessage = "Cannot connect to Internet...Please check your connection!";
                         } else if (error instanceof ParseError) {
                             errorMessage = "Parsing error! Please try again after some time!!";
@@ -145,7 +146,8 @@ public class LoginData{
                         } else if (error instanceof TimeoutError) {
                             errorMessage = "Connection TimeOut! Please check your internet connection.";
                         }
-                        else{
+                        */
+                        if (true){
                             String body;
                             //get status code here
                             if(error != null){
@@ -182,7 +184,7 @@ public class LoginData{
                         if(errorMessage != null){
                             Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
                         }
-                        Log.e("VOLLEY ERROR", error.toString() + errorMessage);
+                        Log.e("VOLLEY ERROR LOGIN", error.toString() + errorMessage);
                         }
 
 
@@ -294,7 +296,7 @@ public class LoginData{
                         if(errorMessage != null){
                             Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
                         }
-                        Log.e("VOLLEY ERROR", error.toString() + errorMessage);
+                        Log.e("VOLLEY ERROR LOGOUT", error.toString() + errorMessage);
                     }
                 }) {
                     @Override
@@ -366,7 +368,7 @@ public class LoginData{
                             errorMessage = "Connection TimeOut! Please check your internet connection.";
                         }
                         else {
-                            Log.e("VOLLEY ERROR", error.toString());
+                            Log.e("VOLLEY ERROR LOGOUT", error.toString());
                             String body;
                             //get status code here
                             String statusCode = String.valueOf(error.networkResponse.statusCode);
@@ -404,7 +406,7 @@ public class LoginData{
                         if(errorMessage != null){
                             Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
                         }
-                        Log.e("VOLLEY ERROR", error.toString() + errorMessage);
+                        Log.e("VOLLEY ERROR CHANGE_P", error.toString() + errorMessage);
                     }
                 }) {
                     @Override
@@ -443,16 +445,18 @@ public class LoginData{
     private void updateUiWithUser(final String email, final String password, final boolean isLoginSaved) {
 
 
+        sessionManager.createLoginSession(user.getUsername(), user.getEmail(), user.getKey());
+
             getUserDetails(new VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    sessionManager.createLoginSession(user.getUsername(), user.getEmail(), user.getKey());
+                    Log.e("INIT_ERROR: ", "getUserDetail erfolgreich.");
                 }
 
                 @Override
                 public void onError(String result) {
                     Log.e("INIT_ERROR: ", "getUserDetail fehlgeschlagen.");
-                    sessionManager.createLoginSession(user.getUsername(), user.getEmail(), user.getKey());
+
                 }
             });
 
@@ -487,7 +491,7 @@ public class LoginData{
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY ERROR", error.toString());
+                        Log.e("VOLLEY ERROR RESET", error.toString());
                         String body;
                         //get status code here
                         String statusCode = String.valueOf(error.networkResponse.statusCode);
@@ -586,8 +590,9 @@ public class LoginData{
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String errorMessage = null;
+                        String errorMessage = "";
 
+                        /*
                         if (error instanceof NetworkError) {
                             errorMessage = "Cannot connect to Internet...Please check your connection!";
                         } else if (error instanceof ServerError) {
@@ -601,9 +606,11 @@ public class LoginData{
                         } else if (error instanceof TimeoutError) {
                             errorMessage = "Connection TimeOut! Please check your internet connection.";
                         }
-                        else {
+                        */
 
-                        Log.e("VOLLEY ERROR", error.toString());
+                        if(true) {
+
+                        Log.e("VOLLEY ERROR GET_UD", error.toString());
                         String body;
                         //get status code here
                         if(error != null){
@@ -640,7 +647,7 @@ public class LoginData{
                         if(errorMessage != null){
                             Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
                         }
-                        Log.e("VOLLEY ERROR", error.toString() + errorMessage);
+                        Log.e("VOLLEY ERROR GET_UD", error.toString() + errorMessage);
                     }
                 }) {
                     @Override

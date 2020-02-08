@@ -64,7 +64,7 @@ public class RegistrationData {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY ERROR", error.toString());
+                    Log.e("VOLLEY ERROR REGISTER", error.toString());
 
                     String body;
                     //get status code here
