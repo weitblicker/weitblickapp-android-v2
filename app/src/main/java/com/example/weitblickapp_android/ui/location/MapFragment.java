@@ -323,6 +323,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                     }else{
                         badLocation = location;
+                        currentLocation = null;
                     }
                     if (!load) {
                         setUpMapIfNeeded();
