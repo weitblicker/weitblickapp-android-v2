@@ -13,11 +13,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.CircleTransform;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
@@ -31,7 +33,7 @@ import java.util.TimerTask;
 import io.noties.markwon.Markwon;
 
 public class NewsDetailFragment extends Fragment {
-    static final String urlWeitblick = "https://new.weitblicker.org";
+    static final String urlWeitblick = "https://weitblicker.org";
 
     private String location;
     private String title;
@@ -59,17 +61,28 @@ public class NewsDetailFragment extends Fragment {
         this.text = article.getText();
         this.date = article.getDate();
         this.name = article.getName();
-        this.picture = article.getImage();
+        this.picture = urlWeitblick.concat(article.getImage());
         this.hosts = article.getHosts();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
         this.projectArr = article.getProject();
 
-        for(int i = 0; i < article.getImageUrls().size(); i++){
-            this.imageUrls.add(i, urlWeitblick + article.getImageUrls().get(i));
+        if(article.getImageUrls().isEmpty()){
+            //Add False URL so ViewPager tries to instatiate Item which returns Default-Image in Error-Case
+            this.imageUrls.add("FALSEURL");
+        }else{
+            for(int i = 0; i < article.getImageUrls().size(); i++){
+                this.imageUrls.add(i, urlWeitblick + article.getImageUrls().get(i));
+            }
         }
     }
 
     public NewsDetailFragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -77,10 +90,6 @@ public class NewsDetailFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_news_detail, container, false);
 
-        //Add False URL so ViewPager tries to instatiate Item which returns Default-Image in Error-Case
-        if(imageUrls.isEmpty()){
-            imageUrls.add("FALSEURL");
-        }
         //Set Image-Slider Adapter
         mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
@@ -144,8 +153,7 @@ public class NewsDetailFragment extends Fragment {
         if(this.picture.contains("null")){
             authorImages.setVisibility(View.GONE);
         }else{
-            String url = urlWeitblick + this.picture;
-            Picasso.get().load(url).fit().centerCrop().
+            Picasso.get().load(this.picture).transform(new CircleTransform()).fit().centerCrop().
                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
         }
