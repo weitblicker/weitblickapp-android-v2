@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/statsContainer"
                 android:layout_width="match_parent"
@@ -657,6 +658,18 @@
                 app:tabBackground="@drawable/tab_selector"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp" />
+
+            <TextView
+                android:id="@+id/whiteTriangle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="185dp"
+                android:background="@color/white"
+                android:rotation="-45"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/eventsContainer"
