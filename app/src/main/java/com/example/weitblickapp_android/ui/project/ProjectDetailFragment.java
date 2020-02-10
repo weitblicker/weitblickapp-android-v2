@@ -371,7 +371,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             currentRound = Math.round( Float.parseFloat(this.cycle.getKm_sum()) *100);
             currentRound = currentRound / 100.0f;
             km.setText(currentRound + " km");
-            TextView cyclist = root.findViewById(R.id.biker);
+            TextView cyclist = root.findViewById(R.id.bikernumber);
             cyclist.setText(String.valueOf(cycle.getCyclist()));
 
         }else{

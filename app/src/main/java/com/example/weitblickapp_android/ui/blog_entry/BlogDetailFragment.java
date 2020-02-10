@@ -19,7 +19,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.CircleTransform;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.project.ProjectAdapterShort;
 import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
@@ -146,7 +148,7 @@ public class BlogDetailFragment extends Fragment {
             authorImages.setVisibility(View.GONE);
         }else{
             String url = urlWeitblick + this.picture;
-            Picasso.get().load(url).fit().centerCrop().
+            Picasso.get().load(url).transform(new CircleTransform()).fit().centerCrop().
                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
         }
@@ -195,7 +197,7 @@ public class BlogDetailFragment extends Fragment {
 
         if(projectArr != null && projectArr.size() != 0){
             ListView listProject = (ListView) root.findViewById(R.id.projectList);
-            ProjectListAdapter adapterProject = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
+            ProjectAdapterShort adapterProject = new ProjectAdapterShort(getActivity(), projectList, getFragmentManager());
             listProject.setAdapter(adapterProject);
             for(int i = 0; i < projectArr.size(); i++){
                 projectList.add(projectArr.get(0));

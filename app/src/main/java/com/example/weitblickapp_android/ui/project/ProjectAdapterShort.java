@@ -1,20 +1,25 @@
 package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,9 +29,10 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
     private LayoutInflater mInflater;
     private ArrayList<ProjectViewModel> projects;
     private FragmentManager fragManager;
+    String PREF_NAME = "DefaultProject";
 
     public ProjectAdapterShort(Context mContext, ArrayList<ProjectViewModel> mDataSource, FragmentManager fragManager) {
-        super(mContext, R.layout.fragment_project_list, mDataSource);
+        super(mContext, R.layout.fragment_project_news_blog, mDataSource);
         this.mContext = mContext;
         this.projects = mDataSource;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,20 +58,21 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
 
         String weitblickUrl = "https://new.weitblicker.org";
 
-        view = mInflater.inflate(R.layout.fragment_project_list, null);
+        view = mInflater.inflate(R.layout.fragment_project_news_blog, null);
+
 
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        TextView textView_title = (TextView) view.findViewById(R.id.titel);
-        TextView textView_teaser = (TextView) view.findViewById(R.id.teaser);
-        TextView textView_date = (TextView) view.findViewById(R.id.date);
-
+        TextView textView_title = (TextView) view.findViewById(R.id.title);
+        TextView textView_address = (TextView) view.findViewById(R.id.location);
+        ImageButton maps = (ImageButton) view.findViewById(R.id.project_maps_btn);
         TextView partner = (TextView) view.findViewById(R.id.partner);
 
 
-        final ProjectViewModel article = (ProjectViewModel) getItem(position);
+        final ProjectViewModel project = (ProjectViewModel) getItem(position);
+
 
         StringBuilder b = new StringBuilder();
-        for(String s : article.getHosts()){
+        for(String s : project.getHosts()){
             b.append(s);
             b.append(" ");
         }
@@ -78,26 +85,52 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
                 B.append(c);
             }
         }
-        partner.setText(B.toString());
 
-        if(article.getImageUrls().size()>0) {
-            weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));
+        if(project.getCycle() == null){
+
+            maps.setVisibility(View.GONE);
+        }else{
+            maps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("projectid", project.getId());
+                    editor.putString("projectname", project.getName());
+                    editor.putFloat("lat", project.getLat());
+                    editor.putFloat("lng", project.getLng());
+                    editor.putString("hosts", B.toString());
+                    editor.putString("location", project.getAddress());
+                    editor.commit();
+                    FragmentTransaction ft = fragManager.beginTransaction();
+                    ft.replace(R.id.fragment_container, new MapOverviewFragment());
+                    ft.commit();
+                }
+            });
+        }
+        try {
+            weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
+        }catch(IndexOutOfBoundsException e){
+            Log.e("Info", "no pictures for this BlogEntry");
         }
 
-        Picasso.get().load(weitblickUrl).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+        Picasso.get()
+                .load(weitblickUrl)
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
+        textView_title.setText(project.getName());
+        textView_address.setText(project.getAddress());
 
-        textView_title.setText(article.getName());
-
+        partner.setText(B.toString());
 
         view.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = fragManager.beginTransaction();
-                ft.replace(R.id.fragment_container, new ProjectDetailFragment(article));
+                ft.replace(R.id.fragment_container, new ProjectDetailFragment(project));
                 ft.addToBackStack(null);
                 ft.commit();
             }
