@@ -92,7 +92,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
             textView_title.setText(article.getTitle());
             textView_teaser.setText(article.getTeaser());
-            textView_date.setText(article.getDate());
+            textView_date.setText(article.formatToTimeRange());
 
             ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) textView_teaser.getLayoutParams();
             params.height = getTextViewHeight(textView_teaser);

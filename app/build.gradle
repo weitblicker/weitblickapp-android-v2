@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "org.weitblicker.app"
-        minSdkVersion 18
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.github.maddevsio:mad-location-manager:0.1.13'
 
     implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'joda-time:joda-time:2.10.5'
 /*
     implementation "androidx.room:room-runtime:2.2.3"
     annotationProcessor "androidx.room:room-compiler:2.2.3" // For Kotlin use kapt instead of annotationProcessor

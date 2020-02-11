@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -79,7 +77,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
         teaser.setText(blog.getTeaser());
 
         //Set published date for BlogEntries
-        textView_date.setText(blog.getPublished());
+        textView_date.setText(blog.formatToTimeRange());
         TextView partner = (TextView) view.findViewById(R.id.partner);
         StringBuilder b = new StringBuilder();
         for(String s : blog.getHosts()){
