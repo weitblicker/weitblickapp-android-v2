@@ -280,6 +280,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(locationListener = new OnSuccessListener<Location>() {
+
             @Override
             public void onSuccess(Location location) {
                // Log.e("LOCATION", location.toString());

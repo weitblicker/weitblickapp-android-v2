@@ -4,20 +4,40 @@ import androidx.lifecycle.ViewModel;
 
 public class ProfilViewModel extends ViewModel {
 
+    private final String imageBaseUrl = "https://weitblicker.org/";
+
     private int id;
-    private String email;
     private String passwort;
     private String donation;
     private String km;
+    private String imageUrl;
+    private String userName;
+
 
     public ProfilViewModel() {
     }
 
-    public ProfilViewModel(String email, String passwort, String donation, String km){
-        this.email=email;
-        this.passwort=passwort;
-        this.donation=donation;
-        this.km=km;
+    public ProfilViewModel(String userName, double donation, double km, String imageUrl){
+        this.userName=userName;
+        this.donation= String.format("%.2f", donation).concat(" €");
+        this.km= String.format("%.2f", km).concat(" km");
+        this.imageUrl = imageBaseUrl.concat(imageUrl);
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getId() {
@@ -26,14 +46,6 @@ public class ProfilViewModel extends ViewModel {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPasswort() {
@@ -58,5 +70,15 @@ public class ProfilViewModel extends ViewModel {
 
     public void setKm(String km) {
         this.km = km;
+    }
+
+    @Override
+    public String toString() {
+        return "ProfilViewModel{" +
+                "donation='" + donation + '\'' +
+                ", km='" + km + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", userName='" + userName + '\'' +
+                '}';
     }
 }
