@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -64,25 +62,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import mad.location.manager.lib.Commons.Utils;
-import mad.location.manager.lib.Interfaces.ILogger;
-import mad.location.manager.lib.Interfaces.LocationServiceInterface;
-import mad.location.manager.lib.Interfaces.LocationServiceStatusInterface;
-import mad.location.manager.lib.Services.KalmanLocationService;
-import mad.location.manager.lib.Services.ServicesHelper;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, LocationServiceInterface, LocationServiceStatusInterface {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-    private SensorManager sensorManager;
-    private Sensor sensor;
-
-    private float[] gravity = new float[3];
-    private float[] linear_acceleration = new float[3];
-    float expectedAcceleration = 2.5f;
-
 
     private GoogleMap mMap;
     private Tour currentTour;
@@ -127,17 +111,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private OnSuccessListener <Location> locationListener;
     private static final int REQUEST_CODE = 101;
 
-    RequestQueue requestQueue;
+    private RequestQueue requestQueue;
     private Context mContext;
 
     LocationManager locationManager;
-    KalmanLocationService kalmanService;
-
 
     public MapFragment(int projectid){
         this.projectId = projectid;
-
-        ServicesHelper.addLocationServiceInterface(this);
     }
 
     @Override
@@ -149,8 +129,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // getActivity().startService(new Intent(mContext, KalmanLocationService.class));
-       // initKalman();
         askGpsPermission();
         setUpGpsStateReceiver();
         setUpLocationProvider();
@@ -397,7 +375,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private boolean checkSpeedAndAcceleration(){
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
-                float currentSpeedInKmh = Math. round((currentLocation.getSpeed() * 3.6f) * 100)/100;
+                float currentSpeedInKmh = Math.round((currentLocation.getSpeed() * 3.6f) * 100)/100;
                 if (currentSpeedInKmh > 60.0f) {
                     Toast toast= Toast.makeText(mContext,"Geschwindigkeit: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
                     toast.show();
@@ -681,11 +659,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onDestroy() {
         super.onDestroy();
         sendSegment();
-       // handler.removeCallbacksAndMessages(null);
+        handler.removeCallbacksAndMessages(null);
         mContext.unregisterReceiver(locationSwitchStateReceiver);
-        //mContext.stopService(new Intent(mContext,KalmanLocationService.class));
-        //kalmanService.stop();
-
         Log.e("DESTROYED", "!!!!");
     }
 
@@ -693,57 +668,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onDetach() {
         super.onDetach();
         Log.e("DETACHED", "!!!!!");
-    }
-
-    @Override
-    public void locationChanged(Location location) {
-
-
-    }
-
-    @Override
-    public void serviceStatusChanged(KalmanLocationService.ServiceStatus serviceStatus) {
-
-    }
-
-    @Override
-    public void GPSStatusChanged(int i) {
-
-    }
-
-    @Override
-    public void GPSEnabledChanged(boolean b) {
-
-    }
-
-    @Override
-    public void lastLocationAccuracyChanged(float v) {
-
-    }
-
-
-    private void initKalman(){
-
-        ServicesHelper.getLocationService(getActivity(), value -> {
-            if (value.IsRunning()) {
-                Log.e("Is running", "!");
-                return;
-            }
-            value.stop();
-            KalmanLocationService.Settings settings = new KalmanLocationService.Settings(Utils.ACCELEROMETER_DEFAULT_DEVIATION,
-                    0,
-                    1000,
-                    8,
-                    2,
-                    10,
-                    (ILogger) null,
-                    true,
-                    Utils.DEFAULT_VEL_FACTOR,
-                    Utils.DEFAULT_POS_FACTOR);
-            value.reset(settings); //warning!! here you can adjust your filter behavior
-            value.start();
-
-        });
     }
 }
 

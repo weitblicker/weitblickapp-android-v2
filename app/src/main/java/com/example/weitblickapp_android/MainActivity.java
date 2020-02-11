@@ -2,11 +2,9 @@ package com.example.weitblickapp_android;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -27,8 +25,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.weitblickapp_android.data.Session.SessionManager;
-import com.example.weitblickapp_android.ui.location.MapFragment;
-import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
 import com.example.weitblickapp_android.ui.profil.ProfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        //startService(new Intent(this, KalmanLocationService.class));
 
         session = new SessionManager(getApplicationContext());
         setContentView(R.layout.activity_main);

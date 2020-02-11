@@ -441,6 +441,12 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.e("ONDETACH", "!!!");
+    }
+
+    @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if(totalItemCount > 0) {
             final int lastItem = firstVisibleItem + visibleItemCount;
