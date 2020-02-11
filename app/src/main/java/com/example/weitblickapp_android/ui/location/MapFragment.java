@@ -479,7 +479,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private void sendSegment() {
 
         segmentEndTime = getFormattedDate();
-        kmTotal += kmSegment;
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -529,6 +528,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             this.requestQueue.add(objectRequest);
             //Reset Km-Counter for Segment
             segmentStartTime = segmentEndTime;
+            kmTotal += kmSegment;
             kmSegment = 0;
     }
 
@@ -550,9 +550,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             }
         };
-
         registerGpsReceiver();
-
     }
     private void registerGpsReceiver(){
         IntentFilter filter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);

@@ -152,4 +152,12 @@ public class EventViewModel extends ViewModel {
                 ", images='" + imageUrls + '\'' +
                 '}';
     }
+
+    public Date getEventDateStart() {
+        return eventDateStart;
+    }
+
+    public void setEventDateStart(Date eventDateStart) {
+        this.eventDateStart = eventDateStart;
+    }
 }

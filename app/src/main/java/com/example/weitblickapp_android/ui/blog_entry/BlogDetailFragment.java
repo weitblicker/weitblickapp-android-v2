@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -19,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.CircleTransform;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
@@ -146,7 +146,7 @@ public class BlogDetailFragment extends Fragment {
             authorImages.setVisibility(View.GONE);
         }else{
             String url = urlWeitblick + this.picture;
-            Picasso.get().load(url).fit().centerCrop().
+            Picasso.get().load(url).transform(new CircleTransform()).fit().centerCrop().
                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
         }
