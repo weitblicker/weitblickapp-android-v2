@@ -22,6 +22,19 @@ android {
         targetCompatibility = 1.8
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
+
+
 
 }
 
@@ -50,10 +63,10 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.chabbal:slidingdotsplash:1.0.2'
     implementation 'com.github.maddevsio:mad-location-manager:0.1.13'
-
     implementation 'com.android.support:multidex:1.0.3'
-
     implementation 'joda-time:joda-time:2.10.5'
+    implementation 'org.apache.httpcomponents:httpmime:4.5.11'
+
 /*
     implementation "androidx.room:room-runtime:2.2.3"
     annotationProcessor "androidx.room:room-compiler:2.2.3" // For Kotlin use kapt instead of annotationProcessor

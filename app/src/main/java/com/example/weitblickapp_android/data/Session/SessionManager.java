@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class SessionManager {
 
-    private LoginData loginData;
+    //private LoginData loginData;
 
     // Shared Preferences
     SharedPreferences pref;
@@ -39,6 +39,15 @@ public class SessionManager {
 
     // Email address (make variable public to access from outside)
     public static final String KEY_USERKEY = "key";
+
+    /*
+    public static final String KEY_FIRSTNAME = "firstname";
+
+    public static final String KEY_LASTNAME = "lastname";
+
+    public static final String KEY_IMAGE = "image";
+     */
+
 
     // Constructor
     public SessionManager(Context context){
