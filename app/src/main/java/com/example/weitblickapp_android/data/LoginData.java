@@ -450,7 +450,7 @@ public class LoginData{
             getUserDetails(new VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    Log.e("INIT_ERROR: ", "getUserDetail erfolgreich.");
+                    Log.e("INIT_SUCCESS: ", "getUserDetail erfolgreich.");
                 }
 
                 @Override
@@ -575,11 +575,38 @@ public class LoginData{
 
                         Log.e("LOGIN", response.toString());
 
+                        String isSessionCompleteDebug = "";
                         try {
-                            if(user == null) user = new LoggedInUser();
-                            user.setUsername(response.get("username").toString());
-                            user.setFirst_name(response.get("first_name").toString());
-                            user.setLast_name(response.get("last_name").toString());
+                            if(response.has("username")){
+                                String resp_username = response.get("username").toString();
+                                isSessionCompleteDebug += resp_username;
+                                if(resp_username != null){
+                                    sessionManager.setUserName(resp_username);
+                                }
+                            }
+                            if(response.has("firstname")){
+                                String resp_firstname = response.get("firstname").toString();
+                                isSessionCompleteDebug += resp_firstname;
+                                if(resp_firstname != null){
+                                    sessionManager.setFirstName(resp_firstname);
+                                }
+                            }
+                            if(response.has("lastname")){
+                                String resp_lastname = response.get("lastname").toString();
+                                isSessionCompleteDebug += resp_lastname;
+                                if(resp_lastname != null){
+                                    sessionManager.setLastName(resp_lastname);
+                                }
+                            }
+                            if(response.has("image")){
+                                String resp_image = response.get("image").toString();
+                                isSessionCompleteDebug += resp_image;
+                                if(resp_image != null){
+                                    sessionManager.setImageURL(resp_image);
+                                }
+                            }
+
+                            Toast.makeText(app_context, isSessionCompleteDebug , Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

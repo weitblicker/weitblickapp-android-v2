@@ -62,7 +62,7 @@ public class ProfilFragment extends Fragment {
 
         session = new SessionManager(getActivity().getApplicationContext());
         loginData = new LoginData(getActivity().getApplicationContext());
-        email = session.getEmail();
+        email = session.getUserName();
         ImageButton changeProfile = root.findViewById(R.id.changeProfil);
 
         changeProfile.setOnClickListener(new View.OnClickListener() {
