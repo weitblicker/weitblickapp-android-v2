@@ -67,6 +67,7 @@ public class ProfilFragment extends Fragment {
     private ImageView imageProfil;
     private TextView donationTextView;
     private TextView kmTextView;
+    private  TextView username;
 
     private Context mContext;
     private RequestQueue requestQueue;
@@ -102,14 +103,15 @@ public class ProfilFragment extends Fragment {
             JSONObject userData;
             String firstname;
             String lastname;
-            String username;
+            String userName;
 
                 try {
                     firstname = response.getString("first_name");
                     lastname = response.getString("last_name");
-                    username = response.getString("username");
-                    
-                    loadUserData(username);
+                    userName = response.getString("username");
+
+                    username.setText(userName);
+                    loadUserData(userName);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -153,7 +155,7 @@ public class ProfilFragment extends Fragment {
                 Log.e("RANKING:", jsonData);
 
                 try {
-                    userField = response.getJSONArray("best_field");
+                    bestField = response.getJSONArray("best_field");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -161,7 +163,7 @@ public class ProfilFragment extends Fragment {
                 //Parse the JSON response array by iterating over it
 
                     JSONObject userObject = null;
-                    for(int x = 0; x < userField.length(); x++){
+                    for(int x = 0; x < bestField.length(); x++){
                         try {
                              userObject = bestField.getJSONObject(x);
 
@@ -187,6 +189,7 @@ public class ProfilFragment extends Fragment {
                                 Picasso.get().load(R.mipmap.ic_launcher_foreground).transform(new CircleTransform()).fit().centerCrop()
                                         .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
                             }
+
                             kmTextView.setText(userProfile.getKm());
                             donationTextView.setText(userProfile.getDonation());
                             Log.e("USER-DATA", userProfile.toString());
@@ -274,7 +277,7 @@ public class ProfilFragment extends Fragment {
 
         Uri data = Uri.parse(pictureDirectoryPath);
 
-
+        username = (TextView) root.findViewById(R.id.username);
 
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,11 +298,8 @@ public class ProfilFragment extends Fragment {
         passwordTextView.setText(this.password);
         kmTextView = root.findViewById(R.id.km);
 
-        final TextView username = (TextView) root.findViewById(R.id.username);
-        username.setText(this.user);
-
-        final TextView emailTextView = root.findViewById(R.id.old_password);
-        emailTextView.setText(this.email);
+        final TextView email = root.findViewById(R.id.email);
+        email.setText(this.email);
 
 
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
@@ -316,8 +316,6 @@ public class ProfilFragment extends Fragment {
     }
 
     private void startGallery(){
-
-
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
