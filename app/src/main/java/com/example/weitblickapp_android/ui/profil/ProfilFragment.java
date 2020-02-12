@@ -65,6 +65,7 @@ public class ProfilFragment extends Fragment {
     private String password = "******";
     private String km = "20,4 km";
     private String email;
+    private String user = null;
 
     ImageView imageProfil;
     TextView donationTextView;
@@ -110,7 +111,7 @@ public class ProfilFragment extends Fragment {
                     firstname = response.getString("first_name");
                     lastname = response.getString("last_name");
                     username = response.getString("username");
-
+                    
                     loadUserData(username);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -297,6 +298,9 @@ public class ProfilFragment extends Fragment {
         final TextView passwordTextView = root.findViewById(R.id.new_password);
         passwordTextView.setText(this.password);
         kmTextView = root.findViewById(R.id.km);
+
+        final TextView username = (TextView) root.findViewById(R.id.username);
+        username.setText(this.user);
 
         final TextView emailTextView = root.findViewById(R.id.old_password);
         emailTextView.setText(this.email);
