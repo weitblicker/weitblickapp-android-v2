@@ -3,7 +3,6 @@ package com.example.weitblickapp_android.ui.event;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +77,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
         textView_location.setText(event.getLocation().getAddress());
-        textView_date.setText("   " + event.getEventStartDate());
+        textView_date.setText("   " + event.formatToTimeRange());
         test.setText(event.getTitle());
 
         ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) test.getLayoutParams();

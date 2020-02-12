@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -104,6 +106,37 @@ public class EventViewModel extends ViewModel {
         this.text = text;
     }
 
+    public String formatToTimeRange() {
+
+        LocalDate eventDate =  eventDateStart.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+        LocalDate tomorrow = today.plusDays(1);
+        LocalDate inTwoDays = today.plusDays(2);
+        LocalDate inThreeDays = today.plusDays(3);
+
+
+        if(eventDate.equals(yesterday)){
+            return "Gestern";
+        }
+        if(eventDate.equals(today)){
+            return "Heute";
+        }
+        if(eventDate.equals(tomorrow)){
+            return "Morgen";
+        }
+        if(eventDate.equals(inTwoDays)){
+            return "In 2 Tagen";
+        }
+        if(eventDate.equals(inThreeDays)){
+            return "In 3 Tagen";
+        }
+        return getEventStartDate();
+    }
+
 
 
     @Override
@@ -118,5 +151,13 @@ public class EventViewModel extends ViewModel {
                 ", text='" + text + '\'' +
                 ", images='" + imageUrls + '\'' +
                 '}';
+    }
+
+    public Date getEventDateStart() {
+        return eventDateStart;
+    }
+
+    public void setEventDateStart(Date eventDateStart) {
+        this.eventDateStart = eventDateStart;
     }
 }

@@ -69,6 +69,8 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestQueue = Volley.newRequestQueue(mContext);
+        loadNews(url);
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +86,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadNews(url);
         getListView().setOnScrollListener(this);
     }
 
@@ -174,6 +175,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser, date, imageUrls, name, profilPic, allHosts, projectArr);
                         newsList.add(temp);
+
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -436,6 +438,12 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.e("ONDETACH", "!!!");
     }
 
     @Override

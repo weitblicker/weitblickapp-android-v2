@@ -8,6 +8,8 @@ import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -169,6 +171,25 @@ public class NewsViewModel extends ViewModel {
 
     public void setHosts(ArrayList<String> hosts) {
         this.hosts = hosts;
+    }
+
+    public String formatToTimeRange() {
+
+        LocalDate eventDate =  published.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+
+        if(eventDate.equals(yesterday)){
+            return "Gestern";
+        }
+        if(eventDate.equals(today)){
+            return "Heute";
+        }
+
+        return getDate();
     }
 
     @Override

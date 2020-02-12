@@ -26,8 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,6 +82,9 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     JSONArray images = null;
                     JSONObject image = null;
 
+                    JSONArray occurrences = null;
+
+
                     JSONObject locationObject = null;
                     EventLocation location = null;
 
@@ -110,6 +115,9 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         hostObject = responseObject.getJSONObject("host");
                         hostName = hostObject.getString("city");
 
+                        occurrences = responseObject.getJSONArray("occurrences");
+
+
 
                         try {
                             images = responseObject.getJSONArray("photos");
@@ -130,17 +138,28 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
                         location = new EventLocation(name, address, lat, lng, descriptionLocation);
 
-                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
-                        events.add(temp);
-                        adapter.notifyDataSetChanged();
+                        for(int y = 0; y < occurrences.length(); y++){
+                            String occurrenceStart = occurrences.getJSONObject(y).getString("start");
+                            String occurrenceEnd = occurrences.getJSONObject(y).getString("end");
+                            if(!occurrenceStart.equals(startDate) && formatterRead.parse(occurrenceStart).after(new Date())) {
+                                EventViewModel occurrence = new EventViewModel(eventId, title, description, occurrenceStart, occurrenceEnd, hostName, location, imageUrls);
+                                events.add(occurrence);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                        if(formatterRead.parse(startDate).after(new Date())) {
+                            EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
+                            events.add(temp);
+                            events.sort((o1,o2) -> o1.getEventDateStart().compareTo(o2.getEventDateStart()));
+                            adapter.notifyDataSetChanged();
+                        }
+
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
-                for(EventViewModel event:events){
-                   // Log.e("Event",event.toString());
-                }
-
             }
 
         }, new Response.ErrorListener() {

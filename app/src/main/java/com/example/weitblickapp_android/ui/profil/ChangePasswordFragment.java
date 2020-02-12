@@ -34,7 +34,7 @@ public class ChangePasswordFragment extends Fragment {
         loginData = new LoginData(getActivity());
 
         changePasswordButton = root.findViewById(R.id.change_password_button);
-        oldPasswordEditText = root.findViewById(R.id.old_password);
+        //oldPasswordEditText = root.findViewById(R.id.old_password);
         newPasswordEditText = root.findViewById(R.id.new_password);
         newPasswordConfirmEditText = root.findViewById(R.id.new_password_confirm);
 
@@ -46,7 +46,7 @@ public class ChangePasswordFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                loginData.changePassword(oldPasswordEditText.getText().toString(), newPasswordEditText.getText().toString(), newPasswordEditText.getText().toString(), new VolleyCallback() {
+                loginData.changePassword(newPasswordEditText.getText().toString(), newPasswordConfirmEditText.getText().toString(), new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
                         Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();

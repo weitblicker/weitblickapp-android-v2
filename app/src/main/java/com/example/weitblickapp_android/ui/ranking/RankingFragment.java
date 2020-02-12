@@ -43,6 +43,7 @@ public class RankingFragment extends ListFragment{
     private boolean km_donation = false;
     private boolean km = false;
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_ranking, container, false);

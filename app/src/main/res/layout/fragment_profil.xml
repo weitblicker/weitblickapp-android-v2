@@ -34,15 +34,11 @@
                 app:srcCompat="@drawable/icon_back"
                 tools:ignore="VectorDrawableCompat" />
 
-            <com.mikhaellopez.circularimageview.CircularImageView
+            <ImageView
                 android:id="@+id/imageProfil"
                 android:layout_width="238dp"
                 android:layout_height="228dp"
                 android:src="@drawable/ic_launcher_background"
-                app:civ_border_color="@color/black"
-                app:civ_border_width="4dp"
-                app:civ_shadow="true"
-                app:civ_shadow_radius="10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
