@@ -117,6 +117,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     LocationManager locationManager;
 
     public MapFragment(ProjectViewModel project){
+        projectId = project.getId();
         this.project = project;
     }
 
@@ -301,7 +302,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     }else{
                         badLocation = location;
-                        currentLocation = null;
                     }
                     if (!load) {
                         setUpMapIfNeeded();
@@ -357,7 +357,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void calculateKm() {
-        if(currentLocation != null) {
+        if(currentLocation != null && lastLocation != null) {
             double dis = currentLocation.distanceTo(lastLocation) / 1000;
             Log.e("DISTANCE", dis + "");
             kmSegment += dis;
@@ -640,6 +640,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.e("RESUMED", "!!!!!!");
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
@@ -672,6 +673,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onDetach();
         Log.e("DETACHED", "!!!!!");
     }
+
 }
 
 

@@ -21,7 +21,12 @@ public class ProfilViewModel extends ViewModel {
         this.userName=userName;
         this.donation= String.format("%.2f", donation).concat(" €");
         this.km= String.format("%.2f", km).concat(" km");
-        this.imageUrl = imageBaseUrl.concat(imageUrl);
+
+        if(imageUrl.equals("null")){
+            this.imageUrl = "";
+        }else {
+            this.imageUrl = imageBaseUrl.concat(imageUrl);
+        }
     }
 
     public String getImageUrl() {
