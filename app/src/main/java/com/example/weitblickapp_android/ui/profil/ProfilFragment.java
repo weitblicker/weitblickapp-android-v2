@@ -59,17 +59,14 @@ public class ProfilFragment extends Fragment {
     LoginData loginData;
 
     private ProfilViewModel userProfile;
-
-
-    private String donation = "10,40 €";
+    
     private String password = "******";
-    private String km = "20,4 km";
     private String email;
     private String user = null;
 
-    ImageView imageProfil;
-    TextView donationTextView;
-    TextView kmTextView;
+    private ImageView imageProfil;
+    private TextView donationTextView;
+    private TextView kmTextView;
 
     private Context mContext;
     private RequestQueue requestQueue;
@@ -156,11 +153,6 @@ public class ProfilFragment extends Fragment {
                 Log.e("RANKING:", jsonData);
 
                 try {
-                    bestField = response.getJSONArray("best_field");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
                     userField = response.getJSONArray("best_field");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -187,14 +179,18 @@ public class ProfilFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                        Log.e("URL", userProfile.getImageUrl());
 
-                        Picasso.get().load(userProfile.getImageUrl()).transform(new CircleTransform()).fit().centerCrop().
-                                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
-                        kmTextView.setText(userProfile.getKm());
-                        donationTextView.setText(userProfile.getDonation());
-                        Log.e("USER-DATA", userProfile.toString());
+                            if (!userProfile.getImageUrl().isEmpty()) {
+                                Picasso.get().load(userProfile.getImageUrl()).transform(new CircleTransform()).fit().centerCrop()
+                                        .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
+                            } else {
+                                Picasso.get().load(R.mipmap.ic_launcher_foreground).transform(new CircleTransform()).fit().centerCrop()
+                                        .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
+                            }
+                            kmTextView.setText(userProfile.getKm());
+                            donationTextView.setText(userProfile.getDonation());
+                            Log.e("USER-DATA", userProfile.toString());
+
             }
 
         }, new Response.ErrorListener() {
@@ -380,6 +376,7 @@ public class ProfilFragment extends Fragment {
         return encodedImage;
 
     }
+
 
     private String getToken(){
         return this.token;
