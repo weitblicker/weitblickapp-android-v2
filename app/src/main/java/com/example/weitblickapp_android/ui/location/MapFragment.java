@@ -36,6 +36,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
+import com.example.weitblickapp_android.ui.project.ProjectAdapterShort;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -116,8 +117,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
-    public MapFragment(int projectid){
-        this.projectId = projectid;
+    public MapFragment(ProjectViewModel project){
+        this.project = project;
+        ServicesHelper.addLocationServiceInterface(this);
     }
 
     @Override
@@ -220,6 +222,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return root;
     }
 
+
+
     private void setUpLocationProvider(){
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
     }
@@ -302,6 +306,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     }else{
                         badLocation = location;
+                        currentLocation = null;
                     }
                     if (!load) {
                         setUpMapIfNeeded();

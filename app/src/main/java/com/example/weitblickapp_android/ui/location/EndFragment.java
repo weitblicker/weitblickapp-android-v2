@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorAdapter;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +35,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class EndFragment extends Fragment {
@@ -45,6 +49,7 @@ public class EndFragment extends Fragment {
     SharedPreferences settings = null;
     private SponsorAdapter adapter;
     ArrayList<SponsorViewModel> sponsoren = new ArrayList<SponsorViewModel>();
+    ArrayList<String> imageUrls = new ArrayList<String>();
 
 
     private ProjectViewModel project;
@@ -81,6 +86,15 @@ public class EndFragment extends Fragment {
 
         TextView partner = (TextView) root.findViewById(R.id.partner);
         TextView location = (TextView) root.findViewById(R.id.location);
+        ImageView projectPic  = (ImageView) root.findViewById(R.id.imageView21);
+
+        String url = "https://weitblicker.org";
+        if(project.getImageUrls().size() > 0){
+            url = url.concat(project.getImageUrls().get(0));
+        }
+        Picasso.get().load(url).fit().centerCrop().
+                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(projectPic);
 
         location.setText(settings.getString("location", ""));
         partner.setText(settings.getString("hosts", ""));
@@ -107,8 +121,25 @@ public class EndFragment extends Fragment {
                     ArrayList<Integer> sponsorenid = new ArrayList<Integer>();
                     JSONArray donations = null;
                     JSONObject donation = null;
-
+                    JSONObject image = null;
+                    JSONArray images = null;
                     try {
+                        String text = responseObject.getString("description");
+
+                        imageUrls = getImageUrls(text);
+
+                        try {
+                            images = responseObject.getJSONArray("photos");
+                            for (int x = 0; x < images.length(); x++) {
+                                image = images.getJSONObject(x);
+                                String url = image.getString("url");
+                                imageUrls.add(url);
+                            }
+
+                        }catch(JSONException e){
+
+                        }
+
                         cycleObject = responseObject.getJSONObject("cycle");
                         donations = cycleObject.getJSONArray("donations");
                         for (int y = 0; y < donations.length(); y++) {
@@ -143,6 +174,19 @@ public class EndFragment extends Fragment {
                 }
             };
             requestQueue.add(objectRequest);
+    }
+
+    public ArrayList <String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\)")
+                .matcher(text);
+        while (m.find()) {
+            // Log.e("ImageUrl", m.group(2));
+
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
     }
 
     public void loadSponsors(ArrayList<Integer> sponsorenId) {

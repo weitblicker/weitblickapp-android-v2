@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/statsContainer"
                 android:layout_width="match_parent"
@@ -311,7 +312,7 @@
                     android:layout_marginEnd="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Spendenziel"
-                    android:textColor="@color/black"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -605,7 +606,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Blog"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
                     app:layout_constraintStart_toEndOf="@+id/imageView16"
                     app:layout_constraintTop_toBottomOf="@+id/orange_blog" />
@@ -623,10 +624,11 @@
                     android:id="@+id/moreBlog"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/open_sans"
-                    android:gravity="center"
-                    android:text="Mehr Anzeigen"
+                    android:gravity="left"
+                    android:text="mehr anzeigen"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -656,6 +658,18 @@
                 app:tabBackground="@drawable/tab_selector"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp" />
+
+            <TextView
+                android:id="@+id/whiteTriangle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="185dp"
+                android:background="@color/white"
+                android:rotation="-45"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/eventsContainer"
@@ -691,7 +705,7 @@
                     android:layout_marginTop="3dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Veranstaltungen"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="@+id/moreEvents"
                     app:layout_constraintHorizontal_bias="0.1"
@@ -702,10 +716,11 @@
                     android:id="@+id/moreEvents"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/open_sans"
-                    android:gravity="center"
-                    android:text="Mehr Anzeigen"
+                    android:gravity="left"
+                    android:text="mehr anzeigen"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -763,7 +778,7 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Neuheiten"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
                     app:layout_constraintStart_toEndOf="@+id/imageView14"
                     app:layout_constraintTop_toBottomOf="@+id/orange_news" />
@@ -784,10 +799,11 @@
                     android:id="@+id/moreNews"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/open_sans"
-                    android:gravity="center"
-                    android:text="Mehr Anzeigen"
+                    android:gravity="left"
+                    android:text="mehr anzeigen"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -837,7 +853,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Sponsoren"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
                     app:layout_constraintStart_toEndOf="@+id/imageView13"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -893,7 +909,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Meilenstein"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
                     app:layout_constraintStart_toEndOf="@+id/imageView12"
                     app:layout_constraintTop_toBottomOf="@+id/orange_milenstone" />
@@ -962,7 +978,7 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Projektpartner"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

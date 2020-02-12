@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.CircleTransform;
 import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
 import com.example.weitblickapp_android.ui.ranking.RoundedCornersTransform;
 import com.squareup.picasso.Picasso;
@@ -102,7 +103,9 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         }else {
             weitblickUrl = "https://new.weitblicker.org";
             String url = weitblickUrl.concat(blog.getImage());
-            Picasso.get().load(url).transform(new RoundedCornersTransform()).fit().centerCrop().into(authorProfile);
+            Picasso.get().load(url).transform(new CircleTransform()).fit().centerCrop().
+                    placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorProfile);
         }
         name.setText(blog.getName());
 

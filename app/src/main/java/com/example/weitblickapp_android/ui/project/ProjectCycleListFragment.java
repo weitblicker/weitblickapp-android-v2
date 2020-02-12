@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 
 public class ProjectCycleListFragment extends ListFragment {
     ArrayList<ProjectViewModel> projectList = new ArrayList<ProjectViewModel>();
-    private ProjectCycleListAdapter adapter;
+    private ProjectAdapterShort adapter;
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -62,7 +62,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
         View view = inflater.inflate(R.layout.fragment_project_cycle, container, false);
 
-        adapter = new ProjectCycleListAdapter(getActivity(), projectList, getFragmentManager());
+        adapter = new ProjectAdapterShort(getActivity(), projectList, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;
@@ -73,19 +73,6 @@ public class ProjectCycleListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, final int position, long id) {
-        /*ImageButton detail = (ImageButton) v.findViewById(R.id.news_more_btn);
-        detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                FragmentTransaction replace = ft.replace(R.id.fragment_container, new ProjectDetailFragment(projectList.get(position)));
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });*/
-    }
     public void loadProjects(){
 
         // Talk to Rest API
