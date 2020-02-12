@@ -36,7 +36,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
-import com.example.weitblickapp_android.ui.project.ProjectAdapterShort;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -119,7 +118,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public MapFragment(ProjectViewModel project){
         this.project = project;
-        ServicesHelper.addLocationServiceInterface(this);
     }
 
     @Override
@@ -297,9 +295,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         currentLocation = location;
                         currentTour.addLocationToTour(location);
 
-                        Log.e("CURRENTLOCATION", currentLocation.getLatitude() +"");
-                        Log.e("LASTLOCATION", lastLocation.getLatitude()+"");
-
                         if(checkSpeedAndAcceleration()) {
                             calculateKm();
                         }
@@ -362,20 +357,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void calculateKm() {
-                double dis = currentLocation.distanceTo(lastLocation)/1000;
-                Log.e("DISTANCE", dis + "");
-                kmSegment += dis;
-                kmTotal += dis;
+        if(currentLocation != null) {
+            double dis = currentLocation.distanceTo(lastLocation) / 1000;
+            Log.e("DISTANCE", dis + "");
+            kmSegment += dis;
+            kmTotal += dis;
 
-                don = currentTour.getEurosTotal();
+            don = currentTour.getEurosTotal();
 
-                String distanceTotal = (Math.round(kmTotal * 100.00) / 100.00) + (" km");
-                String donationTotal = (Math.round(don * 100.00) / 100.00) + (" €");
+            String distanceTotal = (Math.round(kmTotal * 100.00) / 100.00) + (" km");
+            String donationTotal = (Math.round(don * 100.00) / 100.00) + (" €");
 
-                distance.setText(distanceTotal);
-                donation.setText(donationTotal);
+            distance.setText(distanceTotal);
+            donation.setText(donationTotal);
 
-                currentTour.setDistanceTotal(kmTotal);
+            currentTour.setDistanceTotal(kmTotal);
+        }
     }
 
     private boolean checkSpeedAndAcceleration(){

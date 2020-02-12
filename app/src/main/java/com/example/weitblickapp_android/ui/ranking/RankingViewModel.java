@@ -16,7 +16,11 @@ public class RankingViewModel extends ViewModel {
     }
 
     public RankingViewModel(String profileImageUrl, String username, double cycledKm, double cycledDonation) {
-        this.profileImageUrl = imageUrl.concat(profileImageUrl);
+        if(profileImageUrl.equals("null")){
+            this.profileImageUrl = "";
+        }else {
+            this.profileImageUrl = imageUrl.concat(profileImageUrl);
+        }
         this.username = username;
         this.cycledKm = cycledKm;
         this.cycledDonation = cycledDonation;

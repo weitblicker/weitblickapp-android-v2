@@ -21,7 +21,6 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.CircleTransform;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectAdapterShort;
-import com.example.weitblickapp_android.ui.project.ProjectListAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
@@ -144,7 +143,8 @@ public class BlogDetailFragment extends Fragment {
         authorName.setText(this.name);
 
         if(this.picture.contains("null")){
-            authorImages.setVisibility(View.GONE);
+            Picasso.get().load(R.mipmap.ic_launcher_foreground).fit().centerCrop()
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
         }else{
             String url = urlWeitblick + this.picture;
             Picasso.get().load(url).transform(new CircleTransform()).fit().centerCrop().
