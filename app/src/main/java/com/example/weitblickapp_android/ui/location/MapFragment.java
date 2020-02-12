@@ -155,7 +155,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        //createNewTour();
+        createNewTour();
 
         TextView partner = (TextView) root.findViewById(R.id.partner);
         TextView titel = (TextView) root.findViewById(R.id.titel);

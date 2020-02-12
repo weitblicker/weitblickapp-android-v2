@@ -1,5 +1,7 @@
 package com.example.weitblickapp_android.ui.stats;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
@@ -8,12 +10,17 @@ import java.util.Date;
 
 public class StatsViewModel extends ViewModel {
 
+    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
+
+
     private int tourId;
     private int projectId;
     private double distance;
     private double donation;
-    private int duration;
+    private int durationMinutes;
     private int durationSeconds;
+    private int durationHours;
     private Date date;
 
     public StatsViewModel(){
@@ -25,18 +32,20 @@ public class StatsViewModel extends ViewModel {
         this.tourId = tourId;
         this.distance = distance;
         this.donation = donation;
-        this.duration = (duration/60);
+
+        Log.e("DURATION SECONDS", duration+"!");
+
         this.durationSeconds = (duration%60);
+        int durationHoursTemp = (duration/60);
+        int durationMinutesTemp = (durationHoursTemp % 60);
+        this.durationMinutes = durationMinutesTemp;
+        this.durationHours = duration/3600;
 
         try {
             this.date = formatterRead.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-    }
-
-    public int getDurationSeconds() {
-        return durationSeconds;
     }
 
     public String getSecondsAsString(){
@@ -46,16 +55,32 @@ public class StatsViewModel extends ViewModel {
             return Integer.toString(this.durationSeconds);
         }
     }
+
+    public String getMinutesAsString(){
+        if(this.durationMinutes < 10){
+            return "0"+ Integer.toString(this.durationMinutes);
+        }else{
+            return Integer.toString(this.durationMinutes);
+        }
+    }
+
+    public String getHoursAsString(){
+        if(this.durationHours < 10){
+            return "0"+ Integer.toString(this.durationHours);
+        }else{
+            return Integer.toString(this.durationHours);
+        }
+    }
+
+
+
     public String getDurationAsString(){
-        return getDuration() + ":" + getSecondsAsString() + " min";
+        return getHoursAsString() + ":" + getMinutesAsString() + ":" + getSecondsAsString() + " h";
     }
 
     public void setDurationSeconds(int durationSeconds) {
         this.durationSeconds = durationSeconds;
     }
-
-    final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-    final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
 
     public double getDistance() {
         return distance;
@@ -69,16 +94,20 @@ public class StatsViewModel extends ViewModel {
         return donation;
     }
 
-    public void setDonation(double donation) {
+    public void setDonationMinutes(double donation) {
         this.donation = donation;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getDurationMinutes() {
+        return durationMinutes;
     }
 
     public void setDuration(int duration) {
-        this.duration = duration;
+        this.durationMinutes = duration;
+    }
+
+    public int getDurationSeconds() {
+        return durationSeconds;
     }
 
     public String getDate() {
@@ -87,5 +116,13 @@ public class StatsViewModel extends ViewModel {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getDurationHours() {
+        return durationHours;
+    }
+
+    public void setDurationHours(int durationHours) {
+        this.durationHours = durationHours;
     }
 }
