@@ -89,6 +89,7 @@ public class ProjectCycleListFragment extends ListFragment {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
                     JSONObject locationObject = null;
+                    JSONObject accountObject = null;
                     JSONArray cycleJSONObject = null;
                     JSONArray partnerJSONObject = null;
                     JSONObject partnerObject = null;
@@ -188,12 +189,13 @@ public class ProjectCycleListFragment extends ListFragment {
                         for(int x = 0; x < hosts.length(); x++){
                             host = hosts.getJSONObject(x);
                             allHosts.add(host.getString("city"));
-                            /*if( host.getJSONObject("bank_account")!=  null){
-                                bankAccount = host.getJSONObject("bank_account");
-                                bankname = bankAccount.getString("account_holder");
-                                iban = bankAccount.getString("iban");
-                                bic = bankAccount.getString("bic");
-                            }*/
+                        }
+
+                        if(!responseObject.getString("donation_account").contains("null")){
+                            accountObject = responseObject.getJSONObject("donation_account");
+                            bankname = accountObject.getString("account_holder");
+                            iban = accountObject.getString("iban");
+                            bic = accountObject.getString("bic");
                         }
 
 

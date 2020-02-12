@@ -45,8 +45,8 @@
         android:id="@+id/agb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="233dp"
-        android:layout_marginRight="233dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="240dp"
         android:fontFamily="@font/opensansbold"
         android:text="AGB"
         android:textColor="@color/black"
@@ -57,16 +57,13 @@
 
     <ImageView
         android:id="@+id/imageView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginLeft="26dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="7dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         app:layout_constraintEnd_toStartOf="@+id/agb"
         app:layout_constraintStart_toEndOf="@+id/back"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_menu_manage" />
+        app:srcCompat="@drawable/icon_agb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

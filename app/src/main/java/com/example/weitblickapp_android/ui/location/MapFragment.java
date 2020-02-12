@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import mad.location.manager.lib.Services.ServicesHelper;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -119,7 +120,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public MapFragment(ProjectViewModel project){
         this.project = project;
-        ServicesHelper.addLocationServiceInterface(this);
     }
 
     @Override
@@ -164,9 +164,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         TextView location = (TextView) root.findViewById(R.id.location);
 
         SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("DefaultProject", 0);
-        location.setText(settings.getString("location", ""));
-        titel.setText(settings.getString("projectname", ""));
-        partner.setText(settings.getString("hosts", ""));
+        location.setText(project.getAddress());
+        titel.setText(project.getName());
+        StringBuilder b = new StringBuilder();
+        for(String s : project.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        partner.setText(B);
 
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
@@ -191,13 +205,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 if (!paused) {
-                    pause.setImageResource(R.mipmap.ic_play_foreground);
+                    pause.setImageResource(R.drawable.icon_start);
                     paused = true;
                     sendSegment();
                     resetLocations();
                 } else {
                     getCurrentLocation();
-                    pause.setImageResource(R.mipmap.ic_pause_foreground);
+                    pause.setImageResource(R.drawable.icon_pause);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
 
@@ -296,9 +310,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         lastLocation = currentLocation;
                         currentLocation = location;
                         currentTour.addLocationToTour(location);
-
-                        Log.e("CURRENTLOCATION", currentLocation.getLatitude() +"");
-                        Log.e("LASTLOCATION", lastLocation.getLatitude()+"");
 
                         if(checkSpeedAndAcceleration()) {
                             calculateKm();

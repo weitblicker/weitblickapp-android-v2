@@ -41,28 +41,30 @@
 
             <ImageView
                 android:id="@+id/pause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.951"
-                app:srcCompat="@mipmap/ic_pause_foreground" />
+                app:srcCompat="@drawable/icon_pause" />
 
             <ImageView
                 android:id="@+id/projectDetail"
-                android:layout_width="59dp"
-                android:layout_height="57dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:background="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.261"
+                app:layout_constraintHorizontal_bias="0.232"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.955"
-                app:srcCompat="@android:drawable/ic_menu_help" />
+                android:tint="@color/black"
+                app:srcCompat="@drawable/icon_info" />
 
             <ImageView
                 android:id="@+id/stop"
@@ -70,11 +72,12 @@
                 android:layout_height="55dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/map"
-                app:layout_constraintHorizontal_bias="0.745"
+                app:layout_constraintHorizontal_bias="0.761"
                 app:layout_constraintStart_toStartOf="@+id/map"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.952"
-                app:srcCompat="@mipmap/ic_stop_foreground" />
+                app:layout_constraintVertical_bias="0.955"
+                android:tint="@color/black"
+                app:srcCompat="@drawable/icon_stop" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

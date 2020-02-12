@@ -236,6 +236,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                     JSONObject locationObject = null;
                     JSONArray partnerJSONObject = null;
                     JSONObject partnerObject = null;
+                    JSONObject accountObject = null;
                     JSONObject cycleObject = null;
                     JSONObject image = null;
                     ArrayList<String> imageUrls = new ArrayList<String>();
@@ -314,14 +315,14 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         for (int x = 0; x < hosts.length(); x++) {
                             host = hosts.getJSONObject(x);
                             allHosts.add(host.getString("city"));
-                            /*if( host.getJSONObject("bank_account") !=  null){
-                                bankAccount = host.getJSONObject("bank_account");
-                                bankname = bankAccount.getString("account_holder");
-                                iban = bankAccount.getString("iban");
-                                bic = bankAccount.getString("bic");
-                            }*/
                         }
 
+                        if(!responseObject.getString("donation_account").contains("null")){
+                            accountObject = responseObject.getJSONObject("donation_account");
+                            bankname = accountObject.getString("account_holder");
+                            iban = accountObject.getString("iban");
+                            bic = accountObject.getString("bic");
+                        }
 
                         locationObject = responseObject.getJSONObject("location");
 

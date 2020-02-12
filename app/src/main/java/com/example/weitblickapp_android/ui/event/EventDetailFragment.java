@@ -1,5 +1,7 @@
 package com.example.weitblickapp_android.ui.event;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -40,6 +42,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private String date;
     private String text;
     private String hostName;
+    static Bitmap smallMarker;
     private ArrayList<String> imageUrls = new ArrayList<String>();
 
     private GoogleMap mMap;
@@ -71,9 +74,9 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         LatLng location = new LatLng(this.location.getLat(),this.location.getLng());
 
         MarkerOptions marker = new MarkerOptions().position(location).title(this.location.getAddress());
-
-        marker.icon(BitmapDescriptorFactory
-                .fromResource(R.drawable.logo_location));
+        Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
+        smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
+        marker.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         googleMap.addMarker(marker);
 
         CameraPosition cameraPosition = new CameraPosition.Builder()

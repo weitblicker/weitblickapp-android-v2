@@ -1,6 +1,8 @@
 package com.example.weitblickapp_android.ui.project;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -76,6 +78,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     String text;
     float lng;
     float lat;
+    static Bitmap smallMarker;
     String current_amount;
     String goal_amount;
     String goalDescription;
@@ -142,6 +145,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.eventId = project.getEvent_ids();
         this.descriptionLocation = project.getDescriptionLocation();
         this.projectId = project.getId();
+        this.bankname = project.getBankName();
+        this.iban = project.getIban();
+        this.bic = project.getBic();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -235,14 +241,16 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         final TextView currentNumber = root.findViewById(R.id.currentNumber);
         final TextView goalNumber = root.findViewById(R.id.goalnumber);
         final TextView goalDesc = root.findViewById(R.id.donationgoaldescription);
-
         final TextView bankName = root.findViewById(R.id.bankname);
         final TextView IBAN = root.findViewById(R.id.IBAN);
         final TextView BIC = root.findViewById(R.id.BIC);
         final TextView newsMore = root.findViewById(R.id.moreNews);
         final TextView blogsMore = root.findViewById(R.id.moreBlog);
         final TextView eventsMore = root.findViewById(R.id.moreEvents);
-
+        final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
+        final TextView amountTextView = root.findViewById(R.id.amountNumber);
+        final TextView bikeText = root.findViewById(R.id.bikeText2);
+        final TextView locationDescription = root.findViewById(R.id.detail_location3);
         final Markwon markwon = Markwon.create(getContext());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -252,16 +260,13 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-        final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
-        final TextView amountTextView = root.findViewById(R.id.amountNumber);
-        final TextView bikeText = root.findViewById(R.id.bikeText2);
-        final TextView locationDescription = root.findViewById(R.id.detail_location3);
+
         locationDescription.setText(this.descriptionLocation);
         ImageButton bike = root.findViewById(R.id.bike);
         ImageButton bike2 = root.findViewById(R.id.bike2);
 
         //DonationGoal
-        if(this.goal_amount.contains("null") && this.current_amount.contains("null") && this.goalDescription.length() == 0){
+        if(this.goal_amount.contains("null") && this.current_amount.contains("null") && this.goalDescription.length() == 0 && this.bankname == null){
             ConstraintLayout goalDonation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
             goalDonation.setVisibility(View.GONE);
         }else{
@@ -284,9 +289,15 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             }else{
                 goalDesc.setText(goalDescription);
             }
-            /*IBAN.setText(iban);
-            bankName.setText(bankname);
-            BIC.setText(bic);*/
+            if(bankname == null){
+                IBAN.setVisibility(View.GONE);
+                bankName.setVisibility(View.GONE);
+                BIC.setVisibility(View.GONE);
+            }else{
+                IBAN.setText(iban);
+                bankName.setText(bankname);
+                BIC.setText(bic);
+            }
         }
 
         if(this.sponsorId.size() > 0){
@@ -535,7 +546,10 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     public void drawPie(boolean draw){
         AnimatedPieView mAnimatedPieView = root.findViewById(R.id.pieChart);
         if(draw == true){
-            float current = (100 / Float.parseFloat(cycle.getCycleDonation())) * Float.parseFloat(cycle.getCurrentAmount());
+            double current = (100 / Float.parseFloat(cycle.getCycleDonation())) * Float.parseFloat(cycle.getCurrentAmount());
+            TextView procent = (TextView) root.findViewById(R.id.procent);
+            current = Math.round(current * 100) / 100.0;
+            procent.setText(current + " %");
             AnimatedPieViewConfig config = new AnimatedPieViewConfig();
             config.startAngle(-90)// Starting angle offset
                     .addData(new SimplePieInfo(100 - current, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)
@@ -552,7 +566,9 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng location = new LatLng( this.lat, this.lng);
-        mMap.addMarker(new MarkerOptions().position(location).title(this.location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)));
+        Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
+        smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
+        mMap.addMarker(new MarkerOptions().position(location).title(this.location).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         mMap.getUiSettings().setScrollGesturesEnabled(false);

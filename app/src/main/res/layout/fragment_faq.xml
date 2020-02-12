@@ -38,8 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="FAQ"
                     android:textColor="@color/black"
@@ -49,14 +48,13 @@
 
                 <ImageView
                     android:id="@+id/imageView17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginStart="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     app:layout_constraintStart_toEndOf="@+id/back"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_menu_manage" />
+                    app:srcCompat="@drawable/icon_faq" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

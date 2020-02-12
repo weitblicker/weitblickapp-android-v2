@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="93dp"
+            android:layout_marginTop="95dp"
             android:fontFamily="@font/opensansbold"
             android:text="FAQ"
             android:textColor="@color/black"
@@ -30,34 +30,35 @@
 
         <ImageView
             android:id="@+id/faq"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="46dp"
             android:layout_marginTop="30dp"
             android:alpha="0.8"
-            android:tint="#333333"
+            android:tint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/news"
-            app:srcCompat="@drawable/ic_menu_manage" />
+            app:srcCompat="@drawable/icon_faq" />
 
         <ImageView
             android:id="@+id/contact"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="46dp"
             android:layout_marginTop="30dp"
             android:alpha="0.8"
-            android:tint="#333333"
+            android:tint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/faq"
-            app:srcCompat="@drawable/ic_menu_manage" />
+            android:src="@drawable/icon_contact"
+            tools:ignore="VectorDrawableCompat" />
 
         <TextView
             android:id="@+id/contactext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="153dp"
+            android:layout_marginTop="160dp"
             android:fontFamily="@font/opensansbold"
             android:text="Kontakt"
             android:textColor="@color/black"
@@ -80,15 +81,15 @@
 
         <ImageView
             android:id="@+id/news"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="46dp"
             android:layout_marginTop="30dp"
             android:alpha="0.8"
-            android:tint="#333333"
+            android:tint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView19"
-            app:srcCompat="@drawable/ic_menu_manage" />
+            app:srcCompat="@drawable/icon_agb" />
 
         <ImageView
             android:id="@+id/imageView19"

@@ -30,7 +30,7 @@
         android:layout_marginEnd="11dp"
         android:background="@null"
         android:focusable="false"
-        android:src="@drawable/icon_bike_dark"
+        android:src="@drawable/icon_bike_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
