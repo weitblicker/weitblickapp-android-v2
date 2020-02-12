@@ -181,9 +181,9 @@ public class LoginData{
                                 }
                             }
                         }
-                        if(errorMessage != null){
+                        /*if(errorMessage != null){
                             Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                         Log.e("VOLLEY ERROR LOGIN", error.toString() + errorMessage);
                         }
 
