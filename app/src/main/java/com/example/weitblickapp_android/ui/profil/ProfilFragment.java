@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -30,6 +31,7 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class ProfilFragment extends Fragment {
@@ -56,13 +59,32 @@ public class ProfilFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         profilViewModel =
                 ViewModelProviders.of(this).get(ProfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profil, container, false);
 
         session = new SessionManager(getActivity().getApplicationContext());
         loginData = new LoginData(getActivity().getApplicationContext());
+
+        if(session.getUserName() == null){
+            loginData.getUserDetails(new VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    email = session.getUserName();
+                    //Log.i("getUserData SUCCESS",result);
+
+                }
+
+                @Override
+                public void onError(String result) {
+                    //Log.e("getUserData ERROR",result);
+
+                }
+            });
+        }
         email = session.getUserName();
+
         ImageButton changeProfile = root.findViewById(R.id.changeProfil);
 
         changeProfile.setOnClickListener(new View.OnClickListener() {
@@ -97,14 +119,18 @@ public class ProfilFragment extends Fragment {
                     toast.show();
                 }
                 else {
-                    loginData.logout();
+                    loginData.logout(new VolleyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                        }
 
-                    getActivity().onBackPressed();
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                            "Erfolgreich ausgeloggt!",
-                            Toast.LENGTH_SHORT);
-
-                    toast.show();
+                        @Override
+                        public void onError(String result) {
+                            Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -157,6 +183,7 @@ public class ProfilFragment extends Fragment {
 
          */
         imageProfil.setImageResource(R.drawable.ic_launcher_background);
+
 
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +255,7 @@ public class ProfilFragment extends Fragment {
         if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri filePath = data.getData();
 
+
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
                 Bitmap lastBitmap = null;
@@ -258,44 +286,49 @@ public class ProfilFragment extends Fragment {
 
  */
 
-
-
-
-
-
-
-        Uri imageUri = data.getData();
+        Uri imageUri = null;
 
 
         InputStream inputStream;
 
-        try {
-            inputStream = getActivity().getContentResolver().openInputStream(imageUri);
+                if (resultCode == RESULT_OK) {
+                    try {
+                        imageUri = data.getData();
+                        inputStream = getActivity().getContentResolver().openInputStream(imageUri);
 
-            Bitmap image = BitmapFactory.decodeStream(inputStream);
+                        Bitmap image = BitmapFactory.decodeStream(inputStream);
 
-            imageProfil.setImageBitmap(image);
+                        imageProfil.setImageBitmap(image);
 
 
-            loginData.setProfileImage(imageUri, new VolleyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                        loginData.setProfileImage(imageUri, new VolleyCallback() {
+                            @Override
+                            public void onSuccess(String result) {
+                                //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String result) {
+                                //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+
+                    } catch (FileNotFoundException e){
+                        e.printStackTrace();
+                    }catch(NullPointerException np){
+                        np.printStackTrace();
+                    }
+
+                } else if (resultCode == RESULT_CANCELED) {
+                    Toast.makeText(getActivity(), "Bildauswahl abgebrochen.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Bildauswahl abgebrochen.", Toast.LENGTH_SHORT).show();
                 }
 
-                @Override
-                public void onError(String result) {
-                    //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                }
-            });
 
 
-
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch(NullPointerException np){
-            np.printStackTrace();
-        }
 
 
 
@@ -311,4 +344,6 @@ public class ProfilFragment extends Fragment {
         return encodedImage;
 
     }
+
 }
+
