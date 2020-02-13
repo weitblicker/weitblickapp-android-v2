@@ -26,7 +26,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import mad.location.manager.lib.Services.ServicesHelper;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -117,6 +116,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
+    public LocationService locationService;
+
     public MapFragment(ProjectViewModel project){
         projectId = project.getId();
         this.project = project;
@@ -131,6 +132,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final Intent serviceStart = new Intent(getActivity(), LocationService.class);
+        getActivity().startService(serviceStart);
+        //getActivity().bindService(serviceStart, serviceConnection, Context.BIND_AUTO_CREATE);
+
         askGpsPermission();
         setUpGpsStateReceiver();
         setUpLocationProvider();
@@ -141,7 +147,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         Log.e("ONCREATE", "!!!!");
     }
+    /*
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            String name = className.getClassName();
 
+            if (name.endsWith("LocationService")) {
+                locationService = ((LocationService.LocationServiceBinder) service).getService();
+
+                locationService.startUpdatingLocation();
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            if (className.getClassName().equals("LocationService")) {
+                locationService = null;
+            }
+        }
+    };
+*/
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Log.e("ONCREATEVIEW", "!!!!");
