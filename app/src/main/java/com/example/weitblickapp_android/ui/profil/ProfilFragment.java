@@ -241,7 +241,7 @@ public class ProfilFragment extends Fragment {
         });
 
         imageProfil = root.findViewById(R.id.imageProfil);
-        if (!imageUrl.isEmpty()) {
+        if (imageUrl != null) {
             Picasso.get().load(session.getImageURL()).transform(new CircleTransform()).fit().centerCrop()
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
         } else {
@@ -305,6 +305,7 @@ public class ProfilFragment extends Fragment {
                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
 
+
             loginData.setProfileImage(imageUri, new VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
@@ -333,7 +334,6 @@ public class ProfilFragment extends Fragment {
         return encodedImage;
 
     }
-
 
     private String getToken(){
         return this.token;
