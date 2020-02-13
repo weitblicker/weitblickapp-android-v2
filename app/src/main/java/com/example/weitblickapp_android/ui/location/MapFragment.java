@@ -205,16 +205,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 if (!paused) {
-                    pause.setImageResource(R.drawable.icon_start);
+                    pause.setImageResource(R.mipmap.icon_start_foreground);
                     paused = true;
                     sendSegment();
                     resetLocations();
                 } else {
                     getCurrentLocation();
-                    pause.setImageResource(R.drawable.icon_pause);
+                    pause.setImageResource(R.mipmap.icon_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
-
                 }
             }
         });
