@@ -116,7 +116,7 @@ public class ProfilFragment extends Fragment {
                 //Save Data into Model
                 JSONArray userField = null;
                 JSONArray bestField = null;
-                
+
                 try {
                     bestField = response.getJSONArray("best_field");
                 } catch (JSONException e) {
@@ -134,6 +134,10 @@ public class ProfilFragment extends Fragment {
                         if (userObject.getString("username").equals(userName)) {
                             double distance = userObject.getDouble("km");
                             double donation = userObject.getDouble("euro");
+                            String url = userObject.getString("image");
+
+                            session.setImageURL("https://weitblicker.org" + url);
+
 
                             kmTotal = String.format("%.2f", distance).concat(" km");
                             donationTotal = String.format("%.2f", donation).concat(" €");
@@ -247,13 +251,18 @@ public class ProfilFragment extends Fragment {
         });
 
         imageProfil = root.findViewById(R.id.imageProfil);
+
+        Log.e("imageUrlFromSession", imageUrl + "!");
+
         if (imageUrl != null) {
-            Picasso.get().load(session.getImageURL()).transform(new CircleTransform()).fit().centerCrop()
+            Picasso.get().load(imageUrl).transform(new CircleTransform()).fit().centerCrop()
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
         } else {
             Picasso.get().load(R.mipmap.ic_launcher_foreground).transform(new CircleTransform()).fit().centerCrop()
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
         }
+
+
 
         donationTextView = root.findViewById(R.id.donation);
 

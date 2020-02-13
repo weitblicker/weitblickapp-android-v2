@@ -63,6 +63,7 @@
         <service android:name=".ui.location.LocationService"
                  android:exported="false"
                  android:enabled="true">
+
         </service>
 
     </application>

@@ -3,16 +3,19 @@ package com.example.weitblickapp_android.ui.location;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -39,17 +43,14 @@ import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,10 +64,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    public LocationService locationService;
 
     private GoogleMap mMap;
     private Tour currentTour;
@@ -108,7 +111,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     static private double don = 0;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private OnSuccessListener <Location> locationListener;
+    private LocationRequest locationRequest;
+    private LocationListener locationListenerX;
+
+    private OnSuccessListener<Location> locationListener;
+
     private static final int REQUEST_CODE = 101;
 
     private RequestQueue requestQueue;
@@ -116,56 +123,79 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager;
 
-    public LocationService locationService;
+    private BroadcastReceiver locationUpdateReceiver;
+    private BroadcastReceiver predictedLocationReceiver;
+
 
     public MapFragment(ProjectViewModel project){
         projectId = project.getId();
         this.project = project;
     }
 
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Intent serviceStart = new Intent(getActivity(), LocationService.class);
-        getActivity().startService(serviceStart);
-        //getActivity().bindService(serviceStart, serviceConnection, Context.BIND_AUTO_CREATE);
+        final Intent locationService = new Intent(mContext, LocationService.class);
+        mContext.startService(locationService);
+        mContext.bindService(locationService, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        requestQueue = Volley.newRequestQueue(mContext);
+        session = new SessionManager(getActivity().getApplicationContext());
+        this.token = session.getKey();
+
+        locationUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(!paused && gpsIsEnabled) {
+                    if (currentLocation == null) {
+                        currentLocation = intent.getParcelableExtra("location");
+                    } else {
+                        lastLocation = currentLocation;
+                        currentLocation = intent.getParcelableExtra("location");
+
+                        calculateKm();
+                    }
+
+                    Log.e("LOCATIONYEAH", currentLocation + "!!!");
+
+                    if (!load) {
+                        setUpMapIfNeeded();
+                    }
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(
+                locationUpdateReceiver,
+                new IntentFilter("LocationUpdated"));
+
 
         askGpsPermission();
         setUpGpsStateReceiver();
-        setUpLocationProvider();
+        //setUpLocationProvider();
         initializeTour();
-        getCurrentLocation();
-        startFetchLocation();
-        sendRouteSegments();
+       // getCurrentLocation();
+       // startFetchLocation();
+       // getCurrentLocation();
+      //  RequestLocationUpdate();
+       // sendRouteSegments();
 
         Log.e("ONCREATE", "!!!!");
     }
-    /*
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            String name = className.getClassName();
 
-            if (name.endsWith("LocationService")) {
-                locationService = ((LocationService.LocationServiceBinder) service).getService();
 
-                locationService.startUpdatingLocation();
-            }
-        }
 
-        public void onServiceDisconnected(ComponentName className) {
-            if (className.getClassName().equals("LocationService")) {
-                locationService = null;
-            }
-        }
-    };
-*/
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Log.e("ONCREATEVIEW", "!!!!");
@@ -176,12 +206,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         View root = inflater.inflate(R.layout.fragment_location, container, false);
 
-        session = new SessionManager(getActivity().getApplicationContext());
-        this.token = session.getKey();
-
-        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        createNewTour();
 
         TextView partner = (TextView) root.findViewById(R.id.partner);
         TextView titel = (TextView) root.findViewById(R.id.titel);
@@ -234,7 +258,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     sendSegment();
                     resetLocations();
                 } else {
-                    getCurrentLocation();
                     pause.setImageResource(R.drawable.icon_pause);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
@@ -260,12 +283,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return root;
     }
 
-
-
-    private void setUpLocationProvider(){
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -283,75 +300,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void initializeTour(){
         currentTour = new Tour(projectId);
+        //createNewTour();
     }
 
-
-    //Checks every Second if GPS is enabled, if so -> fetchLastLocation
-    private void startFetchLocation() {
-        handler.postDelayed(locationRunnable = new Runnable() {
-            public void run() {
-                if(!paused && gpsIsEnabled) {
-                    Log.e("FETCHING LOCATION", "!!!");
-                    fetchLastLocation();
-                }
-                handler.postDelayed(this, fetchLocationDelay);
-            }
-        }, fetchLocationDelay);
-    }
-
-    private void getCurrentLocation(){
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(locationListener= new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location != null){
-                    currentLocation = location;
-                }
-            }
-        });
-    }
-
-    //Fetches last GPS-Location and calculates resulting km
-    private void fetchLastLocation() {
-        if (getContext() != null && getActivity() != null) {
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-
-                return;
-            }
-        }
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(locationListener = new OnSuccessListener<Location>() {
-
-            @Override
-            public void onSuccess(Location location) {
-               // Log.e("LOCATION", location.toString());
-                if (location != null && location != currentLocation) {
-                    Log.e("ACCURACY", location.getAccuracy() +"");
-                    if (location.getAccuracy() < 20) {
-                       // Log.e("LOCATION-LAT", location.getLatitude()+"");
-
-                        lastLocation = currentLocation;
-                        currentLocation = location;
-                        currentTour.addLocationToTour(location);
-
-                        if(checkSpeedAndAcceleration()) {
-                            calculateKm();
-                        }
-
-                    }else{
-                        badLocation = location;
-                    }
-                    if (!load) {
-                        setUpMapIfNeeded();
-                    }
-                }else{
-                    RequestLocationUpdate();
-                }
-            }
-        });
-
-    }
 
     private void askGpsPermission(){
         if (getContext() != null && getActivity() != null) {
@@ -401,11 +352,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.e("DISTANCE", dis + "");
             kmSegment += dis;
             kmTotal += dis;
+            Log.e("km-Total:", kmTotal+"!");
+            Log.e("km-Segment:", kmSegment+"!");
 
             don = currentTour.getEurosTotal();
 
             String distanceTotal = (Math.round(kmTotal * 100.00) / 100.00) + (" km");
             String donationTotal = (Math.round(don * 100.00) / 100.00) + (" €");
+
 
             distance.setText(distanceTotal);
             donation.setText(donationTotal);
@@ -428,19 +382,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
         return false;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResult) {
-        switch (requestCode) {
-            case REQUEST_CODE:
-                if (grantResult.length < 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
-                    fetchLastLocation();
-                }
-                break;
-            default:
-                break;
-        }
     }
 
     private void setUpMapIfNeeded() {
@@ -548,7 +489,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             this.requestQueue.add(objectRequest);
             //Reset Km-Counter for Segment
             segmentStartTime = segmentEndTime;
-            kmTotal += kmSegment;
             kmSegment = 0;
     }
 
@@ -651,27 +591,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return answer[0];
     }
 
-    // FAKE LOCATION UPDATE REQUEST FOR FUSED LOCATION PROVIDER
-    private void RequestLocationUpdate(){
-        LocationRequest mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(60000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationCallback mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        //Log.e("location-LAT", location.getLatitude()+"");
-                    }
-                }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service.  Because we have bound to a explicit
+            // service that we know is running in our own process, we can
+            // cast its IBinder to a concrete class and directly access it.
+            String name = className.getClassName();
+
+            if (name.endsWith("LocationService")) {
+                locationService = ((LocationService.LocationServiceBinder) service).getService();
+
+                locationService.startUpdatingLocation();
+
+
             }
-        };
-        fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
-    }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            // Because it is running in our same process, we should never
+            // see this happen.
+            if (className.getClassName().equals("LocationService")) {
+                locationService.stopUpdatingLocation();
+                locationService = null;
+            }
+        }
+    };
 
     @Override
     public void onResume() {
@@ -692,18 +641,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.e("PAUSED", "!!!!!");
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.e("STARTED", "!!!!!");
-    }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         sendSegment();
-        handler.removeCallbacksAndMessages(null);
         mContext.unregisterReceiver(locationSwitchStateReceiver);
+
+        try {
+            if (locationUpdateReceiver != null) {
+                mContext.unregisterReceiver(locationUpdateReceiver);
+            }
+
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+        }
         Log.e("DESTROYED", "!!!!");
     }
 
@@ -712,7 +665,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onDetach();
         Log.e("DETACHED", "!!!!!");
     }
-
 }
 
 
