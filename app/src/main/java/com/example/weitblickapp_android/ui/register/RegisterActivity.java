@@ -97,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
+                //TODO: Text für Datenweitergabe vervollständigen
                 new SimpleTooltip.Builder(RegisterActivity.this)
                         .anchorView(infoButton)
                         .text("Daten werden nicht weitergegeben bliblablub.")
@@ -126,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-
+        //TODO: enhance visibility of disabled button
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

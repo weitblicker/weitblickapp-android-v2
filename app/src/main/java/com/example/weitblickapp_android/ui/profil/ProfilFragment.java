@@ -305,6 +305,7 @@ public class ProfilFragment extends Fragment {
                             @Override
                             public void onSuccess(String result) {
                                 //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+
                             }
 
                             @Override

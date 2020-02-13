@@ -573,7 +573,10 @@ public class LoginData{
                                 }
                             }
 
-                           // Toast.makeText(app_context, isSessionCompleteDebug , Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(app_context, isSessionCompleteDebug , Toast.LENGTH_SHORT).show();
+                            Log.e("sessionManagerDebug", isSessionCompleteDebug);
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -704,10 +707,23 @@ public class LoginData{
                 e.printStackTrace();
             }
             //TODO: add Support for last/firstname when they are actually used
-            String username = sessionManager.getUserName();
-            multipart.addFormField("username", username);
-            multipart.addFormField("first_name", username);
-            multipart.addFormField("last_name", username );
+            //TODO: save new ImageURL in SessionManager
+            //String username = sessionManager.getUserName();
+            multipart.addFormField("username", sessionManager.getUserName());
+            multipart.addFormField("first_name", sessionManager.getFirstName());
+            multipart.addFormField("last_name", sessionManager.getLastName() );
+
+
+            //possible alternative for checking if first/lastname exist
+            /*
+            if( (firstname = sessionManager.getFirstName())!= null){
+                multipart.addFormField("first_name", firstname);
+            }
+            else{
+                multipart.addFormField("first_name", "firstname");
+            }
+            */
+
 
             try {
                 multipart.addFilePart("image", new File(path));
