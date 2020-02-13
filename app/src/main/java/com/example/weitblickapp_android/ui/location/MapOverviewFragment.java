@@ -132,7 +132,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                         Intent redirect = new Intent(getActivity(), Login_Activity.class);
                         getActivity().startActivity(redirect);
                     } else {
-                            if (settings.contains("projectid")) {
+                            if (project != null) {
                                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                                 fragmentMap = new MapFragment(project);
                                 ft.add(R.id.fragment_container, fragmentMap, TAG_FRAGMENT);

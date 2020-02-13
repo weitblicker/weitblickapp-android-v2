@@ -291,7 +291,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (getContext() != null && getActivity() != null) {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-
                 return;
             }
         }
@@ -309,7 +308,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         lastLocation = currentLocation;
                         currentLocation = location;
                         currentTour.addLocationToTour(location);
-
                         if(checkSpeedAndAcceleration()) {
                             calculateKm();
                         }
@@ -347,6 +345,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 //Send Segment here
                 if ((!paused) && gpsIsEnabled) {
                     Log.e("SEGMENT SENT", "!!!");
+                    if(load) {
+                        Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
+                        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
+                                15));
+                    }
                     sendSegment();
                 }
                 handler.postDelayed(this, segmentSendDelay);
