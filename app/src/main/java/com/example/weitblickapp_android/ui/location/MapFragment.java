@@ -178,17 +178,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         LocalBroadcastManager.getInstance(mContext).registerReceiver(
                 locationUpdateReceiver,
-                new IntentFilter("LocationUpdated"));
+                new IntentFilter("PredictLocation"));
 
 
         askGpsPermission();
         setUpGpsStateReceiver();
-        //setUpLocationProvider();
         initializeTour();
-       // getCurrentLocation();
-       // startFetchLocation();
-       // getCurrentLocation();
-      //  RequestLocationUpdate();
        // sendRouteSegments();
 
         Log.e("ONCREATE", "!!!!");

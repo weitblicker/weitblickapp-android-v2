@@ -202,10 +202,6 @@ public class LocationService extends Service implements LocationListener, GpsSta
 
                 locationManager.requestLocationUpdates(gpsFreqInMillis, gpsFreqInDistance, criteria, this, null);
 
-                /* Battery Consumption Measurement */
-                gpsCount = 0;
-                batteryLevelArray.clear();
-                batteryLevelScaledArray.clear();
 
             } catch (IllegalArgumentException e) {
                 Log.e(LOG_TAG, e.getLocalizedMessage());
