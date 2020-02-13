@@ -248,7 +248,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             @Override
             public void onClick(View v) {
                 if (!paused) {
-                    pause.setImageResource(R.drawable.icon_start);
+                    pause.setImageResource(R.mipmap.icon_start_foreground);
                     paused = true;
                     sendSegment();
                     resetLocations();
@@ -256,7 +256,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     pause.setImageResource(R.drawable.icon_pause);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
-
                 }
             }
         });
@@ -318,6 +317,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 //Send Segment here
                 if ((!paused) && gpsIsEnabled) {
                     Log.e("SEGMENT SENT", "!!!");
+                    if(load) {
+                        Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
+                        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
+                                15));
+                    }
                     sendSegment();
                 }
                 handler.postDelayed(this, segmentSendDelay);

@@ -3,6 +3,8 @@ package com.example.weitblickapp_android.ui.blog_entry;
 import androidx.lifecycle.ViewModel;
 
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -205,13 +207,7 @@ public class BlogEntryViewModel extends ViewModel {
 
     @Override
     public String toString() {
-        return "BlogEntryViewModel{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", image_id=" + image_id +
-                ", created_at=" + published +
-                ", location_id=" + location_id +
-                '}';
+
+        return new GsonBuilder().create().toJson(this, BlogEntryViewModel.class);
     }
 }

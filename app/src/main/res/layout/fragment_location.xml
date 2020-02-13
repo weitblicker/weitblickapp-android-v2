@@ -24,7 +24,7 @@
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="130dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
@@ -41,8 +41,11 @@
 
             <ImageView
                 android:id="@+id/pause"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:scaleType="fitCenter"
                 android:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,34 +53,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.951"
-                app:srcCompat="@drawable/icon_pause" />
+                app:srcCompat="@mipmap/icon_pause_foreground" />
 
             <ImageView
                 android:id="@+id/projectDetail"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@null"
+                android:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.232"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.955"
-                android:tint="@color/black"
-                app:srcCompat="@drawable/icon_info" />
+                app:srcCompat="@mipmap/icon_info_foreground" />
 
             <ImageView
                 android:id="@+id/stop"
-                android:layout_width="54dp"
-                android:layout_height="55dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/map"
                 app:layout_constraintHorizontal_bias="0.761"
                 app:layout_constraintStart_toStartOf="@+id/map"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.955"
-                android:tint="@color/black"
-                app:srcCompat="@drawable/icon_stop" />
+                app:srcCompat="@mipmap/icon_stop_foreground" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -171,7 +174,7 @@
             android:layout_marginBottom="5dp"
             android:text="TextView"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+            app:layout_constraintBottom_toTopOf="@+id/container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -184,7 +187,7 @@
             android:layout_marginBottom="5dp"
             android:text="TextView"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+            app:layout_constraintBottom_toTopOf="@+id/container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
