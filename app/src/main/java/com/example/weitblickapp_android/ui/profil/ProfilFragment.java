@@ -101,6 +101,7 @@ public class ProfilFragment extends Fragment {
         this.userName = session.getUserName();
         this.imageUrl = session.getImageURL();
         this.email = session.getEmail();
+        Log.e("ONCREATE","!!! " + session.getImageURL());
         loadUserData();
     }
 
@@ -115,10 +116,7 @@ public class ProfilFragment extends Fragment {
                 //Save Data into Model
                 JSONArray userField = null;
                 JSONArray bestField = null;
-
-                String jsonData = response.toString();
-                Log.e("RANKING:", jsonData);
-
+                
                 try {
                     bestField = response.getJSONArray("best_field");
                 } catch (JSONException e) {
