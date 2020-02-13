@@ -228,10 +228,10 @@ public class LocationService extends Service implements LocationListener, GpsSta
 
         gpsCount++;
 
-        if(isLogging){
+        //if(isLogging){
             //locationList.add(newLocation);
             filterAndAddLocation(newLocation);
-        }
+        //}
 
         Intent intent = new Intent("LocationUpdated");
         intent.putExtra("location", newLocation);
@@ -268,7 +268,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
             noAccuracyLocationList.add(location);
             return false;
         }
-
+/*
         //setAccuracy(newLocation.getAccuracy());
         float horizontalAccuracy = location.getAccuracy();
         if(horizontalAccuracy > 10){ //10meter filter
@@ -277,7 +277,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
             return false;
         }
 
-
+*/
         /* Kalman Filter */
         float Qvalue;
 
