@@ -739,7 +739,19 @@ public class LoginData{
             }
             if  (response != null){
                 Log.e("Change Image Response", response);
+                JSONObject jsonObject = null;
+                try {
+
+                    jsonObject = new JSONObject(response);
+                    String jsonString = jsonObject.getString("image");
+                    sessionManager.setImageURL(response);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
+
 
         }
 
