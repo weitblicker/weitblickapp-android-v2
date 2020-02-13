@@ -3,7 +3,6 @@ package com.example.weitblickapp_android.ui.blog_entry;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,14 +103,11 @@ public class BlogDetailFragment extends Fragment {
             final Handler handler = new Handler();
             final Runnable Update = new Runnable() {
                 public void run() {
-                    Log.e("currentPage:", currentPage +"");
-                    Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
-                    if (currentPage == mViewPager.getAdapter().getCount()){
-                        Log.e("LASTPAGE", "!!!");
-                        currentPage = 0;
+                    if (mViewPager.getCurrentItem() == (mViewPager.getAdapter().getCount()-1)){
+                        mViewPager.setCurrentItem(0, true);
+                    }else {
+                        mViewPager.setCurrentItem((mViewPager.getCurrentItem()+1), true);
                     }
-                    mViewPager.setCurrentItem(currentPage, true);
-                    currentPage ++;
                 }
             };
             timer = new Timer(); // This will create a new Thread

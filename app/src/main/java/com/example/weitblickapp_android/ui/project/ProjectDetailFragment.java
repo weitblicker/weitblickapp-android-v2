@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,7 +24,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.ImageSliderAdapter;
-import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListDetailFragment;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
@@ -35,18 +32,14 @@ import com.example.weitblickapp_android.ui.event.EventListDetailFragment;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
-import com.example.weitblickapp_android.ui.milenstone.MilenstoneDetailListFragment;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
 import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsListDetailFragment;
-import com.example.weitblickapp_android.ui.news.NewsListFragment;
 import com.example.weitblickapp_android.ui.news.NewsShortAdapter;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerAdapter;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerListFragment;
 import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.sponsor.SponsorAdapter;
-import com.example.weitblickapp_android.ui.sponsor.SponsorListFragment;
 import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -59,8 +52,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -169,19 +160,15 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
         if(mViewPager.getAdapter().getCount() > 1){
             tabLayout.setupWithViewPager(mViewPager, true);
-
             //Initiate Runnable for automatic Image-Slide
             final Handler handler = new Handler();
             final Runnable Update = new Runnable() {
                 public void run() {
-                    Log.e("currentPage:", currentPage +"");
-                    Log.e("PAGECOUNT:", mViewPager.getAdapter().getCount() + "");
-                    if (currentPage == mViewPager.getAdapter().getCount()){
-                        Log.e("LASTPAGE", "!!!");
-                        currentPage = 0;
+                    if (mViewPager.getCurrentItem() == (mViewPager.getAdapter().getCount()-1)){
+                        mViewPager.setCurrentItem(0, true);
+                    }else {
+                        mViewPager.setCurrentItem((mViewPager.getCurrentItem()+1), true);
                     }
-                    mViewPager.setCurrentItem(currentPage, true);
-                    currentPage ++;
                 }
             };
             timer = new Timer(); // This will create a new Thread
