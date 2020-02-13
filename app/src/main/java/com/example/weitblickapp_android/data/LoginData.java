@@ -83,19 +83,7 @@ public class LoginData{
 
 
                                 if (key != null) {
-                                    /*
-                                    getUserDetails(new VolleyCallback() {
-                                        @Override
-                                        public void onSuccess(String result) {
 
-                                        }
-
-                                        @Override
-                                        public void onError(String result) {
-
-                                        }
-                                    });
-                                    */
                                     if(user == null) user = new LoggedInUser();
 
                                     user.setEmail(email);
@@ -116,12 +104,8 @@ public class LoginData{
                     public void onErrorResponse(VolleyError error) {
 
                         String errorMessage = "";
-/*
+
                         if (error instanceof NetworkError) {
-                            errorMessage = "Cannot connect to Internet...Please check your connection!";
-                        } else if (error instanceof ServerError) {
-                            errorMessage = "The server could not be found. Please try again after some time!!";
-                        } /*else if (error instanceof AuthFailureError) {
                             errorMessage = "Cannot connect to Internet...Please check your connection!";
                         } else if (error instanceof ParseError) {
                             errorMessage = "Parsing error! Please try again after some time!!";
@@ -130,8 +114,8 @@ public class LoginData{
                         } else if (error instanceof TimeoutError) {
                             errorMessage = "Connection TimeOut! Please check your internet connection.";
                         }
-                        */
-                        if (true){
+                        else{
+
                             String body;
                             //get status code here
                             if(error != null){
@@ -158,16 +142,17 @@ public class LoginData{
                                     }
 
                                     Log.e("Statuscode:", body);
-                                    callback.onError(result);
+                                    errorMessage = result;
+
 
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                 }
                             }
                         }
-                        /*if(errorMessage != null){
-                            Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
-                        }*/
+
+                        callback.onError(errorMessage);
+
                         Log.e("VOLLEY ERROR LOGIN", error.toString() + errorMessage);
                         }
 
@@ -206,7 +191,7 @@ public class LoginData{
         return new JSONObject();
     }
 
-    public void logout(){
+    public void logout(VolleyCallback callback){
 
         Log.e("LOGOUT", "aufgerufen");
 
@@ -221,22 +206,12 @@ public class LoginData{
 
                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
 
-
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        //Toast.makeText(getApplicationContext(),"Anmeldung erfolgreich!" , Toast.LENGTH_SHORT).show();
-                        Log.e("LOGOUT ONRESPONSE", "VERY sucessful ---------------------------------------------------------------------------------");
-
-
                             if (response.has("detail")) {
-
-                                Toast.makeText(app_context, "Erfolgreich ausgeloggt.", Toast.LENGTH_SHORT).show();
-                                Log.e("LOGOUT", "onResponse()in logout in Login Data aufgerufen");
-
                                 sessionManager.logoutUser();
-
-
+                                callback.onSuccess("Erfolgreich ausgeloggt.");
                             }
 
                     }
@@ -244,13 +219,10 @@ public class LoginData{
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String errorMessage = null;
+
+                        String errorMessage = "";
 
                         if (error instanceof NetworkError) {
-                            errorMessage = "Cannot connect to Internet...Please check your connection!";
-                        } else if (error instanceof ServerError) {
-                            errorMessage = "The server could not be found. Please try again after some time!!";
-                        } else if (error instanceof AuthFailureError) {
                             errorMessage = "Cannot connect to Internet...Please check your connection!";
                         } else if (error instanceof ParseError) {
                             errorMessage = "Parsing error! Please try again after some time!!";
@@ -261,9 +233,7 @@ public class LoginData{
                         }
                         else {
 
-
-
-                            String body;
+                            String body = "";
                             //get status code here
 
                             String statusCode = String.valueOf(error.networkResponse.statusCode);
@@ -276,10 +246,9 @@ public class LoginData{
                                     e.printStackTrace();
                                 }
                             }
+                            errorMessage = body;
                         }
-                        if(errorMessage != null){
-                            Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
-                        }
+                        callback.onError(errorMessage);
                         Log.e("VOLLEY ERROR LOGOUT", error.toString() + errorMessage);
                     }
                 }) {
@@ -336,13 +305,9 @@ public class LoginData{
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String errorMessage = null;
+                        String errorMessage = "";
 
                         if (error instanceof NetworkError) {
-                            errorMessage = "Cannot connect to Internet...Please check your connection!";
-                        } else if (error instanceof ServerError) {
-                            errorMessage = "The server could not be found. Please try again after some time!!";
-                        } else if (error instanceof AuthFailureError) {
                             errorMessage = "Cannot connect to Internet...Please check your connection!";
                         } else if (error instanceof ParseError) {
                             errorMessage = "Parsing error! Please try again after some time!!";
@@ -380,16 +345,15 @@ public class LoginData{
                                     }
 
                                     Log.e("Statuscode:", body);
-                                    callback.onError(result);
+                                    errorMessage = result;
+
 
                                 } catch (UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                 }
                             }
                         }
-                        if(errorMessage != null){
-                            Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
-                        }
+                        callback.onError(errorMessage);
                         Log.e("VOLLEY ERROR CHANGE_P", error.toString() + errorMessage);
                     }
                 }) {
@@ -428,27 +392,30 @@ public class LoginData{
 
     private void updateUiWithUser(final String email, final String password, final boolean isLoginSaved) {
 
-
         sessionManager.createLoginSession(user.getUsername(), user.getEmail(), user.getKey());
 
-            getUserDetails(new VolleyCallback() {
+        getUserDetails(new VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
+
+
+                    if (isLoginSaved) {
+                        loginPref.saveLogin(email, password);
+                    }
+
+                    Toast.makeText(app_context, result, Toast.LENGTH_SHORT).show();
                     Log.e("INIT_SUCCESS: ", "getUserDetail erfolgreich.");
+                    ((Activity)app_context).finish();
                 }
 
                 @Override
                 public void onError(String result) {
+                    Toast.makeText(app_context, result, Toast.LENGTH_SHORT).show();
                     Log.e("INIT_ERROR: ", "getUserDetail fehlgeschlagen.");
-
                 }
             });
 
-            if (isLoginSaved) {
-                loginPref.saveLogin(email, password);
-            }
 
-            ((Activity)app_context).finish();
 
 
     }
@@ -590,12 +557,16 @@ public class LoginData{
                                 }
                             }
 
-                            Toast.makeText(app_context, isSessionCompleteDebug , Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(app_context, isSessionCompleteDebug , Toast.LENGTH_SHORT).show();
+                            Log.e("sessionManagerDebug", isSessionCompleteDebug);
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                         callback.onSuccess("User Details erfoglreich geladen!");
+
                     }
                 }, new Response.ErrorListener() {
 
@@ -689,65 +660,73 @@ public class LoginData{
 
         }
     }
-//multipart form data
+
     public void setProfileImage(Uri imageURI, VolleyCallback callback){
 
-        final String url = "https://weitblicker.org/rest/auth/user/";
+        if(sessionManager.getUserName() == null){
+            getUserDetails(new VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
 
-        String charset = "UTF-8";
-        String requestURL = "YOUR_URL";
-
-        String path  = getRealPathFromURI(app_context, imageURI);
-
-        MultipartUtility multipart = null;
-        try {
-            multipart = new MultipartUtility(url,sessionManager.getKey(), charset);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String username = sessionManager.getUserName();
-        multipart.addFormField("username", username);
-        multipart.addFormField("first_name", username);
-        multipart.addFormField("last_name", username );
-
-        try {
-            multipart.addFilePart("image", new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String response = null;
-        try {
-            response = multipart.finish();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if  (response != null){
-            Log.e("Change Image Response", response);
-        }
-
-    }
-
-    public void getProfileImageAsString(VolleyCallback callback){
-
-    }
-
-
-    private String createPostBody(Map<String, String> params) {
-        String BOUNDARY = "s2retfgsGSRFsERFGHfgdfgw734yhFHW567TYHSrf4yarg"; //This the boundary which is used by the server to split the post parameters.
-        String MULTIPART_FORMDATA = "multipart/form-data;boundary=" + BOUNDARY;
-
-        StringBuilder sbPost = new StringBuilder();
-        if (params != null) {
-            for (String key : params.keySet()) {
-                if (params.get(key) != null) {
-                    sbPost.append("\r\n" + "--" + BOUNDARY + "\r\n");
-                    sbPost.append("Content-Disposition: form-data; name=\"" + key + "\"" + "\r\n\r\n");
-                    sbPost.append(params.get(key).toString());
                 }
-            }
+
+                @Override
+                public void onError(String result) {
+                    Toast.makeText(app_context, result , Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-        return sbPost.toString();
+        else{
+            final String url = "https://weitblicker.org/rest/auth/user/";
+
+            String charset = "UTF-8";
+            String requestURL = "YOUR_URL";
+
+            String path  = getRealPathFromURI(app_context, imageURI);
+
+            MultipartUtility multipart = null;
+            try {
+                multipart = new MultipartUtility(url,sessionManager.getKey(), charset);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //TODO: add Support for last/firstname when they are actually used
+            //TODO: save new ImageURL in SessionManager
+            //String username = sessionManager.getUserName();
+            multipart.addFormField("username", sessionManager.getUserName());
+            multipart.addFormField("first_name", sessionManager.getFirstName());
+            multipart.addFormField("last_name", sessionManager.getLastName() );
+
+
+            //possible alternative for checking if first/lastname exist
+            /*
+            if( (firstname = sessionManager.getFirstName())!= null){
+                multipart.addFormField("first_name", firstname);
+            }
+            else{
+                multipart.addFormField("first_name", "firstname");
+            }
+            */
+
+
+            try {
+                multipart.addFilePart("image", new File(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String response = null;
+            try {
+                response = multipart.finish();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if  (response != null){
+                Log.e("Change Image Response", response);
+            }
+
+        }
+
     }
 
     public String getRealPathFromURI(Context context, Uri contentUri) {

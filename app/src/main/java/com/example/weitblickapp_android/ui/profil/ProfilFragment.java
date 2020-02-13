@@ -52,6 +52,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+
 public class ProfilFragment extends Fragment {
 
     private ProfilViewModel profilViewModel;
@@ -59,7 +63,7 @@ public class ProfilFragment extends Fragment {
     LoginData loginData;
 
     private ProfilViewModel userProfile;
-    
+
     private String password = "******";
     private String email;
     private String user = null;
@@ -67,7 +71,7 @@ public class ProfilFragment extends Fragment {
     private ImageView imageProfil;
     private TextView donationTextView;
     private TextView kmTextView;
-    private  TextView username;
+    private TextView username;
 
     private Context mContext;
     private RequestQueue requestQueue;
@@ -100,7 +104,7 @@ public class ProfilFragment extends Fragment {
         loadUserData();
     }
 
-    private void loadUserData(){
+    private void loadUserData() {
 
         String url = "https://weitblicker.org/rest/cycle/ranking/";
 
@@ -123,26 +127,26 @@ public class ProfilFragment extends Fragment {
 
                 //Parse the JSON response array by iterating over it
 
-                    JSONObject userObject = null;
-                    for(int x = 0; x < bestField.length(); x++){
-                        try {
-                             userObject = bestField.getJSONObject(x);
+                JSONObject userObject = null;
+                for (int x = 0; x < bestField.length(); x++) {
+                    try {
+                        userObject = bestField.getJSONObject(x);
 
 
-                            if(userObject.getString("username").equals(userName)){
-                                double distance = userObject.getDouble("km");
-                                double donation = userObject.getDouble("euro");
+                        if (userObject.getString("username").equals(userName)) {
+                            double distance = userObject.getDouble("km");
+                            double donation = userObject.getDouble("euro");
 
-                                kmTotal = String.format("%.2f", distance).concat(" km");
-                                donationTotal = String.format("%.2f", donation).concat(" €");
+                            kmTotal = String.format("%.2f", distance).concat(" km");
+                            donationTotal = String.format("%.2f", donation).concat(" €");
 
-                                kmTextView.setText(kmTotal);
-                                donationTextView.setText(donationTotal);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            kmTextView.setText(kmTotal);
+                            donationTextView.setText(donationTotal);
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                }
 
             }
 
@@ -152,7 +156,7 @@ public class ProfilFragment extends Fragment {
                 //Display Error Message
                 Log.e("Ranking ErrorResponse", error.toString());
             }
-        }){
+        }) {
             //Override getHeaders() to set Credentials for REST-Authentication
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -170,25 +174,25 @@ public class ProfilFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         profilViewModel =
                 ViewModelProviders.of(this).get(ProfilViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profil, container, false);
 
         session = new SessionManager(getActivity().getApplicationContext());
         loginData = new LoginData(getActivity().getApplicationContext());
+
         ImageButton changeProfile = root.findViewById(R.id.changeProfil);
 
         changeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ActivityCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                {
+                if (ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             2000);
-                }
-                else {
+                } else {
                     startGallery();
                 }
             }
@@ -203,21 +207,24 @@ public class ProfilFragment extends Fragment {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!session.isLoggedIn()){
+                if (!session.isLoggedIn()) {
                     Toast toast = Toast.makeText(getActivity().getApplicationContext(),
                             "Du bist schon ausgeloggt!",
                             Toast.LENGTH_SHORT);
                     toast.show();
-                }
-                else {
-                    loginData.logout();
+                } else {
+                    loginData.logout(new VolleyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                        }
 
-                    getActivity().onBackPressed();
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                            "Erfolgreich ausgeloggt!",
-                            Toast.LENGTH_SHORT);
-
-                    toast.show();
+                        @Override
+                        public void onError(String result) {
+                            Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -228,6 +235,7 @@ public class ProfilFragment extends Fragment {
 
         username = (TextView) root.findViewById(R.id.username);
         username.setText(session.getUserName());
+
 
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +274,7 @@ public class ProfilFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+                if (getFragmentManager().getBackStackEntryCount() > 0) {
                     getFragmentManager().popBackStack();
                 }
             }
@@ -274,7 +282,7 @@ public class ProfilFragment extends Fragment {
         return root;
     }
 
-    private void startGallery(){
+    private void startGallery() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -290,41 +298,52 @@ public class ProfilFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Uri imageUri = data.getData();
+        Uri imageUri = null;
 
 
         InputStream inputStream;
 
-        try {
-            inputStream = getActivity().getContentResolver().openInputStream(imageUri);
+        if (resultCode == RESULT_OK) {
+            try {
+                imageUri = data.getData();
+                inputStream = getActivity().getContentResolver().openInputStream(imageUri);
 
-            Bitmap image = BitmapFactory.decodeStream(inputStream);
+                Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                imageProfil.setImageBitmap(image);
 
 
-            Picasso.get().load(imageUri).transform(new CircleTransform()).fit().centerCrop().
-                    placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
+                loginData.setProfileImage(imageUri, new VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onError(String result) {
+                        //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Picasso.get().load(imageUri).transform(new CircleTransform()).fit().centerCrop().
+                        placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
 
 
-            loginData.setProfileImage(imageUri, new VolleyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (NullPointerException np) {
+                np.printStackTrace();
+            }
 
-                @Override
-                public void onError(String result) {
-                    //Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch(NullPointerException np){
-            np.printStackTrace();
+        } else if (resultCode == RESULT_CANCELED) {
+            Toast.makeText(getActivity(), "Bildauswahl abgebrochen.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Bildauswahl abgebrochen.", Toast.LENGTH_SHORT).show();
         }
 
-    }
+}
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -339,3 +358,8 @@ public class ProfilFragment extends Fragment {
         return this.token;
     }
 }
+
+
+
+
+
