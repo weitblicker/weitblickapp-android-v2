@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.se.omapi.Session;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,38 +20,23 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.LoggedInUser;
-import com.example.weitblickapp_android.data.model.MultipartRequest;
 import com.example.weitblickapp_android.data.model.MultipartUtility;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
-import com.example.weitblickapp_android.ui.login.Login_Activity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
@@ -181,9 +165,9 @@ public class LoginData{
                                 }
                             }
                         }
-                        if(errorMessage != null){
+                        /*if(errorMessage != null){
                             Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                         Log.e("VOLLEY ERROR LOGIN", error.toString() + errorMessage);
                         }
 
@@ -450,7 +434,7 @@ public class LoginData{
             getUserDetails(new VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    Log.e("INIT_ERROR: ", "getUserDetail erfolgreich.");
+                    Log.e("INIT_SUCCESS: ", "getUserDetail erfolgreich.");
                 }
 
                 @Override
@@ -575,11 +559,38 @@ public class LoginData{
 
                         Log.e("LOGIN", response.toString());
 
+                        String isSessionCompleteDebug = "";
                         try {
-                            if(user == null) user = new LoggedInUser();
-                            user.setUsername(response.get("username").toString());
-                            user.setFirst_name(response.get("first_name").toString());
-                            user.setLast_name(response.get("last_name").toString());
+                            if(response.has("username")){
+                                String resp_username = response.get("username").toString();
+                                isSessionCompleteDebug += resp_username;
+                                if(resp_username != null){
+                                    sessionManager.setUserName(resp_username);
+                                }
+                            }
+                            if(response.has("firstname")){
+                                String resp_firstname = response.get("firstname").toString();
+                                isSessionCompleteDebug += resp_firstname;
+                                if(resp_firstname != null){
+                                    sessionManager.setFirstName(resp_firstname);
+                                }
+                            }
+                            if(response.has("lastname")){
+                                String resp_lastname = response.get("lastname").toString();
+                                isSessionCompleteDebug += resp_lastname;
+                                if(resp_lastname != null){
+                                    sessionManager.setLastName(resp_lastname);
+                                }
+                            }
+                            if(response.has("image")){
+                                String resp_image = response.get("image").toString();
+                                isSessionCompleteDebug += resp_image;
+                                if(resp_image != null){
+                                    sessionManager.setImageURL(resp_image);
+                                }
+                            }
+
+                            Toast.makeText(app_context, isSessionCompleteDebug , Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

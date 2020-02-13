@@ -76,6 +76,12 @@ public class ProfilFragment extends Fragment {
 
     public static final int IMAGE_GALLERY_REQUEST = 20;
 
+    private String userName;
+    private String imageUrl;
+    private String kmTotal;
+    private String donationTotal;
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -88,58 +94,13 @@ public class ProfilFragment extends Fragment {
         this.requestQueue = Volley.newRequestQueue(mContext);
         session = new SessionManager(mContext);
         this.token = session.getKey();
-        loadUser();
-       // loadUserData();
+        this.userName = session.getUserName();
+        this.imageUrl = session.getImageURL();
+        this.email = session.getEmail();
+        loadUserData();
     }
 
-    private void loadUser(){
-        String url = "https://weitblicker.org/rest/auth/user/";
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-            JSONObject userData;
-            String firstname;
-            String lastname;
-            String userName;
-
-                try {
-                    firstname = response.getString("first_name");
-                    lastname = response.getString("last_name");
-                    userName = response.getString("username");
-
-                    username.setText(userName);
-                    loadUserData(userName);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Display Error Message
-                Log.e("Ranking ErrorResponse", error.toString());
-            }
-        }){
-            //Override getHeaders() to set Credentials for REST-Authentication
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "Token " + getToken());
-                return headers;
-            }
-        };
-        requestQueue.add(objectRequest);
-    }
-
-
-    private void loadUserData(String username){
+    private void loadUserData(){
 
         String url = "https://weitblicker.org/rest/cycle/ranking/";
 
@@ -168,31 +129,20 @@ public class ProfilFragment extends Fragment {
                              userObject = bestField.getJSONObject(x);
 
 
-                            if(userObject.getString("username").equals(username)){
-                                String username = userObject.getString("username");
-                                String imageUrl = userObject.getString("image");
+                            if(userObject.getString("username").equals(userName)){
                                 double distance = userObject.getDouble("km");
                                 double donation = userObject.getDouble("euro");
 
-                                userProfile = new ProfilViewModel(username, donation, distance, imageUrl);
+                                kmTotal = String.format("%.2f", distance).concat(" km");
+                                donationTotal = String.format("%.2f", donation).concat(" €");
 
+                                kmTextView.setText(kmTotal);
+                                donationTextView.setText(donationTotal);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
-                            if (!userProfile.getImageUrl().isEmpty()) {
-                                Picasso.get().load(userProfile.getImageUrl()).transform(new CircleTransform()).fit().centerCrop()
-                                        .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
-                            } else {
-                                Picasso.get().load(R.mipmap.ic_launcher_foreground).transform(new CircleTransform()).fit().centerCrop()
-                                        .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
-                            }
-
-                            kmTextView.setText(userProfile.getKm());
-                            donationTextView.setText(userProfile.getDonation());
-                            Log.e("USER-DATA", userProfile.toString());
 
             }
 
@@ -226,7 +176,6 @@ public class ProfilFragment extends Fragment {
 
         session = new SessionManager(getActivity().getApplicationContext());
         loginData = new LoginData(getActivity().getApplicationContext());
-        email = session.getEmail();
         ImageButton changeProfile = root.findViewById(R.id.changeProfil);
 
         changeProfile.setOnClickListener(new View.OnClickListener() {
@@ -278,6 +227,7 @@ public class ProfilFragment extends Fragment {
         Uri data = Uri.parse(pictureDirectoryPath);
 
         username = (TextView) root.findViewById(R.id.username);
+        username.setText(session.getUserName());
 
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -291,11 +241,20 @@ public class ProfilFragment extends Fragment {
         });
 
         imageProfil = root.findViewById(R.id.imageProfil);
+        if (imageUrl != null) {
+            Picasso.get().load(session.getImageURL()).transform(new CircleTransform()).fit().centerCrop()
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
+        } else {
+            Picasso.get().load(R.mipmap.ic_launcher_foreground).transform(new CircleTransform()).fit().centerCrop()
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
+        }
 
         donationTextView = root.findViewById(R.id.donation);
 
+
         final TextView passwordTextView = root.findViewById(R.id.new_password);
         passwordTextView.setText(this.password);
+
         kmTextView = root.findViewById(R.id.km);
 
         final TextView email = root.findViewById(R.id.email);
@@ -346,6 +305,7 @@ public class ProfilFragment extends Fragment {
                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
 
+
             loginData.setProfileImage(imageUri, new VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
@@ -374,7 +334,6 @@ public class ProfilFragment extends Fragment {
         return encodedImage;
 
     }
-
 
     private String getToken(){
         return this.token;
