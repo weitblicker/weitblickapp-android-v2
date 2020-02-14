@@ -157,9 +157,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         locationUpdateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
                 if(!paused && gpsIsEnabled) {
                     if (currentLocation == null) {
                         currentLocation = intent.getParcelableExtra("location");
+                        Log.e("CURRENTLOCATION:", currentLocation.getLongitude()+"!");
                     } else {
                         lastLocation = currentLocation;
                         currentLocation = intent.getParcelableExtra("location");
@@ -648,7 +650,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onDestroy();
         sendSegment();
         mContext.unregisterReceiver(locationSwitchStateReceiver);
-
+/*
         try {
             if (locationUpdateReceiver != null) {
                 mContext.unregisterReceiver(locationUpdateReceiver);
@@ -657,6 +659,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
         }
+        */
+
         Log.e("DESTROYED", "!!!!");
     }
 

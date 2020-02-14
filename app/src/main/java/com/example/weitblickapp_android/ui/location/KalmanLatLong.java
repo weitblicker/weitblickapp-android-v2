@@ -1,4 +1,4 @@
-package com.goldrushcomputing.androidlocationstarterkit;
+package com.example.weitblickapp_android.ui.location;
 
 public class KalmanLatLong {
     private final float MinAccuracy = 1;

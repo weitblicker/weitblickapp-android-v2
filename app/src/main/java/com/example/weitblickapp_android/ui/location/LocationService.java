@@ -41,7 +41,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
 
     float currentSpeed = 0.0f; // meters/second
 
-    com.goldrushcomputing.androidlocationstarterkit.KalmanLatLong kalmanFilter;
+    KalmanLatLong kalmanFilter;
     long runStartTimeInMillis;
 
     ArrayList<Integer> batteryLevelArray;
@@ -62,7 +62,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
         oldLocationList = new ArrayList<>();
         inaccurateLocationList = new ArrayList<>();
         kalmanNGLocationList = new ArrayList<>();
-        kalmanFilter = new com.goldrushcomputing.androidlocationstarterkit.KalmanLatLong(3);
+        kalmanFilter = new KalmanLatLong(3);
 
     }
 
@@ -228,10 +228,10 @@ public class LocationService extends Service implements LocationListener, GpsSta
 
         gpsCount++;
 
-        if(isLogging){
+       // if(isLogging){
             //locationList.add(newLocation);
             filterAndAddLocation(newLocation);
-        }
+       // }
 
         Intent intent = new Intent("LocationUpdated");
         intent.putExtra("location", newLocation);
@@ -270,13 +270,14 @@ public class LocationService extends Service implements LocationListener, GpsSta
         }
 
         //setAccuracy(newLocation.getAccuracy());
+        /*
         float horizontalAccuracy = location.getAccuracy();
         if(horizontalAccuracy > 10){ //10meter filter
             Log.d(TAG, "Accuracy is too low.");
             inaccurateLocationList.add(location);
             return false;
         }
-
+*/
 
         /* Kalman Filter */
         float Qvalue;
@@ -304,7 +305,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
             kalmanFilter.consecutiveRejectCount += 1;
 
             if(kalmanFilter.consecutiveRejectCount > 3){
-                kalmanFilter = new com.goldrushcomputing.androidlocationstarterkit.KalmanLatLong(3); //reset Kalman Filter if it rejects more than 3 times in raw.
+                kalmanFilter = new KalmanLatLong(3); //reset Kalman Filter if it rejects more than 3 times in raw.
             }
 
             kalmanNGLocationList.add(location);
