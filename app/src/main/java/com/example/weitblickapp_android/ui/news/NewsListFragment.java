@@ -121,6 +121,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     ArrayList<String> allHosts = new ArrayList<String>();
                     ArrayList<ProjectViewModel> projectArr = new ArrayList<ProjectViewModel>();
                     ArrayList<Integer> projectIds = new ArrayList<Integer>();
+                    String imageString = null;
 
                     try {
                         responseObject = response.getJSONObject(i);
@@ -163,6 +164,10 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         }catch(JSONException e){
 
                         }
+                        image = responseObject.getJSONObject("image");
+                        imageString = image.getString("url");
+
+                        imageUrls.add(imageString);
 
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
