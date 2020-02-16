@@ -152,6 +152,16 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                         text.trim();
 
+                        //Get Main-Image
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageString = image.getString("url");
+
+                            imageUrls.add(imageString);
+                        }catch (JSONException e){
+
+                        }
+
                         //Get all image-Urls from Gallery
                         try {
                             images = responseObject.getJSONArray("photos");
@@ -164,10 +174,6 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         }catch(JSONException e){
 
                         }
-                        image = responseObject.getJSONObject("image");
-                        imageString = image.getString("url");
-
-                        imageUrls.add(imageString);
 
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));

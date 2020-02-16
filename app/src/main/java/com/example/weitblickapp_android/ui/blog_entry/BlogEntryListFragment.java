@@ -184,10 +184,14 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
 
                         }
 
-                        image = responseObject.getJSONObject("image");
-                        imageUrl = image.getString("url");
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageUrl = image.getString("url");
 
-                        imageUrls.add(imageUrl);
+                            imageUrls.add(imageUrl);
+                        }catch (JSONException e){
+
+                        }
 
 
 

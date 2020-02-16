@@ -182,7 +182,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
             //Exception thrown when GPS or Network provider were not available on the user's device.
             try {
                 Criteria criteria = new Criteria();
-                criteria.setAccuracy(Criteria.ACCURACY_FINE); //setAccuracyは内部では、https://stackoverflow.com/a/17874592/1709287の用にHorizontalAccuracyの設定に変換されている。
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
                 criteria.setPowerRequirement(Criteria.POWER_HIGH);
                 criteria.setAltitudeRequired(false);
                 criteria.setSpeedRequired(true);
@@ -196,7 +196,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
                 //criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
                 Integer gpsFreqInMillis = 5000;
-                Integer gpsFreqInDistance = 5;  // in meters
+                Integer gpsFreqInDistance = 1;  // in meters
 
                 locationManager.addGpsStatusListener(this);
 
@@ -226,16 +226,13 @@ public class LocationService extends Service implements LocationListener, GpsSta
     public void onLocationChanged(final Location newLocation) {
         Log.d(TAG, "(" + newLocation.getLatitude() + "," + newLocation.getLongitude() + ")");
 
-        gpsCount++;
-        
-       // if(isLogging){
-            //locationList.add(newLocation);
-            filterAndAddLocation(newLocation);
-       // }
+        //Filter Location and send predicted Location to UI
+        filterAndAddLocation(newLocation);
 
+
+        //Send actual Location to somewhere
         Intent intent = new Intent("LocationUpdated");
         intent.putExtra("location", newLocation);
-
         LocalBroadcastManager.getInstance(this.getApplication()).sendBroadcast(intent);
     }
 
@@ -298,6 +295,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
         Location predictedLocation = new Location("");//provider name is unecessary
         predictedLocation.setLatitude(predictedLat);//your coords of course
         predictedLocation.setLongitude(predictedLng);
+        predictedLocation.setSpeed(location.getSpeed());
         float predictedDeltaInMeters =  predictedLocation.distanceTo(location);
 
         if(predictedDeltaInMeters > 60){
