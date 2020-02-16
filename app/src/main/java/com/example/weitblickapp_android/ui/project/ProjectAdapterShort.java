@@ -97,8 +97,8 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt("projectid", project.getId());
                     editor.putString("projectname", project.getName());
-                    editor.putFloat("lat", project.getLat());
-                    editor.putFloat("lng", project.getLng());
+                    editor.putFloat("lat", (long) project.getLat());
+                    editor.putFloat("lng", (long) project.getLng());
                     editor.putString("hosts", B.toString());
                     editor.putString("location", project.getAddress());
                     editor.commit();

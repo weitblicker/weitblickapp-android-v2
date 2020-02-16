@@ -296,8 +296,8 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
                         locationObject = responseObject.getJSONObject("location");
 
-                        float lat = locationObject.getLong("lat");
-                        float lng = locationObject.getLong("lng");
+                        double lat = locationObject.getDouble("lat");
+                        double lng = locationObject.getDouble("lng");
                         String name = locationObject.getString("name");
                         String address = locationObject.getString("address");
                         String descriptionLocation = locationObject.getString("description");

@@ -348,8 +348,8 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
 
                         locationObject = responseObject.getJSONObject("location");
 
-                        float lat = locationObject.getLong("lat");
-                        float lng = locationObject.getLong("lng");
+                        double lat = locationObject.getLong("lat");
+                        double lng = locationObject.getLong("lng");
                         String name = locationObject.getString("name");
                         String address = locationObject.getString("address");
                         String descriptionLocation = locationObject.getString("description");

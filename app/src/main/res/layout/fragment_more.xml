@@ -91,6 +91,32 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView19"
             app:srcCompat="@drawable/icon_agb" />
 
+
+        <TextView
+            android:id="@+id/creditsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="225dp"
+            android:fontFamily="@font/opensansbold"
+            android:text="Credits"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/news"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+
+        <ImageView
+            android:id="@+id/credits"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="220dp"
+            android:alpha="0.8"
+            android:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19"
+            app:srcCompat="@drawable/icon_credits" />
+
         <ImageView
             android:id="@+id/imageView19"
             android:layout_width="match_parent"
