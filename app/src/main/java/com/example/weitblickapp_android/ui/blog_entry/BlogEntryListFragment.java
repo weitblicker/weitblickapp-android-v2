@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -149,6 +148,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                     ArrayList<String> allHosts = new ArrayList<String>();
                     ArrayList<ProjectViewModel> projectArr = new ArrayList<ProjectViewModel>();
                     ArrayList<Integer> projectIds = new ArrayList<Integer>();
+                    String imageUrl = null;
 
 
                     try {
@@ -173,9 +173,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         text = extractImageUrls(text);
                         //Get all imageUrls from Gallery
                         try {
-                            galleryObject = responseObject.getJSONObject("gallery");
-
-                            images = galleryObject.getJSONArray("images");
+                            images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
@@ -185,6 +183,14 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         }catch(JSONException e){
 
                         }
+
+                        image = responseObject.getJSONObject("image");
+                        imageUrl = image.getString("url");
+
+                        imageUrls.add(imageUrl);
+
+
+
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
 

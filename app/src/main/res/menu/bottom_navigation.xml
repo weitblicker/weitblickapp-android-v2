@@ -11,7 +11,7 @@
         android:enabled="true"/>
     <item
         android:id="@+id/nav_project_tabs"
-        android:icon="@drawable/icon_project"
+        android:icon="@drawable/projects_icon"
         android:title="@string/menu_project"
         android:enabled="true"/>
     <item
@@ -22,8 +22,7 @@
         android:enabled="true"/>
     <item
         android:id="@+id/nav_stats_tabs"
-        android:icon="@drawable/icon_ranking"
-        android:iconTint="@color/white"
+        android:icon="@drawable/stats_icon"
         android:title="@string/menu_stats"
         android:enabled="true"/>
     <item

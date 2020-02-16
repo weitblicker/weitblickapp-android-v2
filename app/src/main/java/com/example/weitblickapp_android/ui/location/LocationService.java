@@ -227,7 +227,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
         Log.d(TAG, "(" + newLocation.getLatitude() + "," + newLocation.getLongitude() + ")");
 
         gpsCount++;
-
+        
        // if(isLogging){
             //locationList.add(newLocation);
             filterAndAddLocation(newLocation);
@@ -268,7 +268,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
             noAccuracyLocationList.add(location);
             return false;
         }
-
+/*
         //setAccuracy(newLocation.getAccuracy());
         /*
         float horizontalAccuracy = location.getAccuracy();

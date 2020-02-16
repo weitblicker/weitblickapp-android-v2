@@ -154,7 +154,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         session = new SessionManager(getActivity().getApplicationContext());
         this.token = session.getKey();
 
-        locationUpdateReceiver = new BroadcastReceiver() {
+        /* locationUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(!paused && gpsIsEnabled) {
+                    if (currentLocation == null) {
+                        currentLocation = intent.getParcelableExtra("location");
+                    } else {
+                        lastLocation = currentLocation;
+                        currentLocation = intent.getParcelableExtra("location");
+                    }
+
+                    Log.e("LOCATIONYEAH", currentLocation + "!!!");
+
+                    if (!load) {
+                        setUpMapIfNeeded();
+                    }
+                }
+            }
+        };
+*/
+        predictedLocationReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
@@ -177,9 +197,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 }
             }
         };
-
+/*
         LocalBroadcastManager.getInstance(mContext).registerReceiver(
                 locationUpdateReceiver,
+                new IntentFilter("LocationUpdated"));
+*/
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(
+                predictedLocationReceiver,
                 new IntentFilter("PredictLocation"));
 
 
