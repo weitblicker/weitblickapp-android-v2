@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weitblickapp_android.R;
@@ -52,12 +53,19 @@ public class MilenstoneListAdapter extends ArrayAdapter<MilenstoneViewModel> {
         TextView description = (TextView) view.findViewById(R.id.description);
         TextView title = (TextView) view.findViewById(R.id.titel);
         TextView date = (TextView) view.findViewById(R.id.date);
+        ImageView finished = (ImageView) view.findViewById(R.id.logo);
 
-        final MilenstoneViewModel sponsor = (MilenstoneViewModel) getItem(position);
+        final MilenstoneViewModel mile = (MilenstoneViewModel) getItem(position);
 
-        description.setText(sponsor.getDescription());
-        title.setText(sponsor.getTitle());
-        date.setText(sponsor.getDate());
+        if(mile.reached){
+            finished.setImageResource(R.drawable.icon_milestone_true);
+        }else{
+            finished.setImageResource(R.drawable.icon_milestone_false);
+        }
+
+        description.setText(mile.getDescription());
+        title.setText(mile.getTitle());
+        date.setText(mile.getDate());
 
         return view;
     }

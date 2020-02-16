@@ -84,7 +84,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:srcCompat="@drawable/ic_menu_manage" />
+        app:srcCompat="@android:drawable/radiobutton_off_background"
+        android:tint="@color/black" />
 
     <ScrollView
         android:layout_width="match_parent"
