@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.faq;
+package com.example.weitblickapp_android.ui.more.faq;
 
 import android.os.Bundle;
 import android.util.Base64;
@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -22,8 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
-import com.example.weitblickapp_android.ui.event.EventListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,7 +72,7 @@ public class FaqListFragment extends Fragment {
 
         // Talk to Rest API
 
-        String URL = "https://weitblicker.org/rest/faq/";
+        String URL = "https://weitblicker.org/rest/info/faq/";
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
