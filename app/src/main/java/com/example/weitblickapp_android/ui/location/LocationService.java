@@ -196,7 +196,7 @@ public class LocationService extends Service implements LocationListener, GpsSta
                 //criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
                 Integer gpsFreqInMillis = 5000;
-                Integer gpsFreqInDistance = 1;  // in meters
+                Integer gpsFreqInDistance = 5;  // in meters
 
                 locationManager.addGpsStatusListener(this);
 

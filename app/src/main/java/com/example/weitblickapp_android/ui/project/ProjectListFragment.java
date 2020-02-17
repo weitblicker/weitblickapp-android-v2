@@ -215,8 +215,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         donationGoalDonationGoal = responseObject.getString("donation_goal");
 
 
-                        imageUrls = getImageUrls(text);
-                        text = extractImageUrls(text);
+
 
                         //Get Main-Image
                         try {
@@ -239,7 +238,8 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }catch(JSONException e){
 
                         }
-
+                        imageUrls.addAll(getImageUrls(text));
+                        text = extractImageUrls(text);
                         try {
                             news = responseObject.getJSONArray("news");
                             for (int x = 0; x < news.length(); x++) {

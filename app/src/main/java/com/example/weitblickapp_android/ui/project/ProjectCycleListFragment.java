@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
@@ -122,6 +120,7 @@ public class ProjectCycleListFragment extends ListFragment {
                     JSONArray events = null;
                     ArrayList<Integer> eventIds = new ArrayList<Integer>();
                     ArrayList<EventViewModel> eventArr = new ArrayList<EventViewModel>();
+                    String imageString = null;
 
                     try {
                         responseObject = response.getJSONObject(i);
@@ -140,6 +139,16 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
+
+                        //Get Main-Image
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageString = image.getString("url");
+
+                            imageUrls.add(imageString);
+                        }catch (JSONException e){
+
+                        }
 
                         try {
                             images = responseObject.getJSONArray("photos");
