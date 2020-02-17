@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -199,6 +198,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
                     JSONArray donations = null;
                     JSONObject donation = null;
+                    String imageString = null;
                     try {
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
@@ -218,6 +218,16 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
+                        //Get Main-Image
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageString = image.getString("url");
+
+                            imageUrls.add(imageString);
+                        }catch (JSONException e){
+
+                        }
+
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -229,6 +239,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }catch(JSONException e){
 
                         }
+
                         try {
                             news = responseObject.getJSONArray("news");
                             for (int x = 0; x < news.length(); x++) {
@@ -642,6 +653,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     JSONArray hosts = null;
                     JSONObject host = null;
                     ArrayList<String> allHosts = new ArrayList<String>();
+                    String imageString = null;
 
                     try {
                         Integer newsId = responseObject.getInt("id");
@@ -669,6 +681,16 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String teaser = responseObject.getString("teaser");
 
                         text.trim();
+
+                        //Get Main-Image
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageString = image.getString("url");
+
+                            imageUrls.add(imageString);
+                        }catch (JSONException e){
+
+                        }
 
                         //Get all image-Urls from Gallery
                         try {

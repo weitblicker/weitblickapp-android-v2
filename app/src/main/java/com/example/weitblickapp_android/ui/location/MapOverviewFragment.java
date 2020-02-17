@@ -23,10 +23,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
@@ -190,6 +188,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                 ArrayList<MilenstoneViewModel> allMilestone = new ArrayList<MilenstoneViewModel>();
                 JSONArray donations = null;
                 JSONObject donation = null;
+                String imageString = null;
                 try {
                     int projectId = responseObject.getInt("id");
                     String title = responseObject.getString("name");
@@ -207,6 +206,16 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
 
                     imageUrls = getImageUrls(text);
                     text = extractImageUrls(text);
+
+                    //Get Main-Image
+                    try {
+                        image = responseObject.getJSONObject("image");
+                        imageString = image.getString("url");
+
+                        imageUrls.add(imageString);
+                    }catch (JSONException e){
+
+                    }
 
                     try {
                         images = responseObject.getJSONArray("photos");

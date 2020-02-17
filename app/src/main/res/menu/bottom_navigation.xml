@@ -5,8 +5,7 @@
 
     <item
         android:id="@+id/nav_tabs"
-        android:icon="@drawable/icon_news"
-        android:iconTint="@color/white"
+        android:icon="@drawable/news_icon"
         android:title="@string/menu_tabs"
         android:enabled="true"/>
     <item
@@ -16,8 +15,7 @@
         android:enabled="true"/>
     <item
         android:id="@+id/nav_location"
-        android:icon="@drawable/icon_bike_black"
-        android:iconTint="@color/white"
+        android:icon="@drawable/cycle_icon"
         android:title="@string/menu_location"
         android:enabled="true"/>
     <item
