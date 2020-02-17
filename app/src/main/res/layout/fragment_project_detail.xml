@@ -491,16 +491,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="7dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/logo_location" />
+                    app:layout_constraintTop_toBottomOf="@+id/detail_location" />
 
                 <TextView
                     android:id="@+id/detail_location3"
