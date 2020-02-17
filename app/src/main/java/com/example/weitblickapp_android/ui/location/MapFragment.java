@@ -154,32 +154,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         session = new SessionManager(getActivity().getApplicationContext());
         this.token = session.getKey();
 
-        /* locationUpdateReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if(!paused && gpsIsEnabled) {
-                    if (currentLocation == null) {
-                        currentLocation = intent.getParcelableExtra("location");
-                    } else {
-                        lastLocation = currentLocation;
-                        currentLocation = intent.getParcelableExtra("location");
-                    }
-
-                    Log.e("LOCATIONYEAH", currentLocation + "!!!");
-
-                    if (!load) {
-                        setUpMapIfNeeded();
-                    }
-                }
-            }
-        };
-*/
         predictedLocationReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
                 if(!paused && gpsIsEnabled) {
                     if (currentLocation == null) {
                         currentLocation = intent.getParcelableExtra("location");
+                        Log.e("CURRENTLOCATION:", currentLocation.getLongitude()+"!");
                     } else {
                         lastLocation = currentLocation;
                         currentLocation = intent.getParcelableExtra("location");
@@ -187,7 +169,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         calculateKm();
                     }
 
-                    Log.e("LOCATIONYEAH", currentLocation + "!!!");
+                    Log.e("LOCATIONYEAH", currentLocation.getSpeed() + "!!!");
 
                     if (!load) {
                         setUpMapIfNeeded();
@@ -381,8 +363,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
             don = currentTour.getEurosTotal();
 
-            String distanceTotal = (Math.round(kmTotal * 100.00) / 100.00) + (" km");
-            String donationTotal = (Math.round(don * 100.00) / 100.00) + (" €");
+            String distanceTotal = String.format("%.2f", kmTotal) + " km";
+            String donationTotal = String.format("%.2f", don) + " €";
 
 
             distance.setText(distanceTotal);
@@ -672,7 +654,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onDestroy();
         sendSegment();
         mContext.unregisterReceiver(locationSwitchStateReceiver);
-
+/*
         try {
             if (locationUpdateReceiver != null) {
                 mContext.unregisterReceiver(locationUpdateReceiver);
@@ -681,6 +663,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
         }
+        */
+
         Log.e("DESTROYED", "!!!!");
     }
 

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +131,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
         for(int i = 0; i < project.getImageUrls().size(); i++){
             this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
+            Log.e("IMAGEURLS:", urlWeitblick + project.getImageUrls().get(i) + ",");
         }
         this.hosts = project.getHosts();
         this.mileList = project.getMileStones();

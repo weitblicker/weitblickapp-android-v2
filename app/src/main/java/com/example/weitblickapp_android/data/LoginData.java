@@ -735,7 +735,6 @@ public class LoginData{
 
             }
 
-
         }
 
     }

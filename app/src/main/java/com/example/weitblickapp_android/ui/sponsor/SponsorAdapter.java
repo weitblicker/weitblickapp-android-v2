@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.fragment.app.FragmentManager;
+
 import com.example.weitblickapp_android.R;
 
 import java.util.ArrayList;
@@ -51,9 +54,12 @@ public class SponsorAdapter extends ArrayAdapter<SponsorViewModel> {
         TextView weblink = (TextView) view.findViewById(R.id.weblink);
         TextView name = (TextView) view.findViewById(R.id.name);
         TextView donation = (TextView) view.findViewById(R.id.donation);
+        ImageView logo = (ImageView) view.findViewById(R.id.logo);
 
         final SponsorViewModel sponsor = (SponsorViewModel) getItem(position);
 
+
+        //logo.setImageResource(sponsor.getLogo());
         description.setText(sponsor.getDescription());
         name.setText(sponsor.name);
         weblink.setText(sponsor.getWeblink());

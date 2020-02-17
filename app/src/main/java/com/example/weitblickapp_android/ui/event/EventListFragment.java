@@ -93,6 +93,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     double lat;
                     double lng;
                     String descriptionLocation;
+                    String imageString;
 
                     JSONObject hostObject = null;
                     String hostName;
@@ -117,6 +118,17 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
                         occurrences = responseObject.getJSONArray("occurrences");
 
+
+
+                        //Get Main-Image
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageString = image.getString("url");
+
+                            imageUrls.add(imageString);
+                        }catch (JSONException e){
+
+                        }
 
 
                         try {
