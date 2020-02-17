@@ -22,7 +22,7 @@ import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.RegistrationData;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
-import com.example.weitblickapp_android.ui.more.agb.AgbRegister;
+import com.example.weitblickapp_android.ui.more.agb.AgbFragment;
 
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
         agbTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    AgbRegister fragment = new AgbRegister();
+                    AgbFragment fragment = new AgbFragment();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.fragment_container, fragment);
                     ft.addToBackStack(null);

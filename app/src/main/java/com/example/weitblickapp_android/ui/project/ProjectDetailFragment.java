@@ -130,8 +130,12 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.goalDescription = project.getGoalDescription();
         //Concat imageUrls with Weitblick url and add values to "imageUrls"
         for(int i = 0; i < project.getImageUrls().size(); i++){
-            this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
-            Log.e("IMAGEURLS:", urlWeitblick + project.getImageUrls().get(i) + ",");
+            if(!project.getImageUrls().get(i).contains("http://weitblicker.org")) {
+                this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
+            }else{
+                this.imageUrls.add(i, project.getImageUrls().get(i));
+            }
+            Log.e("IMAGEURLS:",  this.imageUrls.get(i) + ",");
         }
         this.hosts = project.getHosts();
         this.mileList = project.getMileStones();

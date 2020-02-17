@@ -14,9 +14,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.more.credits.CreditsFragment;
-import com.example.weitblickapp_android.ui.more.agb.AgbRegister;
-import com.example.weitblickapp_android.ui.contact.ContactFragment;
-import com.example.weitblickapp_android.ui.faq.FaqListFragment;
+import com.example.weitblickapp_android.ui.more.agb.AgbFragment;
+import com.example.weitblickapp_android.ui.more.contact.ContactFragment;
+import com.example.weitblickapp_android.ui.more.faq.FaqListFragment;
 
 public class MoreFragment extends Fragment {
 
@@ -78,7 +78,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, new AgbRegister());
+                ft.replace(R.id.fragment_container, new AgbFragment());
                 ft.addToBackStack(null);
                 ft.commit();
             }
@@ -87,7 +87,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, new AgbRegister());
+                ft.replace(R.id.fragment_container, new AgbFragment());
                 ft.addToBackStack(null);
                 ft.commit();
             }

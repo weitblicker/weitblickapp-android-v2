@@ -58,15 +58,14 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfilFragment extends Fragment {
 
+    private final String baseUrl = "https://weitblicker.org/";
+
     private ProfilViewModel profilViewModel;
     private SessionManager session;
     LoginData loginData;
 
-    private ProfilViewModel userProfile;
-
     private String password = "******";
     private String email;
-    private String user = null;
 
     private ImageView imageProfil;
     private TextView donationTextView;
@@ -99,9 +98,8 @@ public class ProfilFragment extends Fragment {
         session = new SessionManager(mContext);
         this.token = session.getKey();
         this.userName = session.getUserName();
-        this.imageUrl = session.getImageURL();
+        this.imageUrl = baseUrl.concat(session.getImageURL());
         this.email = session.getEmail();
-        Log.e("ONCREATE","!!! " + session.getImageURL());
         loadUserData();
     }
 
@@ -135,9 +133,6 @@ public class ProfilFragment extends Fragment {
                             double distance = userObject.getDouble("km");
                             double donation = userObject.getDouble("euro");
                             String url = userObject.getString("image");
-
-                            session.setImageURL("https://weitblicker.org" + url);
-
 
                             kmTotal = String.format("%.2f", distance).concat(" km");
                             donationTotal = String.format("%.2f", donation).concat(" €");

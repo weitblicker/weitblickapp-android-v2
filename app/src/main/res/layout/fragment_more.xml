@@ -127,7 +127,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_wbcd_logo_standard_black_font" />
+            app:srcCompat="@drawable/ic_wbcd_logo_standard_black_font" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

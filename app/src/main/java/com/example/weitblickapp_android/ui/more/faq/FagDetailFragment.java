@@ -1,6 +1,5 @@
-package com.example.weitblickapp_android.ui.faq;
+package com.example.weitblickapp_android.ui.more.faq;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.weitblickapp_android.R;
-
-import org.w3c.dom.Text;
 
 import androidx.fragment.app.Fragment;
 

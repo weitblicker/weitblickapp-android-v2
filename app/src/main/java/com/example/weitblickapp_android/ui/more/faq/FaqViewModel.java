@@ -1,9 +1,5 @@
-package com.example.weitblickapp_android.ui.faq;
+package com.example.weitblickapp_android.ui.more.faq;
 
-import java.util.ArrayList;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class FaqViewModel extends ViewModel {

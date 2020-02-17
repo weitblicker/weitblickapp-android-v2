@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.faq;
+package com.example.weitblickapp_android.ui.more.faq;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
-import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 
 import java.util.ArrayList;
 import androidx.fragment.app.FragmentManager;
