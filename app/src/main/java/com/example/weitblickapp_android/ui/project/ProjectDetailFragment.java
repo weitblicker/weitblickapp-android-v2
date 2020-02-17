@@ -67,8 +67,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     String location;
     String title;
     String text;
-    float lng;
-    float lat;
+    double lng;
+    double lat;
     static Bitmap smallMarker;
     String current_amount;
     String goal_amount;
@@ -330,8 +330,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt("projectid", projectId);
                     editor.putString("projectname", title);
-                    editor.putFloat("lat", lat);
-                    editor.putFloat("lng", lng);
+                    editor.putFloat("lat", (long) lat);
+                    editor.putFloat("lng", (long) lng);
                     editor.putString("hosts", B.toString());
                     editor.putString("location", location);
                     editor.commit();
@@ -347,8 +347,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt("projectid", projectId);
                     editor.putString("projectname", title);
-                    editor.putFloat("lat", lat);
-                    editor.putFloat("lng", lng);
+                    editor.putFloat("lat", (long) lat);
+                    editor.putFloat("lng", (long) lng);
                     editor.putString("hosts", B.toString());
                     editor.putString("location", location);
                     editor.commit();

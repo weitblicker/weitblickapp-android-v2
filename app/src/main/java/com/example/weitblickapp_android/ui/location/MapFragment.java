@@ -259,7 +259,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     sendSegment();
                     resetLocations();
                 } else {
-                    pause.setImageResource(R.drawable.icon_pause);
+                    pause.setImageResource(R.mipmap.icon_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
                 }

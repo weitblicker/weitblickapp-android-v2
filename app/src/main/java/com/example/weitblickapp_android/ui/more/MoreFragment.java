@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.weitblickapp_android.R;
+import com.example.weitblickapp_android.ui.more.credits.CreditsFragment;
 import com.example.weitblickapp_android.ui.register.RegisterFragment;
 import com.example.weitblickapp_android.ui.contact.ContactFragment;
 import com.example.weitblickapp_android.ui.faq.FaqListFragment;
@@ -31,10 +32,12 @@ public class MoreFragment extends Fragment {
         ImageView faq = (ImageView) root.findViewById(R.id.faq);
         ImageView blog = (ImageView) root.findViewById(R.id.news);
         ImageView contact = (ImageView) root.findViewById(R.id.contact);
+        ImageView credits = (ImageView) root.findViewById(R.id.credits);
 
         TextView faqText = (TextView) root.findViewById(R.id.faqtext);
         TextView agbText = (TextView) root.findViewById(R.id.agbtext);
         TextView contactText = (TextView) root.findViewById(R.id.contactext);
+        TextView creditsText = (TextView) root.findViewById(R.id.creditsText);
 
         faqText.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -54,7 +57,24 @@ public class MoreFragment extends Fragment {
                 ft.commit();
             }
         });
-
+        creditsText.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new CreditsFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+        credits.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new CreditsFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
         blog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
