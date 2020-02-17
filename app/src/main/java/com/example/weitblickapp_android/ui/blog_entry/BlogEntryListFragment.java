@@ -64,7 +64,6 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
 
     ArrayList<BlogEntryViewModel> blogEntries = new ArrayList<BlogEntryViewModel>();
     private BlogEntryListAdapter adapter;
-    Set<String> set;
 
     private String lastItemDate;
     private String lastItemDateCheck = "";
@@ -74,7 +73,6 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
     private Context mContext;
     private RequestQueue requestQueue;
     private static int counter = 0;
-    SharedPreferences settings;
 
 
     @Override
@@ -214,12 +212,6 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
 
                         BlogEntryViewModel temp = new BlogEntryViewModel(blogId, title, text, teaser,date, imageUrls, name, profilPic, allHosts, location, projectArr);
                         blogEntries.add(temp);
-                        if(counter < 5){
-                            writeFile(blogId, temp.toString());
-                            set = new HashSet<String>();
-                            String blogTxt = "blog" + blogId + ".txt";
-                            set.add(blogTxt);
-                        }
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -514,51 +506,4 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
             }
         }
     }
-
-    public void writeFile(int id, String textToSave) {
-        try {
-            FileOutputStream fileOutputStream = mContext.openFileOutput("blog" + id + ".txt", getContext().MODE_PRIVATE);
-            fileOutputStream.write(textToSave.getBytes());
-            fileOutputStream.close();
-
-            Log.e("Blog " + id + " Saved", "!!");
-            counter++;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void readFile(String filename) {
-        try {
-            FileInputStream fileInputStream = mContext.openFileInput(filename);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuffer stringBuffer = new StringBuffer();
-
-            String lines;
-            while ((lines = bufferedReader.readLine()) != null) {
-                stringBuffer.append(lines + "\n");
-            }
-            BlogEntryViewModel blogTest;
-            blogTest = new Gson().fromJson(stringBuffer.toString(), BlogEntryViewModel.class);
-            Log.e("Ausgabe aus Storage: ", blogTest.getName());
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean fileExists(String filename) {
-        File file = mContext.getFileStreamPath(filename);
-        if(file == null || !file.exists()) {
-            return false;
-        }
-        return true;
-    }
-
 }

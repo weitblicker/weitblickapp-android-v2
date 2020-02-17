@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.more.credits.CreditsFragment;
-import com.example.weitblickapp_android.ui.register.RegisterFragment;
+import com.example.weitblickapp_android.ui.more.agb.AgbRegister;
 import com.example.weitblickapp_android.ui.contact.ContactFragment;
 import com.example.weitblickapp_android.ui.faq.FaqListFragment;
 
@@ -79,7 +78,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, new RegisterFragment());
+                ft.replace(R.id.fragment_container, new AgbRegister());
                 ft.addToBackStack(null);
                 ft.commit();
             }
@@ -88,7 +87,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, new RegisterFragment());
+                ft.replace(R.id.fragment_container, new AgbRegister());
                 ft.addToBackStack(null);
                 ft.commit();
             }
