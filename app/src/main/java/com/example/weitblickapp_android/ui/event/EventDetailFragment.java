@@ -145,8 +145,11 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         titleTextView.setText(this.title);
         locationTextView.setText(this.location.getAddress());
         location2.setText(this.location.getAddress());
-        locationDescription.setText(this.location.getDescription());
-
+        if(this.location.getDescription().contains("null")){
+            locationDescription.setVisibility(View.GONE);
+        }else{
+            locationDescription.setText(this.location.getDescription());
+        }
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < hostName.length(); i++ ) {
             char c = hostName.charAt( i );

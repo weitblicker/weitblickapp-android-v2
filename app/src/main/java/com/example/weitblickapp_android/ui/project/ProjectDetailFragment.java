@@ -247,8 +247,11 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-
-        locationDescription.setText(this.descriptionLocation);
+        if(this.descriptionLocation.contains("null")){
+            locationDescription.setVisibility(View.GONE);
+        }else{
+            locationDescription.setText(this.descriptionLocation);
+        }
         ImageButton bike = root.findViewById(R.id.bike);
         ImageButton bike2 = root.findViewById(R.id.bike2);
 
