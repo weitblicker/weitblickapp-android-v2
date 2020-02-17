@@ -1,7 +1,6 @@
 package com.example.weitblickapp_android.ui.login;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
@@ -22,7 +20,6 @@ import com.example.weitblickapp_android.data.LoginPreferences;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
 import com.example.weitblickapp_android.ui.register.RegisterActivity;
-import com.example.weitblickapp_android.ui.register.RegisterFragment;
 
 public class Login_Activity extends AppCompatActivity {
 

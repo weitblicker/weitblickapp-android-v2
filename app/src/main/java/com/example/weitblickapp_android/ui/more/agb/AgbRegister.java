@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.register;
+package com.example.weitblickapp_android.ui.more.agb;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.weitblickapp_android.R;
 
 
-public class RegisterFragment extends Fragment {
+public class AgbRegister extends Fragment {
 
     private TextView agbTextView;
     private ImageButton back;

@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-
                 R.id.nav_tabs, R.id.nav_project_tabs, R.id.nav_more,
                 R.id.nav_stats_tabs, R.id.nav_location, R.id.nav_blog, R.id.nav_faq, R.id.nav_profil)
                 .build();
@@ -137,11 +137,14 @@ Log.e(" REQUEST PERMISSIONS", "!");
         } else {
             int id = item.getItemId();
             if (id == R.id.nav_profil) {
-                ProfilFragment fragment = new ProfilFragment();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("tag");
+                if(fragment == null){
+                    ProfilFragment profil = new ProfilFragment();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, profil, "tag");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
             return super.onOptionsItemSelected(item);
         }
