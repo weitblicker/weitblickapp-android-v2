@@ -190,7 +190,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         askGpsPermission();
         setUpGpsStateReceiver();
         initializeTour();
-       // sendRouteSegments();
+        sendRouteSegments();
 
         Log.e("ONCREATE", "!!!!");
     }
@@ -300,7 +300,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     private void initializeTour(){
         currentTour = new Tour(projectId);
-        //createNewTour();
+        createNewTour();
     }
 
 
@@ -324,7 +324,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 if ((!paused) && gpsIsEnabled) {
                     Log.e("SEGMENT SENT", "!!!");
                     if(load) {
-                        Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
                         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
                                 15));
