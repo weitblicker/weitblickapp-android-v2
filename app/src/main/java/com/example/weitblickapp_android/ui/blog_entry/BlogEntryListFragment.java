@@ -160,11 +160,15 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         text = extractImageUrls(text);
 
                         // Get main-Image
+
                         try {
                             image = responseObject.getJSONObject("image");
                             imageUrl = image.getString("url");
 
-                            imageUrls.add(imageUrl);
+                            if(!imageUrls.contains(imageUrl)) {
+                                imageUrls.add(imageUrl);
+                            }
+
                         }catch (JSONException e){
 
                         }
@@ -174,15 +178,16 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         }catch(JSONException e){
 
                         }
-
-
-
+                        
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
 
@@ -288,7 +293,9 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         } catch (JSONException e) {

@@ -168,7 +168,9 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         }catch(JSONException e){
@@ -274,7 +276,9 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                                 for (int x = 0; x < images.length(); x++) {
                                     image = images.getJSONObject(x);
                                     String url = image.getString("url");
-                                    imageUrls.add(url);
+                                    if(!imageUrls.contains(url)) {
+                                        imageUrls.add(url);
+                                    }
                                 }
 
                             } catch (JSONException e) {

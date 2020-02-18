@@ -136,15 +136,15 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         }catch(JSONException e){
 
                         }
 
-                        //Get inline-Urls from Text, then extract them
-                        // imageUrls = getImageUrls(text);
                         description = extractImageUrls(description);
                         title = extractImageUrls(title);
 

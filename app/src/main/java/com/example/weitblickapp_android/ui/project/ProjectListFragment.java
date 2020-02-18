@@ -232,13 +232,15 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         }catch(JSONException e){
 
                         }
-                        imageUrls.addAll(getImageUrls(text));
+
                         text = extractImageUrls(text);
                         try {
                             news = responseObject.getJSONArray("news");
@@ -439,7 +441,9 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         } catch (JSONException e) {
@@ -447,7 +451,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }
 
                         //Get inline-Urls from Text, then extract them
-                        // imageUrls = getImageUrls(text);
                         description = extractImageUrls(description);
 
                         location = new EventLocation(name, address, lat, lng, locationDescription);
@@ -578,7 +581,9 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
                         } catch (JSONException e) {
 
@@ -698,7 +703,9 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         }catch(JSONException e){
@@ -706,7 +713,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }
 
                         //Get inline-Urls from Text, then extract them
-                        // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
                         NewsViewModel temp = new NewsViewModel(newsId, title, text, teaser, date, imageUrls, name, profilPic, allHosts);
