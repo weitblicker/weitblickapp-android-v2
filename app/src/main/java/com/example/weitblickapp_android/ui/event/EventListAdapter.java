@@ -68,13 +68,14 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         final EventViewModel event = (EventViewModel) getItem(position);
 
 
+        //Set picture for BlogEntries: if no pictures -> set default_picture
         if(event.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(event.getImageUrls().get(0));
-        }
 
-        Picasso.get().load(weitblickUrl).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+            Picasso.get().load(weitblickUrl).fit().centerCrop().placeholder(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }else{
+            Picasso.get().load(R.drawable.event_default).fit().centerCrop().into(imageView);
+        }
 
         textView_location.setText(event.getLocation().getAddress());
         textView_date.setText("   " + event.formatToTimeRange());

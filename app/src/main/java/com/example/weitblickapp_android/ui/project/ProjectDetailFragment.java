@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +32,11 @@ import com.example.weitblickapp_android.ui.event.EventListDetailFragment;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
-import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneListAdapter;
-import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsListDetailFragment;
 import com.example.weitblickapp_android.ui.news.NewsShortAdapter;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
+import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneListAdapter;
+import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.project.partner.ProjectPartnerAdapter;
 import com.example.weitblickapp_android.ui.project.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.project.sponsor.SponsorAdapter;
@@ -63,7 +62,7 @@ import io.noties.markwon.Markwon;
 
 public class ProjectDetailFragment extends Fragment implements OnMapReadyCallback {
 
-    static final String urlWeitblick = "https://new.weitblicker.org";
+    static final String urlWeitblick = "https://weitblicker.org";
     String PREF_NAME = "DefaultProject";
     String location;
     String title;
@@ -128,15 +127,20 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.partnerId = project.getPartner_ids();
         this.sponsorId = project.getSponsor_ids();
         this.goalDescription = project.getGoalDescription();
-        //Concat imageUrls with Weitblick url and add values to "imageUrls"
-        for(int i = 0; i < project.getImageUrls().size(); i++){
-            if(!project.getImageUrls().get(i).contains("http://weitblicker.org")) {
-                this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
-            }else{
-                this.imageUrls.add(i, project.getImageUrls().get(i));
+
+        //Add Default-Url so we can instantiate right default Picture in ImageSliderAdapter
+        if(project.getImageUrls().isEmpty()){
+            imageUrls.add("project_default");
+        }else {
+            for (int i = 0; i < project.getImageUrls().size(); i++) {
+                if (!project.getImageUrls().get(i).contains("http://weitblicker.org")) {
+                    this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
+                } else {
+                    this.imageUrls.add(i, project.getImageUrls().get(i));
+                }
             }
-            Log.e("IMAGEURLS:",  this.imageUrls.get(i) + ",");
         }
+
         this.hosts = project.getHosts();
         this.mileList = project.getMileStones();
         this.eventId = project.getEvent_ids();

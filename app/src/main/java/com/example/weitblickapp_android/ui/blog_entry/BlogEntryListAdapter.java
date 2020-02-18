@@ -1,7 +1,6 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_blog_list, null);
 
@@ -62,15 +61,16 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
         final BlogEntryViewModel blog = (BlogEntryViewModel) getItem(position);
 
-        //Set picture for BlogEntries using Picasso-Lib
-        try {
+        //Set picture for BlogEntries: if no pictures -> set default_picture
+        if(blog.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(blog.getImageUrls().get(0));
-        }catch(IndexOutOfBoundsException e){
-            Log.e("Info", "no pictures for this BlogEntry");
+
+            Picasso.get().load(weitblickUrl).fit().centerCrop().placeholder(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }else{
+            Picasso.get().load(R.drawable.blog_default).fit().centerCrop().into(imageView);
         }
-        Picasso.get().load(weitblickUrl).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+
+
 
         //Set title for BlogEntries
         textView_title.setText(blog.getTitle());

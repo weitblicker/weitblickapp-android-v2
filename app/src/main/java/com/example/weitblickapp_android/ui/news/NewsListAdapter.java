@@ -83,12 +83,16 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
             if(article.getImageUrls().size()>0) {
                 weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));
+
+                Picasso.get().load(weitblickUrl).fit().centerCrop().placeholder(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+            }else{
+                Picasso.get().load(R.drawable.news_default).fit().centerCrop().into(imageView);
             }
 
-            Picasso.get().load(weitblickUrl).fit().centerCrop().
-                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
 
+
+
+        //  imageView.setImageResource(R.drawable.login_logo);
 
             textView_title.setText(article.getTitle());
             textView_teaser.setText(article.getTeaser());

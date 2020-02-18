@@ -66,8 +66,8 @@ public class NewsDetailFragment extends Fragment {
         this.projectArr = article.getProject();
 
         if(article.getImageUrls().isEmpty()){
-            //Add False URL so ViewPager tries to instatiate Item which returns Default-Image in Error-Case
-            this.imageUrls.add("FALSEURL");
+            //Add Default-Url so we can instantiate right default Picture in ImageSliderAdapter
+            this.imageUrls.add("news_default");
         }else{
             for(int i = 0; i < article.getImageUrls().size(); i++){
                 this.imageUrls.add(i, urlWeitblick + article.getImageUrls().get(i));
@@ -118,6 +118,8 @@ public class NewsDetailFragment extends Fragment {
                     handler.post(Update);
                 }
             }, DELAY_MS, PERIOD_MS);
+        }else{
+
         }
 
         final TextView titleTextView = root.findViewById(R.id.detail_title);

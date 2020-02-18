@@ -1,6 +1,7 @@
 package com.example.weitblickapp_android.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +52,58 @@ public class ImageSliderAdapter extends PagerAdapter {
         View itemView = inflater.inflate(R.layout.image_slider_item, container, false);
         ImageView imageView = itemView.findViewById(R.id.image_pager_item_image);
 
-            Picasso.get()
-                    .load(images.get(position))
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .into(imageView);
+        Log.e("IMAGES-URL", images.get(position));
 
+
+        switch(images.get(position)){
+            case "news_default":
+                Picasso.get()
+                        .load(R.drawable.news_default)
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .error(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .into(imageView);
+                break;
+            case "event_default":
+                Picasso.get()
+                        .load(R.drawable.event_default)
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .error(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .into(imageView);
+                break;
+
+            case "project_default":
+                Picasso.get()
+                        .load(R.drawable.project_default)
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .error(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .into(imageView);
+                break;
+
+            case "blog_default":
+                Picasso.get()
+                        .load(R.drawable.blog_default)
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .error(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .into(imageView);
+                break;
+
+            default:
+                Picasso.get()
+                        .load(images.get(position))
+                        .fit()
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .error(R.drawable.ic_wbcd_logo_standard_svg2)
+                        .into(imageView);
+        }
 
         ((ViewPager) container).addView(itemView);
 

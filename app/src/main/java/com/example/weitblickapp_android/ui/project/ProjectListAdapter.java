@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-            String weitblickUrl = "https://new.weitblicker.org";
+            String weitblickUrl = "https://weitblicker.org";
 
              view = mInflater.inflate(R.layout.fragment_project_list, null);
 
@@ -138,18 +137,13 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     }
                 });
             }
-        try {
+        if(project.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
-        }catch(IndexOutOfBoundsException e){
-            Log.e("Info", "no pictures for this BlogEntry");
-        }
 
-            Picasso.get()
-                    .load(weitblickUrl)
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+            Picasso.get().load(weitblickUrl).fit().centerCrop().placeholder(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }else{
+            Picasso.get().load(R.drawable.project_default).fit().centerCrop().into(imageView);
+        }
 
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());

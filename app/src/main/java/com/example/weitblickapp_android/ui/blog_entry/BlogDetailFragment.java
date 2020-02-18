@@ -31,7 +31,7 @@ import java.util.TimerTask;
 import io.noties.markwon.Markwon;
 
 public class BlogDetailFragment extends Fragment {
-    static final String urlWeitblick = "https://new.weitblicker.org";
+    static final String urlWeitblick = "https://weitblicker.org";
     //String location;
     String title;
     String text;
@@ -60,8 +60,14 @@ public class BlogDetailFragment extends Fragment {
         this.title = blogEntry.getTitle();
         this.text = blogEntry.getText();
         this.date = blogEntry.getPublished();
-        for(int i = 0; i < blogEntry.getImageUrls().size(); i++){
-            this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
+
+        //Add Default-Url so we can instantiate right default Picture in ImageSliderAdapter
+        if(blogEntry.getImageUrls().isEmpty()){
+            imageUrls.add("blog_default");
+        }else {
+            for (int i = 0; i < blogEntry.getImageUrls().size(); i++) {
+                this.imageUrls.add(i, urlWeitblick + blogEntry.getImageUrls().get(i));
+            }
         }
         this.date = blogEntry.getPublished();
         this.host = blogEntry.getHosts();
@@ -85,9 +91,7 @@ public class BlogDetailFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_blog_detail, container, false);
 
         //Add False URL so ViewPager tries to instatiate Item which returns Default-Image in Error-Case
-        if(imageUrls.isEmpty()){
-            imageUrls.add("FALSEURL");
-        }
+
         //Set Image-Slider Adapter
         mViewPager = (ViewPager) root.findViewById(R.id.view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
