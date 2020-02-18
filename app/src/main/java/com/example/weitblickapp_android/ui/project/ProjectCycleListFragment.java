@@ -81,10 +81,11 @@ public class ProjectCycleListFragment extends ListFragment {
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                //Save Data into Model
-                String jsonData = response.toString();
+
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
+                    //Save Data into Model
+                    String jsonData = response.toString();
                     JSONObject responseObject = null;
                     JSONObject locationObject = null;
                     JSONObject accountObject = null;
@@ -121,176 +122,186 @@ public class ProjectCycleListFragment extends ListFragment {
                     ArrayList<Integer> eventIds = new ArrayList<Integer>();
                     ArrayList<EventViewModel> eventArr = new ArrayList<EventViewModel>();
                     String imageString = null;
+                    JSONObject cycleTest = null;
 
+                    //Check if Project-Object is for Cycling
                     try {
                         responseObject = response.getJSONObject(i);
-                        int projectId = responseObject.getInt("id");
-                        String title = responseObject.getString("name");
-
-                        String text = responseObject.getString("description");
-                        String goal_description = responseObject.getString("goal_description");
-
-                        String currentAmountDonationGoal = null;
-                        String donationGoalDonationGoal = null;
-
-                        currentAmountDonationGoal = responseObject.getString("donation_current");
-                        donationGoalDonationGoal = responseObject.getString("donation_goal");
-
-
-                        imageUrls = getImageUrls(text);
-                        text = extractImageUrls(text);
-
-                        //Get Main-Image
                         try {
-                            image = responseObject.getJSONObject("image");
-                            imageString = image.getString("url");
-
-                            imageUrls.add(imageString);
+                            cycleTest = responseObject.getJSONObject("cycle");
                         }catch (JSONException e){
-
+                            cycleTest = null;
                         }
 
-                        try {
-                            images = responseObject.getJSONArray("photos");
-                            for (int x = 0; x < images.length(); x++) {
-                                image = images.getJSONObject(x);
-                                String url = image.getString("url");
-                                imageUrls.add(url);
-                            }
+                        if(cycleTest != null) {
 
-                        }catch(JSONException e){
-
-                        }
-                        try {
-                            news = responseObject.getJSONArray("news");
-                            for (int x = 0; x < news.length(); x++) {
-                                newsIds.add(news.getInt(x));
-                            }
-                            newsArr = loadNews(newsIds);
-                        }catch(JSONException e){
-
-                        }
-                        try {
-                            blogs = responseObject.getJSONArray("blog");
-                            for (int x = 0; x < blogs.length(); x++) {
-                                blogIds.add(blogs.getInt(x));
-                            }
-                            blogsArr = loadBlog(blogIds);
-                        }catch(JSONException e){
-
-                        }
-                        try {
-                            events = responseObject.getJSONArray("events");
-                            for (int x = 0; x < events.length(); x++) {
-                                eventIds.add(events.getInt(x));
-                            }
-                            eventArr = loadEvents(eventIds);
-                        }catch(JSONException e){
-
-                        }
-
-
-                        hosts = responseObject.getJSONArray("hosts");
-                        String bankname = null;
-                        String iban = null;
-                        String bic = null;
-
-                        for(int x = 0; x < hosts.length(); x++){
-                            host = hosts.getJSONObject(x);
-                            allHosts.add(host.getString("city"));
-                        }
-
-                        if(!responseObject.getString("donation_account").contains("null")){
-                            accountObject = responseObject.getJSONObject("donation_account");
-                            bankname = accountObject.getString("account_holder");
-                            iban = accountObject.getString("iban");
-                            bic = accountObject.getString("bic");
-                        }
-
-
-                        locationObject = responseObject.getJSONObject("location");
-
-                        double lat = locationObject.getLong("lat");
-                        double lng = locationObject.getLong("lng");
-                        String name = locationObject.getString("name");
-                        String address = locationObject.getString("address");
-                        String descriptionLocation = locationObject.getString("description");
-                        partnerJSONObject = responseObject.getJSONArray("partners");
-
-
-
-                        String current_amount = null;
-                        String cycle_donation = null;
-                        int cyclist = 0;
-                        String km_sum = null;
-
-
-                        if(!responseObject.getString("cycle").contains("null")){
                             cycleObject = responseObject.getJSONObject("cycle");
-                            current_amount = cycleObject.getString("euro_sum");
-                            cycle_donation = cycleObject.getString("euro_goal");
-                            cyclist = cycleObject.getInt("cyclists");
-                            km_sum = cycleObject.getString("km_sum");
-                            donations = cycleObject.getJSONArray("donations");
-                            for(int y = 0; y < donations.length(); y++){
-                                donation = donations.getJSONObject(y);
-                                sponsorenid.add(donation.getInt("id"));
+
+                            int projectId = responseObject.getInt("id");
+                            String title = responseObject.getString("name");
+
+                            String text = responseObject.getString("description");
+                            String goal_description = responseObject.getString("goal_description");
+
+                            String currentAmountDonationGoal = null;
+                            String donationGoalDonationGoal = null;
+
+                            currentAmountDonationGoal = responseObject.getString("donation_current");
+                            donationGoalDonationGoal = responseObject.getString("donation_goal");
+
+
+                            imageUrls = getImageUrls(text);
+                            text = extractImageUrls(text);
+
+                            //Get Main-Image
+                            try {
+                                image = responseObject.getJSONObject("image");
+                                imageString = image.getString("url");
+
+                                imageUrls.add(imageString);
+                            } catch (JSONException e) {
+
                             }
-                            cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
-                            if(donations.length() > 0) {
-                                sponsorArr = loadSponsor(sponsorenid);
+
+                            try {
+                                images = responseObject.getJSONArray("photos");
+                                for (int x = 0; x < images.length(); x++) {
+                                    image = images.getJSONObject(x);
+                                    String url = image.getString("url");
+                                    if (!imageUrls.contains(url)) {
+                                        imageUrls.add(url);
+                                    }
+                                }
+
+                            } catch (JSONException e) {
+
                             }
-                        }else{
-                            cycle = null;
-                        }
+                            try {
+                                news = responseObject.getJSONArray("news");
+                                for (int x = 0; x < news.length(); x++) {
+                                    newsIds.add(news.getInt(x));
+                                }
+                                newsArr = loadNews(newsIds);
+                            } catch (JSONException e) {
 
-                        String logo = null;
-                        String description = null;
-                        String weblink = null;
-                        String partnerName = null;
-
-                        for(int y = 0; y < partnerJSONObject.length(); y++){
-                            partnerObject = partnerJSONObject.getJSONObject(y);
-                            logo = partnerObject.getString("logo");
-                            description = partnerObject.getString("description");
-                            partnerName = partnerObject.getString("name");
-                            weblink = partnerObject.getString("link");
-                            partnerArr.add(new ProjectPartnerViewModel(partnerName,description,weblink,logo));
-                        }
-                        text.trim();
-
-                        String nameMile;
-                        String descr;
-                        String date;
-                        boolean reached;
-
-                        try {
-                            mileStoneArray = responseObject.getJSONArray("milestones");
-                            for (int x = 0; x < mileStoneArray.length(); x++) {
-                                mileStone = mileStoneArray.getJSONObject(x);
-                                nameMile = mileStone.getString("name");
-                                descr = mileStone.getString("description");
-                                date = mileStone.getString("date");
-                                reached = mileStone.getBoolean("reached");
-                                allMilestone.add(new MilenstoneViewModel(nameMile, date, descr, reached));
                             }
-                        }catch(JSONException e){
+                            try {
+                                blogs = responseObject.getJSONArray("blog");
+                                for (int x = 0; x < blogs.length(); x++) {
+                                    blogIds.add(blogs.getInt(x));
+                                }
+                                blogsArr = loadBlog(blogIds);
+                            } catch (JSONException e) {
 
-                        }
+                            }
+                            try {
+                                events = responseObject.getJSONArray("events");
+                                for (int x = 0; x < events.length(); x++) {
+                                    eventIds.add(events.getInt(x));
+                                }
+                                eventArr = loadEvents(eventIds);
+                            } catch (JSONException e) {
 
-                        if(cycle != null){
-                            ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, eventArr);
-                            projectList.add(temp);
-                            adapter.notifyDataSetChanged();
+                            }
+
+
+                            hosts = responseObject.getJSONArray("hosts");
+                            String bankname = null;
+                            String iban = null;
+                            String bic = null;
+
+                            for (int x = 0; x < hosts.length(); x++) {
+                                host = hosts.getJSONObject(x);
+                                allHosts.add(host.getString("city"));
+                            }
+
+                            if (!responseObject.getString("donation_account").contains("null")) {
+                                accountObject = responseObject.getJSONObject("donation_account");
+                                bankname = accountObject.getString("account_holder");
+                                iban = accountObject.getString("iban");
+                                bic = accountObject.getString("bic");
+                            }
+
+
+                            locationObject = responseObject.getJSONObject("location");
+
+                            double lat = locationObject.getLong("lat");
+                            double lng = locationObject.getLong("lng");
+                            String name = locationObject.getString("name");
+                            String address = locationObject.getString("address");
+                            String descriptionLocation = locationObject.getString("description");
+                            partnerJSONObject = responseObject.getJSONArray("partners");
+
+
+                            String current_amount = null;
+                            String cycle_donation = null;
+                            int cyclist = 0;
+                            String km_sum = null;
+
+
+                            if (!responseObject.getString("cycle").contains("null")) {
+                                cycleObject = responseObject.getJSONObject("cycle");
+                                current_amount = cycleObject.getString("euro_sum");
+                                cycle_donation = cycleObject.getString("euro_goal");
+                                cyclist = cycleObject.getInt("cyclists");
+                                km_sum = cycleObject.getString("km_sum");
+                                donations = cycleObject.getJSONArray("donations");
+                                for (int y = 0; y < donations.length(); y++) {
+                                    donation = donations.getJSONObject(y);
+                                    sponsorenid.add(donation.getInt("id"));
+                                }
+                                cycle = new CycleViewModel(current_amount, cycle_donation, cyclist, km_sum);
+                                if (donations.length() > 0) {
+                                    sponsorArr = loadSponsor(sponsorenid);
+                                }
+                            } else {
+                                cycle = null;
+                            }
+
+                            String logo = null;
+                            String description = null;
+                            String weblink = null;
+                            String partnerName = null;
+
+                            for (int y = 0; y < partnerJSONObject.length(); y++) {
+                                partnerObject = partnerJSONObject.getJSONObject(y);
+                                logo = partnerObject.getString("logo");
+                                description = partnerObject.getString("description");
+                                partnerName = partnerObject.getString("name");
+                                weblink = partnerObject.getString("link");
+                                partnerArr.add(new ProjectPartnerViewModel(partnerName, description, weblink, logo));
+                            }
+                            text.trim();
+
+                            String nameMile;
+                            String descr;
+                            String date;
+                            boolean reached;
+
+                            try {
+                                mileStoneArray = responseObject.getJSONArray("milestones");
+                                for (int x = 0; x < mileStoneArray.length(); x++) {
+                                    mileStone = mileStoneArray.getJSONObject(x);
+                                    nameMile = mileStone.getString("name");
+                                    descr = mileStone.getString("description");
+                                    date = mileStone.getString("date");
+                                    reached = mileStone.getBoolean("reached");
+                                    allMilestone.add(new MilenstoneViewModel(nameMile, date, descr, reached));
+                                }
+                            } catch (JSONException e) {
+
+                            }
+
+                            if (cycle != null) {
+                                ProjectViewModel temp = new ProjectViewModel(projectId, title, text, lat, lng, address, descriptionLocation, name, cycle, imageUrls, partnerArr, newsArr, blogsArr, sponsorArr, currentAmountDonationGoal, donationGoalDonationGoal, goal_description, allHosts, bankname, iban, bic, allMilestone, eventArr);
+                                projectList.add(temp);
+                                adapter.notifyDataSetChanged();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                for(ProjectViewModel newsArticle:projectList){
-                    // Log.e("Projects",newsArticle.toString());
-                }
-
             }
 
         }, new Response.ErrorListener() {

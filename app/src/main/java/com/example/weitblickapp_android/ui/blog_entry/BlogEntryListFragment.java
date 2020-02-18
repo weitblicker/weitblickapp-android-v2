@@ -187,7 +187,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         }catch(JSONException e){
 
                         }
-                        
+
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
 
