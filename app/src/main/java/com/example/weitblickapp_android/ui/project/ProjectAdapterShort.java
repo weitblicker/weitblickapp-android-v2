@@ -11,17 +11,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
-import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
 
@@ -56,7 +53,7 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_project_news_blog, null);
 
