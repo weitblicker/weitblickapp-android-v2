@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.milenstone;
+package com.example.weitblickapp_android.ui.project.milenstone;
 
 import android.content.Context;
 import android.view.LayoutInflater;

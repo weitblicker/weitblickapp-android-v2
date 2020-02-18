@@ -1,7 +1,6 @@
 package com.example.weitblickapp_android.ui.blog_entry;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -28,32 +27,22 @@ import com.example.weitblickapp_android.MainActivity;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
-import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
+import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
+import com.example.weitblickapp_android.ui.project.partner.ProjectPartnerViewModel;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
-import com.google.gson.Gson;
+import com.example.weitblickapp_android.ui.project.sponsor.SponsorViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

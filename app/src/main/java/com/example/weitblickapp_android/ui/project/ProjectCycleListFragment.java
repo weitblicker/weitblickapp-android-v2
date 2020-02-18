@@ -24,10 +24,10 @@ import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
 import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
 import com.example.weitblickapp_android.ui.event.EventLocation;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
-import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
+import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneViewModel;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
-import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
+import com.example.weitblickapp_android.ui.project.partner.ProjectPartnerViewModel;
+import com.example.weitblickapp_android.ui.project.sponsor.SponsorViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

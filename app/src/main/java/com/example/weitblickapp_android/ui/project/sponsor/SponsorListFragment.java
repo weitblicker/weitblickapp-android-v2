@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.milenstone;
+package com.example.weitblickapp_android.ui.project.sponsor;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,21 +8,20 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.news.NewsListAdapter;
-import com.example.weitblickapp_android.ui.news.NewsViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.ListFragment;
 
-public class MilenstoneDetailListFragment extends ListFragment {
+public class SponsorListFragment extends ListFragment {
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
 
-    ArrayList<MilenstoneViewModel> mileList = new ArrayList<MilenstoneViewModel>();
-    private MilenstoneListAdapter adapter;
+    ArrayList<SponsorViewModel> sponsorList = new ArrayList<SponsorViewModel>();
+    private SponsorAdapter adapter;
     private String lastItemDate;
     private String lastItemDateCheck = "";
     private String url = "https://weitblicker.org/rest/news?limit=5";
@@ -30,10 +29,9 @@ public class MilenstoneDetailListFragment extends ListFragment {
     private SharedPreferences cachedNews;
     private String PREF_NAME = "NewsList";
 
-    public MilenstoneDetailListFragment(ArrayList<MilenstoneViewModel> arrMile) {
-        this.mileList = arrMile;
+    public SponsorListFragment(ArrayList<SponsorViewModel> arrSponsor){
+        this.sponsorList = arrSponsor;
     }
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +40,6 @@ public class MilenstoneDetailListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-
-        view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_green));
 
         ImageButton back = (ImageButton) view.findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -55,9 +51,22 @@ public class MilenstoneDetailListFragment extends ListFragment {
             }
         });
 
-        adapter = new MilenstoneListAdapter(getActivity(), mileList, getFragmentManager());
+        adapter = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
         this.setListAdapter(adapter);
 
         return view;
     }
+
+    public ArrayList<String> getImageUrls(String text){
+        //Find image-tag markdowns and extract
+        ArrayList <String> imageUrls = new ArrayList<>();
+        Matcher m = Pattern.compile("!\\[(.*?)\\]\\((.*?)\\\"")
+                .matcher(text);
+        while (m.find()) {
+            imageUrls.add(m.group(2));
+        }
+        return imageUrls;
+    }
+
 }
+

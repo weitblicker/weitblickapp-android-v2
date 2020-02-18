@@ -8,16 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentManager;
+
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.faq.FagDetailFragment;
-import com.example.weitblickapp_android.ui.faq.FaqViewModel;
-import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
-import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 
 public class CreditsListAdapter extends ArrayAdapter<MemberViewModel> {

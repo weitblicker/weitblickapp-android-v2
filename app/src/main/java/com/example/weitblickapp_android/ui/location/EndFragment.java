@@ -24,8 +24,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.example.weitblickapp_android.ui.sponsor.SponsorAdapter;
-import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
+import com.example.weitblickapp_android.ui.project.sponsor.SponsorAdapter;
+import com.example.weitblickapp_android.ui.project.sponsor.SponsorViewModel;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

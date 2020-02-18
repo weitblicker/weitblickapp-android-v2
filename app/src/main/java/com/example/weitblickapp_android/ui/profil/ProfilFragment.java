@@ -270,17 +270,6 @@ public class ProfilFragment extends Fragment {
         final TextView email = root.findViewById(R.id.email);
         email.setText(this.email);
 
-
-        ImageButton back = (ImageButton) root.findViewById(R.id.back);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getFragmentManager().getBackStackEntryCount() > 0) {
-                    getFragmentManager().popBackStack();
-                }
-            }
-        });
         return root;
     }
 

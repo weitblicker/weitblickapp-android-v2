@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.sponsor;
+package com.example.weitblickapp_android.ui.project.sponsor;
 
 import android.content.Context;
 import android.view.LayoutInflater;

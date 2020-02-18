@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui.partner;
+package com.example.weitblickapp_android.ui.project.partner;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

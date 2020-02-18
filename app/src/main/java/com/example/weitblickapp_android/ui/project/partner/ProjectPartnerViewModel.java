@@ -1,26 +1,22 @@
-package com.example.weitblickapp_android.ui.sponsor;
+package com.example.weitblickapp_android.ui.project.partner;
 
 import androidx.lifecycle.ViewModel;
 
-public class SponsorViewModel extends ViewModel {
+public class ProjectPartnerViewModel extends ViewModel {
 
     String description;
     String name;
     String weblink;
     String logo;
-    String rateProKm;
-    String goal;
     int id;
 
-    public SponsorViewModel(){};
+    public ProjectPartnerViewModel(){};
 
-    public SponsorViewModel(String name, String dec, String weblink, String logo, String rateProKm, String goal){
-
+    public ProjectPartnerViewModel(String name, String dec, String weblink, String logo){
         this.description = dec;
         this.name = name;
         this.weblink = weblink;
-        this.rateProKm = rateProKm;
-        this.goal = goal;
+        this.logo = logo;
     }
 
     public String getDescription() {
@@ -61,21 +57,5 @@ public class SponsorViewModel extends ViewModel {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public String getRateProKm() {
-        return rateProKm;
-    }
-
-    public void setRateProKm(String rateProKm) {
-        this.rateProKm = rateProKm;
-    }
-
-    public String getGoal() {
-        return goal;
-    }
-
-    public void setGoal(String goal) {
-        this.goal = goal;
     }
 }
