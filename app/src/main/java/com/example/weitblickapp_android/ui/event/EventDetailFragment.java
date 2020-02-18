@@ -84,7 +84,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
 
-        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+        googleMap.getUiSettings().setScrollGesturesEnabled(true);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
