@@ -693,19 +693,34 @@ public class LoginData{
             //TODO: save new ImageURL in SessionManager
             //String username = sessionManager.getUserName();
             multipart.addFormField("username", sessionManager.getUserName());
-            multipart.addFormField("first_name", sessionManager.getFirstName());
-            multipart.addFormField("last_name", sessionManager.getLastName() );
 
+            /*
+            multipart.addFormField("first_name", sessionManager.getUserName());
+            multipart.addFormField("last_name", sessionManager.getUserName());
+             */
+
+            multipart.addFormField("first_name", sessionManager.getFirstName());
+            multipart.addFormField("last_name", sessionManager.getLastName());
 
             //possible alternative for checking if first/lastname exist
             /*
+            String firstname,lastname;
+
             if( (firstname = sessionManager.getFirstName())!= null){
                 multipart.addFormField("first_name", firstname);
             }
             else{
-                multipart.addFormField("first_name", "firstname");
+                multipart.addFormField("first_name", sessionManager.getUserName());
             }
-            */
+
+            if( (lastname = sessionManager.getLastName())!= null){
+                multipart.addFormField("first_name", lastname);
+            }
+            else{
+                multipart.addFormField("first_name", sessionManager.getUserName());
+            }
+
+             */
 
 
             try {
@@ -727,7 +742,13 @@ public class LoginData{
 
                     jsonObject = new JSONObject(response);
                     String jsonString = jsonObject.getString("image");
+
+                    String prepend = "https://weitblicker.org/";
+                    jsonString = prepend + jsonString;
+
                     sessionManager.setImageURL(jsonString);
+
+                    Log.e("ImageURL for Session", jsonString);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
