@@ -49,7 +49,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_news_blog, null);
 
@@ -94,7 +94,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
             Picasso.get().load(R.mipmap.ic_launcher_foreground).fit().centerCrop()
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorProfile);
         }else {
-            weitblickUrl = "https://new.weitblicker.org";
+            weitblickUrl = "https://weitblicker.org";
             String url = weitblickUrl.concat(article.getImage());
             Picasso.get().load(url).transform(new CircleTransform()).fit().centerCrop().
                     placeholder(R.drawable.ic_wbcd_logo_standard_svg2)

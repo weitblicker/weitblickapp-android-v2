@@ -66,7 +66,7 @@ import java.util.regex.Pattern;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback{
 
-    static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
+    static final String url = "https://weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     public LocationService locationService;
@@ -411,7 +411,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private void createNewTour(){
             // Talk to Rest API
             Log.e("CREATETOUR", "!");
-            String URL = "https://new.weitblicker.org/rest/cycle/tours/new";
+            String URL = "https://weitblicker.org/rest/cycle/tours/new";
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
 

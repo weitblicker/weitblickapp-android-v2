@@ -51,7 +51,7 @@ public class CreditsListAdapter extends ArrayAdapter<MemberViewModel> {
 
         view = mInflater.inflate(R.layout.fragment_members, null);
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         TextView name = (TextView) view.findViewById(R.id.name);
         TextView text = (TextView) view.findViewById(R.id.text);

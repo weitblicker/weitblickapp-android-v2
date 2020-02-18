@@ -60,7 +60,7 @@ public class ProjectPartnerAdapter extends ArrayAdapter<ProjectPartnerViewModel>
         name.setText(partner.name);
         weblink.setText(partner.getWeblink());
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         weitblickUrl = weitblickUrl.concat(partner.getLogo());
 

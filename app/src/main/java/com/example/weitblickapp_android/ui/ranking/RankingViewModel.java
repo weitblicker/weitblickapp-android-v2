@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 public class RankingViewModel extends ViewModel {
 
-    private final String imageUrl = "https://new.weitblicker.org/";
+    private final String imageUrl = "https://weitblicker.org/";
 
     private String profileImageUrl;
     private String username;

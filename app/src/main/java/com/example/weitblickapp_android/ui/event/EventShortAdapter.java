@@ -47,7 +47,7 @@ public class EventShortAdapter extends ArrayAdapter<EventViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_event_short, null);
 
