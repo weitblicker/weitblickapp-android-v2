@@ -9,10 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.faq.FagDetailFragment;
-import com.example.weitblickapp_android.ui.faq.FaqViewModel;
-import com.example.weitblickapp_android.ui.news.NewsDetailFragment;
-import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
