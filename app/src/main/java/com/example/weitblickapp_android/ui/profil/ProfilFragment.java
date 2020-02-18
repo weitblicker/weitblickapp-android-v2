@@ -257,8 +257,6 @@ public class ProfilFragment extends Fragment {
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageProfil);
         }
 
-
-
         donationTextView = root.findViewById(R.id.donation);
 
 

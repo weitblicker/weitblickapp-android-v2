@@ -1,7 +1,5 @@
 package com.example.weitblickapp_android.ui.stats;
 
-import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
 
 import java.text.ParseException;
@@ -33,7 +31,6 @@ public class StatsViewModel extends ViewModel {
         this.distance = distance;
         this.donation = donation;
 
-        Log.e("DURATION SECONDS", duration+"!");
 
         this.durationSeconds = (duration%60);
         int durationHoursTemp = (duration/60);
@@ -75,7 +72,7 @@ public class StatsViewModel extends ViewModel {
 
 
     public String getDurationAsString(){
-        return getHoursAsString() + ":" + getMinutesAsString() + ":" + getSecondsAsString() + " h";
+        return getHoursAsString() + ":" + getMinutesAsString() + " h";
     }
 
     public void setDurationSeconds(int durationSeconds) {
