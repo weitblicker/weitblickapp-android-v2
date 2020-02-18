@@ -156,8 +156,18 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
 
                         }
 
-                        imageUrls = getImageUrls(text);
+                       // imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
+
+                        // Get main-Image
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageUrl = image.getString("url");
+
+                            imageUrls.add(imageUrl);
+                        }catch (JSONException e){
+
+                        }
                         //Get all imageUrls from Gallery
                         try {
                             images = responseObject.getJSONArray("photos");
@@ -168,15 +178,6 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                             }
 
                         }catch(JSONException e){
-
-                        }
-
-                        try {
-                            image = responseObject.getJSONObject("image");
-                            imageUrl = image.getString("url");
-
-                            imageUrls.add(imageUrl);
-                        }catch (JSONException e){
 
                         }
 

@@ -59,7 +59,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         this.location = event.getLocation();
         this.title = event.getTitle();
         this.text = event.getText();
-        this.date = event.getEventStartDate();
+        this.date = event.getEventStartDate() +", " + event.getEventTimeRange();
+
         this.hostName = event.getHostName();
 
         //Add Default-Url so we can instantiate right default Picture in ImageSliderAdapter

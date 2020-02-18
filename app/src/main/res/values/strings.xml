@@ -22,7 +22,7 @@
     <string name="title_app">Weitblick</string>
     <string name="prompt_username">Nutzername</string>
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+    <string name="prompt_password">Passwort</string>
     <string name="confirm_password">Passwort bestätigen</string>
     <string name="action_sign_in">Anmelden</string>
     <string name="action_sign_up">Registrieren</string>

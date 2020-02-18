@@ -13,7 +13,7 @@ public class EventViewModel extends ViewModel {
 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("dd.MM.yyyy");
-
+    final private static SimpleDateFormat formatterWriteTime = new SimpleDateFormat("HH:mm");
 
     private int id;
     private String title;
@@ -80,6 +80,9 @@ public class EventViewModel extends ViewModel {
         return formatterWrite.format(eventDateStart);
     }
 
+    public String getEventTimeRange(){
+        return formatterWriteTime.format(eventDateStart) + "-" + formatterWriteTime.format(eventDateEnd) + " Uhr";
+    }
     public void setEventStartDate(Date date) { this.eventDateStart = date; }
 
     public String getEventEndDate() {
