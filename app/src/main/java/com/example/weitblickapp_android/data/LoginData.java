@@ -413,10 +413,6 @@ public class LoginData{
                     Log.e("INIT_ERROR: ", "getUserDetail fehlgeschlagen.");
                 }
             });
-
-
-
-
     }
 
     public void resetPassword(final String email, VolleyCallback callback){
@@ -424,7 +420,7 @@ public class LoginData{
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(app_context);
 
-                String URL = "https://weitblicker.org/rest/auth/password/reset";
+                String URL = "https://weitblicker.org/rest/auth/password/reset/";
 
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("email", email);
@@ -444,8 +440,9 @@ public class LoginData{
                         Log.e("VOLLEY ERROR RESET", error.toString());
                         String body;
                         //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //String statusCode = String.valueOf(error.networkResponse.statusCode);
                         //get response body and parse with appropriate encoding
+
                         if (error.networkResponse.data != null) {
                             try {
                                 //create errorJSON from VolleyError
@@ -481,11 +478,7 @@ public class LoginData{
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> headers = new HashMap<>();
-                        String credentials = "surfer:hangloose";
-                        String auth = "Basic "
-                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                         headers.put("Content-Type", "application/json");
-                        headers.put("Authorization", auth);
                         return headers;
                     }
                 };

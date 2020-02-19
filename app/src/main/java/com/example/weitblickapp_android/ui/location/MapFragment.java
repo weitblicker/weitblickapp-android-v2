@@ -166,7 +166,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         lastLocation = currentLocation;
                         currentLocation = intent.getParcelableExtra("location");
 
-                        calculateKm();
+                        Toast.makeText(mContext, (currentLocation.getSpeed()*3.6) + "!", Toast.LENGTH_SHORT).show();
+
+                        if(checkSpeedAndAcceleration()) {
+                            calculateKm();
+                        }
                     }
 
                     Log.e("LOCATIONYEAH", currentLocation.getSpeed() + "!!!");
@@ -378,7 +382,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             if (currentLocation.hasSpeed()) {
                 float currentSpeedInKmh = Math.round((currentLocation.getSpeed() * 3.6f) * 100)/100;
                 if (currentSpeedInKmh > 60.0f) {
-                    Toast toast= Toast.makeText(mContext,"Geschwindigkeit: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
+                    Toast toast= Toast.makeText(mContext,"Slow Down! Geschwindigkeit: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
                     toast.show();
                     return false;
                 } else {
@@ -653,15 +657,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onDestroy();
         sendSegment();
         mContext.unregisterReceiver(locationSwitchStateReceiver);
-/*
+
+        /*
         try {
-            if (locationUpdateReceiver != null) {
-                mContext.unregisterReceiver(locationUpdateReceiver);
+            if (predictedLocationReceiver != null) {
+                LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
             }
 
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
         }
+        final Intent locationService = new Intent(mContext, LocationService.class);
+        mContext.stopService(locationService);
         */
 
         Log.e("DESTROYED", "!!!!");

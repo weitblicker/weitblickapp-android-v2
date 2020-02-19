@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -94,8 +95,8 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
+                             ViewGroup container, Bundle savedInstanceState)
+    {
             View root = inflater.inflate(R.layout.fragment_map, container, false);
             SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
             defaultProjects = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
@@ -145,6 +146,32 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
             });
             setUpMapIfNeeded();
         return root;
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
+
+        if(fragment != null){
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment, TAG_FRAGMENT);
+            ft.commit();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
+        if(fragment != null) {
+            Log.e("Fragment ", "existiert!");
+           // getFragmentManager().popBackStack();
+        }
+        if(pending){
+            Log.e("TOURPENDING", "PENDING");
+        }
     }
 
     public void loadProject(int projectID){
@@ -706,23 +733,6 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
             this.requestQueue.add(objectRequest);
         }
         return news;
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
-        if(fragment != null) {
-            Log.e("Fragment ", "existiert!");
-            //FragmentTransaction ft = getFragmentManager().beginTransaction();
-            //ft.replace(R.id.fragment_container, fragmentMap, TAG_FRAGMENT);
-            //ft.commit();
-
-        }
-        if(pending){
-            Log.e("TOURPENDING", "PENDING");
-        }
     }
 
     private void checkDefault(){
