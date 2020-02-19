@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.ranking;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -40,15 +41,31 @@ public class RankingFragment extends ListFragment{
     private ListView listView;
     ArrayList<RankingViewModel> bestRankings = new ArrayList<RankingViewModel>();
     ArrayList<RankingViewModel> userFieldRankings = new ArrayList<RankingViewModel>();
-    private boolean km_donation = false;
     private boolean km = false;
+
+    private Context mContext;
+    RequestQueue requestQueue;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.requestQueue = Volley.newRequestQueue(mContext);
+        getRankingData();
+    }
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_ranking, container, false);
 
-        adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
+        adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), false);
         this.setListAdapter(adapter);
         listView = (ListView) view.findViewById(R.id.list);
 
@@ -58,21 +75,15 @@ public class RankingFragment extends ListFragment{
             @Override
             public void onClick(View v) {
 
-                if(km == true){
-                    km_donation = false;
-                    bestRankings.clear();
-                    getRankingData(km_donation);
+                if(km){
                     toggle.setImageResource(R.drawable.ic_switchkm);
-                    adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
-                    setListAdapter(adapter);
+                    adapter.setKm_donation(false);
+                    sortByKm();
                     km = false;
                 }else{
-                    km_donation = true;
-                    bestRankings.clear();
-                    getRankingData(km_donation);
                     toggle.setImageResource(R.drawable.ic_switcheuro);
-                    adapter = new RankingListAdapter(getActivity(), bestRankings, getFragmentManager(), km_donation);
-                    setListAdapter(adapter);
+                    adapter.setKm_donation(true);
+                    sortByDonation();
                     km = true;
                 }
             }
@@ -80,11 +91,6 @@ public class RankingFragment extends ListFragment{
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getRankingData(km_donation);
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -95,7 +101,7 @@ public class RankingFragment extends ListFragment{
         Collections.sort(bestRankings, new Comparator<RankingViewModel>() {
             @Override
             public int compare(RankingViewModel o1, RankingViewModel o2) {
-                return Double.compare(o1.getCycledKm(), o2.getCycledKm());
+                return Double.compare(o2.getCycledKm(), o1.getCycledKm());
             }
         });
         adapter.notifyDataSetChanged();
@@ -111,16 +117,11 @@ public class RankingFragment extends ListFragment{
         adapter.notifyDataSetChanged();
     }
 
-    private void getRankingData(boolean km){
+    private void getRankingData(){
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        String url = null;
-        if(km == true){
-            url = "https://weitblicker.org/rest/cycle/ranking/";
-        }else{
-            url = "https://weitblicker.org/rest/cycle/ranking/";
-        }
+        String url = "https://weitblicker.org/rest/cycle/ranking/";
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 

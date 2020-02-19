@@ -21,7 +21,7 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
     private LayoutInflater mInflater;
     private ArrayList<RankingViewModel> rankings;
     private FragmentManager fragManager;
-    static private boolean km_donation = true;
+    private boolean km_donation = true;
 
     public RankingListAdapter(Context mContext, ArrayList<RankingViewModel> mDataSource, FragmentManager fragManager, boolean km_donation) {
         super(mContext, R.layout.fragment_ranking_list, mDataSource);
@@ -82,5 +82,13 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
         }
 
         return view;
+    }
+
+    public boolean isKm_donation() {
+        return km_donation;
+    }
+
+    public void setKm_donation(boolean km_donation) {
+        this.km_donation = km_donation;
     }
 }
