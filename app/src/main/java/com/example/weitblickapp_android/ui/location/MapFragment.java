@@ -658,15 +658,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onDestroy();
         sendSegment();
         mContext.unregisterReceiver(locationSwitchStateReceiver);
-/*
+
+        /*
         try {
-            if (locationUpdateReceiver != null) {
-                mContext.unregisterReceiver(locationUpdateReceiver);
+            if (predictedLocationReceiver != null) {
+                LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
             }
 
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
         }
+        final Intent locationService = new Intent(mContext, LocationService.class);
+        mContext.stopService(locationService);
         */
 
         Log.e("DESTROYED", "!!!!");
