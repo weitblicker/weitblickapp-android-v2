@@ -1,5 +1,6 @@
 package com.example.weitblickapp_android.ui.stats;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
 
 import com.android.volley.AuthFailureError;
@@ -39,27 +38,19 @@ public class StatsFragment extends ListFragment {
     private SessionManager session;
     private String token;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
-
-        View view = inflater.inflate(R.layout.fragment_stats, container, false);
-        adapter = new StatsListAdapter(getActivity(), statsList, getFragmentManager());
-        this.setListAdapter(adapter);
-
-        session = new SessionManager(getActivity().getApplicationContext());
-        this.token = session.getKey();
-
-        return view;
-    }
+    private Context mContext;
+    private RequestQueue requestQueue;
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.requestQueue = Volley.newRequestQueue(mContext);
+        session = new SessionManager(mContext);
 
         if(!session.isLoggedIn()){
 
@@ -73,14 +64,17 @@ public class StatsFragment extends ListFragment {
         }
     }
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_stats, container, false);
+        adapter = new StatsListAdapter(getActivity(), statsList, getFragmentManager());
+        this.setListAdapter(adapter);
+
+        return view;
+    }
 
     private String getToken(){
         return this.token;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
 
@@ -98,16 +92,12 @@ public class StatsFragment extends ListFragment {
             Log.e("TourJsonException:", e.toString());
         }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
         MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.GET, URL, jsonBody, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
                 //Save Data into Model
                 String jsonData = response.toString();
-
-                Log.e("STATSRESPONSE:", jsonData);
 
                 //Parse the JSON response array by iterating over it
                 for (int i = 0; i < response.length(); i++) {
@@ -123,7 +113,6 @@ public class StatsFragment extends ListFragment {
 
                         JSONObject projectObject = responseObject.getJSONObject("project");
                         int projectId = projectObject.getInt("id");
-
 
                         StatsViewModel temp = new StatsViewModel(projectId, tourId, distance, donation, duration, tourDate);
                         statsList.add(temp);

@@ -71,6 +71,8 @@ public class RankingFragment extends ListFragment{
 
         ImageView toggle = (ImageView) view.findViewById(R.id.toogleButton);
 
+
+        //If sorted by Km -> SortByDonation and vise versa
         toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
