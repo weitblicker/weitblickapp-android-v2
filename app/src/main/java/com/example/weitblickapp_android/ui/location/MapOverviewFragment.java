@@ -147,6 +147,21 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
+        if(fragment != null) {
+            Log.e("Fragment ", "existiert!");
+           // getFragmentManager().popBackStack();
+
+
+        }
+        if(pending){
+            Log.e("TOURPENDING", "PENDING");
+        }
+    }
+
     public void loadProject(int projectID){
         // Talk to Rest API
         String URL = "https://weitblicker.org/rest/projects/" + projectID;
@@ -706,23 +721,6 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
             this.requestQueue.add(objectRequest);
         }
         return news;
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
-        if(fragment != null) {
-            Log.e("Fragment ", "existiert!");
-            //FragmentTransaction ft = getFragmentManager().beginTransaction();
-            //ft.replace(R.id.fragment_container, fragmentMap, TAG_FRAGMENT);
-            //ft.commit();
-
-        }
-        if(pending){
-            Log.e("TOURPENDING", "PENDING");
-        }
     }
 
     private void checkDefault(){

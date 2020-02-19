@@ -424,7 +424,7 @@ public class LoginData{
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(app_context);
 
-                String URL = "https://weitblicker.org/rest/auth/password/reset";
+                String URL = "http://weitblicker.org/rest/auth/password/reset";
 
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("email", email);
@@ -481,11 +481,7 @@ public class LoginData{
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> headers = new HashMap<>();
-                        String credentials = "surfer:hangloose";
-                        String auth = "Basic "
-                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                         headers.put("Content-Type", "application/json");
-                        headers.put("Authorization", auth);
                         return headers;
                     }
                 };
