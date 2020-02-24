@@ -65,17 +65,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     static final String url = "https://weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    public LocationService locationService;
+    // SessionManager to retrieve User-Data
+    private SessionManager session;
 
-    //
+    // Maps & Locations
     private GoogleMap mMap;
+    public LocationService locationService;
     private Tour currentTour;
     private Location currentLocation;
     private Location lastLocation;
-    private SessionManager session;
 
-    //Receiver for Change of GPS-Turned ON/OFF
+    // Receiver for Change of GPS & Location
     private BroadcastReceiver locationSwitchStateReceiver;
+    private BroadcastReceiver locationUpdateReceiver;
+    private BroadcastReceiver predictedLocationReceiver;
 
     // Boolean for change of behaviour
     private boolean paused = false;
@@ -85,7 +88,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     //Segment-Information
     static private double kmSegment;
-    static private double kmTotal;
     private String segmentStartTime;
     private String segmentEndTime;
     private String token;
@@ -96,25 +98,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
     private Runnable segmentSendRunnable;
-
     private final int segmentSendDelay = 30000; //milliseconds
 
+
+    //TextViews to set values at runtime
     private TextView distance;
     private TextView donation;
 
-    //get ration for
+    // Donation & kmTotal
     static private double don = 0;
-
-    private static final int REQUEST_CODE = 101;
+    static private double kmTotal = 0;
 
     private RequestQueue requestQueue;
     private Context mContext;
 
     LocationManager locationManager;
-
-    private BroadcastReceiver locationUpdateReceiver;
-    private BroadcastReceiver predictedLocationReceiver;
-
+    private static final int REQUEST_CODE = 101;
 
     public MapFragment(ProjectViewModel project){
         projectId = project.getId();
@@ -448,7 +447,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             Log.e("SegmentJsonException:", e.toString());
         }
 
-        Log.e("JSON:", jsonBody.toString());
+        Log.e("JSON-SEGMENT", jsonBody.toString());
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -620,20 +619,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("RESUMED", "!!!!!!");
     }
 
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.e("STOPPED", "!!!!!!!");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("PAUSED", "!!!!!");
     }
 
 
@@ -645,7 +641,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         mContext.unregisterReceiver(locationSwitchStateReceiver);
 
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
-        Log.e("Receiver unregistered!" , "!!");
+        Log.e("Receiver unregistered" , "!!");
 
         final Intent locationService = new Intent(mContext, LocationService.class);
         getActivity().stopService(locationService);
