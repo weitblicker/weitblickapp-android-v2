@@ -116,7 +116,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                 public void onClick(View v) {
                     ProjectCycleListFragment fragment = new ProjectCycleListFragment();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment, "Map");
+                    FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment, TAG_FRAGMENT);
                     ft.addToBackStack(null);
                     ft.commit();
                 }
@@ -132,9 +132,9 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                         getActivity().startActivity(redirect);
                     } else {
                             if (project != null) {
-                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                                 fragmentMap = new MapFragment(project);
-                                ft.add(R.id.fragment_container, fragmentMap, TAG_FRAGMENT);
+                                ft.replace(R.id.fragment_container, fragmentMap, TAG_FRAGMENT);
                                 ft.commit();
                             } else {
                                 Toast.makeText(getActivity(), "Bitte wählen Sie ein Projekt zum Spenden aus!",
@@ -152,22 +152,14 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
-
-        if(fragment != null){
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment, TAG_FRAGMENT);
-            ft.commit();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Fragment fragment = getFragmentManager().findFragmentByTag("MAP_FRAGMENT");
+        Fragment fragment = getFragmentManager().findFragmentByTag(TAG_FRAGMENT);
         if(fragment != null) {
             Log.e("Fragment ", "existiert!");
-           // getFragmentManager().popBackStack();
         }
         if(pending){
             Log.e("TOURPENDING", "PENDING");

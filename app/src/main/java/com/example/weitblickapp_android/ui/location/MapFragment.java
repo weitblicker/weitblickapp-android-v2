@@ -42,15 +42,11 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,20 +67,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     public LocationService locationService;
 
+    //
     private GoogleMap mMap;
     private Tour currentTour;
     private Location currentLocation;
     private Location lastLocation;
-    private Location badLocation;
     private SessionManager session;
 
     //Receiver for Change of GPS-Turned ON/OFF
     private BroadcastReceiver locationSwitchStateReceiver;
 
+    // Boolean for change of behaviour
     private boolean paused = false;
     private boolean load = false;
     private boolean gpsIsEnabled;
-    private boolean projectFinished;
+    private boolean projectFinished = false;
 
     //Segment-Information
     static private double kmSegment;
@@ -98,10 +95,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
-    private Runnable locationRunnable;
     private Runnable segmentSendRunnable;
 
-    private final int fetchLocationDelay = 1000; //milliseconds
     private final int segmentSendDelay = 30000; //milliseconds
 
     private TextView distance;
@@ -109,12 +104,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     //get ration for
     static private double don = 0;
-
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private LocationRequest locationRequest;
-    private LocationListener locationListenerX;
-
-    private OnSuccessListener<Location> locationListener;
 
     private static final int REQUEST_CODE = 101;
 
@@ -132,14 +121,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         this.project = project;
     }
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-
-
     }
 
     @Override
@@ -147,8 +132,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onCreate(savedInstanceState);
 
         final Intent locationService = new Intent(mContext, LocationService.class);
-        mContext.startService(locationService);
-        mContext.bindService(locationService, serviceConnection, Context.BIND_AUTO_CREATE);
+        getActivity().startService(locationService);
+        getActivity().bindService(locationService, serviceConnection, Context.BIND_AUTO_CREATE);
 
         requestQueue = Volley.newRequestQueue(mContext);
         session = new SessionManager(getActivity().getApplicationContext());
@@ -158,22 +143,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             @Override
             public void onReceive(Context context, Intent intent) {
 
+                Location tmp = intent.getParcelableExtra("location");
+
+                Log.e("LocationReceived", "!!!");
+                Log.e("Long: ",  tmp.getLongitude()+ "...");
+                Log.e("Lat: ", tmp.getLatitude() + "...");
+
                 if(!paused && gpsIsEnabled) {
                     if (currentLocation == null) {
-                        currentLocation = intent.getParcelableExtra("location");
-                        Log.e("CURRENTLOCATION:", currentLocation.getLongitude()+"!");
+                        currentLocation = tmp;
+
                     } else {
                         lastLocation = currentLocation;
-                        currentLocation = intent.getParcelableExtra("location");
+                        currentLocation = tmp;
 
-                        Toast.makeText(mContext, (currentLocation.getSpeed()*3.6) + "!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, (currentLocation.getSpeed()*3.6) + "!", Toast.LENGTH_SHORT).show();
 
                         if(checkSpeedAndAcceleration()) {
                             calculateKm();
                         }
                     }
-
-                    Log.e("LOCATIONYEAH", currentLocation.getSpeed() + "!!!");
 
                     if (!load) {
                         setUpMapIfNeeded();
@@ -304,7 +293,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     private void initializeTour(){
         currentTour = new Tour(projectId);
-        //createNewTour();
+        this.segmentStartTime = getFormattedDate();
+        createNewTour();
     }
 
 
@@ -346,10 +336,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         if (isLocationEnabled()) {
             if (currentLocation != null) {
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                mMap.setMyLocationEnabled(true);
-            }else if(badLocation != null){
-                LatLng latLng = new LatLng(badLocation.getLatitude(), badLocation.getLongitude());
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.setMyLocationEnabled(true);
             }
@@ -414,7 +400,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
     private void createNewTour(){
             // Talk to Rest API
-            Log.e("CREATETOUR", "!");
             String URL = "https://weitblicker.org/rest/cycle/tours/new";
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
@@ -659,18 +644,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         sendSegment();
         mContext.unregisterReceiver(locationSwitchStateReceiver);
 
-        /*
-        try {
-            if (predictedLocationReceiver != null) {
-                LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
-            }
+        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
+        Log.e("Receiver unregistered!" , "!!");
 
-        } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
-        }
         final Intent locationService = new Intent(mContext, LocationService.class);
-        mContext.stopService(locationService);
-        */
+        getActivity().stopService(locationService);
 
         Log.e("DESTROYED", "!!!!");
     }
