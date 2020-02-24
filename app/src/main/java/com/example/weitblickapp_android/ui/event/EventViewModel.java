@@ -111,33 +111,38 @@ public class EventViewModel extends ViewModel {
 
     public String formatToTimeRange() {
 
-        LocalDate eventDate =  eventDateStart.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
 
-        LocalDate today = LocalDate.now();
-        LocalDate yesterday = today.minusDays(1);
-        LocalDate tomorrow = today.plusDays(1);
-        LocalDate inTwoDays = today.plusDays(2);
-        LocalDate inThreeDays = today.plusDays(3);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDate eventDate = null;
+            eventDate = eventDateStart.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            LocalDate today = LocalDate.now();
+            LocalDate yesterday = today.minusDays(1);
+            LocalDate tomorrow = today.plusDays(1);
+            LocalDate inTwoDays = today.plusDays(2);
+            LocalDate inThreeDays = today.plusDays(3);
 
 
-        if(eventDate.equals(yesterday)){
-            return "Gestern";
+            if(eventDate.equals(yesterday)){
+                return "Gestern";
+            }
+            if(eventDate.equals(today)){
+                return "Heute";
+            }
+            if(eventDate.equals(tomorrow)){
+                return "Morgen";
+            }
+            if(eventDate.equals(inTwoDays)){
+                return "In 2 Tagen";
+            }
+            if(eventDate.equals(inThreeDays)){
+                return "In 3 Tagen";
+            }
+            return getEventStartDate();
         }
-        if(eventDate.equals(today)){
-            return "Heute";
-        }
-        if(eventDate.equals(tomorrow)){
-            return "Morgen";
-        }
-        if(eventDate.equals(inTwoDays)){
-            return "In 2 Tagen";
-        }
-        if(eventDate.equals(inThreeDays)){
-            return "In 3 Tagen";
-        }
-        return getEventStartDate();
+
+            return getEventStartDate();
     }
 
 
