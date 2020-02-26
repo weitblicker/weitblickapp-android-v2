@@ -23,7 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.utils.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListDetailFragment;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;

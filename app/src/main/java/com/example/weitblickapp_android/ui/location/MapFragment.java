@@ -145,8 +145,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 Location tmp = intent.getParcelableExtra("location");
 
                 Log.e("LocationReceived", "!!!");
-                Log.e("Long: ",  tmp.getLongitude()+ "...");
-                Log.e("Lat: ", tmp.getLatitude() + "...");
+                Log.e("Long ",  tmp.getLongitude()+ "...");
+                Log.e("Lat ", tmp.getLatitude() + "...");
 
                 if(!paused && gpsIsEnabled) {
                     if (currentLocation == null) {
@@ -155,8 +155,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     } else {
                         lastLocation = currentLocation;
                         currentLocation = tmp;
-
-                        //Toast.makeText(mContext, (currentLocation.getSpeed()*3.6) + "!", Toast.LENGTH_SHORT).show();
 
                         if(checkSpeedAndAcceleration()) {
                             calculateKm();
@@ -317,7 +315,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 if ((!paused) && gpsIsEnabled) {
                     Log.e("SEGMENT SENT", "!!!");
                     if(load) {
-                        Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
                         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
                                 15));
@@ -347,8 +344,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             Log.e("DISTANCE", dis + "");
             kmSegment += dis;
             kmTotal += dis;
-            Log.e("km-Total:", kmTotal+"!");
-            Log.e("km-Segment:", kmSegment+"!");
+            Log.e("km-Total ", kmTotal+"");
+            Log.e("km-Segment ", kmSegment+"");
 
             don = currentTour.getEurosTotal();
 

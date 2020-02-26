@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.ViewPageAdapter;
+import com.example.weitblickapp_android.ui.utils.ViewPageAdapter;
 import com.example.weitblickapp_android.ui.event.EventListFragment;
 import com.example.weitblickapp_android.ui.news.NewsListFragment;
 import com.google.android.material.tabs.TabLayout;

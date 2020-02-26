@@ -25,8 +25,6 @@ public class LocationService extends Service implements LocationListener {
     private final LocationServiceBinder binder = new LocationServiceBinder();
     boolean isLocationManagerUpdatingLocation;
 
-
-
     ArrayList<Location> locationList;
 
     ArrayList<Location> inaccurateLocationList;
@@ -106,8 +104,6 @@ public class LocationService extends Service implements LocationListener {
     }
 
 
-
-    /* LocationListener implemenation */
     @Override
     public void onProviderDisabled(String provider) {
         if (provider.equals(LocationManager.GPS_PROVIDER)) {
@@ -143,7 +139,6 @@ public class LocationService extends Service implements LocationListener {
             isLocationManagerUpdatingLocation = true;
             runStartTimeInMillis = (long)(SystemClock.elapsedRealtimeNanos() / 1000000);
 
-
             locationList.clear();
 
             inaccurateLocationList.clear();
@@ -167,8 +162,8 @@ public class LocationService extends Service implements LocationListener {
                 //criteria.setBearingAccuracy(Criteria.ACCURACY_HIGH);
                 //criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
-                Integer gpsFreqInMillis = 3000;
-                Integer gpsFreqInDistance = 5;  // in meters
+                Integer gpsFreqInMillis = 1000;
+                Integer gpsFreqInDistance = 1;  // in meters
 
                 locationManager.requestLocationUpdates(gpsFreqInMillis, gpsFreqInDistance, criteria, this, null);
 
@@ -197,7 +192,6 @@ public class LocationService extends Service implements LocationListener {
 
         //Filter Location and send predicted Location to UI
         filterAndAddLocation(newLocation);
-
 
         //Send actual Location to somewhere
         Intent intent = new Intent("LocationUpdated");

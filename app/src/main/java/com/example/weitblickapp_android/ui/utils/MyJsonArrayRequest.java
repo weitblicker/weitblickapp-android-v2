@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui;
+package com.example.weitblickapp_android.ui.utils;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;

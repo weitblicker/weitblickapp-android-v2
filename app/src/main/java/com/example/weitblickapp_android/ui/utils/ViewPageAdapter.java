@@ -1,15 +1,11 @@
-package com.example.weitblickapp_android.ui;
-
-import android.content.Context;
-
-import com.example.weitblickapp_android.ui.news.NewsListFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.example.weitblickapp_android.ui.utils;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewPageAdapter extends FragmentPagerAdapter {
 

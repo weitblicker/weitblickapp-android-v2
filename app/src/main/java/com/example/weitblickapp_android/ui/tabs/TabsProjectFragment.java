@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.ViewPageAdapter;
+import com.example.weitblickapp_android.ui.utils.ViewPageAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListFragment;
 import com.example.weitblickapp_android.ui.project.ProjectListFragment;
 import com.google.android.material.tabs.TabLayout;

@@ -18,7 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
-import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
+import com.example.weitblickapp_android.ui.utils.MyJsonArrayRequest;
 import com.example.weitblickapp_android.ui.login.Login_Activity;
 
 import org.json.JSONArray;
