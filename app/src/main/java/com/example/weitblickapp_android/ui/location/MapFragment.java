@@ -180,16 +180,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         askGpsPermission();
         setUpGpsStateReceiver();
         initializeTour();
-       // sendRouteSegments();
+        sendRouteSegments();
 
-        Log.e("ONCREATE", "!!!!");
     }
 
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        Log.e("ONCREATEVIEW", "!!!!");
 
 
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -314,7 +312,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 //Send Segment here
                 if ((!paused) && gpsIsEnabled) {
                     Log.e("SEGMENT SENT", "!!!");
-                    if(load) {
+                    if(load && currentLocation != null) {
                         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
                                 15));
@@ -635,6 +633,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void onDestroy() {
         super.onDestroy();
         sendSegment();
+        handler.removeCallbacksAndMessages(null);
         mContext.unregisterReceiver(locationSwitchStateReceiver);
 
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
@@ -642,15 +641,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         final Intent locationService = new Intent(mContext, LocationService.class);
         getActivity().stopService(locationService);
-
-        Log.e("DESTROYED", "!!!!");
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.e("DETACHED", "!!!!!");
-    }
 }
 
 
