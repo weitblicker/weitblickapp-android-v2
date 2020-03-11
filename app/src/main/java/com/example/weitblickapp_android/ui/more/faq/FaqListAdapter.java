@@ -55,12 +55,13 @@ public class FaqListAdapter extends ArrayAdapter<FaqViewModel> {
 
         final FaqViewModel faq = (FaqViewModel) getItem(position);
 
+        //set answer and question
         if(faq.answer != null && faq.question != null){
                 title.setVisibility(View.GONE);
                 textView_question.setText(faq.getQuestion());
 
+                //set onClickListener to FAQDetailView
                 view.setOnClickListener(new View.OnClickListener() {
-
                     @Override
                     public void onClick(View v) {
                         FragmentTransaction ft = fragManager.beginTransaction();
@@ -70,6 +71,7 @@ public class FaqListAdapter extends ArrayAdapter<FaqViewModel> {
                     }
                 });
         }else{
+            //if questions and answer ar empty set title
             textView_question.setVisibility(View.GONE);
             point.setVisibility(View.GONE);
             title.setText(faq.getTitel());

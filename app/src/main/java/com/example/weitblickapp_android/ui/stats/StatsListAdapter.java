@@ -53,7 +53,8 @@ public class StatsListAdapter extends ArrayAdapter<StatsViewModel> {
         TextView textView_donation = (TextView) view.findViewById(R.id.donation);
 
         final StatsViewModel tour = (StatsViewModel) getItem(position);
-        
+
+        //set data
         String donation = String.format("%.2f", tour.getDonation()).concat(" €");
         String distance = String.format("%.2f", tour.getDistance()).concat(" km");
 

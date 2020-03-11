@@ -38,6 +38,7 @@ public class MoreFragment extends Fragment {
         TextView contactText = (TextView) root.findViewById(R.id.contactext);
         TextView creditsText = (TextView) root.findViewById(R.id.creditsText);
 
+        //set onClickListener to FAQListView
         faqText.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -56,6 +57,8 @@ public class MoreFragment extends Fragment {
                 ft.commit();
             }
         });
+
+        //set onClickListener CreditsFragmentView
         creditsText.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -74,6 +77,8 @@ public class MoreFragment extends Fragment {
                 ft.commit();
             }
         });
+
+        //set onClickListener AGBView
         blog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +97,8 @@ public class MoreFragment extends Fragment {
                 ft.commit();
             }
         });
+
+        //set onClickListener ContactView
         contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

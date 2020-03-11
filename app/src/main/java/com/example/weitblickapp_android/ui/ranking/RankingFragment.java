@@ -152,6 +152,7 @@ public class RankingFragment extends ListFragment{
                     JSONObject userObject = null;
 
                     try {
+                        //load data
                         userObject = bestField.getJSONObject(i);
                         String username = userObject.getString("username");
                         String imageUrl = userObject.getString("image");

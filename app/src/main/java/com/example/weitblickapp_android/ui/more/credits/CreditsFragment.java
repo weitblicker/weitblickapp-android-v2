@@ -42,7 +42,6 @@ public class CreditsFragment extends Fragment {
     String titel;
     String description;
     String weitblickUrl = "https://weitblicker.org/";
-
     TextView titelView;
     TextView descriptionView;
     ImageView imageView;
@@ -57,16 +56,17 @@ public class CreditsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_credits, container, false);
 
+        //set data
         titelView = (TextView) view.findViewById(R.id.name);
         descriptionView = (TextView) view.findViewById(R.id.description);
         imageView = (ImageView) view.findViewById(R.id.image);
-
         list = (ListView) view.findViewById(R.id.members);
         adapter = new CreditsListAdapter(getActivity(), allMembers, getFragmentManager());
         list.setAdapter(adapter);
 
         ImageButton back = (ImageButton) view.findViewById(R.id.back);
 
+        //set onClickListener to MoreView
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +96,7 @@ public class CreditsFragment extends Fragment {
                 ArrayList<String> imageUrls = new ArrayList<String>();
 
                 try {
-
+                    //load Data
                     membersArrayObject = responseObject.getJSONArray("member");
 
                     String memberName = null;
@@ -111,6 +111,7 @@ public class CreditsFragment extends Fragment {
 
                     String url = imageObject.getString("url");
 
+                    //load Image
                     try {
                         weitblickUrl = weitblickUrl.concat(url);
                         Picasso.get().load(weitblickUrl).fit().centerCrop().
@@ -130,6 +131,7 @@ public class CreditsFragment extends Fragment {
 
                     titelView.setText(name);
 
+                    //load Member
                     for (int x = 0; x < membersArrayObject.length(); x++) {
                         memberObject = membersArrayObject.getJSONObject(x);
                         memberName = memberObject.getString("name");
@@ -167,6 +169,7 @@ public class CreditsFragment extends Fragment {
         requestQueue.add(objectRequest);
     }
 
+    //get Height of ListView with full content
     public void setListViewHeightBasedOnChildren(ListView listView) {
 
         ListAdapter listAdapter = listView.getAdapter();

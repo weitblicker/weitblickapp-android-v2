@@ -23,13 +23,16 @@ public class TabsProjectFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_tabs, container, false);
 
+        //setup tabLayout and viewPager
         tabLayout = (TabLayout) root.findViewById(R.id.tab_layout);
         viewPager = (ViewPager) root.findViewById(R.id.pager);
 
+        //add Fragments to adapter
         ViewPageAdapter adapter = new ViewPageAdapter(getChildFragmentManager());
         adapter.AddFragment(new ProjectListFragment(), "Projekte");
         adapter.AddFragment(new BlogEntryListFragment(), "Blog");
 
+        //view viewPager and tabLayout
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 

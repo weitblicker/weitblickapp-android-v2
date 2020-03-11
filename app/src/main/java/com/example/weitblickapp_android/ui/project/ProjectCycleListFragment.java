@@ -126,6 +126,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                     //Check if Project-Object is for Cycling
                     try {
+                        //load data if cycle is available
                         responseObject = response.getJSONObject(i);
                         try {
                             cycleTest = responseObject.getJSONObject("cycle");
@@ -134,7 +135,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         }
 
                         if(cycleTest != null) {
-
+                            //load data
                             cycleObject = responseObject.getJSONObject("cycle");
 
                             int projectId = responseObject.getInt("id");
@@ -163,6 +164,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                             }
 
+                            //load images
                             try {
                                 images = responseObject.getJSONArray("photos");
                                 for (int x = 0; x < images.length(); x++) {
@@ -176,6 +178,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             } catch (JSONException e) {
 
                             }
+                            //load news
                             try {
                                 news = responseObject.getJSONArray("news");
                                 for (int x = 0; x < news.length(); x++) {
@@ -185,6 +188,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             } catch (JSONException e) {
 
                             }
+                            //load blog
                             try {
                                 blogs = responseObject.getJSONArray("blog");
                                 for (int x = 0; x < blogs.length(); x++) {
@@ -194,6 +198,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             } catch (JSONException e) {
 
                             }
+                            //load events
                             try {
                                 events = responseObject.getJSONArray("events");
                                 for (int x = 0; x < events.length(); x++) {
@@ -210,11 +215,13 @@ public class ProjectCycleListFragment extends ListFragment {
                             String iban = null;
                             String bic = null;
 
+                            //load hosts
                             for (int x = 0; x < hosts.length(); x++) {
                                 host = hosts.getJSONObject(x);
                                 allHosts.add(host.getString("city"));
                             }
 
+                            //load bankAccount
                             if (!responseObject.getString("donation_account").contains("null")) {
                                 accountObject = responseObject.getJSONObject("donation_account");
                                 bankname = accountObject.getString("account_holder");
@@ -223,6 +230,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             }
 
 
+                            //load location
                             locationObject = responseObject.getJSONObject("location");
 
                             double lat = locationObject.getLong("lat");
@@ -239,6 +247,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             String km_sum = null;
 
 
+                            //load cycle
                             if (!responseObject.getString("cycle").contains("null")) {
                                 cycleObject = responseObject.getJSONObject("cycle");
                                 current_amount = cycleObject.getString("euro_sum");
@@ -263,6 +272,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             String weblink = null;
                             String partnerName = null;
 
+                            //load partners
                             for (int y = 0; y < partnerJSONObject.length(); y++) {
                                 partnerObject = partnerJSONObject.getJSONObject(y);
                                 logo = partnerObject.getString("logo");
@@ -278,6 +288,7 @@ public class ProjectCycleListFragment extends ListFragment {
                             String date;
                             boolean reached;
 
+                            //load milestone
                             try {
                                 mileStoneArray = responseObject.getJSONArray("milestones");
                                 for (int x = 0; x < mileStoneArray.length(); x++) {
@@ -354,12 +365,14 @@ public class ProjectCycleListFragment extends ListFragment {
                     String locationDescription;
 
                     try {
+                        //load data
                         Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String description = responseObject.getString("description");
                         String startDate = responseObject.getString("start");
                         String endDate = responseObject.getString("end");
 
+                        //load location
                         locationObject = responseObject.getJSONObject("location");
                         name = locationObject.getString("name");
                         address = locationObject.getString("address");
@@ -367,10 +380,12 @@ public class ProjectCycleListFragment extends ListFragment {
                         lng = locationObject.getDouble("lng");
                         locationDescription = locationObject.getString("description");
 
+                        //load hosts
                         hostObject = responseObject.getJSONObject("host");
                         hostName = hostObject.getString("city");
 
 
+                        //load images
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -436,6 +451,7 @@ public class ProjectCycleListFragment extends ListFragment {
                     SponsorViewModel temp = null;
 
                     try {
+                        //load data
                         partner = responseObject.getJSONObject("partner");
                         String name =  partner.getString("name");
                         String desc = partner.getString("description");
@@ -506,6 +522,7 @@ public class ProjectCycleListFragment extends ListFragment {
                         ArrayList<String> allHosts = new ArrayList<String>();
 
                         try {
+                            //load data
                             responseObject = response.getJSONObject(i);
                             Integer blogId = responseObject.getInt("id");
                             String title = responseObject.getString("title");
@@ -532,10 +549,11 @@ public class ProjectCycleListFragment extends ListFragment {
                             }catch(JSONException e){
 
                             }
-
+                            //load hosts
                             hosts = responseObject.getJSONObject("host");
                             allHosts.add(hosts.getString("city"));
 
+                            //load author
                             author = responseObject.getJSONObject("author");
                             String name = author.getString("name");
                             String profilPic = author.getString("image");
@@ -606,11 +624,11 @@ public class ProjectCycleListFragment extends ListFragment {
                     ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
+                        //load data
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
-                        // String date = "2009-09-26T14:48:36Z";
 
                         try{
                             Date ItemDate = formatterRead.parse(date);
@@ -622,6 +640,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         text.trim();
 
+                        //load author
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
@@ -639,6 +658,7 @@ public class ProjectCycleListFragment extends ListFragment {
 
                         }
 
+                        //load hosts
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
 

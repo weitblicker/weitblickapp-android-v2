@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        //setUp BottomNavigationView
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_tabs, R.id.nav_project_tabs, R.id.nav_more,
@@ -81,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-Log.e(" REQUEST PERMISSIONS", "!");
         initActivity();
     }
 
@@ -129,6 +129,7 @@ Log.e(" REQUEST PERMISSIONS", "!");
         return true;
     }
 
+    //checks if User is logged in and redirect to the selected view
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!session.checkLogin()) {
@@ -155,25 +156,6 @@ Log.e(" REQUEST PERMISSIONS", "!");
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
-
-    /* @Override
-    public void onBackPressed() {
-
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag("MAP_FRAGMENT");
-
-        Log.e("FRAGMENT: ", fragment.toString());
-
-        if(count == 0) {
-            super.onBackPressed();
-        }else if (fragment == null || ((MapFragment)fragment).onBackPressed()){
-            getSupportFragmentManager().popBackStack();
-        }
-
-    }*/
-
 
    @Override
     public void onBackPressed() {

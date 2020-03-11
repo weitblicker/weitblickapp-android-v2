@@ -16,16 +16,16 @@ import java.util.ArrayList;
 
 import androidx.fragment.app.ListFragment;
 
+//get a DetailPage of all EventEntries of ProjectDetailPage
+
 public class EventListDetailFragment extends ListFragment {
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
-
     ArrayList<EventViewModel> eventList = new ArrayList<EventViewModel>();
     private EventListAdapter adapter;
     private String lastItemDate;
     private String lastItemDateCheck = "";
     private String url = "https://weitblicker.org/rest/news?limit=5";
-
     private SharedPreferences cachedNews;
     private String PREF_NAME = "NewsList";
 

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//list of all Partners
+
 
 public class ProjectPartnerListFragment extends ListFragment{
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

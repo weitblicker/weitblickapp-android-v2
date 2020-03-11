@@ -38,7 +38,6 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
     ArrayList<EventViewModel> events = new ArrayList<EventViewModel>();
-
     private EventListAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +59,6 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //loadEvents();
-        //getListView().setOnScrollListener(this);
     }
 
     public void loadEvents(){
@@ -99,6 +96,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     String hostName;
 
                     try {
+                        //load data
                         responseObject = response.getJSONObject(i);
                         Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
@@ -130,7 +128,6 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
                         }
 
-
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -150,6 +147,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
 
                         location = new EventLocation(name, address, lat, lng, descriptionLocation);
 
+                        //load occurrences
                         for(int y = 0; y < occurrences.length(); y++){
                             String occurrenceStart = occurrences.getJSONObject(y).getString("start");
                             String occurrenceEnd = occurrences.getJSONObject(y).getString("end");
@@ -159,6 +157,7 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                                 adapter.notifyDataSetChanged();
                             }
                         }
+
                         if(formatterRead.parse(startDate).after(new Date())) {
                             EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
                             events.add(temp);

@@ -52,6 +52,7 @@ public class StatsFragment extends ListFragment {
         this.requestQueue = Volley.newRequestQueue(mContext);
         session = new SessionManager(mContext);
 
+        //view data if User is logged in
         if(!session.isLoggedIn()){
 
             Intent redirect=new Intent(getActivity(), Login_Activity.class);
@@ -103,6 +104,7 @@ public class StatsFragment extends ListFragment {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject responseObject = null;
                     try {
+                        //load data
                         responseObject = response.getJSONObject(i);
 
                         double distance = responseObject.getDouble("km");

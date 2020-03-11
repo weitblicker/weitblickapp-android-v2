@@ -27,9 +27,11 @@ public class FagDetailFragment extends Fragment {
         TextView answer = (TextView) view.findViewById(R.id.answer);
         ImageButton back = (ImageButton) view.findViewById(R.id.back);
 
+        //SET data
         question.setText(this.faq.getQuestion());
         answer.setText(this.faq.getAnswer());
 
+        //set OnClickListener to FAQListView
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

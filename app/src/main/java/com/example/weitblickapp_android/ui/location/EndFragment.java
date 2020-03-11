@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
 public class EndFragment extends Fragment {
 
     ArrayList<SponsorModel> sponsors = new ArrayList<SponsorModel>();
-
     String distanceTotal;
     String eurosTotal;
     String projectName;
@@ -63,6 +62,7 @@ public class EndFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Get DefaultProject from UserDevice
         settings = getContext().getApplicationContext().getSharedPreferences("DefaultProject", 0);
         int id = settings.getInt("projectid", 0);
         this.projectName = settings.getString("projectname", "");
@@ -75,6 +75,7 @@ public class EndFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_end, container, false);
 
+        //set data
         TextView distanceText = root.findViewById(R.id.distance);
         distanceText.setText(distanceTotal);
 
@@ -88,6 +89,7 @@ public class EndFragment extends Fragment {
         TextView location = (TextView) root.findViewById(R.id.location);
         ImageView projectPic  = (ImageView) root.findViewById(R.id.imageView21);
 
+        //load Images from Project
         String url = "https://weitblicker.org";
         if(project.getImageUrls().size() > 0){
             url = url.concat(project.getImageUrls().get(0));
@@ -99,6 +101,7 @@ public class EndFragment extends Fragment {
         location.setText(settings.getString("location", ""));
         partner.setText(settings.getString("hosts", ""));
 
+        //list of all sponsors
         ListView listview = (ListView) root.findViewById(R.id.list);
         adapter = new SponsorAdapter(getActivity(), sponsoren, getFragmentManager());
         listview.setAdapter(adapter);
@@ -128,6 +131,7 @@ public class EndFragment extends Fragment {
 
                         imageUrls = getImageUrls(text);
 
+                        //load Images
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -139,7 +143,7 @@ public class EndFragment extends Fragment {
                         }catch(JSONException e){
 
                         }
-
+                        //load Donation
                         cycleObject = responseObject.getJSONObject("cycle");
                         donations = cycleObject.getJSONArray("donations");
                         for (int y = 0; y < donations.length(); y++) {
@@ -204,6 +208,7 @@ public class EndFragment extends Fragment {
                         SponsorViewModel temp = null;
 
                         try {
+                            //load datas
                             partner = responseObject.getJSONObject("partner");
                             String name =  partner.getString("name");
                             String desc = partner.getString("description");

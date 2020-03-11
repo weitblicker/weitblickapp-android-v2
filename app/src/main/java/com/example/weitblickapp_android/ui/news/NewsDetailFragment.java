@@ -55,6 +55,7 @@ public class NewsDetailFragment extends Fragment {
     private int currentPage = 0;
     private Timer timer = null;
 
+
     public NewsDetailFragment(NewsViewModel article){
         this.title = article.getTitle();
         this.text = article.getText();
@@ -132,12 +133,14 @@ public class NewsDetailFragment extends Fragment {
         final ImageView image = root.findViewById(R.id.image);
 
 
-
+        //Makes one String out of HostArray
         StringBuilder b = new StringBuilder();
         for(String s : hosts){
             b.append(s);
             b.append(" ");
         }
+
+        //Makes Character UpperCase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -149,6 +152,7 @@ public class NewsDetailFragment extends Fragment {
         }
         partner.setText(B.toString());
 
+        //set Picture
         if(this.picture.contains("null")){
                 Picasso.get().load(R.mipmap.ic_launcher_foreground).fit().centerCrop()
                         .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
@@ -173,6 +177,7 @@ public class NewsDetailFragment extends Fragment {
 
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
+        //set onClickListener to NewsListView
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +186,8 @@ public class NewsDetailFragment extends Fragment {
                 }
             }
         });
+
+        //check if Project is available and load Project
         if(projectArr != null && projectArr.size() != 0){
             ListView listProject = (ListView) root.findViewById(R.id.projectList);
             ProjectAdapterShort adapterProject = new ProjectAdapterShort(getActivity(), projectList, getFragmentManager());

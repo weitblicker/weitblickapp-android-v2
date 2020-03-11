@@ -122,7 +122,7 @@ public class ProfilFragment extends Fragment {
                 }
 
                 //Parse the JSON response array by iterating over it
-
+                //load User
                 JSONObject userObject = null;
                 for (int x = 0; x < bestField.length(); x++) {
                     try {
@@ -181,15 +181,18 @@ public class ProfilFragment extends Fragment {
 
         ImageButton changeProfile = root.findViewById(R.id.changeProfil);
 
+        //set onClickListener changeProfil
         changeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //get permission
                 if (ActivityCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             2000);
                 } else {
+                    //openGallery
                     startGallery();
                 }
             }

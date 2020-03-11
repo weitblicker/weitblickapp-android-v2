@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//GET all BlogEntries as a List from a ProjectDetailPage
+
 public class BlogEntryListDetailFragment extends ListFragment{
 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

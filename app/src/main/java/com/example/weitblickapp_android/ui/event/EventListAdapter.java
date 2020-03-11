@@ -77,6 +77,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
             Picasso.get().load(R.drawable.event_default).fit().centerCrop().into(imageView);
         }
 
+        //set data for view
         textView_location.setText(event.getLocation().getAddress());
         textView_date.setText("   " + event.formatToTimeRange());
         test.setText(event.getTitle());
@@ -85,6 +86,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         params.height = getTextViewHeight(test);
         test.setLayoutParams(params);
 
+        //makes Character Uppercase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < event.getHostName().length(); i++ ) {
             char c = event.getHostName().charAt( i );
@@ -96,7 +98,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         }
         textView_host.setText(B.toString());
 
-
+        //set onClick to EventsDetailPage
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -112,6 +114,7 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         return view;
     }
 
+    //Gets the Height of the Textview with content
     public static int getTextViewHeight(TextView textView) {
         WindowManager wm =
                 (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);

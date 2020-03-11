@@ -65,11 +65,14 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
             final NewsViewModel article = (NewsViewModel) getItem(position);
 
+            //makes one String of HostArray
             StringBuilder b = new StringBuilder();
             for(String s : article.getHosts()){
                 b.append(s);
                 b.append(" ");
             }
+
+            //makes Character UpperCase
             StringBuilder B = new StringBuilder();
             for ( int i = 0; i < b.length(); i++ ) {
                 char c = b.charAt( i );
@@ -81,6 +84,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
             }
             partner.setText(B.toString());
 
+            //load Images
             if(article.getImageUrls().size()>0) {
                 weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));
 
@@ -94,6 +98,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
 
         //  imageView.setImageResource(R.drawable.login_logo);
 
+            //set data
             textView_title.setText(article.getTitle());
             textView_teaser.setText(article.getTeaser());
             textView_date.setText(article.formatToTimeRange());
@@ -123,6 +128,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsViewModel> {
         return view;
     }
 
+    // get the Height of a Textview with Content
     public static int getTextViewHeight(TextView textView) {
         WindowManager wm =
                 (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);

@@ -57,12 +57,14 @@ public class MilenstoneListAdapter extends ArrayAdapter<MilenstoneViewModel> {
 
         final MilenstoneViewModel mile = (MilenstoneViewModel) getItem(position);
 
+        //check if milestone is reached and set Icon
         if(mile.reached){
             finished.setImageResource(R.drawable.icon_milestone_true);
         }else{
             finished.setImageResource(R.drawable.icon_milestone_false);
         }
 
+        //set data
         description.setText(mile.getDescription());
         title.setText(mile.getTitle());
         date.setText(mile.getDate());

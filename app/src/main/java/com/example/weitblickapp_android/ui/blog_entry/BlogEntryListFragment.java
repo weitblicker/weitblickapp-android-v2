@@ -271,6 +271,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                     JSONObject donation = null;
                     ProjectViewModel temp = null;
                     try {
+                        //Load data
                         int projectId = responseObject.getInt("id");
                         String title = responseObject.getString("name");
                         MilenstoneViewModel mile = null;
@@ -288,6 +289,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         imageUrls = getImageUrls(text);
                         text = extractImageUrls(text);
 
+                        //load images
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -307,6 +309,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         String date;
                         boolean reached;
 
+                        //loadMilestone
                         try {
                             mileStoneArray = responseObject.getJSONArray("milestones");
                             for (int x = 0; x < mileStoneArray.length(); x++) {
@@ -327,11 +330,13 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         String iban = null;
                         String bic = null;
 
+                        //loadHosts
                         for (int x = 0; x < hosts.length(); x++) {
                             host = hosts.getJSONObject(x);
                             allHosts.add(host.getString("city"));
                         }
 
+                        //load Donation
                         if(!responseObject.getString("donation_account").contains("null")){
                             accountObject = responseObject.getJSONObject("donation_account");
                             bankname = accountObject.getString("account_holder");
@@ -339,6 +344,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                             bic = accountObject.getString("bic");
                         }
 
+                        //load Loaction
                         locationObject = responseObject.getJSONObject("location");
 
                         double lat = locationObject.getLong("lat");
@@ -354,6 +360,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         int cyclist = 0;
                         String km_sum = null;
 
+                        //load cycle
                         if(!responseObject.getString("cycle").contains("null")){
                             cycleObject = responseObject.getJSONObject("cycle");
                             current_amount = cycleObject.getString("euro_sum");
@@ -377,6 +384,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                         String weblink = null;
                         String partnerName = null;
 
+                        //load Partners
                         for (int y = 0; y < partnerJSONObject.length(); y++) {
                             partnerObject = partnerJSONObject.getJSONObject(y);
                             logo = partnerObject.getString("logo");
@@ -433,6 +441,7 @@ public class BlogEntryListFragment extends ListFragment implements AbsListView.O
                     SponsorViewModel temp = null;
 
                     try {
+                        //load data
                         partner = responseObject.getJSONObject("partner");
                         String name =  partner.getString("name");
                         String desc = partner.getString("description");

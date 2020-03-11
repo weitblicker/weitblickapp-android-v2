@@ -124,6 +124,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     String imageString = null;
 
                     try {
+                        //load data
                         responseObject = response.getJSONObject(i);
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
@@ -131,6 +132,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         String date = responseObject.getString("published");
                        // String date = "2009-09-26T14:48:36Z";
 
+                        //load Projects
                         try {
                             String projectID = responseObject.getString("project");
                             if(!projectID.contentEquals("null")){
@@ -177,9 +179,11 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
 
                         }
 
+                        //load Hosts
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
 
+                        //load Author
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
@@ -254,6 +258,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                         JSONObject donation = null;
                         ProjectViewModel temp = null;
                         try {
+                            //load Data
                             int projectId = responseObject.getInt("id");
                             String title = responseObject.getString("name");
                             MilenstoneViewModel mile = null;
@@ -271,6 +276,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             imageUrls = getImageUrls(text);
                             text = extractImageUrls(text);
 
+                            //get Image
                             try {
                                 images = responseObject.getJSONArray("photos");
                                 for (int x = 0; x < images.length(); x++) {
@@ -290,6 +296,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             String date;
                             boolean reached;
 
+                            //load MileStone
                             try {
                                 mileStoneArray = responseObject.getJSONArray("milestones");
                                 for (int x = 0; x < mileStoneArray.length(); x++) {
@@ -310,11 +317,13 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             String iban = null;
                             String bic = null;
 
+                            //load Hosts
                             for (int x = 0; x < hosts.length(); x++) {
                                 host = hosts.getJSONObject(x);
                                 allHosts.add(host.getString("city"));
                             }
 
+                            //load bankAccount
                             if(!responseObject.getString("donation_account").contains("null")){
                                 accountObject = responseObject.getJSONObject("donation_account");
                                 bankname = accountObject.getString("account_holder");
@@ -322,7 +331,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                                 bic = accountObject.getString("bic");
                             }
 
-
+                            //load Location
                             locationObject = responseObject.getJSONObject("location");
 
                             double lat = locationObject.getLong("lat");
@@ -338,10 +347,9 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             int cyclist = 0;
                             String km_sum = null;
 
+                            //load Cycle
                             try {
-
                                 cycleObject = responseObject.getJSONObject("cycle");
-
                                 current_amount = cycleObject.getString("euro_sum");
                                 cycle_donation = cycleObject.getString("euro_goal");
                                 cyclist = cycleObject.getInt("cyclists");
@@ -363,6 +371,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                             String weblink = null;
                             String partnerName = null;
 
+                            //load Partners
                             for (int y = 0; y < partnerJSONObject.length(); y++) {
                                 partnerObject = partnerJSONObject.getJSONObject(y);
                                 logo = partnerObject.getString("logo");
@@ -419,6 +428,7 @@ public class NewsListFragment extends ListFragment implements AbsListView.OnScro
                     SponsorViewModel temp = null;
 
                     try {
+                        //load data
                         partner = responseObject.getJSONObject("partner");
                         String name =  partner.getString("name");
                         String desc = partner.getString("description");

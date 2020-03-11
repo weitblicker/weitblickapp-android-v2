@@ -32,7 +32,6 @@ import io.noties.markwon.Markwon;
 
 public class BlogDetailFragment extends Fragment {
     static final String urlWeitblick = "https://weitblicker.org";
-    //String location;
     String title;
     String text;
     ArrayList<String> imageUrls = new ArrayList<>();
@@ -122,7 +121,7 @@ public class BlogDetailFragment extends Fragment {
                 }
             }, DELAY_MS, PERIOD_MS);
         }
-
+        //SET data for view
         final TextView authorName = root.findViewById(R.id.authorname);
         final TextView location = root.findViewById(R.id.location);
         final ImageView authorImages = root.findViewById(R.id.authorpicture);
@@ -136,12 +135,9 @@ public class BlogDetailFragment extends Fragment {
             location.setText(this.location);
 
         }
-
-
-
-
         authorName.setText(this.name);
 
+        //SET authorPicture on default if null
         if(this.picture.contains("null")){
             Picasso.get().load(R.mipmap.ic_launcher_foreground).fit().centerCrop()
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
@@ -152,13 +148,15 @@ public class BlogDetailFragment extends Fragment {
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorImages);
         }
 
-
+        //Makes one String out of the Partner Array
         final TextView partner = root.findViewById(R.id.partner);
         StringBuilder b = new StringBuilder();
         for(String s : this.host){
             b.append(s);
             b.append(" ");
         }
+
+        //Makes Character UpperCase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -185,6 +183,7 @@ public class BlogDetailFragment extends Fragment {
         dateTextView.setText(this.date);
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
+        //SET Back Button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +193,7 @@ public class BlogDetailFragment extends Fragment {
             }
         });
 
+        //SET Project in ListView
         if(projectArr != null && projectArr.size() != 0){
             ListView listProject = (ListView) root.findViewById(R.id.projectList);
             ProjectAdapterShort adapterProject = new ProjectAdapterShort(getActivity(), projectList, getFragmentManager());

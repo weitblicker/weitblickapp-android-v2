@@ -64,12 +64,15 @@ public class CreditsListAdapter extends ArrayAdapter<MemberViewModel> {
         try {
             weitblickUrl = weitblickUrl.concat(member.getImage());
         }catch(IndexOutOfBoundsException e){
-            Log.e("Info", "no pictures for this Member");
+
         }
+
+        //load ProfilImage
         Picasso.get().load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(image);
 
+        //set data
         name.setText(member.getName());
         email.setText(member.getEmail());
         text.setText(member.getText());

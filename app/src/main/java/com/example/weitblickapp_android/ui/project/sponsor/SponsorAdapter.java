@@ -58,7 +58,7 @@ public class SponsorAdapter extends ArrayAdapter<SponsorViewModel> {
 
         final SponsorViewModel sponsor = (SponsorViewModel) getItem(position);
 
-
+        //set data
         //logo.setImageResource(sponsor.getLogo());
         description.setText(sponsor.getDescription());
         name.setText(sponsor.name);

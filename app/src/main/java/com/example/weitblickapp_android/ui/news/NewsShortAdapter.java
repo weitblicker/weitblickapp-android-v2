@@ -63,11 +63,14 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
 
         final NewsViewModel article = (NewsViewModel) getItem(position);
 
+        //Makes one String of HostArray
         StringBuilder b = new StringBuilder();
         for(String s : article.getHosts()){
             b.append(s);
             b.append(" ");
         }
+
+        //Makes Character Uppercase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -83,6 +86,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
             weitblickUrl = weitblickUrl.concat(article.getImageUrls().get(0));
         }
 
+        //load Image
         Picasso.get().load(weitblickUrl).fit().centerCrop().
                 placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
                 .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
@@ -105,6 +109,7 @@ public class NewsShortAdapter extends ArrayAdapter<NewsViewModel> {
         textView_teaser.setText(article.getTeaser());
         textView_date.setText(article.getDate());
 
+        //set onClickListener to NewsListFragment
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override

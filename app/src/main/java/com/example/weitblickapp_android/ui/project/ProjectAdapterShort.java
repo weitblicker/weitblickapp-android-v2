@@ -68,11 +68,13 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
         final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
 
+        //makes one String out of a hostArray
         StringBuilder b = new StringBuilder();
         for(String s : project.getHosts()){
             b.append(s);
             b.append(" ");
         }
+        //makes character UpperCase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -87,6 +89,7 @@ public class ProjectAdapterShort extends ArrayAdapter<ProjectViewModel> {
 
             maps.setVisibility(View.GONE);
         }else{
+            //set onClickListener for set defaultProject and redirect to MapOverView
             maps.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -214,15 +214,18 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         titleTextView.setText(this.title);
         final TextView partner = root.findViewById(R.id.partner);
         ImageView logo_icon = root.findViewById(R.id.logo_icon);
+
         if(hosts.isEmpty()){
             partner.setVisibility(View.GONE);
             logo_icon.setVisibility(View.GONE);
         }else{
+            //makes one String out of a hostArray
             StringBuilder b = new StringBuilder();
             for(String s : hosts){
                 b.append(s);
                 b.append(" ");
             }
+            //makes Character Uppercase
             StringBuilder B = new StringBuilder();
             for ( int i = 0; i < b.length(); i++ ) {
                 char c = b.charAt( i );
@@ -257,6 +260,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
+        //set LocationDescription
         if(this.descriptionLocation.contains("null")){
             locationDescription.setVisibility(View.GONE);
         }else{
@@ -265,11 +269,12 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         ImageButton bike = root.findViewById(R.id.bike);
         ImageButton bike2 = root.findViewById(R.id.bike2);
 
-        //DonationGoal
+        //Set DonationGoal
         if(this.goal_amount.contains("null") && this.current_amount.contains("null") && this.goalDescription.length() == 0 && this.bankname == null){
             ConstraintLayout goalDonation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
             goalDonation.setVisibility(View.GONE);
         }else{
+            //checks which data is available and display the correct data
             if(current_amount.contains("null")){
                 TextView text = (TextView) root.findViewById(R.id.amount_goal_text);
                 goalTextView.setVisibility(View.GONE);
@@ -299,7 +304,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 BIC.setText(bic);
             }
         }
-
+        //set Sponsor
         if(this.sponsorId.size() > 0){
             drawPie(true);
             //Sponsor
@@ -307,10 +312,14 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
             SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
             listViewSponsor.setAdapter(adapterSponsor);
+            //fill SponsorList
             for(int i = 0; i < sponsorId.size(); i++){
                 sponsorList.add(sponsorId.get(i));
             }
+            //set Height of dynamic List
             setListViewHeightBasedOnChildren(listViewSponsor);
+
+            //count rateProKm from all Sponsors
             double rateProKm = 0;
             for(int i = 0; i < sponsorId.size(); i++){
                 rateProKm += Float.parseFloat(sponsorId.get(i).getRateProKm());
@@ -320,11 +329,13 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
             bikeText.setText("Für jeden mit dem Fahrrad gefahrenen Kilometer spenden unsere Sponsoren für das Projekt.");
 
+            //makes one String out of a hostsArray
             StringBuilder b = new StringBuilder();
             for(String s : hosts){
                 b.append(s);
                 b.append(" ");
             }
+            //makes Character upperCase
             StringBuilder B = new StringBuilder();
             for ( int i = 0; i < b.length(); i++ ) {
                 char c = b.charAt( i );
@@ -336,6 +347,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             }
             partner.setText(B.toString());
 
+            //sets onClickListener to save DefaultProject and redirect to MapOverView
             bike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -371,7 +383,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 }
             });
 
-            //Stats
+            //set Stats
             currentRound = Math.round( Float.parseFloat(this.cycle.getCurrentAmount()) *100);
             currentRound = currentRound / 100.0f;
             currentNumber.setText( currentRound + " €");
@@ -393,11 +405,15 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
             drawPie(false);
             bike.setVisibility(View.GONE);
         }
+        //set News
         if(newsId.size() != 0){
             listNews = (ListView) root.findViewById(R.id.news);
             newsList.clear();
             NewsShortAdapter adapterNews = new NewsShortAdapter(getActivity(), newsList, getFragmentManager());
             listNews.setAdapter(adapterNews);
+            //set NewsList
+            //check if news are more than 3 items
+            //if not hide the "Mehr Anzeigen" button
             if(newsId.size() <= 3){
                 for(int i = 0; i < newsId.size(); i++){
                     newsList.add(newsId.get(i));
@@ -407,6 +423,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 for(int i = 0; i < 3; i++){
                     newsList.add(newsId.get(i));
                 }
+                //set onClickListener to view all News
                 newsMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -418,16 +435,20 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     }
                 });
             }
+            //set Height of dynamic List
             setListViewHeightBasedOnChildren(listNews);
         }else{
             ConstraintLayout news = (ConstraintLayout) root.findViewById(R.id.newsContainer);
             news.setVisibility(View.GONE);
         }
+        //set Blog
         if(blogId.size() != 0){
             ListView listblog = (ListView) root.findViewById(R.id.blog);
             blogList.clear();
             BlogEntryListAdapterShort adapterBlog = new BlogEntryListAdapterShort(getActivity(), blogList, getFragmentManager());
             listblog.setAdapter(adapterBlog);
+            //check if blogs are more than 3 items
+            //if not hide the "Mehr Anzeigen" button
             if(blogId.size() <= 3){
                 for(int i = 0; i < blogId.size(); i++){
                     blogList.add(blogId.get(i));
@@ -437,6 +458,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 for(int i = 0; i < 3; i++){
                     blogList.add(blogId.get(i));
                 }
+                //set onClickListener to view all Blogs
                 blogsMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -448,16 +470,20 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     }
                 });
             }
+            //set Height of dynamic List
             setListViewHeightBasedOnChildren(listblog);
         }else{
             ConstraintLayout blog = (ConstraintLayout) root.findViewById(R.id.blogContainer);
             blog.setVisibility(View.GONE);
         }
+        //set events
         if(eventId.size() != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
             eventList.clear();
             EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
+            //check if events are more than 3 items
+            //if not hide the "Mehr Anzeigen" button
             if(eventId.size() <= 3){
                 for(int i = 0; i < eventId.size(); i++){
                     eventList.add(eventId.get(i));
@@ -467,6 +493,7 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                 for(int i = 0; i < 3; i++){
                     eventList.add(eventId.get(i));
                 }
+                //set onClickListener to view all events
                 eventsMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -478,32 +505,39 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
                     }
                 });
             }
+            //set Height of dynamic List
             setListViewHeightBasedOnChildren(listEvent);
         }else{
             ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
             event.setVisibility(View.GONE);
         }
+        //set Partners
         if(partnerId.size() != 0){
             partnerList.clear();
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
             ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
             listPartner.setAdapter(adapterPartner);
+            //add partners
             for(int i = 0; i < partnerId.size(); i++){
                 partnerList.add(partnerId.get(i));
             }
+            //set Height of dynamic List
             setListViewHeightBasedOnChildren(listPartner);
         }else{
             ConstraintLayout projectPartner = (ConstraintLayout) root.findViewById(R.id.projectPartnerContainer);
             projectPartner.setVisibility(View.GONE);
         }
+        //set milestones
         if(mileList.size() != 0){
             milenstoneList.clear();
             ListView listMilenstone = (ListView) root.findViewById(R.id.milenstone);
             MilenstoneListAdapter adapterMilenstone = new MilenstoneListAdapter(getActivity(), milenstoneList, getFragmentManager());
             listMilenstone.setAdapter(adapterMilenstone);
+            //add milestones
             for(int i = 0; i < mileList.size(); i++){
                 milenstoneList.add(mileList.get(i));
             }
+            //set Height of dynamic List
             setListViewHeightBasedOnChildren(listMilenstone);
         }else{
             ConstraintLayout mile = (ConstraintLayout) root.findViewById(R.id.milenstoneContainer);
@@ -512,6 +546,8 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         return root;
     }
 
+    //measures the height of a List with all of its contnet
+    //important because the Height of the ListView is dynamic
     public void setListViewHeightBasedOnChildren(ListView listView) {
 
         ListAdapter listAdapter = listView.getAdapter();
@@ -542,14 +578,16 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         }
     }
 
-
+    //draws the PieChart
     public void drawPie(boolean draw){
         AnimatedPieView mAnimatedPieView = root.findViewById(R.id.pieChart);
         if(draw == true){
+            //calculate the correct values
             double current = (100 / Float.parseFloat(cycle.getCycleDonation())) * Float.parseFloat(cycle.getCurrentAmount());
             TextView procent = (TextView) root.findViewById(R.id.procent);
             current = Math.round(current * 100) / 100.0;
             procent.setText(current + " %");
+            //setting the PieChart
             AnimatedPieViewConfig config = new AnimatedPieViewConfig();
             config.startAngle(-90)// Starting angle offset
                     .addData(new SimplePieInfo(100 - current, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)
@@ -565,12 +603,15 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //create custom markers and adding them
         LatLng location = new LatLng( this.lat, this.lng);
         Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
         smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
         mMap.addMarker(new MarkerOptions().position(location).title(this.location).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+        //moves Camera zoom and position
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        //disable zoom ans scrolling
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
     }

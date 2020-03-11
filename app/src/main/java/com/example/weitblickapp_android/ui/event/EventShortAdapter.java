@@ -66,6 +66,7 @@ public class EventShortAdapter extends ArrayAdapter<EventViewModel> {
         location.setText(event.getLocation().getAddress());
         textView_date.setText(event.getEventStartDate());
 
+        //Set onClick to EventDetailFragment
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.ListFragment;
 
+//list of all Milenstones
+
 public class MilenstoneDetailListFragment extends ListFragment {
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");

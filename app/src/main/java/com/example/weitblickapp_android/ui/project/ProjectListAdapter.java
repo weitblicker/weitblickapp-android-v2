@@ -29,6 +29,8 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private OnItemClicked onItemClickedListener;
     int selectedPosition = -1;
 
+
+    //checks which listItem is selected
     public void select(int position){
         selectedPosition = position;
         notifyDataSetChanged();
@@ -74,6 +76,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
              view = mInflater.inflate(R.layout.fragment_project_list, null);
 
+        //sets the selected Position in Focus
         if(selectedPosition == position){
             view.setSelected(true);
             view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.wb_green));
@@ -88,6 +91,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
 
             //TextView textView_date = (TextView) view.findViewById(R.id.date);
 
+        //set onClickListener to set the listItem in Focus
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,11 +104,13 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
         final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
 
+        //makes one String out of a hostArray
         StringBuilder b = new StringBuilder();
         for(String s : project.getHosts()){
             b.append(s);
             b.append(" ");
         }
+        //sets Character UpperCase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -114,11 +120,12 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                 B.append(c);
             }
         }
-
+            //set CycleIcon if Cycle is available
             if(project.getCycle() == null){
 
                 maps.setVisibility(View.GONE);
             }else{
+                //if project is selected sets as defaultProject
                 maps.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -137,6 +144,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     }
                 });
             }
+        //set Image or DefaultImage
         if(project.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
 
@@ -144,7 +152,7 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
         }else{
             Picasso.get().load(R.drawable.project_default).fit().centerCrop().into(imageView);
         }
-
+            //set data
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
 

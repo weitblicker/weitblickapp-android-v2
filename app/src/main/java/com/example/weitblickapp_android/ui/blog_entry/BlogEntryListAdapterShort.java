@@ -76,11 +76,14 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         teaser.setText(blog.getTeaser());
         textView_date.setText(blog.getPublished());
 
+        //Makes one String out of the Partner Array
         StringBuilder b = new StringBuilder();
         for(String s : blog.getHosts()){
             b.append(s);
             b.append(" ");
         }
+
+        //Makes Character UpperCase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -94,6 +97,7 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         ImageView authorProfile = (ImageView) view.findViewById(R.id.imageProfil);
         TextView name = (TextView) view.findViewById(R.id.authorname);
 
+        //LOAD blogPictures if null set defaultPicture
         if(blog.getImage().contains("null")){
             Picasso.get().load(R.mipmap.ic_launcher_foreground).fit().centerCrop()
                     .error(R.drawable.ic_wbcd_logo_standard_svg2).into(authorProfile);
@@ -106,6 +110,7 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
         }
         name.setText(blog.getName());
 
+        // onClick Listener for whole view-element -->redirect to DetailsPage
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -115,6 +120,7 @@ public class BlogEntryListAdapterShort extends ArrayAdapter<BlogEntryViewModel> 
                 ft.addToBackStack(null);
                 ft.commit();
             }
+            // onClick Listener for Button-element -->redirect to DetailsPage
         });
 
         return view;

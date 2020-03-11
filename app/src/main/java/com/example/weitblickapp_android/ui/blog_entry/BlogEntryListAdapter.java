@@ -78,12 +78,16 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
         //Set published date for BlogEntries
         textView_date.setText(blog.formatToTimeRange());
+
+        //Makes one String out of the Partner Array
         TextView partner = (TextView) view.findViewById(R.id.partner);
         StringBuilder b = new StringBuilder();
         for(String s : blog.getHosts()){
             b.append(s);
             b.append(" ");
         }
+
+        //Makes Character UpperCase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -97,6 +101,7 @@ public class BlogEntryListAdapter extends ArrayAdapter<BlogEntryViewModel> {
 
         ImageView logo = (ImageView) view.findViewById(R.id.imageView6);
 
+        //SET Location
         if(blog.getLocation().contains("null")){
             location.setVisibility(View.GONE);
             logo.setVisibility(View.GONE);

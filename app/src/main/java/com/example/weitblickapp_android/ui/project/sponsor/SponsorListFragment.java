@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 import androidx.fragment.app.ListFragment;
 
+//list of all Sponsors
+
 public class SponsorListFragment extends ListFragment {
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");

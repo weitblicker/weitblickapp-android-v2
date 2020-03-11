@@ -37,6 +37,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//List of all News from ProjectDetailPage
+
 
 public class NewsListDetailFragment extends ListFragment{
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

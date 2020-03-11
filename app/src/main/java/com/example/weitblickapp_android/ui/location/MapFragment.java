@@ -203,27 +203,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        Log.e("ONCREATEVIEW", "!!!!");
-
 
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        //check if Location is Enabled
         this.gpsIsEnabled = isLocationEnabled();
 
         View root = inflater.inflate(R.layout.fragment_location, container, false);
-
 
         TextView partner = (TextView) root.findViewById(R.id.partner);
         TextView titel = (TextView) root.findViewById(R.id.titel);
         TextView location = (TextView) root.findViewById(R.id.location);
 
+        //get DefaultProject
         SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("DefaultProject", 0);
         location.setText(project.getAddress());
         titel.setText(project.getName());
         StringBuilder b = new StringBuilder();
+
+        //Makes one String out of HostArray
         for(String s : project.getHosts()){
             b.append(s);
             b.append(" ");
         }
+
+        //Makes character Uppercase
         StringBuilder B = new StringBuilder();
         for ( int i = 0; i < b.length(); i++ ) {
             char c = b.charAt( i );
@@ -241,6 +245,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         distance = root.findViewById(R.id.distance);
         donation = root.findViewById(R.id.donation);
 
+        //set onClickListener for ProjectDetailPage
         projectDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,12 +259,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             }
         });
 
+        //set onClickListener for PauseButtom
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //stwich between pause and start Image
                 if (!paused) {
                     pause.setImageResource(R.mipmap.icon_start_foreground);
                     paused = true;
+                    //start send Segments and resetLocation
                     sendSegment();
                     resetLocations();
                 } else {
@@ -270,6 +278,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             }
         });
 
+        //set onclickListener for stop Button
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -342,6 +351,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
+        //set Position to current User Position or DefaultPosition
         if (isLocationEnabled()) {
             if (currentLocation != null) {
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
@@ -358,11 +368,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private void calculateKm() {
         if(currentLocation != null && lastLocation != null) {
             double dis = currentLocation.distanceTo(lastLocation) / 1000;
-            Log.e("DISTANCE", dis + "");
             kmSegment += dis;
             kmTotal += dis;
-            Log.e("km-Total:", kmTotal+"!");
-            Log.e("km-Segment:", kmSegment+"!");
 
             don = currentTour.getEurosTotal();
 
@@ -382,8 +389,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             if (currentLocation.hasSpeed()) {
                 float currentSpeedInKmh = Math.round((currentLocation.getSpeed() * 3.6f) * 100)/100;
                 if (currentSpeedInKmh > 60.0f) {
-                    Toast toast= Toast.makeText(mContext,"Slow Down! Geschwindigkeit: " + currentSpeedInKmh + " km/h" ,Toast. LENGTH_SHORT);
-                    toast.show();
                     return false;
                 } else {
                     return true;
@@ -459,10 +464,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             jsonBody.put("tour", tourId);
             jsonBody.put("token", token);
         } catch (JSONException e) {
-            Log.e("SegmentJsonException:", e.toString());
-        }
 
-        Log.e("JSON:", jsonBody.toString());
+        }
 
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -477,7 +480,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     }
                     currentTour.setEurosTotal(eurosTotal);
 
-                    Log.e("Server Response", response.toString());
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -657,19 +659,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onDestroy();
         sendSegment();
         mContext.unregisterReceiver(locationSwitchStateReceiver);
-
-        /*
-        try {
-            if (predictedLocationReceiver != null) {
-                LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
-            }
-
-        } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
-        }
-        final Intent locationService = new Intent(mContext, LocationService.class);
-        mContext.stopService(locationService);
-        */
 
         Log.e("DESTROYED", "!!!!");
     }

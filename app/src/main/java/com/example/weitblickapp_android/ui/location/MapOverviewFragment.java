@@ -63,7 +63,6 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
 
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
-
     private GoogleMap mMap;
     private SessionManager session;
     private SharedPreferences defaultProjects;
@@ -73,13 +72,9 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
     private float lng;
     private ProjectViewModel project = null;
     private int projectID;
-
     private MapFragment fragmentMap = null;
-
     private boolean pending = false;
-
     private final static String TAG_FRAGMENT = "MAP_FRAGMENT";
-
     private Context mContext;
     private RequestQueue requestQueue;
 
@@ -98,19 +93,24 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                              ViewGroup container, Bundle savedInstanceState)
     {
             View root = inflater.inflate(R.layout.fragment_map, container, false);
+
+            //save DefaultProject on User Device
             SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
             defaultProjects = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
             checkDefault();
 
+            //load DefaultProject
             if (settings.contains("projectid")){
                 loadProject(settings.getInt("projectid", -1));
             }
 
             Button defaultProject = root.findViewById(R.id.defaultProject);
+            //set title of DefaultProject
             defaultProject.setText(defaultproject);
 
             session = new SessionManager(getActivity().getApplicationContext());
 
+            //onClickListener to ProjectList
             defaultProject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -123,14 +123,17 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
 
             });
 
+            //Set Play Buttom
             ImageView img = root.findViewById(R.id.play);
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Check if User is logged in
                     if (!session.isLoggedIn()) {
                         Intent redirect = new Intent(getActivity(), Login_Activity.class);
                         getActivity().startActivity(redirect);
                     } else {
+                            //check if User has DefaultProject
                             if (project != null) {
                                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                                 fragmentMap = new MapFragment(project);
@@ -217,6 +220,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                 JSONObject donation = null;
                 String imageString = null;
                 try {
+                    //load values
                     int projectId = responseObject.getInt("id");
                     String title = responseObject.getString("name");
                     MilenstoneViewModel mile = null;
@@ -255,6 +259,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     }catch(JSONException e){
 
                     }
+                    //load News
                     try {
                         news = responseObject.getJSONArray("news");
                         for (int x = 0; x < news.length(); x++) {
@@ -264,6 +269,8 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     }catch(JSONException e){
 
                     }
+
+                    //load Blogs
                     try {
                         blogs = responseObject.getJSONArray("blog");
                         for (int x = 0; x < blogs.length(); x++) {
@@ -273,6 +280,8 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     }catch(JSONException e){
 
                     }
+
+                    //load Events
                     try {
                         events = responseObject.getJSONArray("events");
                         for (int x = 0; x < events.length(); x++) {
@@ -288,6 +297,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     String date;
                     boolean reached;
 
+                    //load Milestones
                     try {
                         mileStoneArray = responseObject.getJSONArray("milestones");
                         for (int x = 0; x < mileStoneArray.length(); x++) {
@@ -308,11 +318,13 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     String iban = null;
                     String bic = null;
 
+                    //load Hosts
                     for(int x = 0; x < hosts.length(); x++){
                         host = hosts.getJSONObject(x);
                         allHosts.add(host.getString("city"));
                     }
 
+                    //load donation
                     if(!responseObject.getString("donation_account").contains("null")){
                         accountObject = responseObject.getJSONObject("donation_account");
                         bankname = accountObject.getString("account_holder");
@@ -320,6 +332,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                         bic = accountObject.getString("bic");
                     }
 
+                    //load Location
                     locationObject = responseObject.getJSONObject("location");
 
                     float lat = locationObject.getLong("lat");
@@ -335,6 +348,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     int cyclist = 0;
                     String km_sum = null;
 
+                    //load Cycle
                     if(!responseObject.getString("cycle").contains("null")){
                         cycleObject = responseObject.getJSONObject("cycle");
                         current_amount = cycleObject.getString("euro_sum");
@@ -359,6 +373,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     String weblink = null;
                     String partnerName = null;
 
+                    //load Partner
                     for(int y = 0; y < partnerJSONObject.length(); y++){
                         partnerObject = partnerJSONObject.getJSONObject(y);
                         logo = partnerObject.getString("logo");
@@ -424,12 +439,14 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     String locationDescription;
 
                     try {
+                        //load values
                         Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String description = responseObject.getString("description");
                         String startDate = responseObject.getString("start");
                         String endDate = responseObject.getString("end");
 
+                        //load Location
                         locationObject = responseObject.getJSONObject("location");
                         name = locationObject.getString("name");
                         address = locationObject.getString("address");
@@ -437,10 +454,11 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                         lng = locationObject.getDouble("lng");
                         locationDescription = locationObject.getString("description");
 
+                        //load Host
                         hostObject = responseObject.getJSONObject("host");
                         hostName = hostObject.getString("city");
 
-
+                        //load Image
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -504,6 +522,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     SponsorViewModel temp = null;
 
                     try {
+                        //load values
                         partner = responseObject.getJSONObject("partner");
                         String name =  partner.getString("name");
                         String desc = partner.getString("description");
@@ -567,6 +586,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
+                        //load values
                         Integer blogId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
@@ -591,15 +611,16 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                         }
                         String location = null;
 
+                        //load host
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
                         location = responseObject.getString("location");
 
+                        //load author
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
 
-                        //TODO: Check if picture exists
                         //Get Date of last Item loaded in List loading more news starting at that date
                         try {
                             Date ItemDate = formatterRead.parse(published);
@@ -661,22 +682,24 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
                     ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
+
+                        //load values
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
 
+                        //load author
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
 
 
-
+                        //load Hosts
                         host = responseObject.getJSONObject("host");
                         allHosts.add(host.getString("city"));
 
                         // String date = "2009-09-26T14:48:36Z";
-
                         try{
                             Date ItemDate = formatterRead.parse(date);
                         } catch (ParseException e) {
@@ -735,6 +758,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
         return news;
     }
 
+    //checked if DefaultProject exists and get values of DefaultProject
     private void checkDefault(){
         SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences(PREF_NAME, 0);
         if(settings.contains("projectid")){
@@ -749,6 +773,7 @@ public class MapOverviewFragment extends Fragment implements OnMapReadyCallback 
         }
     }
 
+    //move Camera to Position of DefaultProject
     private void setMarker(){
         LatLng location = new LatLng( this.lat, this.lng);
         mMap.addMarker(new MarkerOptions().position(location));

@@ -56,12 +56,14 @@ public class ProjectPartnerAdapter extends ArrayAdapter<ProjectPartnerViewModel>
 
         final ProjectPartnerViewModel partner = (ProjectPartnerViewModel) getItem(position);
 
+        //set data
         description.setText(partner.getDescription());
         name.setText(partner.name);
         weblink.setText(partner.getWeblink());
 
         String weitblickUrl = "https://weitblicker.org";
 
+        //load logo
         weitblickUrl = weitblickUrl.concat(partner.getLogo());
 
             Picasso.get()

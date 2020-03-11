@@ -88,6 +88,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //create custom Marker
         Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
         smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
         isLoaded = true;
@@ -101,6 +102,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         adapter = new ProjectListAdapter(getActivity(), projectList, getFragmentManager());
         list.setAdapter(adapter);
 
+        //onItemListClickedListener for ProjectList
         adapter.setOnItemClickedListener(
                 new ProjectListAdapter.OnItemClicked(){
                     @Override
@@ -121,6 +123,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
         return view;
     }
 
+    //checks if projects are loaded and draws markers if projects are available
     public void checkMarker(){
         handler.postDelayed(new Runnable() {
             @Override
@@ -200,6 +203,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     JSONObject donation = null;
                     String imageString = null;
                     try {
+                        //load data
                         responseObject = response.getJSONObject(i);
                         int projectId = responseObject.getInt("id");
                         String title = responseObject.getString("name");
@@ -215,8 +219,6 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         donationGoalDonationGoal = responseObject.getString("donation_goal");
 
 
-
-
                         //Get Main-Image
                         try {
                             image = responseObject.getJSONObject("image");
@@ -227,6 +229,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
 
                         }
 
+                        //load images
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -242,6 +245,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }
 
                         text = extractImageUrls(text);
+                        //load news
                         try {
                             news = responseObject.getJSONArray("news");
                             for (int x = 0; x < news.length(); x++) {
@@ -251,6 +255,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }catch(JSONException e){
 
                         }
+                        //load blogs
                         try {
                             blogs = responseObject.getJSONArray("blog");
                             for (int x = 0; x < blogs.length(); x++) {
@@ -260,6 +265,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }catch(JSONException e){
 
                         }
+                        //load events
                         try {
                             events = responseObject.getJSONArray("events");
                             for (int x = 0; x < events.length(); x++) {
@@ -275,6 +281,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String date;
                         boolean reached;
 
+                        //load mileStones
                         try {
                             mileStoneArray = responseObject.getJSONArray("milestones");
                             for (int x = 0; x < mileStoneArray.length(); x++) {
@@ -295,11 +302,13 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String iban = null;
                         String bic = null;
 
+                        //load hosts
                         for(int x = 0; x < hosts.length(); x++){
                             host = hosts.getJSONObject(x);
                             allHosts.add(host.getString("city"));
                         }
 
+                        //load bankAccount
                         if(!responseObject.getString("donation_account").contains("null")){
                             accountObject = responseObject.getJSONObject("donation_account");
                                 bankname = accountObject.getString("account_holder");
@@ -307,6 +316,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                                 bic = accountObject.getString("bic");
                         }
 
+                        //load Location
                         locationObject = responseObject.getJSONObject("location");
 
                         double lat = locationObject.getDouble("lat");
@@ -322,6 +332,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         int cyclist = 0;
                         String km_sum = null;
 
+                        //load cycle
                         if(!responseObject.getString("cycle").contains("null")){
                             cycleObject = responseObject.getJSONObject("cycle");
                             current_amount = cycleObject.getString("euro_sum");
@@ -347,6 +358,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         String weblink = null;
                         String partnerName = null;
 
+                        //load Partner
                         for(int y = 0; y < partnerJSONObject.length(); y++){
                             partnerObject = partnerJSONObject.getJSONObject(y);
                             logo = partnerObject.getString("logo");
@@ -419,12 +431,14 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     String locationDescription;
 
                     try {
+                        //load data
                         Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String description = responseObject.getString("description");
                         String startDate = responseObject.getString("start");
                         String endDate = responseObject.getString("end");
 
+                        //load location
                         locationObject = responseObject.getJSONObject("location");
                         name = locationObject.getString("name");
                         address = locationObject.getString("address");
@@ -435,7 +449,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         hostObject = responseObject.getJSONObject("host");
                         hostName = hostObject.getString("city");
 
-
+                        //load images
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
@@ -501,6 +515,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     SponsorViewModel temp = null;
 
                     try {
+                        //load data
                         partner = responseObject.getJSONObject("partner");
                         String name =  partner.getString("name");
                         String desc = partner.getString("description");
@@ -564,6 +579,7 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     ArrayList<String> allHosts = new ArrayList<String>();
 
                     try {
+                        //load data
                         Integer blogId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
@@ -590,10 +606,12 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                         }
                         String location = null;
 
+                        //load hosts
                         hosts = responseObject.getJSONObject("host");
                         allHosts.add(hosts.getString("city"));
                         location = responseObject.getString("location");
 
+                        //load author
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
@@ -661,21 +679,21 @@ public class ProjectListFragment extends Fragment implements OnMapReadyCallback 
                     String imageString = null;
 
                     try {
+                        //load data
                         Integer newsId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
                         String text = responseObject.getString("text");
                         String date = responseObject.getString("published");
 
+                        //load author
                         author = responseObject.getJSONObject("author");
                         String name = author.getString("name");
                         String profilPic = author.getString("image");
 
-
-
+                        //load hosts
                         host = responseObject.getJSONObject("host");
                         allHosts.add(host.getString("city"));
 
-                        // String date = "2009-09-26T14:48:36Z";
 
                         try{
                             Date ItemDate = formatterRead.parse(date);
