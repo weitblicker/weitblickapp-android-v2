@@ -37,10 +37,30 @@
       android:pathData="M-132.853,216.62m-420.919,420.919a595.27,595.27 90,1 1,841.839 -841.839a595.27,595.27 90,1 1,-841.839 841.839"
       android:strokeAlpha="0.5"
       android:fillAlpha="0.5">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:gradientRadius="726625.9"
+          android:centerX="-162217.27"
+          android:centerY="261195.83"
+          android:type="radial">
+        <item android:offset="0.01" android:color="#FFCDD92A"/>
+        <item android:offset="1" android:color="#FFCDD92A"/>
+      </gradient>
+    </aapt:attr>
   </path>
   <path
       android:pathData="M376.938,-68.875m-420.919,420.919a595.27,595.27 90,1 1,841.839 -841.839a595.27,595.27 90,1 1,-841.839 841.839"
       android:strokeAlpha="0.5"
       android:fillAlpha="0.5">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:gradientRadius="726655.56"
+          android:centerX="458554.6"
+          android:centerY="-85736.65"
+          android:type="radial">
+        <item android:offset="1" android:color="#FF7FBB5A"/>
+        <item android:offset="1" android:color="#FF7FBB5A"/>
+      </gradient>
+    </aapt:attr>
   </path>
 </vector>

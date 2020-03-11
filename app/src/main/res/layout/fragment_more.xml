@@ -6,142 +6,130 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/ic_green">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff">
-
-        <ImageView
-            android:id="@+id/news"
-            android:layout_width="50dp"
-            android:layout_height="45dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.155"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.16"
-            app:srcCompat="@drawable/icon_blog"
-            android:tint="#333333"
-            android:alpha="0.8"/>
-
-        <ImageView
-            android:id="@+id/faq"
-            android:layout_width="50dp"
-            android:layout_height="45dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.155"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.306"
-            app:srcCompat="@drawable/icon_faq"
-            android:tint="#333333"
-            android:alpha="0.8"/>
-
-        <ImageView
-            android:id="@+id/contact"
-            android:layout_width="50dp"
-            android:layout_height="45dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.155"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.45"
-            app:srcCompat="@drawable/icon_contact"
-            tools:ignore="VectorDrawableCompat"
-            android:tint="#333333"
-            android:alpha="0.8"/>
-
-        <TextView
-            android:id="@+id/agbtext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensansbold"
-            android:text="AGB"
-            android:textSize="30dp"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.381"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.16" />
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/faqtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="100dp"
             android:fontFamily="@font/opensansbold"
             android:text="FAQ"
-            android:textSize="30dp"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.377"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/faq"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+
+        <ImageView
+            android:id="@+id/faq"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="30dp"
+            android:alpha="0.8"
+            android:tint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.307" />
+            app:layout_constraintTop_toBottomOf="@+id/news"
+            app:srcCompat="@drawable/icon_faq" />
+
+        <ImageView
+            android:id="@+id/contact"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="30dp"
+            android:alpha="0.8"
+            android:src="@drawable/icon_contact"
+            android:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/faq"
+            tools:ignore="VectorDrawableCompat" />
 
         <TextView
             android:id="@+id/contactext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="165dp"
             android:fontFamily="@font/opensansbold"
             android:text="Kontakt"
-            android:textSize="30dp"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.455"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.451" />
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/contact"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
 
-        <ImageButton
-            android:id="@+id/faqButton"
-            android:layout_width="50dp"
-            android:layout_height="45dp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.811"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.306"
-            app:srcCompat="@drawable/icon_more" />
+        <TextView
+            android:id="@+id/agbtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="33dp"
+            android:fontFamily="@font/opensansbold"
+            android:text="AGB"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/news"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
 
-        <ImageButton
-            android:id="@+id/contactButton"
-            android:layout_width="50dp"
-            android:layout_height="45dp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.811"
+        <ImageView
+            android:id="@+id/news"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="30dp"
+            android:alpha="0.8"
+            android:tint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.453"
-            app:srcCompat="@drawable/icon_more" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView19"
+            app:srcCompat="@drawable/icon_agb" />
 
-        <ImageButton
-            android:id="@+id/agbButton"
-            android:layout_width="50dp"
-            android:layout_height="45dp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
+
+        <TextView
+            android:id="@+id/creditsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="225dp"
+            android:fontFamily="@font/opensansbold"
+            android:text="Credits"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/news"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+
+        <ImageView
+            android:id="@+id/credits"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="220dp"
+            android:alpha="0.8"
+            android:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19"
+            app:srcCompat="@drawable/icon_credits" />
+
+        <ImageView
+            android:id="@+id/imageView19"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="11dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.811"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.161"
-            app:srcCompat="@drawable/icon_more"
-            tools:ignore="VectorDrawableCompat" />
+            app:srcCompat="@drawable/ic_wbcd_logo_standard_black_font" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

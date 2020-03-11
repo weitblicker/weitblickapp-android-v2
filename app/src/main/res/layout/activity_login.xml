@@ -150,20 +150,25 @@
 
     <TextView
         android:id="@+id/text_forgot_password"
-        android:layout_width="121dp"
+        android:layout_width="300dp"
         android:layout_height="20dp"
-        android:text="Forgot Password?"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/open_sans"
+        android:text="Passwort vergessen?"
+        android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/change_password_button"
-        android:fontFamily="@font/open_sans"/>
+        app:layout_constraintTop_toBottomOf="@+id/change_password_button" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 

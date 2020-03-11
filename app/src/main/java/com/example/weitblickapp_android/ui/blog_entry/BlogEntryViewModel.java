@@ -2,8 +2,13 @@ package com.example.weitblickapp_android.ui.blog_entry;
 
 import androidx.lifecycle.ViewModel;
 
+import com.example.weitblickapp_android.ui.project.ProjectViewModel;
+import com.google.gson.GsonBuilder;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,9 +25,14 @@ public class BlogEntryViewModel extends ViewModel {
     private ArrayList<String> imageUrls;
     Date published;
     private int location_id;
+    String name;
+    String image;
+    ArrayList<String> hosts;
+    String location;
+    ArrayList<ProjectViewModel> project;
 
 
-    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls) {
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls, String name, String image, ArrayList<String> hosts, String location) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -34,7 +44,29 @@ public class BlogEntryViewModel extends ViewModel {
         }
         this.imageUrls = imageUrls;
         this.teaser = teaser;
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
+        this.location = location;
+    }
 
+    public BlogEntryViewModel(int id, String title, String text, String teaser, String published, ArrayList<String>imageUrls, String name, String image, ArrayList<String> hosts, String location, ArrayList<ProjectViewModel> project) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        try {
+            this.published = formatterRead.parse(published);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            this.published = new Date();
+        }
+        this.imageUrls = imageUrls;
+        this.teaser = teaser;
+        this.name = name;
+        this.image = image;
+        this.hosts = hosts;
+        this.location = location;
+        this.project = project;
     }
 
     public BlogEntryViewModel(int id, String title, String text, String published) {
@@ -48,6 +80,15 @@ public class BlogEntryViewModel extends ViewModel {
             e.printStackTrace();
         }
         this.location_id = location_id;
+    }
+
+
+    public ArrayList<ProjectViewModel> getProject() {
+        return project;
+    }
+
+    public void setProject(ArrayList<ProjectViewModel> project) {
+        this.project = project;
     }
 
     public String getTeaser() {
@@ -112,15 +153,65 @@ public class BlogEntryViewModel extends ViewModel {
         this.location_id = location_id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public ArrayList<String> getHosts() {
+        return hosts;
+    }
+
+    public void setHosts(ArrayList<String> hosts) {
+        this.hosts = hosts;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String formatToTimeRange() {
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDate eventDate = null;
+            eventDate = published.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            LocalDate today = LocalDate.now();
+            LocalDate yesterday = today.minusDays(1);
+
+            if(eventDate.equals(yesterday)){
+                return "Gestern";
+            }
+            if(eventDate.equals(today)){
+                return "Heute";
+            }
+
+            return getPublished();
+        }
+
+        return getPublished();
+    }
+
     @Override
     public String toString() {
-        return "BlogEntryViewModel{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", image_id=" + image_id +
-                ", created_at=" + published +
-                ", location_id=" + location_id +
-                '}';
+
+        return new GsonBuilder().create().toJson(this, BlogEntryViewModel.class);
     }
 }

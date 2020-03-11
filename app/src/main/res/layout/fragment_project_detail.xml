@@ -34,66 +34,99 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+       >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/whiteTriangle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="185dp"
+                android:background="@color/white"
+                android:rotation="-45"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabDots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="140dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/statsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
-                android:background="@color/wb_grey"
+                android:background="@color/wb_darkgrey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/donationGoalContainer">
 
                 <TextView
                     android:id="@+id/gefahren"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="1dp"
                     android:fontFamily="@font/open_sans"
                     android:text="bereits gefahren"
                     android:textColor="@color/white"
                     android:textSize="12dp"
-                    app:layout_constraintEnd_toStartOf="@+id/stand"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/erreichtnumber" />
+                    app:layout_constraintTop_toBottomOf="@+id/reachedNumber" />
 
                 <TextView
                     android:id="@+id/stand"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Spendenstand"
                     android:textColor="@color/white"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toStartOf="@+id/goal"
                     app:layout_constraintStart_toEndOf="@+id/gefahren"
-                    app:layout_constraintTop_toBottomOf="@+id/standnumber" />
+                    app:layout_constraintTop_toBottomOf="@+id/currentNumber" />
 
                 <TextView
                     android:id="@+id/goal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="11dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Spendenziel"
                     android:textColor="@color/white"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/stand"
                     app:layout_constraintTop_toBottomOf="@+id/goalnumber" />
 
                 <TextView
                     android:id="@+id/bikeText2"
                     android:layout_width="150dp"
                     android:layout_height="69dp"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="13dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/breeserif"
@@ -112,8 +145,8 @@
                     android:layout_width="39dp"
                     android:layout_height="32dp"
                     android:layout_marginTop="36dp"
-                    android:layout_marginEnd="74dp"
-                    android:layout_marginRight="74dp"
+                    android:layout_marginEnd="34dp"
+                    android:layout_marginRight="34dp"
                     android:background="@null"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -135,86 +168,97 @@
 
                 <TextView
                     android:id="@+id/bikernumber"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="7dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="320"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.12"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/gefahren" />
 
                 <TextView
                     android:id="@+id/biker"
-                    android:layout_width="59dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="2dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Radfahrer"
                     android:textColor="@color/white"
                     android:textSize="12dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.127"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bikernumber" />
 
                 <TextView
-                    android:id="@+id/erreichtnumber"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/reachedNumber"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="32dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="2030km"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
-                    app:layout_constraintEnd_toStartOf="@+id/standnumber"
                     app:layout_constraintTop_toBottomOf="@+id/textView4"
                     map:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/goalnumber"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="33dp"
+                    android:layout_marginEnd="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="50 000€"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/standnumber"
                     app:layout_constraintTop_toBottomOf="@+id/bike2" />
 
                 <TextView
-                    android:id="@+id/standnumber"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/currentNumber"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="101dp"
+                    android:layout_marginTop="32dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="1732€"
                     android:textColor="@color/wb_orange"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toStartOf="@+id/goalnumber"
-                    app:layout_constraintStart_toEndOf="@+id/erreichtnumber"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/reachedNumber"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/breeserif"
-                    android:text="Fahrrad fahren und Spenden sammeln"
+                    android:text="Fahrrad fahren &amp; Spenden sammeln"
                     android:textColor="@color/white"
                     android:textSize="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/procent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="75dp"
+                    android:layout_marginEnd="75dp"
+                    android:text="50%"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/bikeText2"
+                    app:layout_constraintTop_toBottomOf="@+id/stand" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -234,17 +278,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="27dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Spendenkonto"
                     android:textColor="@color/black"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/amount_goal_number" />
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
                 <TextView
                     android:id="@+id/donationgoaldescription"
@@ -260,18 +301,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/donationgoal" />
-
-                <TextView
-                    android:id="@+id/amount_goal_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Spendenstand"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toStartOf="@+id/amountText"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription" />
 
                 <TextView
                     android:id="@+id/bankname"
@@ -323,55 +352,15 @@
                     map:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/amount_goal_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:fontFamily="@font/opensansbold"
-                    android:text="17 523 €"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    app:layout_constraintEnd_toStartOf="@+id/amountNumber"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/amount_goal_text" />
-
-                <TextView
-                    android:id="@+id/amountText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Spendenziel"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/amount_goal_text"
-                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription" />
-
-                <TextView
-                    android:id="@+id/amountNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:fontFamily="@font/opensansbold"
-                    android:text="50 000 €"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/amount_goal_number"
-                    app:layout_constraintTop_toBottomOf="@+id/amountText" />
-
-                <TextView
                     android:id="@+id/donationgoal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="62dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Spendenziel"
-                    android:textColor="@color/black"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -379,20 +368,83 @@
 
                 <ImageView
                     android:id="@+id/imageView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
                     android:maxWidth="42dp"
                     android:maxHeight="42dp"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/icon_star_foreground"
+                    android:src="@drawable/icon_goal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="11dp"
+                    app:layout_constraintBottom_toTopOf="@+id/donationkonto"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/donationgoaldescription"
+                    map:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/amountNumber"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="11dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/opensansbold"
+                        android:text="50 000 €"
+                        android:textColor="@color/black"
+                        android:textSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/amountText" />
+
+                    <TextView
+                        android:id="@+id/amount_goal_text"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Spendenstand"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/amount_goal_number"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/opensansbold"
+                        android:text="17 523 €"
+                        android:textColor="@color/black"
+                        android:textSize="22dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/amount_goal_text" />
+
+                    <TextView
+                        android:id="@+id/amountText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="11dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Spendenziel"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -409,14 +461,12 @@
                     android:id="@+id/detail_location2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
-                    android:fontFamily="@font/opensansbold"
+                    android:fontFamily="@font/open_sans"
                     android:text="Hier die Location einfügen"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/black"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -426,14 +476,11 @@
                     android:id="@+id/partner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="65dp"
                     android:fontFamily="@font/opensansbold"
-                    android:gravity="center"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/black"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -444,30 +491,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="7dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/logo_location" />
+                    app:layout_constraintTop_toBottomOf="@+id/detail_location" />
 
                 <TextView
                     android:id="@+id/detail_location3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
                     android:layout_marginBottom="3dp"
-                    android:fontFamily="@font/opensansbold"
+                    android:fontFamily="@font/open_sans"
                     android:text="Beschreibung der Städte"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/black"
                     android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -494,8 +537,7 @@
                     android:id="@+id/logo_location2"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="6dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
@@ -512,8 +554,7 @@
                     android:id="@+id/logo_icon"
                     android:layout_width="28dp"
                     android:layout_height="26dp"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="9dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
@@ -530,13 +571,11 @@
                     android:id="@+id/detail_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="11dp"
-                    android:layout_marginRight="11dp"
-                    android:fontFamily="@font/opensansbold"
-                    android:textColor="@color/wb_grey"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -546,8 +585,7 @@
                     android:id="@+id/logo_location"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="6dp"
                     android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
@@ -559,6 +597,22 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+                <ImageButton
+                    android:id="@+id/bike"
+                    android:layout_width="39dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@null"
+                    android:tint="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/detail_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/partner"
+                    app:layout_constraintTop_toTopOf="parent"
+                    map:srcCompat="@drawable/icon_bike" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -579,16 +633,15 @@
 
                 <ImageView
                     android:id="@+id/imageView16"
-                    android:layout_width="54dp"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
                     android:maxWidth="42dp"
                     android:maxHeight="42dp"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/icon_blog_foreground"
+                    android:src="@drawable/icon_blog"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/orange_blog" />
 
@@ -596,13 +649,11 @@
                     android:id="@+id/textView_blog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Blog"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.067"
                     app:layout_constraintStart_toEndOf="@+id/imageView16"
                     app:layout_constraintTop_toBottomOf="@+id/orange_blog" />
 
@@ -610,23 +661,27 @@
                     android:id="@+id/blog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/moreBlog"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_blog"></ListView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/moreBlog"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="left"
+                    android:text="mehr anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/blog" />
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/eventsContainer"
@@ -646,28 +701,40 @@
 
                 <ImageView
                     android:id="@+id/imageView15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/orange_event"
-                    map:srcCompat="@drawable/ic_menu_manage" />
+                    map:srcCompat="@drawable/icon_stars" />
 
                 <TextView
                     android:id="@+id/textView_event"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="14dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Veranstaltungen"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintEnd_toEndOf="@+id/moreEvents"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/imageView15"
                     app:layout_constraintTop_toBottomOf="@+id/orange_event" />
+
+                <TextView
+                    android:id="@+id/moreEvents"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="left"
+                    android:text="mehr anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/events" />
 
                 <ListView
                     android:id="@+id/events"
@@ -701,16 +768,15 @@
 
                 <ImageView
                     android:id="@+id/imageView14"
-                    android:layout_width="56dp"
-                    android:layout_height="41dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
                     android:maxWidth="42dp"
                     android:maxHeight="42dp"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/icon_news_foreground"
+                    android:src="@drawable/icon_news"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/orange_news" />
 
@@ -718,13 +784,11 @@
                     android:id="@+id/textView_news"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Neuheiten"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.073"
                     app:layout_constraintStart_toEndOf="@+id/imageView14"
                     app:layout_constraintTop_toBottomOf="@+id/orange_news" />
 
@@ -732,12 +796,29 @@
                     android:id="@+id/news"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/moreNews"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView14">
 
                 </ListView>
+
+                <TextView
+                    android:id="@+id/moreNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="left"
+                    android:text="mehr anzeigen"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/news" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -761,16 +842,15 @@
 
                 <ImageView
                     android:id="@+id/imageView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginLeft="11dp"
+                    android:layout_width="62dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
                     android:maxWidth="42dp"
                     android:maxHeight="42dp"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/icon_sponsor_foreground"
+                    android:src="@drawable/icon_partners"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -778,13 +858,11 @@
                     android:id="@+id/textView_sponsor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Sponsoren"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.092"
                     app:layout_constraintStart_toEndOf="@+id/imageView13"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -793,7 +871,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -821,10 +898,9 @@
 
                 <ImageView
                     android:id="@+id/imageView12"
-                    android:layout_width="55dp"
-                    android:layout_height="42dp"
+                    android:layout_width="49dp"
+                    android:layout_height="39dp"
                     android:layout_marginStart="6dp"
-                    android:layout_marginLeft="6dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
                     android:maxWidth="42dp"
@@ -838,12 +914,11 @@
                     android:id="@+id/textView_milenstone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Meilenstein"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.072"
                     app:layout_constraintStart_toEndOf="@+id/imageView12"
                     app:layout_constraintTop_toBottomOf="@+id/orange_milenstone" />
 
@@ -852,6 +927,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_milenstone">
@@ -882,7 +958,6 @@
                     android:id="@+id/projectpartner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -894,13 +969,14 @@
                 <ImageView
                     android:id="@+id/imageView11"
                     android:layout_width="62dp"
-                    android:layout_height="46dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="3dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
                     android:maxWidth="42dp"
                     android:maxHeight="42dp"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/icon_partner_foreground"
+                    android:src="@drawable/icon_puzzle"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/orange_projectpartner" />
 
@@ -908,10 +984,10 @@
                     android:id="@+id/textView_projectPartner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/opensansbold"
                     android:text="Projektpartner"
-                    android:textColor="@color/wb_grey"
+                    android:textColor="@color/wb_darkgrey"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

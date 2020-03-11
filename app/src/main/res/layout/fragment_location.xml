@@ -5,10 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/wb_lightgrey"
     android:id="@+id/fragment_location"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:keepScreenOn="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_container"
@@ -23,10 +24,9 @@
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="130dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
             map:layout_constraintStart_toStartOf="parent"
             map:layout_constraintTop_toTopOf="parent">
@@ -41,100 +41,188 @@
 
             <ImageView
                 android:id="@+id/pause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.926"
-                app:srcCompat="@mipmap/ic_pause_foreground" />
+                app:layout_constraintVertical_bias="0.951"
+                app:srcCompat="@mipmap/icon_pause_foreground" />
 
             <ImageView
                 android:id="@+id/projectDetail"
-                android:layout_width="59dp"
-                android:layout_height="57dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@null"
+                android:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.122"
+                app:layout_constraintHorizontal_bias="0.232"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.938"
-                app:srcCompat="@android:drawable/ic_menu_help" />
+                app:layout_constraintVertical_bias="0.955"
+                app:srcCompat="@mipmap/icon_info_foreground" />
 
             <ImageView
                 android:id="@+id/stop"
-                android:layout_width="54dp"
-                android:layout_height="55dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/map"
-                app:layout_constraintHorizontal_bias="0.871"
+                app:layout_constraintHorizontal_bias="0.761"
                 app:layout_constraintStart_toStartOf="@+id/map"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.935"
-                app:srcCompat="@mipmap/ic_stop_foreground" />
+                app:layout_constraintVertical_bias="0.955"
+                app:srcCompat="@mipmap/icon_stop_foreground" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/opensansbold"
+                android:text="0.00 km"
+                android:textColor="@color/wb_grey"
+                android:textSize="25dp"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toBottomOf="@+id/titel" />
+
+
+            <TextView
+                android:id="@+id/distancetext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/opensansbold"
+                android:text="Strecke"
+                android:textColor="@color/wb_grey"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toBottomOf="@+id/distance" />
+
+            <TextView
+                android:id="@+id/donationtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/opensansbold"
+                android:text="Spende"
+                android:textColor="@color/wb_grey"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/container"
+                app:layout_constraintTop_toBottomOf="@+id/donation" />
+
+            <TextView
+                android:id="@+id/donation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="35dp"
+                android:fontFamily="@font/opensansbold"
+                android:text="0.0 €"
+                android:textColor="@color/wb_grey"
+                android:textSize="25dp"
+                app:layout_constraintEnd_toEndOf="@id/container"
+                app:layout_constraintTop_toBottomOf="@+id/titel" />
+
+            <TextView
+                android:id="@+id/titel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="18dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/distancetext"
-            android:layout_width="wrap_content"
+            android:id="@+id/partner"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/breeserif"
-            android:text="Strecke"
-            android:textColor="@color/wb_orange"
-            android:textSize="19dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.144"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="5dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/container"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.061" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/donationtext"
-            android:layout_width="wrap_content"
+            android:id="@+id/location"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/breeserif"
-            android:text="Spende"
-            android:textColor="@color/wb_orange"
-            android:textSize="19dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.844"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.061" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensansbold"
-            android:textColor="#000000"
-            android:text="0.00 km"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.136"
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="26dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginRight="3dp"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:maxWidth="42dp"
+            android:maxHeight="42dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/weitblick_icon_round"
+            app:layout_constraintEnd_toStartOf="@+id/partner"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.131" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/donation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensansbold"
-            android:textColor="#000000"
-            android:text="0.0 €"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.86"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.131" />
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="33dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="7dp"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:maxWidth="42dp"
+            android:maxHeight="42dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/icon_marker_foreground"
+            app:layout_constraintEnd_toStartOf="@+id/location"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

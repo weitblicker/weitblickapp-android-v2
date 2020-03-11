@@ -54,15 +54,16 @@
 
             <ImageView
                 android:id="@+id/play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_playorange_foreground"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:tint="@color/black"
                 map:layout_constraintBottom_toBottomOf="@+id/map"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintHorizontal_bias="0.498"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toTopOf="@+id/map"
                 map:layout_constraintVertical_bias="0.86"
+                map:srcCompat="@drawable/icon_start"
                 tools:ignore="VectorDrawableCompat" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

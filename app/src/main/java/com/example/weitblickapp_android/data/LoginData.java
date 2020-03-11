@@ -2,31 +2,38 @@ package com.example.weitblickapp_android.data;
 
 import android.app.Activity;
 import android.content.Context;
-import android.se.omapi.Session;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.LoggedInUser;
+import com.example.weitblickapp_android.data.model.MultipartUtility;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
-import com.example.weitblickapp_android.ui.login.Login_Activity;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,12 +46,14 @@ public class LoginData{
     private LoggedInUser user;
     private SessionManager sessionManager;
     private LoginPreferences loginPref;
+    private RequestQueue requestQueue;
 
     public LoginData (Context context){
         app_context = context;
         this.sessionManager = new SessionManager( context);
         loginPref = new LoginPreferences(context);
-
+        requestQueue = Volley.newRequestQueue(context);
+        user = new LoggedInUser();
     }
 
     public JSONObject login(final String email, final String password, final boolean isLoginSaved, final VolleyCallback callback) {
@@ -53,7 +62,7 @@ public class LoginData{
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(app_context);
 
-                String URL = "https://new.weitblicker.org/rest/auth/login/";
+                String URL = "https://weitblicker.org/rest/auth/login/";
 
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("username", "");
@@ -73,7 +82,12 @@ public class LoginData{
 
 
                                 if (key != null) {
-                                    user = new LoggedInUser("username_placeholder", email, key);
+
+                                    if(user == null) user = new LoggedInUser();
+
+                                    user.setEmail(email);
+                                    user.setKey(key);
+
                                     updateUiWithUser(email, password, isLoginSaved);
                                     callback.onSuccess("Anmeldung erfolgreich.");
                                 }
@@ -87,37 +101,61 @@ public class LoginData{
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY ERROR", error.toString());
-                        String body;
-                        //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        if (error.networkResponse.data != null) {
-                            try {
-                                //create errorJSON from VolleyError
-                                body = new String(error.networkResponse.data, "UTF-8");
 
-                                String result = "";
+                        String errorMessage = "";
 
-                                JsonParser parser = new JsonParser();
-                                JsonObject jObject = parser.parse(body).getAsJsonObject();
+                        if (error instanceof NetworkError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof ParseError) {
+                            errorMessage = "Parsing error! Please try again after some time!!";
+                        } else if (error instanceof NoConnectionError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof TimeoutError) {
+                            errorMessage = "Connection TimeOut! Please check your internet connection.";
+                        }
+                        else{
 
-                                Map<String, Object> attributes = new HashMap<String, Object>();
+                            String body;
+                            //get status code here
+                            if(error != null){
+                                String statusCode = String.valueOf(error.networkResponse.statusCode);
+                            }
 
-                                Set<Map.Entry<String, JsonElement>> entrySet = jObject.entrySet();
+                            //get response body and parse with appropriate encoding
+                            if (error.networkResponse.data != null) {
+                                try {
+                                    //create errorJSON from VolleyError
+                                    body = new String(error.networkResponse.data, "UTF-8");
 
-                                for(Map.Entry<String,JsonElement> entry : entrySet){
-                                    result += jObject.get(entry.getKey()).getAsString();
+                                    String result = "";
+
+                                    JsonParser parser = new JsonParser();
+                                    JsonObject jObject = parser.parse(body).getAsJsonObject();
+
+                                    Map<String, Object> attributes = new HashMap<String, Object>();
+
+                                    Set<Map.Entry<String, JsonElement>> entrySet = jObject.entrySet();
+
+                                    for(Map.Entry<String,JsonElement> entry : entrySet){
+                                        result += jObject.get(entry.getKey()).getAsString();
+                                    }
+
+                                    Log.e("Statuscode:", body);
+                                    errorMessage = result;
+
+
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
                                 }
-
-                                Log.e("Statuscode:", body);
-                                callback.onError(result);
-
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
+
+                        callback.onError(errorMessage);
+
+                        Log.e("VOLLEY ERROR LOGIN", error.toString() + errorMessage);
+                        }
+
+
                 }) {
                     @Override
                     public String getBodyContentType() {
@@ -152,9 +190,7 @@ public class LoginData{
         return new JSONObject();
     }
 
-
-
-    public void logout(){
+    public void logout(VolleyCallback callback){
 
         Log.e("LOGOUT", "aufgerufen");
 
@@ -162,29 +198,19 @@ public class LoginData{
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(app_context);
 
-                String URL = "https://new.weitblicker.org/rest/auth/logout/";
+                String URL = "https://weitblicker.org/rest/auth/logout/";
 
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("key", sessionManager.getKey());
 
                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
 
-
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        //Toast.makeText(getApplicationContext(),"Anmeldung erfolgreich!" , Toast.LENGTH_SHORT).show();
-                        Log.e("LOGOUT ONRESPONSE", "VERY sucessful ---------------------------------------------------------------------------------");
-
-
                             if (response.has("detail")) {
-
-                                Toast.makeText(app_context, "Erfolgreich ausgeloggt.", Toast.LENGTH_SHORT).show();
-                                Log.e("LOGOUT", "onResponse()in logout in Login Data aufgerufen");
-
                                 sessionManager.logoutUser();
-
-
+                                callback.onSuccess("Erfolgreich ausgeloggt.");
                             }
 
                     }
@@ -192,20 +218,37 @@ public class LoginData{
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY ERROR", error.toString());
 
-                        String body;
-                        //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        if (error.networkResponse.data != null) {
-                            try {
-                                body = new String(error.networkResponse.data, "UTF-8");
-                                Log.e("Statuscode:", body);
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
+                        String errorMessage = "";
+
+                        if (error instanceof NetworkError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof ParseError) {
+                            errorMessage = "Parsing error! Please try again after some time!!";
+                        } else if (error instanceof NoConnectionError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof TimeoutError) {
+                            errorMessage = "Connection TimeOut! Please check your internet connection.";
                         }
+                        else {
+
+                            String body = "";
+                            //get status code here
+
+                            String statusCode = String.valueOf(error.networkResponse.statusCode);
+                            //get response body and parse with appropriate encoding
+                            if (error.networkResponse.data != null) {
+                                try {
+                                    body = new String(error.networkResponse.data, "UTF-8");
+                                    Log.e("Statuscode:", body);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            errorMessage = body;
+                        }
+                        callback.onError(errorMessage);
+                        Log.e("VOLLEY ERROR LOGOUT", error.toString() + errorMessage);
                     }
                 }) {
                     @Override
@@ -216,11 +259,8 @@ public class LoginData{
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> headers = new HashMap<>();
-                        String credentials = "surfer:hangloose";
-                        String auth = "Basic "
-                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                         headers.put("Content-Type", "application/json");
-                        headers.put("Authorization", auth);
+                        headers.put("Authorization", sessionManager.getKey());
                         return headers;
                     }
                 };
@@ -240,62 +280,80 @@ public class LoginData{
         }
     }
 
-    public void changePassword(final String old_password,final String password1,final String password2, final VolleyCallback callback){
+    public void changePassword(final String newPassword,final String newPasswordConfirm, final VolleyCallback callback){
 
         try {
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(app_context);
 
-                String URL = "https://new.weitblicker.org/rest/auth/password/change";
+                String URL = "https://weitblicker.org/rest/auth/password/change/";
 
                 JSONObject jsonBody = new JSONObject();
-                jsonBody.put("key", sessionManager.getKey());
-                jsonBody.put("old_password", old_password);
-                jsonBody.put("new_password1", password1);
-                jsonBody.put("new_password2", password2);
+                jsonBody.put("new_password1",newPassword);
+                jsonBody.put("new_password2", newPasswordConfirm);
 
                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
 
 
                     @Override
                     public void onResponse(JSONObject response) {
-
+                        Log.e("Change Password Success", response.toString());
                         callback.onSuccess("Passwort erfolgreich geändert.");
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY ERROR", error.toString());
-                        String body;
-                        //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        if (error.networkResponse.data != null) {
-                            try {
-                                //create errorJSON from VolleyError
-                                body = new String(error.networkResponse.data, "UTF-8");
+                        String errorMessage = "";
 
-                                String result = "";
+                        if (error instanceof NetworkError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof ParseError) {
+                            errorMessage = "Parsing error! Please try again after some time!!";
+                        } else if (error instanceof NoConnectionError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof TimeoutError) {
+                            errorMessage = "Connection TimeOut! Please check your internet connection.";
+                        }
+                        else {
+                            Log.e("VOLLEY ERROR LOGOUT", error.toString());
+                            String body;
+                            //get status code here
+                            String statusCode = String.valueOf(error.networkResponse.statusCode);
+                            //get response body and parse with appropriate encoding
+                            if (error.networkResponse.data != null) {
+                                try {
+                                    //create errorJSON from VolleyError
+                                    body = new String(error.networkResponse.data, "UTF-8");
 
-                                JsonParser parser = new JsonParser();
-                                JsonObject jObject = parser.parse(body).getAsJsonObject();
+                                    String result = "";
 
-                                Map<String, Object> attributes = new HashMap<String, Object>();
+                                    JsonParser parser = new JsonParser();
+                                    JsonObject jObject = parser.parse(body).getAsJsonObject();
 
-                                Set<Map.Entry<String, JsonElement>> entrySet = jObject.entrySet();
+                                    Map<String, Object> attributes = new HashMap<String, Object>();
 
-                                for(Map.Entry<String,JsonElement> entry : entrySet){
-                                    result += jObject.get(entry.getKey()).getAsString();
+                                    Set<Map.Entry<String, JsonElement>> entrySet = jObject.entrySet();
+
+                                    for(Map.Entry<String,JsonElement> entry : entrySet){
+
+                                        JsonArray j = jObject.get(entry.getKey()).getAsJsonArray();
+                                        for ( int i = 0; i<j.size(); i++){
+                                            result += j.get(i).getAsString() + '\n';
+                                        }
+                                    }
+
+                                    Log.e("Statuscode:", body);
+                                    errorMessage = result;
+
+
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
                                 }
-
-                                Log.e("Statuscode:", body);
-                                callback.onError(result);
-
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
                             }
                         }
+                        callback.onError(errorMessage);
+                        Log.e("VOLLEY ERROR CHANGE_P", error.toString() + errorMessage);
                     }
                 }) {
                     @Override
@@ -310,7 +368,7 @@ public class LoginData{
                         String auth = "Basic "
                                 + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                         headers.put("Content-Type", "application/json");
-                        headers.put("Authorization", auth);
+                        headers.put("Authorization","Token " + sessionManager.getKey());
                         return headers;
                     }
                 };
@@ -333,21 +391,28 @@ public class LoginData{
 
     private void updateUiWithUser(final String email, final String password, final boolean isLoginSaved) {
 
-        if (user != null) {
+        sessionManager.createLoginSession(user.getUsername(), user.getEmail(), user.getKey());
 
-            //Toast.makeText(app_context, "Willkommen " + user.getUsername(), Toast.LENGTH_SHORT).show();
+        getUserDetails(new VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
 
-            sessionManager.createLoginSession(user.getUsername(), user.getEmail(), user.getKey());
 
-            if (isLoginSaved) {
-                loginPref.saveLogin(email, password);
-            }
+                    if (isLoginSaved) {
+                        loginPref.saveLogin(email, password);
+                    }
 
-            ((Activity)app_context).finish();
+                    Toast.makeText(app_context, result, Toast.LENGTH_SHORT).show();
+                    Log.e("INIT_SUCCESS: ", "getUserDetail erfolgreich.");
+                    ((Activity)app_context).finish();
+                }
 
-        } else {
-            Log.e("INIT_ERROR: ", "user nicht initalisiert!");
-        }
+                @Override
+                public void onError(String result) {
+                    Toast.makeText(app_context, result, Toast.LENGTH_SHORT).show();
+                    Log.e("INIT_ERROR: ", "getUserDetail fehlgeschlagen.");
+                }
+            });
     }
 
     public void resetPassword(final String email, VolleyCallback callback){
@@ -355,7 +420,7 @@ public class LoginData{
             try {
                 RequestQueue requestQueue = Volley.newRequestQueue(app_context);
 
-                String URL = "https://new.weitblicker.org/rest/auth/password/reset";
+                String URL = "https://weitblicker.org/rest/auth/password/reset/";
 
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put("email", email);
@@ -372,11 +437,12 @@ public class LoginData{
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY ERROR", error.toString());
+                        Log.e("VOLLEY ERROR RESET", error.toString());
                         String body;
                         //get status code here
-                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //String statusCode = String.valueOf(error.networkResponse.statusCode);
                         //get response body and parse with appropriate encoding
+
                         if (error.networkResponse.data != null) {
                             try {
                                 //create errorJSON from VolleyError
@@ -412,11 +478,7 @@ public class LoginData{
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> headers = new HashMap<>();
-                        String credentials = "surfer:hangloose";
-                        String auth = "Basic "
-                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                         headers.put("Content-Type", "application/json");
-                        headers.put("Authorization", auth);
                         return headers;
                     }
                 };
@@ -436,7 +498,254 @@ public class LoginData{
         }
     }
 
-    public void getUserData(){
-        
+    public void getUserDetails(VolleyCallback callback){
+        try {
+            try {
+                RequestQueue requestQueue = Volley.newRequestQueue(app_context);
+
+                String URL = "https://weitblicker.org/rest/auth/user";
+
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("username", sessionManager.getUserName());
+                jsonBody.put("first_name", "");
+                jsonBody.put("last_name", "");
+
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.e("LOGIN", response.toString());
+
+                        String isSessionCompleteDebug = "";
+                        try {
+                            if(response.has("username")){
+                                String resp_username = response.get("username").toString();
+                                isSessionCompleteDebug += resp_username;
+                                if(resp_username != null){
+                                    sessionManager.setUserName(resp_username);
+                                }
+                            }
+                            if(response.has("firstname")){
+                                String resp_firstname = response.get("firstname").toString();
+                                isSessionCompleteDebug += resp_firstname;
+                                if(resp_firstname != null){
+                                    sessionManager.setFirstName(resp_firstname);
+                                }
+                            }
+                            if(response.has("lastname")){
+                                String resp_lastname = response.get("lastname").toString();
+                                isSessionCompleteDebug += resp_lastname;
+                                if(resp_lastname != null){
+                                    sessionManager.setLastName(resp_lastname);
+                                }
+                            }
+                            if(response.has("image")){
+                                String resp_image = response.get("image").toString();
+                                isSessionCompleteDebug += resp_image;
+                                if(resp_image != null){
+                                    sessionManager.setImageURL(resp_image);
+                                }
+                            }
+
+                            //Toast.makeText(app_context, isSessionCompleteDebug , Toast.LENGTH_SHORT).show();
+                            Log.e("sessionManagerDebug", isSessionCompleteDebug);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        callback.onSuccess("User Details erfoglreich geladen!");
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String errorMessage = "";
+
+                        /*
+                        if (error instanceof NetworkError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof ServerError) {
+                            errorMessage = "The server could not be found. Please try again after some time!!";
+                        } else if (error instanceof AuthFailureError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof ParseError) {
+                            errorMessage = "Parsing error! Please try again after some time!!";
+                        } else if (error instanceof NoConnectionError) {
+                            errorMessage = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof TimeoutError) {
+                            errorMessage = "Connection TimeOut! Please check your internet connection.";
+                        }
+                        */
+
+                        if(true) {
+
+                        Log.e("VOLLEY ERROR GET_UD", error.toString());
+                        String body;
+                        //get status code here
+                        if(error != null){
+                            String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        }
+                        //get response body and parse with appropriate encoding
+                        if (error.networkResponse.data != null) {
+                            try {
+                                //create errorJSON from VolleyError
+                                body = new String(error.networkResponse.data, "UTF-8");
+
+                                String result = "";
+
+                                JsonParser parser = new JsonParser();
+                                JsonObject jObject = parser.parse(body).getAsJsonObject();
+
+                                Map<String, Object> attributes = new HashMap<String, Object>();
+
+                                Set<Map.Entry<String, JsonElement>> entrySet = jObject.entrySet();
+
+                                for(Map.Entry<String,JsonElement> entry : entrySet){
+                                    result += jObject.get(entry.getKey()).getAsString();
+                                }
+
+                                Log.e("Statuscode:", body);
+                                callback.onError(result);
+
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                        if(errorMessage != null){
+                            Toast.makeText(app_context, errorMessage , Toast.LENGTH_SHORT).show();
+                        }
+                        Log.e("VOLLEY ERROR GET_UD", error.toString() + errorMessage);
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", "Token " + sessionManager.getKey());
+                        return headers;
+                    }
+                };
+
+                requestQueue.add(objectRequest);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+        } catch (Exception e) {
+            Log.e("LOGIN_EXCEPTION: ", e.toString());
+
+        }
     }
+
+    public void setProfileImage(Uri imageURI, VolleyCallback callback){
+
+        if(sessionManager.getUserName() == null){
+            getUserDetails(new VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+
+                }
+
+                @Override
+                public void onError(String result) {
+                    Toast.makeText(app_context, result , Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            final String url = "https://weitblicker.org/rest/auth/user/";
+
+            String charset = "UTF-8";
+            String requestURL = "YOUR_URL";
+
+            String path  = getRealPathFromURI(app_context, imageURI);
+
+            MultipartUtility multipart = null;
+            try {
+                multipart = new MultipartUtility(url,sessionManager.getKey(), charset);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //TODO: add Support for last/firstname when they are actually used
+            //TODO: save new ImageURL in SessionManager
+            //String username = sessionManager.getUserName();
+            multipart.addFormField("username", sessionManager.getUserName());
+            multipart.addFormField("first_name", sessionManager.getFirstName());
+            multipart.addFormField("last_name", sessionManager.getLastName() );
+
+
+            //possible alternative for checking if first/lastname exist
+            /*
+            if( (firstname = sessionManager.getFirstName())!= null){
+                multipart.addFormField("first_name", firstname);
+            }
+            else{
+                multipart.addFormField("first_name", "firstname");
+            }
+            */
+
+
+            try {
+                multipart.addFilePart("image", new File(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String response = null;
+            try {
+                response = multipart.finish();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if  (response != null){
+                Log.e("Change Image Response", response);
+                JSONObject jsonObject = null;
+                try {
+
+                    jsonObject = new JSONObject(response);
+                    String jsonString = jsonObject.getString("image");
+                    sessionManager.setImageURL(jsonString);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
 }
+

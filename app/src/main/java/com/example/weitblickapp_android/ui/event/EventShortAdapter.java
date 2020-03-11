@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
 
@@ -46,7 +47,7 @@ public class EventShortAdapter extends ArrayAdapter<EventViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-        String weitblickUrl = "https://new.weitblicker.org";
+        String weitblickUrl = "https://weitblicker.org";
 
         view = mInflater.inflate(R.layout.fragment_event_short, null);
 
@@ -60,10 +61,24 @@ public class EventShortAdapter extends ArrayAdapter<EventViewModel> {
 
         //Set title for BlogEntries
         textView_title.setText(event.getTitle());
-        text.setText(event.getText());
+        //text.setText(event.getText());
         time.setText(event.getTime());
         location.setText(event.getLocation().getAddress());
         textView_date.setText(event.getEventStartDate());
+
+        //Set onClick to EventDetailFragment
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragManager.beginTransaction();
+                ft.replace(R.id.fragment_container, new EventDetailFragment(event));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+
 
         return view;
     }
