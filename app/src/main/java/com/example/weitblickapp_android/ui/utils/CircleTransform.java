@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui;
+package com.example.weitblickapp_android.ui.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

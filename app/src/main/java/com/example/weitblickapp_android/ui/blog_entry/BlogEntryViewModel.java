@@ -3,7 +3,6 @@ package com.example.weitblickapp_android.ui.blog_entry;
 import androidx.lifecycle.ViewModel;
 
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.text.ParseException;
@@ -188,18 +187,23 @@ public class BlogEntryViewModel extends ViewModel {
 
     public String formatToTimeRange() {
 
-        LocalDate eventDate =  published.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
 
-        LocalDate today = LocalDate.now();
-        LocalDate yesterday = today.minusDays(1);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDate eventDate = null;
+            eventDate = published.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            LocalDate today = LocalDate.now();
+            LocalDate yesterday = today.minusDays(1);
 
-        if(eventDate.equals(yesterday)){
-            return "Gestern";
-        }
-        if(eventDate.equals(today)){
-            return "Heute";
+            if(eventDate.equals(yesterday)){
+                return "Gestern";
+            }
+            if(eventDate.equals(today)){
+                return "Heute";
+            }
+
+            return getPublished();
         }
 
         return getPublished();

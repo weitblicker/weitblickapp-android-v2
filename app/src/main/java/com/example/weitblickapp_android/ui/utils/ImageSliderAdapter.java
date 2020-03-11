@@ -1,4 +1,4 @@
-package com.example.weitblickapp_android.ui;
+package com.example.weitblickapp_android.ui.utils;
 
 import android.content.Context;
 import android.util.Log;

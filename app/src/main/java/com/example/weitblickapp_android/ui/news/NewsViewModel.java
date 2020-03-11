@@ -175,21 +175,23 @@ public class NewsViewModel extends ViewModel {
 
     public String formatToTimeRange() {
 
-        LocalDate eventDate =  published.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
 
-        LocalDate today = LocalDate.now();
-        LocalDate yesterday = today.minusDays(1);
-
-        if(eventDate.equals(yesterday)){
-            return "Gestern";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDate eventDate = null;
+            eventDate = published.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            LocalDate today = LocalDate.now();
+            LocalDate yesterday = today.minusDays(1);
+            if(eventDate.equals(yesterday)){
+                return "Gestern";
+            }
+            if(eventDate.equals(today)){
+                return "Heute";
+            }
+            return getDate();
         }
-        if(eventDate.equals(today)){
-            return "Heute";
-        }
-
-        return getDate();
+            return getDate();
     }
 
     @Override

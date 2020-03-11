@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.CircleTransform;
+import com.example.weitblickapp_android.ui.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

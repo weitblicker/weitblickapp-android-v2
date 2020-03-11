@@ -1,10 +1,8 @@
 package com.example.weitblickapp_android.ui.location;
 
-import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Criteria;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,33 +19,22 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-public class LocationService extends Service implements LocationListener, GpsStatus.Listener {
+public class LocationService extends Service implements LocationListener {
     public static final String LOG_TAG = LocationService.class.getSimpleName();
 
     private final LocationServiceBinder binder = new LocationServiceBinder();
     boolean isLocationManagerUpdatingLocation;
 
-
-
     ArrayList<Location> locationList;
 
-    ArrayList<Location> oldLocationList;
-    ArrayList<Location> noAccuracyLocationList;
     ArrayList<Location> inaccurateLocationList;
     ArrayList<Location> kalmanNGLocationList;
 
-
-    boolean isLogging;
 
     float currentSpeed = 0.0f; // meters/second
 
     KalmanLatLong kalmanFilter;
     long runStartTimeInMillis;
-
-    ArrayList<Integer> batteryLevelArray;
-    ArrayList<Float> batteryLevelScaledArray;
-    int batteryScale;
-    int gpsCount;
 
 
     public LocationService() {
@@ -58,15 +45,11 @@ public class LocationService extends Service implements LocationListener, GpsSta
     public void onCreate() {
         isLocationManagerUpdatingLocation = false;
         locationList = new ArrayList<>();
-        noAccuracyLocationList = new ArrayList<>();
-        oldLocationList = new ArrayList<>();
         inaccurateLocationList = new ArrayList<>();
         kalmanNGLocationList = new ArrayList<>();
         kalmanFilter = new KalmanLatLong(3);
 
     }
-
-
 
     @Override
     public int onStartCommand(Intent i, int flags, int startId) {
@@ -96,8 +79,6 @@ public class LocationService extends Service implements LocationListener, GpsSta
     @Override
     public void onDestroy() {
         Log.d(LOG_TAG, "onDestroy ");
-
-
     }
 
 
@@ -109,9 +90,6 @@ public class LocationService extends Service implements LocationListener, GpsSta
 
         stopSelf();
     }
-
-
-
 
     /**
      * Binder class
@@ -126,8 +104,6 @@ public class LocationService extends Service implements LocationListener, GpsSta
     }
 
 
-
-    /* LocationListener implemenation */
     @Override
     public void onProviderDisabled(String provider) {
         if (provider.equals(LocationManager.GPS_PROVIDER)) {
@@ -154,12 +130,6 @@ public class LocationService extends Service implements LocationListener, GpsSta
         }
     }
 
-    /* GpsStatus.Listener implementation */
-    public void onGpsStatusChanged(int event) {
-
-
-    }
-
     private void notifyLocationProviderStatusUpdated(boolean isLocationProviderAvailable) {
         //Broadcast location provider status change here
     }
@@ -169,11 +139,8 @@ public class LocationService extends Service implements LocationListener, GpsSta
             isLocationManagerUpdatingLocation = true;
             runStartTimeInMillis = (long)(SystemClock.elapsedRealtimeNanos() / 1000000);
 
-
             locationList.clear();
 
-            oldLocationList.clear();
-            noAccuracyLocationList.clear();
             inaccurateLocationList.clear();
             kalmanNGLocationList.clear();
 
@@ -195,10 +162,8 @@ public class LocationService extends Service implements LocationListener, GpsSta
                 //criteria.setBearingAccuracy(Criteria.ACCURACY_HIGH);
                 //criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
 
-                Integer gpsFreqInMillis = 5000;
-                Integer gpsFreqInDistance = 5;  // in meters
-
-                locationManager.addGpsStatusListener(this);
+                Integer gpsFreqInMillis = 1000;
+                Integer gpsFreqInDistance = 1;  // in meters
 
                 locationManager.requestLocationUpdates(gpsFreqInMillis, gpsFreqInDistance, criteria, this, null);
 
@@ -212,7 +177,6 @@ public class LocationService extends Service implements LocationListener, GpsSta
             }
         }
     }
-
 
     public void stopUpdatingLocation(){
         if(this.isLocationManagerUpdatingLocation == true){
@@ -229,14 +193,12 @@ public class LocationService extends Service implements LocationListener, GpsSta
         //Filter Location and send predicted Location to UI
         filterAndAddLocation(newLocation);
 
-
         //Send actual Location to somewhere
         Intent intent = new Intent("LocationUpdated");
         intent.putExtra("location", newLocation);
         LocalBroadcastManager.getInstance(this.getApplication()).sendBroadcast(intent);
     }
 
-    @SuppressLint("NewApi")
     private long getLocationAge(Location newLocation){
         long locationAge;
         if(android.os.Build.VERSION.SDK_INT >= 17) {
@@ -256,13 +218,11 @@ public class LocationService extends Service implements LocationListener, GpsSta
 
         if(age > 5 * 1000){ //more than 5 seconds
             Log.d(TAG, "Location is old");
-            oldLocationList.add(location);
             return false;
         }
 
         if(location.getAccuracy() <= 0){
             Log.d(TAG, "Latitidue and longitude values are invalid.");
-            noAccuracyLocationList.add(location);
             return false;
         }
 /*
@@ -320,7 +280,6 @@ public class LocationService extends Service implements LocationListener, GpsSta
         Log.d(TAG, "Location quality is good enough.");
         currentSpeed = location.getSpeed();
         locationList.add(location);
-
 
         return true;
     }

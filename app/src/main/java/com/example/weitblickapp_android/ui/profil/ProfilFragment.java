@@ -38,7 +38,7 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
-import com.example.weitblickapp_android.ui.CircleTransform;
+import com.example.weitblickapp_android.ui.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

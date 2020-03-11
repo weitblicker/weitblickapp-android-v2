@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.CircleTransform;
-import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.utils.CircleTransform;
+import com.example.weitblickapp_android.ui.utils.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.project.ProjectAdapterShort;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
 import com.google.android.material.tabs.TabLayout;
