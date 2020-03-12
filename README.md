@@ -6,6 +6,12 @@ code structure:
 
 /data -> All user-specific classes including session management, registration & change of user details
 
+1.Login_Activity:   Activity handles all Authentication processes. Uses SessionManager and LoginData.
+2.SessionManager:   Initiates and handles terminaton of the users session. Saves Session in SharedPreferences.
+3.LoginData:        Handles all Sever-Requests regarding the authenticated user.
+4.RegisterActivity: Activity handles all Registration processes. Uses RegisterData.
+5.Register Data:    Handles all Sever-Requests regarding the creation of new users.
+
 /ui -> MainActivity + splash-Activity for splash screen & all classes for app-functionality + utility classes  
 
 
