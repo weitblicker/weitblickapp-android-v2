@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class SessionManager {
 
-    private LoginData loginData;
+    //private LoginData loginData;
 
     // Shared Preferences
     SharedPreferences pref;
@@ -41,6 +41,15 @@ public class SessionManager {
 
     // Userkey
     public static final String KEY_USERKEY = "key";
+
+
+    public static final String KEY_FIRSTNAME = "firstname";
+
+    public static final String KEY_LASTNAME = "lastname";
+
+    public static final String KEY_IMAGEURL = "image";
+
+
 
     // Constructor
     public SessionManager(Context context){
@@ -121,8 +130,39 @@ public class SessionManager {
     }
 
     public String getKey() {
-
         return pref.getString(KEY_USERKEY, null);
+    }
+
+    public String getFirstName() {
+        return pref.getString(KEY_FIRSTNAME, null);
+    }
+
+    public String getLastName() {
+        return pref.getString(KEY_LASTNAME, null);
+    }
+
+    public String getImageURL(){
+        return pref.getString(KEY_IMAGEURL, null);
+    }
+
+    public void setUserName(String userName){
+        editor.putString(KEY_NAME, userName);
+        editor.commit();
+    }
+
+    public void setFirstName(String firstName){
+        editor.putString(KEY_FIRSTNAME, firstName);
+        editor.commit();
+    }
+
+    public void setLastName(String lastName){
+        editor.putString(KEY_LASTNAME, lastName);
+        editor.commit();
+    }
+
+    public void setImageURL(String imageURL){
+        editor.putString(KEY_IMAGEURL, imageURL);
+        editor.commit();
     }
 
     /**

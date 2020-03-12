@@ -1,12 +1,17 @@
 package com.example.weitblickapp_android.ui.project;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,22 +19,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.weitblickapp_android.R;
-import com.example.weitblickapp_android.ui.ImageSliderAdapter;
+import com.example.weitblickapp_android.ui.utils.ImageSliderAdapter;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListAdapterShort;
+import com.example.weitblickapp_android.ui.blog_entry.BlogEntryListDetailFragment;
 import com.example.weitblickapp_android.ui.blog_entry.BlogEntryViewModel;
+import com.example.weitblickapp_android.ui.cycle.CycleViewModel;
+import com.example.weitblickapp_android.ui.event.EventListDetailFragment;
 import com.example.weitblickapp_android.ui.event.EventShortAdapter;
 import com.example.weitblickapp_android.ui.event.EventViewModel;
-import com.example.weitblickapp_android.ui.milenstone.MilenstoneListAdapter;
-import com.example.weitblickapp_android.ui.milenstone.MilenstoneViewModel;
+import com.example.weitblickapp_android.ui.location.MapOverviewFragment;
+import com.example.weitblickapp_android.ui.news.NewsListDetailFragment;
 import com.example.weitblickapp_android.ui.news.NewsShortAdapter;
 import com.example.weitblickapp_android.ui.news.NewsViewModel;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerAdapter;
-import com.example.weitblickapp_android.ui.partner.ProjectPartnerViewModel;
-import com.example.weitblickapp_android.ui.sponsor.SponsorAdapter;
-import com.example.weitblickapp_android.ui.sponsor.SponsorViewModel;
+import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneListAdapter;
+import com.example.weitblickapp_android.ui.project.milenstone.MilenstoneViewModel;
+import com.example.weitblickapp_android.ui.project.partner.ProjectPartnerAdapter;
+import com.example.weitblickapp_android.ui.project.partner.ProjectPartnerViewModel;
+import com.example.weitblickapp_android.ui.project.sponsor.SponsorAdapter;
+import com.example.weitblickapp_android.ui.project.sponsor.SponsorViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,48 +48,47 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.tabs.TabLayout;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.noties.markwon.Markwon;
 
 
 public class ProjectDetailFragment extends Fragment implements OnMapReadyCallback {
 
-    static final String urlWeitblick = "https://new.weitblicker.org";
-
-
+    static final String urlWeitblick = "https://weitblicker.org";
+    String PREF_NAME = "DefaultProject";
     String location;
     String title;
     String text;
-    float lng;
-    float lat;
-    float current_amount;
-    float goal_amount;
+    double lng;
+    double lat;
+    static Bitmap smallMarker;
+    String current_amount;
+    String goal_amount;
+    String goalDescription;
+    CycleViewModel cycle;
     ArrayList <String> imageUrls = new ArrayList<String>();
+    ArrayList <NewsViewModel> newsId = new ArrayList<NewsViewModel>();
+    ArrayList <EventViewModel> eventId = new ArrayList<EventViewModel>();
+    ArrayList <BlogEntryViewModel> blogId = new ArrayList<BlogEntryViewModel>();
+    ArrayList <ProjectPartnerViewModel> partnerId = new ArrayList<ProjectPartnerViewModel>();
+    ArrayList <SponsorViewModel> sponsorId = new ArrayList<SponsorViewModel>();
+    ArrayList <String> hosts = new ArrayList<String>();
     Boolean favorite = false;
     View root;
     private GoogleMap mMap;
-    /*private int cycleID = 0;
-    private int donationGoalID = 0;
-    private int projectPartnerID = 0;
-    private int statsID = 0;
-    private int milenstoneID = 0;
-    private int newsID = 0;
-    private int blogsID = 0;
-    private int eventsID = 0;*/
-
-    private int cycleID = 1;
-    private int donationGoalID = 1;
-    private int projectPartnerID = 1;
-    private int statsID = 1;
-    private int milenstoneID = 1;
-    private int newsID = 1;
-    private int blogsID = 1;
-    private int eventsID = 1;
+    String bankname;
+    String bic;
+    String iban;
+    String descriptionLocation;
+    int projectId;
 
     private static final int UNBOUNDED = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     ArrayList<ProjectPartnerViewModel> partnerList = new ArrayList<ProjectPartnerViewModel>();
@@ -87,10 +97,18 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     ArrayList<NewsViewModel> newsList = new ArrayList<NewsViewModel>();
     ArrayList<BlogEntryViewModel> blogList = new ArrayList<BlogEntryViewModel>();
     ArrayList<EventViewModel> eventList = new ArrayList<EventViewModel>();
+    ArrayList<MilenstoneViewModel> mileList = new ArrayList<MilenstoneViewModel>();
+    ListView listNews = null;
 
     public ImageSliderAdapter imageSlider;
     private LayoutInflater mLayoutInflator;
     ViewPager mViewPager;
+
+    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 5000; // time in milliseconds between successive task executions.
+
+    private int currentPage = 0;
+    private Timer timer = null;
 
     public ProjectDetailFragment() {
     }
@@ -101,13 +119,36 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         this.location = project.getAddress();
         this.lat = project.getLat();
         this.lng = project.getLng();
-        this.current_amount = project.getCurrent_amount();
-        this.goal_amount = project.getGoal_amount();
-        this.cycleID = project.getCycle_id();
-        //Concat imageUrls with Weitblick url and add values to "imageUrls"
-        for(int i = 0; i < project.getImageUrls().size(); i++){
-            this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
+        this.current_amount = project.getCurrentAmount();
+        this.goal_amount = project.getDonationGoal();
+        this.cycle = project.getCycle();
+        this.newsId = project.getNew_ids();
+        this.blogId = project.getBlog_ids();
+        this.partnerId = project.getPartner_ids();
+        this.sponsorId = project.getSponsor_ids();
+        this.goalDescription = project.getGoalDescription();
+
+        //Add Default-Url so we can instantiate right default Picture in ImageSliderAdapter
+        if(project.getImageUrls().isEmpty()){
+            imageUrls.add("project_default");
+        }else {
+            for (int i = 0; i < project.getImageUrls().size(); i++) {
+                if (!project.getImageUrls().get(i).contains("http://weitblicker.org")) {
+                    this.imageUrls.add(i, urlWeitblick + project.getImageUrls().get(i));
+                } else {
+                    this.imageUrls.add(i, project.getImageUrls().get(i));
+                }
+            }
         }
+
+        this.hosts = project.getHosts();
+        this.mileList = project.getMileStones();
+        this.eventId = project.getEvent_ids();
+        this.descriptionLocation = project.getDescriptionLocation();
+        this.projectId = project.getId();
+        this.bankname = project.getBankName();
+        this.iban = project.getIban();
+        this.bic = project.getBic();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -125,25 +166,34 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         ImageSliderAdapter adapter = new ImageSliderAdapter(getFragmentManager(), getActivity(), imageUrls);
         mViewPager.setAdapter(adapter);
 
-        //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
+        //SET Tab-Indicator-Dots for ViewPager
+        TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabDots);
+        if(mViewPager.getAdapter().getCount() > 1){
+            tabLayout.setupWithViewPager(mViewPager, true);
+            //Initiate Runnable for automatic Image-Slide
+            final Handler handler = new Handler();
+            final Runnable Update = new Runnable() {
+                public void run() {
+                    if (mViewPager.getCurrentItem() == (mViewPager.getAdapter().getCount()-1)){
+                        mViewPager.setCurrentItem(0, true);
+                    }else {
+                        mViewPager.setCurrentItem((mViewPager.getCurrentItem()+1), true);
+                    }
+                }
+            };
+            timer = new Timer(); // This will create a new Thread
+            timer.schedule(new TimerTask() { // task to be scheduled
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, DELAY_MS, PERIOD_MS);
+        }
 
+
+        //final ImageButton changeImage = (ImageButton) root.findViewById(R.id.heart);
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
-
-        /*changeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!favorite){
-                    changeImage.setImageResource(R.drawable.ic_heart_filled);
-                    favorite=true;
-                }else{
-                    changeImage.setImageResource(R.drawable.ic_heart_outline);
-                    favorite=false;
-                }
-
-            }
-        });*/
 
         ImageButton back = (ImageButton) root.findViewById(R.id.back);
 
@@ -158,11 +208,49 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
 
         final TextView locationTextView = root.findViewById(R.id.detail_location);
         locationTextView.setText(this.location);
+        final TextView locationTextView2 = root.findViewById(R.id.detail_location2);
+        locationTextView2.setText(this.location);
         final TextView titleTextView = root.findViewById(R.id.detail_title);
         titleTextView.setText(this.title);
+        final TextView partner = root.findViewById(R.id.partner);
+        ImageView logo_icon = root.findViewById(R.id.logo_icon);
 
+        if(hosts.isEmpty()){
+            partner.setVisibility(View.GONE);
+            logo_icon.setVisibility(View.GONE);
+        }else{
+            //makes one String out of a hostArray
+            StringBuilder b = new StringBuilder();
+            for(String s : hosts){
+                b.append(s);
+                b.append(" ");
+            }
+            //makes Character Uppercase
+            StringBuilder B = new StringBuilder();
+            for ( int i = 0; i < b.length(); i++ ) {
+                char c = b.charAt( i );
+                if(Character.isLowerCase(c)){
+                    B.append(Character.toUpperCase(c));
+                }else{
+                    B.append(c);
+                }
+            }
+            partner.setText(B.toString());
+        }
         final TextView textTextView = root.findViewById(R.id.detail_text);
-
+        final TextView currentNumber = root.findViewById(R.id.currentNumber);
+        final TextView goalNumber = root.findViewById(R.id.goalnumber);
+        final TextView goalDesc = root.findViewById(R.id.donationgoaldescription);
+        final TextView bankName = root.findViewById(R.id.bankname);
+        final TextView IBAN = root.findViewById(R.id.IBAN);
+        final TextView BIC = root.findViewById(R.id.BIC);
+        final TextView newsMore = root.findViewById(R.id.moreNews);
+        final TextView blogsMore = root.findViewById(R.id.moreBlog);
+        final TextView eventsMore = root.findViewById(R.id.moreEvents);
+        final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
+        final TextView amountTextView = root.findViewById(R.id.amountNumber);
+        final TextView bikeText = root.findViewById(R.id.bikeText2);
+        final TextView locationDescription = root.findViewById(R.id.detail_location3);
         final Markwon markwon = Markwon.create(getContext());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -172,115 +260,285 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-        final TextView goalTextView = root.findViewById(R.id.amount_goal_number);
-        final TextView amountTextView = root.findViewById(R.id.amountNumber);
+        //set LocationDescription
+        if(this.descriptionLocation.contains("null")){
+            locationDescription.setVisibility(View.GONE);
+        }else{
+            locationDescription.setText(this.descriptionLocation);
+        }
+        ImageButton bike = root.findViewById(R.id.bike);
+        ImageButton bike2 = root.findViewById(R.id.bike2);
 
-        if(cycleID == 0){
+        //Set DonationGoal
+        if(this.goal_amount.contains("null") && this.current_amount.contains("null") && this.goalDescription.length() == 0 && this.bankname == null){
+            ConstraintLayout goalDonation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
+            goalDonation.setVisibility(View.GONE);
+        }else{
+            //checks which data is available and display the correct data
+            if(current_amount.contains("null")){
+                TextView text = (TextView) root.findViewById(R.id.amount_goal_text);
+                goalTextView.setVisibility(View.GONE);
+                text.setVisibility(View.GONE);
+            }else{
+                goalTextView.setText(current_amount + " €");
+            }
+            if(goal_amount.contains("null")){
+                TextView text = (TextView) root.findViewById(R.id.amountText);
+                text.setVisibility(View.GONE);
+                amountTextView.setVisibility(View.GONE);
+            }else{
+                amountTextView.setText(goal_amount + " €");
+            }
+            if(goalDescription.length() == 0){
+                goalDesc.setVisibility(View.GONE);
+            }else{
+                goalDesc.setText(goalDescription);
+            }
+            if(bankname == null){
+                IBAN.setVisibility(View.GONE);
+                bankName.setVisibility(View.GONE);
+                BIC.setVisibility(View.GONE);
+            }else{
+                IBAN.setText(iban);
+                bankName.setText(bankname);
+                BIC.setText(bic);
+            }
+        }
+        //set Sponsor
+        if(this.sponsorId.size() > 0){
             drawPie(true);
-            goalTextView.setText((this.goal_amount - this.current_amount) + " €");
-            amountTextView.setText(current_amount + " €");
+            //Sponsor
+            sponsorList.clear();
             ListView listViewSponsor = (ListView) root.findViewById(R.id.sponsorlist);
-            SponsorViewModel test1 = new SponsorViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de", "nbhvjsmnvobs kevj hsl");
-            SponsorViewModel test2 = new SponsorViewModel("Test2", "oi09uh jhwsbv wjbv wlkbv , hw  wh luefv wwe fwf wjweb", "www.dhejvhebvkrv-vevee.com", "fhubvdacnlkdjfoeihvs");
             SponsorAdapter adapterSponsor = new SponsorAdapter(getActivity(), sponsorList, getFragmentManager());
             listViewSponsor.setAdapter(adapterSponsor);
-            sponsorList.add(test1);
-            sponsorList.add(test2);
-            sponsorList.add(test1);
-            ViewGroup.LayoutParams lp = listViewSponsor.getLayoutParams();
-            lp.height = loadHeight(listViewSponsor);
-            listViewSponsor.setLayoutParams(lp);
+            //fill SponsorList
+            for(int i = 0; i < sponsorId.size(); i++){
+                sponsorList.add(sponsorId.get(i));
+            }
+            //set Height of dynamic List
+            setListViewHeightBasedOnChildren(listViewSponsor);
+
+            //count rateProKm from all Sponsors
+            double rateProKm = 0;
+            for(int i = 0; i < sponsorId.size(); i++){
+                rateProKm += Float.parseFloat(sponsorId.get(i).getRateProKm());
+            }
+            float currentRound = Math.round( rateProKm * 100);
+            currentRound = currentRound / 100.0f;
+
+            bikeText.setText("Für jeden mit dem Fahrrad gefahrenen Kilometer spenden unsere Sponsoren für das Projekt.");
+
+            //makes one String out of a hostsArray
+            StringBuilder b = new StringBuilder();
+            for(String s : hosts){
+                b.append(s);
+                b.append(" ");
+            }
+            //makes Character upperCase
+            StringBuilder B = new StringBuilder();
+            for ( int i = 0; i < b.length(); i++ ) {
+                char c = b.charAt( i );
+                if(Character.isLowerCase(c)){
+                    B.append(Character.toUpperCase(c));
+                }else{
+                    B.append(c);
+                }
+            }
+            partner.setText(B.toString());
+
+            //sets onClickListener to save DefaultProject and redirect to MapOverView
+            bike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("projectid", projectId);
+                    editor.putString("projectname", title);
+                    editor.putFloat("lat", (long) lat);
+                    editor.putFloat("lng", (long) lng);
+                    editor.putString("hosts", B.toString());
+                    editor.putString("location", location);
+                    editor.commit();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, new MapOverviewFragment());
+                    ft.commit();
+                }
+            });
+            bike2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("projectid", projectId);
+                    editor.putString("projectname", title);
+                    editor.putFloat("lat", (long) lat);
+                    editor.putFloat("lng", (long) lng);
+                    editor.putString("hosts", B.toString());
+                    editor.putString("location", location);
+                    editor.commit();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, new MapOverviewFragment());
+                    ft.commit();
+                }
+            });
+
+            //set Stats
+            currentRound = Math.round( Float.parseFloat(this.cycle.getCurrentAmount()) *100);
+            currentRound = currentRound / 100.0f;
+            currentNumber.setText( currentRound + " €");
+            currentRound = Math.round( Float.parseFloat(this.cycle.getCycleDonation()) *100);
+            currentRound = currentRound / 100.0f;
+            goalNumber.setText(currentRound + " €");
+            TextView km = root.findViewById(R.id.reachedNumber);
+            currentRound = Math.round( Float.parseFloat(this.cycle.getKm_sum()) *100);
+            currentRound = currentRound / 100.0f;
+            km.setText(currentRound + " km");
+            TextView cyclist = root.findViewById(R.id.bikernumber);
+            cyclist.setText(String.valueOf(cycle.getCyclist()));
+
         }else{
             ConstraintLayout stats = (ConstraintLayout) root.findViewById(R.id.statsContainer);
             stats.setVisibility(View.GONE);
             ConstraintLayout sponsor = (ConstraintLayout) root.findViewById(R.id.sponsorContainer);
             sponsor.setVisibility(View.GONE);
-            goalTextView.setVisibility(View.GONE);
-            amountTextView.setVisibility(View.GONE);
             drawPie(false);
+            bike.setVisibility(View.GONE);
         }
-        if(donationGoalID != 0){
-
-        }else{
-            ConstraintLayout donation = (ConstraintLayout) root.findViewById(R.id.donationGoalContainer);
-            donation.setVisibility(View.GONE);
-        }
-        if(newsID != 0){
-            ListView listNews = (ListView) root.findViewById(R.id.news);
-            NewsViewModel test1 = new NewsViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "jebuwfhilksbvwiu wlkhbvowubv ilw wilh sfbisufsv","Vor 3 Tagen", imageUrls);
-            NewsViewModel test2 = new NewsViewModel(2, "Test","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "jvduhsbhijaobv av avh aojk vahdi vbaojk vahfbvuhaodubvhajnvhib uajobduhagsfcholjbav0peihfcbvd", "13.06.19", imageUrls);
+        //set News
+        if(newsId.size() != 0){
+            listNews = (ListView) root.findViewById(R.id.news);
+            newsList.clear();
             NewsShortAdapter adapterNews = new NewsShortAdapter(getActivity(), newsList, getFragmentManager());
             listNews.setAdapter(adapterNews);
-            newsList.add(test1);
-            newsList.add(test2);
-            newsList.add(test2);
-            ViewGroup.LayoutParams lp = listNews.getLayoutParams();
-            lp.height = loadHeight(listNews);
-            listNews.setLayoutParams(lp);
+            //set NewsList
+            //check if news are more than 3 items
+            //if not hide the "Mehr Anzeigen" button
+            if(newsId.size() <= 3){
+                for(int i = 0; i < newsId.size(); i++){
+                    newsList.add(newsId.get(i));
+                }
+                newsMore.setVisibility(View.GONE);
+            }else{
+                for(int i = 0; i < 3; i++){
+                    newsList.add(newsId.get(i));
+                }
+                //set onClickListener to view all News
+                newsMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NewsListDetailFragment fragment = new NewsListDetailFragment(newsId);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+                });
+            }
+            //set Height of dynamic List
+            setListViewHeightBasedOnChildren(listNews);
         }else{
             ConstraintLayout news = (ConstraintLayout) root.findViewById(R.id.newsContainer);
             news.setVisibility(View.GONE);
         }
-        if(blogsID != 0){
+        //set Blog
+        if(blogId.size() != 0){
             ListView listblog = (ListView) root.findViewById(R.id.blog);
-            BlogEntryViewModel test1 = new BlogEntryViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "jebuwfhilksbvwiu wlkhbvowubv ilw wilh sfbisufsv","Vor 3 Tagen", imageUrls);
-            BlogEntryViewModel test2 = new BlogEntryViewModel(2, "Test","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "jvduhsbhijaobv av avh aojk vahdi vbaojk vahfbvuhaodubvhajnvhib uajobduhagsfcholjbav0peihfcbvd", "13.06.19", imageUrls);
+            blogList.clear();
             BlogEntryListAdapterShort adapterBlog = new BlogEntryListAdapterShort(getActivity(), blogList, getFragmentManager());
             listblog.setAdapter(adapterBlog);
-            blogList.add(test1);
-            blogList.add(test2);
-            blogList.add(test2);
-            ViewGroup.LayoutParams lp = listblog.getLayoutParams();
-            lp.height = loadHeight(listblog);
-            listblog.setLayoutParams(lp);
+            //check if blogs are more than 3 items
+            //if not hide the "Mehr Anzeigen" button
+            if(blogId.size() <= 3){
+                for(int i = 0; i < blogId.size(); i++){
+                    blogList.add(blogId.get(i));
+                }
+                blogsMore.setVisibility(View.GONE);
+            }else{
+                for(int i = 0; i < 3; i++){
+                    blogList.add(blogId.get(i));
+                }
+                //set onClickListener to view all Blogs
+                blogsMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BlogEntryListDetailFragment fragment = new BlogEntryListDetailFragment(blogId);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+                });
+            }
+            //set Height of dynamic List
+            setListViewHeightBasedOnChildren(listblog);
         }else{
             ConstraintLayout blog = (ConstraintLayout) root.findViewById(R.id.blogContainer);
             blog.setVisibility(View.GONE);
         }
-        if(eventsID != 0){
+        //set events
+        if(eventId.size() != 0){
             ListView listEvent = (ListView) root.findViewById(R.id.events);
-           // EventViewModel test1 = new EventViewModel(1,"Heute wird ein guter Tag", "HAOHBJkcvheuöwoehiasclknv", "12h","20.02.20", "Osnabrück");
-          //  EventViewModel test2 = new EventViewModel(2, "Test"," jebuwfhilksbvwiu wlkhbvowubv ilw wilh" , "20h", "13.06.19", "Münster");
+            eventList.clear();
             EventShortAdapter adapterEvent = new EventShortAdapter(getActivity(), eventList, getFragmentManager());
             listEvent.setAdapter(adapterEvent);
-           // eventList.add(test1);
-          //  eventList.add(test2);
-           // eventList.add(test2);
-            ViewGroup.LayoutParams lp = listEvent.getLayoutParams();
-            lp.height = loadHeight(listEvent);
-            listEvent.setLayoutParams(lp);
+            //check if events are more than 3 items
+            //if not hide the "Mehr Anzeigen" button
+            if(eventId.size() <= 3){
+                for(int i = 0; i < eventId.size(); i++){
+                    eventList.add(eventId.get(i));
+                }
+                eventsMore.setVisibility(View.GONE);
+            }else{
+                for(int i = 0; i < 3; i++){
+                    eventList.add(eventId.get(i));
+                }
+                //set onClickListener to view all events
+                eventsMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventListDetailFragment fragment = new EventListDetailFragment(eventId);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        FragmentTransaction replace = ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+                });
+            }
+            //set Height of dynamic List
+            setListViewHeightBasedOnChildren(listEvent);
         }else{
             ConstraintLayout event = (ConstraintLayout) root.findViewById(R.id.eventsContainer);
             event.setVisibility(View.GONE);
         }
-        if(projectPartnerID != 0){
+        //set Partners
+        if(partnerId.size() != 0){
+            partnerList.clear();
             ListView listPartner = (ListView) root.findViewById(R.id.projectpartner);
-            ProjectPartnerViewModel test1 = new ProjectPartnerViewModel("Test1", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
-            ProjectPartnerViewModel test2 = new ProjectPartnerViewModel("Test2", "oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh", "www.fjvhbn.de");
             ProjectPartnerAdapter adapterPartner = new ProjectPartnerAdapter(getActivity(), partnerList, getFragmentManager());
             listPartner.setAdapter(adapterPartner);
-            partnerList.add(test2);
-            partnerList.add(test2);
-            partnerList.add(test2);
-            ViewGroup.LayoutParams lp = listPartner.getLayoutParams();
-            lp.height = loadHeight(listPartner);
-            listPartner.setLayoutParams(lp);
+            //add partners
+            for(int i = 0; i < partnerId.size(); i++){
+                partnerList.add(partnerId.get(i));
+            }
+            //set Height of dynamic List
+            setListViewHeightBasedOnChildren(listPartner);
         }else{
             ConstraintLayout projectPartner = (ConstraintLayout) root.findViewById(R.id.projectPartnerContainer);
             projectPartner.setVisibility(View.GONE);
         }
-        if(milenstoneID != 0){
+        //set milestones
+        if(mileList.size() != 0){
+            milenstoneList.clear();
             ListView listMilenstone = (ListView) root.findViewById(R.id.milenstone);
-            MilenstoneViewModel test1 = new MilenstoneViewModel("Test1","Heute", "HAOHBJkcvheuöwoehiasclknv jebuwfhilksbvwiu wlkhbvowubv ilw wilh");
-            MilenstoneViewModel test2 = new MilenstoneViewModel("Test2", "13.06.19","oijtghbjklihoguzibhjoiguöizfltzfuzlgiuhöuigzlfutvghbilgzflzuflizfgzuffzlflzzugzglluuucgvjhbglzfvguhzfugvhizfucgvjhftcgukvhftucgvuftckhvjuftckhvjufchvjufchvjuftcvufztcgvuzftcgvuzftgvuzftcgvzuftgvuzlufgvhzufgvhvghgzfuvgjhb jebuwfhilksbvwiu wlkhbvowubv ilw wilh");
             MilenstoneListAdapter adapterMilenstone = new MilenstoneListAdapter(getActivity(), milenstoneList, getFragmentManager());
             listMilenstone.setAdapter(adapterMilenstone);
-            milenstoneList.add(test2);
-            milenstoneList.add(test2);
-            milenstoneList.add(test2);
-            ViewGroup.LayoutParams lp = listMilenstone.getLayoutParams();
-            lp.height = loadHeight(listMilenstone);
-            listMilenstone.setLayoutParams(lp);
+            //add milestones
+            for(int i = 0; i < mileList.size(); i++){
+                milenstoneList.add(mileList.get(i));
+            }
+            //set Height of dynamic List
+            setListViewHeightBasedOnChildren(listMilenstone);
         }else{
             ConstraintLayout mile = (ConstraintLayout) root.findViewById(R.id.milenstoneContainer);
             mile.setVisibility(View.GONE);
@@ -288,26 +546,48 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
         return root;
     }
 
-    public int  loadHeight(ListView list){
-        ListAdapter LvAdapter = list.getAdapter();
-        int listviewElementsheight = 0;
-        for (int i = 0; i < LvAdapter.getCount(); i++) {
-            View mView = LvAdapter.getView(i, null, list);
-            mView.measure(
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+    //measures the height of a List with all of its contnet
+    //important because the Height of the ListView is dynamic
+    public void setListViewHeightBasedOnChildren(ListView listView) {
 
-            listviewElementsheight += mView.getMeasuredHeight();
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter != null) {
+
+            int numberOfItems = listAdapter.getCount();
+
+            // Get total height of all items.
+            int totalItemsHeight = 0;
+            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+                View item = listAdapter.getView(itemPos, null, listView);
+                float px = 350 * (listView.getResources().getDisplayMetrics().density);
+                item.measure(
+                        View.MeasureSpec.makeMeasureSpec((int)px, View.MeasureSpec.AT_MOST),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                int height = item.getMeasuredHeight();
+                totalItemsHeight += height;
+            }
+
+            // Get total height of all item dividers.
+            int totalDividersHeight = listView.getDividerHeight() * (numberOfItems - 1);
+
+            // Set list height.
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalItemsHeight + totalDividersHeight;
+            listView.setLayoutParams(params);
+            listView.requestLayout();
         }
-        listviewElementsheight += list.getDividerHeight()*3;
-        return listviewElementsheight;
     }
 
-
+    //draws the PieChart
     public void drawPie(boolean draw){
         AnimatedPieView mAnimatedPieView = root.findViewById(R.id.pieChart);
         if(draw == true){
-            float current = (100 / goal_amount) * current_amount;
+            //calculate the correct values
+            double current = (100 / Float.parseFloat(cycle.getCycleDonation())) * Float.parseFloat(cycle.getCurrentAmount());
+            TextView procent = (TextView) root.findViewById(R.id.procent);
+            current = Math.round(current * 100) / 100.0;
+            procent.setText(current + " %");
+            //setting the PieChart
             AnimatedPieViewConfig config = new AnimatedPieViewConfig();
             config.startAngle(-90)// Starting angle offset
                     .addData(new SimplePieInfo(100 - current, Color.parseColor("#ff9900"), "Noch zu sammelnde Spenden"))//Data (bean that implements the IPieInfo interface)
@@ -323,11 +603,23 @@ public class ProjectDetailFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //create custom markers and adding them
         LatLng location = new LatLng( this.lat, this.lng);
-        mMap.addMarker(new MarkerOptions().position(location).title(this.location).icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_location)));
+        Bitmap bitmapdraw = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_marker_foreground);
+        smallMarker = Bitmap.createScaledBitmap(bitmapdraw, 100, 100, false);
+        mMap.addMarker(new MarkerOptions().position(location).title(this.location).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+        //moves Camera zoom and position
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        //disable zoom ans scrolling
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
+    }
+
+    @Override
+    public void onDestroy() {
+        if(timer != null)
+        timer.cancel();
+        super.onDestroy();
     }
 }

@@ -45,7 +45,7 @@ public class RegistrationData {
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(app_context);
 
-            String URL = "https://new.weitblicker.org/rest/auth/registration/";
+            String URL = "https://weitblicker.org/rest/auth/registration/";
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("username", username);
             jsonBody.put("email", email);
@@ -61,13 +61,12 @@ public class RegistrationData {
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    Log.i("REGISTRATION SUCCESFUL", "VERY sucessful ---------------------------------------------------------------------------------");
-                    callback.onSuccess("Registrierung erfolgreich.");
+                   callback.onSuccess("Registrierung erfolgreich.");
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY ERROR", error.toString());
+                    Log.e("VOLLEY ERROR REGISTER", error.toString());
 
                     String body;
                     //get status code here

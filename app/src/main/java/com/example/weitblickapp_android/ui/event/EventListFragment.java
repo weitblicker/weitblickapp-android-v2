@@ -26,8 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +38,12 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
     final private static SimpleDateFormat formatterRead = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     final private static SimpleDateFormat formatterWrite = new SimpleDateFormat("yyyy-MM-dd");
     ArrayList<EventViewModel> events = new ArrayList<EventViewModel>();
-
     private EventListAdapter adapter;
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadEvents();
+    }
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,8 +59,6 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadEvents();
-        //getListView().setOnScrollListener(this);
     }
 
     public void loadEvents(){
@@ -75,6 +79,9 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     JSONArray images = null;
                     JSONObject image = null;
 
+                    JSONArray occurrences = null;
+
+
                     JSONObject locationObject = null;
                     EventLocation location = null;
 
@@ -82,11 +89,14 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                     String address;
                     double lat;
                     double lng;
+                    String descriptionLocation;
+                    String imageString;
 
                     JSONObject hostObject = null;
                     String hostName;
 
                     try {
+                        //load data
                         responseObject = response.getJSONObject(i);
                         Integer eventId = responseObject.getInt("id");
                         String title = responseObject.getString("title");
@@ -99,41 +109,68 @@ public class EventListFragment extends ListFragment implements AbsListView.OnScr
                         address = locationObject.getString("address");
                         lat = locationObject.getDouble("lat");
                         lng = locationObject.getDouble("lng");
+                        descriptionLocation = locationObject.getString("description");
 
                         hostObject = responseObject.getJSONObject("host");
-                        hostName = hostObject.getString("name");
+                        hostName = hostObject.getString("city");
+
+                        occurrences = responseObject.getJSONArray("occurrences");
 
 
+
+                        //Get Main-Image
+                        try {
+                            image = responseObject.getJSONObject("image");
+                            imageString = image.getString("url");
+
+                            imageUrls.add(imageString);
+                        }catch (JSONException e){
+
+                        }
 
                         try {
                             images = responseObject.getJSONArray("photos");
                             for (int x = 0; x < images.length(); x++) {
                                 image = images.getJSONObject(x);
                                 String url = image.getString("url");
-                                imageUrls.add(url);
+                                if(!imageUrls.contains(url)) {
+                                    imageUrls.add(url);
+                                }
                             }
 
                         }catch(JSONException e){
 
                         }
 
-                        //Get inline-Urls from Text, then extract them
-                        // imageUrls = getImageUrls(text);
                         description = extractImageUrls(description);
+                        title = extractImageUrls(title);
 
-                        location = new EventLocation(name, address, lat, lng);
+                        location = new EventLocation(name, address, lat, lng, descriptionLocation);
 
-                        EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
-                        events.add(temp);
-                        adapter.notifyDataSetChanged();
+                        //load occurrences
+                        for(int y = 0; y < occurrences.length(); y++){
+                            String occurrenceStart = occurrences.getJSONObject(y).getString("start");
+                            String occurrenceEnd = occurrences.getJSONObject(y).getString("end");
+                            if(!occurrenceStart.equals(startDate) && formatterRead.parse(occurrenceStart).after(new Date())) {
+                                EventViewModel occurrence = new EventViewModel(eventId, title, description, occurrenceStart, occurrenceEnd, hostName, location, imageUrls);
+                                events.add(occurrence);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+
+                        if(formatterRead.parse(startDate).after(new Date())) {
+                            EventViewModel temp = new EventViewModel(eventId, title, description, startDate, endDate, hostName, location, imageUrls);
+                            events.add(temp);
+                            events.sort((o1,o2) -> o1.getEventDateStart().compareTo(o2.getEventDateStart()));
+                            adapter.notifyDataSetChanged();
+                        }
+
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
-                for(EventViewModel event:events){
-                    Log.e("Event",event.toString());
-                }
-
             }
 
         }, new Response.ErrorListener() {

@@ -9,7 +9,7 @@
 
     <string name="menu_tabs">Aktuelles</string>
     <string name="menu_project">Projekte</string>
-    <string name="menu_location">Fahrrad fahren</string>
+    <string name="menu_location">Radfahren</string>
     <string name="menu_stats">Statistik</string>
     <string name="menu_faq">FAQ</string>
     <string name="menu_blog">Blog</string>
@@ -22,7 +22,7 @@
     <string name="title_app">Weitblick</string>
     <string name="prompt_username">Nutzername</string>
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+    <string name="prompt_password">Passwort</string>
     <string name="confirm_password">Passwort bestätigen</string>
     <string name="action_sign_in">Anmelden</string>
     <string name="action_sign_up">Registrieren</string>

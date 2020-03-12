@@ -21,7 +21,7 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
     private LayoutInflater mInflater;
     private ArrayList<RankingViewModel> rankings;
     private FragmentManager fragManager;
-    static private boolean km_donation = true;
+    private boolean km_donation = true;
 
     public RankingListAdapter(Context mContext, ArrayList<RankingViewModel> mDataSource, FragmentManager fragManager, boolean km_donation) {
         super(mContext, R.layout.fragment_ranking_list, mDataSource);
@@ -73,10 +73,22 @@ public class RankingListAdapter extends ArrayAdapter<RankingViewModel> {
 
         username.setText(ranking.getUsername());
 
-        Picasso.get().load(ranking.getProfileImageUrl()).transform(new RoundedCornersTransform()).fit().centerCrop().
-                placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background).into(imageView);
+        if(!ranking.getProfileImageUrl().isEmpty()){
+            Picasso.get().load(ranking.getProfileImageUrl()).fit().centerCrop()
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }else{
+            Picasso.get().load(R.mipmap.ic_launcher_foreground).fit().centerCrop()
+                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }
 
         return view;
+    }
+
+    public boolean isKm_donation() {
+        return km_donation;
+    }
+
+    public void setKm_donation(boolean km_donation) {
+        this.km_donation = km_donation;
     }
 }

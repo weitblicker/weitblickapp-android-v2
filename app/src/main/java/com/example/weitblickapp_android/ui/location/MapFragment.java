@@ -3,31 +3,32 @@ package com.example.weitblickapp_android.ui.location;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Base64;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -38,20 +39,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.Session.SessionManager;
-import com.example.weitblickapp_android.ui.MyJsonArrayRequest;
 import com.example.weitblickapp_android.ui.project.ProjectDetailFragment;
 import com.example.weitblickapp_android.ui.project.ProjectViewModel;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,62 +58,67 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-    static final String url = "https://new.weitblicker.org/rest/cycle/segment/";
+public class MapFragment extends Fragment implements OnMapReadyCallback{
+
+    static final String url = "https://weitblicker.org/rest/cycle/segment/";
     final private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    private SensorManager sensorManager;
-    private Sensor sensor;
+    // SessionManager to retrieve User-Data
+    private SessionManager session;
 
-
+    // Maps & Locations
     private GoogleMap mMap;
+    public LocationService locationService;
     private Tour currentTour;
     private Location currentLocation;
     private Location lastLocation;
-    private SessionManager session;
 
-    //Receiver for Change of GPS-Turned ON/OFF
+    // Receiver for Change of GPS & Location
     private BroadcastReceiver locationSwitchStateReceiver;
+    private BroadcastReceiver locationUpdateReceiver;
+    private BroadcastReceiver predictedLocationReceiver;
 
+    // Boolean for change of behaviour
     private boolean paused = false;
     private boolean load = false;
     private boolean gpsIsEnabled;
-    private boolean projectFinished;
+    private boolean projectFinished = false;
 
     //Segment-Information
-    static private double km = 0;
-    static private double kmTotal = 0;
+    static private double kmSegment;
     private String segmentStartTime;
     private String segmentEndTime;
     private String token;
     private int projectId;
-    private int tourId;
+    private int tourId = 0;
     private ProjectViewModel project;
 
     //Handler for GPS & Segment requests
     private final Handler handler = new Handler();
-    private final Handler segmentHandler = new Handler();
-    private final int fetchLocationDelay = 1000; //milliseconds
+    private Runnable segmentSendRunnable;
     private final int segmentSendDelay = 30000; //milliseconds
 
+
+    //TextViews to set values at runtime
     private TextView distance;
     private TextView donation;
 
-    //get ration for
+    // Donation & kmTotal
     static private double don = 0;
+    static private double kmTotal = 0;
 
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private static final int REQUEST_CODE = 101;
-
-    RequestQueue requestQueue;
+    private RequestQueue requestQueue;
     private Context mContext;
 
     LocationManager locationManager;
+    private static final int REQUEST_CODE = 101;
 
-    MapFragment(int projectid){
-        this.projectId = projectid;
+    public MapFragment(ProjectViewModel project){
+        projectId = project.getId();
+        this.project = project;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -126,42 +126,102 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        askGpsPermission();
-        setUpGpsReceiver();
-        registerGpsReceiver();
-        initAccelerometer();
-        initializeTour();
-        startFetchLocation();
-        sendRouteSegments();
-    }
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    private void initAccelerometer(){
-        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-    }
+        final Intent locationService = new Intent(mContext, LocationService.class);
+        getActivity().startService(locationService);
+        getActivity().bindService(locationService, serviceConnection, Context.BIND_AUTO_CREATE);
 
-    private String getFormattedDate(){
-        Date date = new Date();
-        return formatter.format(date);
-    }
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        
-        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        this.gpsIsEnabled = isLocationEnabled();
-        loadProject(projectId);
-
-        View root = inflater.inflate(R.layout.fragment_location, container, false);
-
+        requestQueue = Volley.newRequestQueue(mContext);
         session = new SessionManager(getActivity().getApplicationContext());
         this.token = session.getKey();
 
-        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        predictedLocationReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
-        getAmountTours();
+                Location tmp = intent.getParcelableExtra("location");
+
+                Log.e("LocationReceived", "!!!");
+                Log.e("Long ",  tmp.getLongitude()+ "...");
+                Log.e("Lat ", tmp.getLatitude() + "...");
+
+                if(!paused && gpsIsEnabled) {
+                    if (currentLocation == null) {
+                        currentLocation = tmp;
+
+                    } else {
+                        lastLocation = currentLocation;
+                        currentLocation = tmp;
+
+                        if(checkSpeedAndAcceleration()) {
+                            calculateKm();
+                        }
+                    }
+
+                    if (!load) {
+                        setUpMapIfNeeded();
+                    }
+                }
+            }
+        };
+/*
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(
+                locationUpdateReceiver,
+                new IntentFilter("LocationUpdated"));
+*/
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(
+                predictedLocationReceiver,
+                new IntentFilter("PredictLocation"));
+
+
+        askGpsPermission();
+        setUpGpsStateReceiver();
+        initializeTour();
+        sendRouteSegments();
+
+    }
+
+
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        //check if Location is Enabled
+        this.gpsIsEnabled = isLocationEnabled();
+
+        View root = inflater.inflate(R.layout.fragment_location, container, false);
+
+        TextView partner = (TextView) root.findViewById(R.id.partner);
+        TextView titel = (TextView) root.findViewById(R.id.titel);
+        TextView location = (TextView) root.findViewById(R.id.location);
+
+        //get DefaultProject
+        SharedPreferences settings = getContext().getApplicationContext().getSharedPreferences("DefaultProject", 0);
+        location.setText(project.getAddress());
+        titel.setText(project.getName());
+        StringBuilder b = new StringBuilder();
+
+        //Makes one String out of HostArray
+        for(String s : project.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+
+        //Makes character Uppercase
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        partner.setText(B);
 
         final ImageView pause = root.findViewById(R.id.pause);
         ImageView stop = root.findViewById(R.id.stop);
@@ -169,10 +229,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         distance = root.findViewById(R.id.distance);
         donation = root.findViewById(R.id.donation);
 
-        if (getActivity() != null) {
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        }
-
+        //set onClickListener for ProjectDetailPage
         projectDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,37 +243,46 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //set onClickListener for PauseButtom
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //stwich between pause and start Image
                 if (!paused) {
-                    pause.setImageResource(R.mipmap.ic_play_foreground);
+                    pause.setImageResource(R.mipmap.icon_start_foreground);
                     paused = true;
+                    //start send Segments and resetLocation
                     sendSegment();
                     resetLocations();
                 } else {
-                    pause.setImageResource(R.mipmap.ic_pause_foreground);
+                    pause.setImageResource(R.mipmap.icon_pause_foreground);
                     paused = false;
                     segmentStartTime = MapFragment.this.getFormattedDate();
-                    getCurrentLocation();
                 }
             }
         });
 
+        //set onclickListener for stop Button
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 paused = true;
-                EndFragment fragment = new EndFragment(currentTour);
+                EndFragment fragment = new EndFragment(currentTour, project);
                 FragmentTransaction ft = MapFragment.this.getChildFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
                 ft.addToBackStack(null);
                 ft.commit();
                 sendSegment();
+                handler.removeCallbacksAndMessages(null);
                 kmTotal = 0;
             }
         });
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void resetLocations(){
@@ -224,74 +290,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         lastLocation = null;
     }
     private void resetTour(){
-        km = 0.0;
+        kmSegment = 0.0;
         kmTotal = 0.0;
         don = 0.0;
     }
 
     private void initializeTour(){
         currentTour = new Tour(projectId);
+        this.segmentStartTime = getFormattedDate();
+        createNewTour();
     }
 
-
-    //Checks every Second if GPS is enabled, if so -> fetchLastLocation
-    private void startFetchLocation() {
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                if(!paused && gpsIsEnabled) {
-                    fetchLastLocation();
-                }else{
-                    return;
-                }
-                handler.postDelayed(this, fetchLocationDelay);
-            }
-        }, fetchLocationDelay);
-    }
-
-    private void getCurrentLocation(){
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location != null){
-                    lastLocation = location;
-                    currentLocation = location;
-                    checkKm();
-                }
-            }
-        });
-        startFetchLocation();
-    }
-
-    //Fetches last GPS-Location and calculates resulting km
-    private void fetchLastLocation() {
-        if (getContext() != null && getActivity() != null) {
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-                return;
-            }
-        }
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    Log.e("LOCATIONACCURAY:", location.getAccuracy() + "");
-                    if (location.getAccuracy() < 20) {
-                        currentLocation = location;
-                        currentTour.getLocations().add(location);
-                        if (!load) {
-                            setUpMapIfNeeded();
-                        }
-                    }
-                }
-
-            }
-        });
-        if(checkSpeedAndAcceleration()) {
-            checkKm();
-        }
-    }
 
     private void askGpsPermission(){
         if (getContext() != null && getActivity() != null) {
@@ -306,22 +315,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void sendRouteSegments() {
         segmentStartTime = getFormattedDate();
 
-        segmentHandler.postDelayed(new Runnable() {
+        handler.postDelayed(segmentSendRunnable = new Runnable() {
             @Override
             public void run() {
                 //Send Segment here
                 if ((!paused) && gpsIsEnabled) {
+                    Log.e("SEGMENT SENT", "!!!");
+
+                    if(load && currentLocation != null) {
+                        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
+                                15));
+                    }
                     sendSegment();
                 }
-                segmentHandler.postDelayed(this, segmentSendDelay);
+                handler.postDelayed(this, segmentSendDelay);
             }
         }, segmentSendDelay);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        //LatLng latLng = new LatLng( -33.865143, 151.209900);
         this.mMap = googleMap;
+        //set Position to current User Position or DefaultPosition
         if (isLocationEnabled()) {
             if (currentLocation != null) {
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
@@ -331,27 +347,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void checkKm() {
-            if (lastLocation != null) {
-                double dis = currentLocation.distanceTo(lastLocation)/1000;
-                km += dis;
-                don = currentTour.getEurosTotal() / 100;
-                String distanceTotal = String.valueOf(Math.round(kmTotal * 100.00) / 100.00).concat(" km");
-                String donationTotal = String.valueOf(Math.round(don * 100.00) / 100.00).concat(" €");
-                distance.setText(distanceTotal);
-                donation.setText(donationTotal);
-            }
-        lastLocation = currentLocation;
+    private void calculateKm() {
+        if(currentLocation != null && lastLocation != null) {
+            double dis = currentLocation.distanceTo(lastLocation) / 1000;
+            kmSegment += dis;
+            kmTotal += dis;
+
+            Log.e("km-Total ", kmTotal+"");
+            Log.e("km-Segment ", kmSegment+"");
+
+            don = currentTour.getEurosTotal();
+
+            String distanceTotal = String.format("%.2f", kmTotal) + " km";
+            String donationTotal = String.format("%.2f", don) + " €";
+
+
+            distance.setText(distanceTotal);
+            donation.setText(donationTotal);
+
+            currentTour.setDistanceTotal(kmTotal);
+        }
     }
 
     private boolean checkSpeedAndAcceleration(){
         if(currentLocation != null) {
             if (currentLocation.hasSpeed()) {
-                float currentSpeedInKmh = (currentLocation.getSpeed() * 3.6f);
-                if (currentSpeedInKmh < 20.0f) {
-                    Log.e("currentSpeed:", currentLocation.getSpeed() + "");
-                    Toast toast= Toast.makeText(getContext(),"Slow down! Speed: " + currentSpeedInKmh ,Toast. LENGTH_SHORT);
-                    toast.show();
+                float currentSpeedInKmh = Math.round((currentLocation.getSpeed() * 3.6f) * 100)/100;
+                if (currentSpeedInKmh > 60.0f) {
                     return false;
                 } else {
                     return true;
@@ -359,18 +381,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
         return false;
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResult) {
-        switch (requestCode) {
-            case REQUEST_CODE:
-                if (grantResult.length < 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
-                    fetchLastLocation();
-                }
-                break;
-            default:
-                break;
-        }
     }
 
     private void setUpMapIfNeeded() {
@@ -390,110 +400,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return enabled;
     }
 
-    private void loadProject(int projectID){
+    //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
+    private void createNewTour(){
+            // Talk to Rest API
+            String URL = "https://weitblicker.org/rest/cycle/tours/new";
 
-        String URL = "https://new.weitblicker.org/rest/projects/" + projectID + "/";
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                String jsonData = response.toString();
-                //Parse the JSON response array by iterating over it
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject responseObject = null;
-                    JSONObject locationObject = null;
-                    JSONArray cycleJSONObject = null;
-                    JSONObject cycleObject = null;
-                    ArrayList<String> imageUrls = new ArrayList<String>();
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.e("RESPONSE",response.toString());
                     try {
-                        int projectId = response.getInt("id");
-                        String title = response.getString("name");
-
-                        String text = response.getString("description");
-                        locationObject = response.getJSONObject("location");
-
-                        float lat = locationObject.getLong("lat");
-                        float lng = locationObject.getLong("lng");
-                        String name = locationObject.getString("name");
-                        String address = locationObject.getString("address");
-
-                        cycleJSONObject = response.getJSONArray("cycle");
-
-                        float current_amount = 0;
-                        float cycle_donation = 0;
-                        boolean finished = false;
-                        int cycle_id = 0;
-                        float goal_amount = 0;
-
-                        for (int x = 0; x < cycleJSONObject.length(); x++) {
-                            cycleObject = cycleJSONObject.getJSONObject(x);
-                            current_amount = cycleObject.getLong("current_amount");
-                            cycle_donation = cycleObject.getLong("goal_amount");
-                            finished = cycleObject.getBoolean("finished");
-                            cycle_id = cycleObject.getInt("cycle_donation");
-                            goal_amount = cycleObject.getLong("goal_amount");
-                        }
-
-                        imageUrls = getImageUrls(text);
-                        text = extractImageUrls(text);
-
-                        text.trim();
-                        project = new ProjectViewModel(projectId, title, text, lat, lng, address, name, current_amount, cycle_donation,finished, cycle_id, goal_amount, imageUrls);
+                        tourId = response.getInt("tour_index");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Display Error Message
-                Log.e("Rest Response", error.toString());
-            }
-        }){
-            //Override getHeaders() to set Credentials for REST-Authentication
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String credentials = "surfer:hangloose";
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
-        requestQueue.add(objectRequest);
-    }
-    //Checks totalAmount of Tours and assigns totalAmount + 1 to next tour
-    private void getAmountTours(){
-            // Talk to Rest API
-
-            String URL = "https://new.weitblicker.org/rest/cycle/tours/";
-
-            JSONObject jsonBody = new JSONObject();
-            try {
-                jsonBody.put("token", this.token);
-            } catch (JSONException e) {
-                Log.e("TourJsonException:", e.toString());
-            }
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-            MyJsonArrayRequest objectRequest = new MyJsonArrayRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONArray>() {
-
-                @Override
-                public void onResponse(JSONArray response) {
-                    tourId = (response.length() + 1);
                 }
 
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //Display Error Message
                     Log.e("TourError Response", error.toString());
                 }
             }) {
@@ -501,54 +427,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", auth);
+                    headers.put("Media-Type", "application/json");
+                    headers.put("Authorization", "Token " + getToken());
                     return headers;
                 }
             };
-            requestQueue.add(objectRequest);
+            this.requestQueue.add(objectRequest);
         }
 
     private void sendSegment() {
 
         segmentEndTime = getFormattedDate();
-        kmTotal += km;
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("start", segmentStartTime);
             jsonBody.put("end", segmentEndTime);
-            jsonBody.put("distance", km);
+            jsonBody.put("distance", kmSegment);
             jsonBody.put("project", projectId);
             jsonBody.put("tour", tourId);
             jsonBody.put("token", token);
         } catch (JSONException e) {
-            Log.e("SegmentJsonException:", e.toString());
+
         }
 
-        Log.e("JSON:", jsonBody.toString());
+        Log.e("JSON-SEGMENT", jsonBody.toString());
 
-            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
             JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {
                     double eurosTotal = 0;
-                    double kmTotal = 0;
                     try {
                         projectFinished = response.getBoolean("finished");
                         eurosTotal = response.getDouble("euro");
-                        kmTotal = response.getDouble("km");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     currentTour.setEurosTotal(eurosTotal);
-                    currentTour.setDistanceTotal(kmTotal);
 
-                    Log.e("Server Response", response.toString());
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -561,21 +478,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    String credentials = "surfer:hangloose";
-                    String auth = "Basic "
-                            + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Media-Type", "application/json");
-                    headers.put("Authorization", auth);
+                    headers.put("Authorization", "Token " + getToken());
                     return headers;
                 }
             };
             this.requestQueue.add(objectRequest);
             //Reset Km-Counter for Segment
             segmentStartTime = segmentEndTime;
-            km = 0;
+            kmSegment = 0;
     }
 
-    private void setUpGpsReceiver(){
+    private void setUpGpsStateReceiver(){
         locationSwitchStateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -593,11 +507,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         };
+        registerGpsReceiver();
     }
     private void registerGpsReceiver(){
         IntentFilter filter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
         filter.addAction(Intent.ACTION_PROVIDER_CHANGED);
-        getActivity().registerReceiver(locationSwitchStateReceiver, filter);
+        mContext.registerReceiver(locationSwitchStateReceiver, filter);
     }
 
     private void buildAlertMessageNoGps () {
@@ -612,6 +527,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 })
                 .setNegativeButton("Nein", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                        MapOverviewFragment fragment = new MapOverviewFragment();
+                        ft.add(R.id.fragment_container, fragment);
+                        ft.commit();
                         dialog.cancel();
                     }
                 });
@@ -633,6 +552,105 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         text = text.replaceAll("!\\[(.*?)\\]\\((.*?)\\)","");
         return text;
     }
+
+    private String getToken(){
+        return this.token;
+    }
+
+
+    //Gets actual Date of TODAY in Format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    private String getFormattedDate(){
+        Date date = new Date();
+        return formatter.format(date);
+    }
+
+    //Prevent user from leaving fragment
+    private boolean confirmBackPressedMessage(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final boolean[] answer = new boolean[1];
+        builder.setMessage("Wollen Sie die Tour wirklich beenden?")
+                .setCancelable(false)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        answer[0] = true;
+                        dialog.cancel();
+
+                    }
+                })
+                .setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        answer[0] = false;
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+        return answer[0];
+    }
+
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service.  Because we have bound to a explicit
+            // service that we know is running in our own process, we can
+            // cast its IBinder to a concrete class and directly access it.
+            String name = className.getClassName();
+
+            if (name.endsWith("LocationService")) {
+                locationService = ((LocationService.LocationServiceBinder) service).getService();
+
+                locationService.startUpdatingLocation();
+
+
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            // Because it is running in our same process, we should never
+            // see this happen.
+            if (className.getClassName().equals("LocationService")) {
+                locationService.stopUpdatingLocation();
+                locationService = null;
+            }
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sendSegment();
+        handler.removeCallbacksAndMessages(null);
+        mContext.unregisterReceiver(locationSwitchStateReceiver);
+
+        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(predictedLocationReceiver);
+        Log.e("Receiver unregistered" , "!!");
+
+        final Intent locationService = new Intent(mContext, LocationService.class);
+        getActivity().stopService(locationService);
+    }
+
 }
 
 

@@ -2,15 +2,12 @@ package com.example.weitblickapp_android.ui.project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -32,6 +29,8 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     private OnItemClicked onItemClickedListener;
     int selectedPosition = -1;
 
+
+    //checks which listItem is selected
     public void select(int position){
         selectedPosition = position;
         notifyDataSetChanged();
@@ -73,10 +72,11 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 
-            String weitblickUrl = "https://new.weitblicker.org";
+            String weitblickUrl = "https://weitblicker.org";
 
              view = mInflater.inflate(R.layout.fragment_project_list, null);
 
+        //sets the selected Position in Focus
         if(selectedPosition == position){
             view.setSelected(true);
             view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.wb_green));
@@ -86,10 +86,12 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             TextView textView_title = (TextView) view.findViewById(R.id.title);
             TextView textView_address = (TextView) view.findViewById(R.id.location);
             ImageButton maps = (ImageButton) view.findViewById(R.id.project_maps_btn);
+            TextView partner = (TextView) view.findViewById(R.id.partner);
 
 
             //TextView textView_date = (TextView) view.findViewById(R.id.date);
 
+        //set onClickListener to set the listItem in Focus
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,12 +101,31 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
             }
         });
 
-            final ProjectViewModel project = (ProjectViewModel) getItem(position);
+        final ProjectViewModel project = (ProjectViewModel) getItem(position);
 
 
-            if(project.getCycle_id() == 0){
+        //makes one String out of a hostArray
+        StringBuilder b = new StringBuilder();
+        for(String s : project.getHosts()){
+            b.append(s);
+            b.append(" ");
+        }
+        //sets Character UpperCase
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < b.length(); i++ ) {
+            char c = b.charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+            //set CycleIcon if Cycle is available
+            if(project.getCycle() == null){
+
                 maps.setVisibility(View.GONE);
             }else{
+                //if project is selected sets as defaultProject
                 maps.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -112,8 +133,10 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putInt("projectid", project.getId());
                         editor.putString("projectname", project.getName());
-                        editor.putFloat("lat", project.getLat());
-                        editor.putFloat("lng", project.getLng());
+                        editor.putFloat("lat", (long) project.getLat());
+                        editor.putFloat("lng", (long) project.getLng());
+                        editor.putString("hosts", B.toString());
+                        editor.putString("location", project.getAddress());
                         editor.commit();
                         FragmentTransaction ft = fragManager.beginTransaction();
                         ft.replace(R.id.fragment_container, new MapOverviewFragment());
@@ -121,23 +144,20 @@ public class ProjectListAdapter extends ArrayAdapter<ProjectViewModel> {
                     }
                 });
             }
-
-
-        try {
+        //set Image or DefaultImage
+        if(project.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(project.getImageUrls().get(0));
-        }catch(IndexOutOfBoundsException e){
-            Log.e("Info", "no pictures for this BlogEntry");
+
+            Picasso.get().load(weitblickUrl).fit().centerCrop().placeholder(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }else{
+            Picasso.get().load(R.drawable.project_default).fit().centerCrop().into(imageView);
         }
-
-            Picasso.get()
-                    .load(weitblickUrl)
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                    .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
-
+            //set data
             textView_title.setText(project.getName());
             textView_address.setText(project.getAddress());
+
+            partner.setText(B.toString());
+
             //textView_title.setText(project.g);
 
             //Set Button-Listener and redirect to Details-Page

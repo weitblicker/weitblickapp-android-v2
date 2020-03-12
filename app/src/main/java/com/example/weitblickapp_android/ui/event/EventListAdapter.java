@@ -1,9 +1,13 @@
 package com.example.weitblickapp_android.ui.event;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,24 +62,43 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
         TextView textView_title = (TextView)view.findViewById(R.id.title);
         TextView textView_location = (TextView)view.findViewById(R.id.location);
         TextView textView_date = (TextView)view.findViewById(R.id.date);
+        TextView textView_lo = (TextView)view.findViewById(R.id.title);
+        final TextView test = (TextView) view.findViewById(R.id.test);
 
         final EventViewModel event = (EventViewModel) getItem(position);
 
 
+        //Set picture for BlogEntries: if no pictures -> set default_picture
         if(event.getImageUrls().size()>0) {
             weitblickUrl = weitblickUrl.concat(event.getImageUrls().get(0));
+
+            Picasso.get().load(weitblickUrl).fit().centerCrop().placeholder(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
+        }else{
+            Picasso.get().load(R.drawable.event_default).fit().centerCrop().into(imageView);
         }
 
-        Picasso.get().load(weitblickUrl).fit().centerCrop().
-                placeholder(R.drawable.ic_wbcd_logo_standard_svg2)
-                .error(R.drawable.ic_wbcd_logo_standard_svg2).into(imageView);
-
-        textView_title.setText(event.getTitle());
+        //set data for view
         textView_location.setText(event.getLocation().getAddress());
-        textView_date.setText(event.getEventStartDate());
-        textView_host.setText(event.getHostName());
+        textView_date.setText("   " + event.formatToTimeRange());
+        test.setText(event.getTitle());
 
+        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) test.getLayoutParams();
+        params.height = getTextViewHeight(test);
+        test.setLayoutParams(params);
 
+        //makes Character Uppercase
+        StringBuilder B = new StringBuilder();
+        for ( int i = 0; i < event.getHostName().length(); i++ ) {
+            char c = event.getHostName().charAt( i );
+            if(Character.isLowerCase(c)){
+                B.append(Character.toUpperCase(c));
+            }else{
+                B.append(c);
+            }
+        }
+        textView_host.setText(B.toString());
+
+        //set onClick to EventsDetailPage
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -89,6 +112,28 @@ public class EventListAdapter extends ArrayAdapter<EventViewModel> {
 
 
         return view;
+    }
+
+    //Gets the Height of the Textview with content
+    public static int getTextViewHeight(TextView textView) {
+        WindowManager wm =
+                (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+
+        int deviceWidth;
+
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2){
+            Point size = new Point();
+            display.getSize(size);
+            deviceWidth = size.x;
+        } else {
+            deviceWidth = display.getWidth();
+        }
+
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(deviceWidth, View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        textView.measure(widthMeasureSpec, heightMeasureSpec);
+        return textView.getMeasuredHeight();
     }
 }
 
