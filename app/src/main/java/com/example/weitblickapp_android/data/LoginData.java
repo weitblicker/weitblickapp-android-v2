@@ -2,7 +2,6 @@ package com.example.weitblickapp_android.data;
 
 import android.app.Activity;
 import android.content.Context;
-import android.se.omapi.Session;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,12 +12,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weitblickapp_android.data.Session.SessionManager;
 import com.example.weitblickapp_android.data.model.LoggedInUser;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
-import com.example.weitblickapp_android.ui.login.Login_Activity;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -31,6 +28,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+/** Class that handles all Authentication funcitonality*/
 
 public class LoginData{
 
@@ -47,6 +46,7 @@ public class LoginData{
 
     }
 
+    /** user-login with VolleyJsonRequest. Initiates UserSession */
     public JSONObject login(final String email, final String password, final boolean isLoginSaved, final VolleyCallback callback) {
 
         try {
@@ -152,8 +152,7 @@ public class LoginData{
         return new JSONObject();
     }
 
-
-
+    /** logs out user and resets current Usersession */
     public void logout(){
 
         Log.e("LOGOUT", "aufgerufen");
@@ -240,6 +239,7 @@ public class LoginData{
         }
     }
 
+    /**method to change the password of current User */
     public void changePassword(final String old_password,final String password1,final String password2, final VolleyCallback callback){
 
         try {
@@ -331,11 +331,10 @@ public class LoginData{
 
     }
 
+    /** method is initiated by login method if authentication was succesful */
     private void updateUiWithUser(final String email, final String password, final boolean isLoginSaved) {
 
         if (user != null) {
-
-            //Toast.makeText(app_context, "Willkommen " + user.getUsername(), Toast.LENGTH_SHORT).show();
 
             sessionManager.createLoginSession(user.getUsername(), user.getEmail(), user.getKey());
 
@@ -350,6 +349,7 @@ public class LoginData{
         }
     }
 
+    /** method to reset the users password */
     public void resetPassword(final String email, VolleyCallback callback){
         try {
             try {
@@ -436,7 +436,5 @@ public class LoginData{
         }
     }
 
-    public void getUserData(){
-        
-    }
+
 }

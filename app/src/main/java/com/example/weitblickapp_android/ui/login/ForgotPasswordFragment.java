@@ -17,6 +17,8 @@ import com.example.weitblickapp_android.R;
 import com.example.weitblickapp_android.data.LoginData;
 import com.example.weitblickapp_android.data.model.VolleyCallback;
 
+/**Fragemnt to handle forgotten password form input */
+
 public class ForgotPasswordFragment extends Fragment {
 
         private TextView emailTextView;

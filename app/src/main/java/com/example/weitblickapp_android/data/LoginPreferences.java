@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import java.util.HashMap;
 
+/** Class that holds the Login Information of the user, if the user wanted the app to remember it */
+
 public class LoginPreferences {
     // Shared Preferences
     SharedPreferences pref;
@@ -26,10 +28,10 @@ public class LoginPreferences {
     private static final String SAVE_LOGIN = "saveLogin";
 
 
-    // User name (make variable public to access from outside)
+    // User name
     public static final String KEY_NAME = "name";
 
-    // Email address (make variable public to access from outside)
+    // Password
     public static final String KEY_PASSWORD = "password";
 
     // Constructor
@@ -56,25 +58,14 @@ public class LoginPreferences {
         editor.commit();
     }
 
+    //enable saving of login infromation
     public void setToSave() {
         editor.putBoolean(SAVE_LOGIN, true);
     }
 
+    //disables saving of login information
     public void setTo_NOT_Save() {
         editor.putBoolean(SAVE_LOGIN, false);
-    }
-
-
-    public HashMap<String, String> getUserDetails() {
-        HashMap<String, String> user = new HashMap<String, String>();
-        // user name
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
-        // user email id
-        user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
-
-        // return user
-        return user;
     }
 
     public String getUserName() {

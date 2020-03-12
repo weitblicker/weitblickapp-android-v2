@@ -24,6 +24,8 @@ import com.example.weitblickapp_android.data.model.VolleyCallback;
 import com.example.weitblickapp_android.ui.register.RegisterActivity;
 import com.example.weitblickapp_android.ui.register.RegisterFragment;
 
+/** Activity to handle all Authentication processes. The Activity gets called everytime the User wants to access a feature for which he needs to be logged in*/
+
 public class Login_Activity extends AppCompatActivity {
 
 
@@ -77,6 +79,7 @@ public class Login_Activity extends AppCompatActivity {
             passwordEditText.setText(loginPref.getPassword());
         }
 
+        //onClick listener for button that sends login form
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +100,7 @@ public class Login_Activity extends AppCompatActivity {
             }
         });
 
+        //button for user to switch to register activity
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +129,7 @@ public class Login_Activity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
+        //launches the forgot password fragment
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

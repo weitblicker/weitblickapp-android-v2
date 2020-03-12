@@ -25,6 +25,9 @@ import com.example.weitblickapp_android.data.model.VolleyCallback;
 
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
+/** Activity to handle all Registration processes. The Activity gets called when the User wants to create a new Account */
+
+
 public class RegisterActivity extends AppCompatActivity {
 
     private RequestQueue queue;
@@ -92,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        //Infobutton to inform the user that his data is not sold to third parties
         infoButton.setOnClickListener(new View.OnClickListener()
         {
 
@@ -100,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 new SimpleTooltip.Builder(RegisterActivity.this)
                         .anchorView(infoButton)
-                        .text("Daten werden nicht weitergegeben bliblablub.")
+                        .text("Deine Daten werden selbstverständlich nicht verkauft oder auf anderem Wege weitergegeben.")
                         .backgroundColor(Color.parseColor("#ff9900"))
                         .arrowColor(Color.parseColor("#ff9900"))
                         .gravity(Gravity.BOTTOM)

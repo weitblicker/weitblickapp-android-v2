@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/** Class that handles all Registration network-funcitonality*/
+
 public class RegistrationData {
 
     private Context app_context;
@@ -37,6 +39,7 @@ public class RegistrationData {
         app_context = context;
     }
 
+    /** method to send VolleyRequest to request the registration of the user on the server*/
     public void register(final String username, final String email, final String password, final String password_confirm, final VolleyCallback callback) {
 
         try {

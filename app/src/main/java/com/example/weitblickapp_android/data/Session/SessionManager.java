@@ -9,6 +9,8 @@ import com.example.weitblickapp_android.ui.login.Login_Activity;
 
 import java.util.HashMap;
 
+/** Class that handles the current Usersession */
+
 public class SessionManager {
 
     private LoginData loginData;
@@ -31,13 +33,13 @@ public class SessionManager {
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
 
-    // User name (make variable public to access from outside)
+    // User name
     public static final String KEY_NAME = "name";
 
-    // Email address (make variable public to access from outside)
+    // Email address
     public static final String KEY_EMAIL = "email";
 
-    // Email address (make variable public to access from outside)
+    // Userkey
     public static final String KEY_USERKEY = "key";
 
     // Constructor
